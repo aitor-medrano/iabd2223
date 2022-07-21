@@ -1,0 +1,66 @@
+site_name: Inteligencia Artificial y Big Data
+site_url: https://aitor-medrano.github.io/iabd2223
+use_directory_urls: false
+
+nav:
+  - "Inicio": "index.md"
+  - "Sistemas de almacenamiento":
+      - "1.- Ingenieria de datos / NoSQL": "index.md"
+  - "Proyectos de Innovación Aplicada":
+      - "1.- PIA Lara I - Presentación": "index.md"
+
+theme:
+  language: es
+  name: "material"
+  favicon: "imagenes/favicon.png"
+  palette:
+    primary: indigo
+    accent: "light blue"
+  font:
+    text: Roboto
+    code: Roboto Mono
+  logo: "imagenes/logoIABD3.png"
+  features:
+    - header.autohide
+    - navigation.top
+    - navigation.expand
+    - navigation.tracking
+    - content.code.annotate
+
+extra:
+  search:
+    language: "en"
+  social:
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/aitormedrano
+    - icon: fontawesome/solid/envelope
+      link: mailto:<a.medrano@edu.gva.es>
+  analytics:
+    provider: google
+    property: G-MV889H0W63
+
+plugins:
+  - search
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - pymdownx.highlight:
+      linenums: true
+      linenums_style: pymdownx-inline
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - footnotes
+  - meta
+  - sane_lists
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+copyright: 2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+# docker run --name=mkdocs -v "C:\Users\Aitor\OneDrive - Conselleria d'Educació\2122\bigdata:/app" -w /app/doc -p 8000:8000 minidocks/mkdocs serve -a 0.0.0.0:8000 -t material
+# docker run --name=mkdocs -v "C:\Users\Aitor\OneDrive - Conselleria d'Educació\2122\bigdata:/app" -w /app/mkdocs -p 8000:8000 minidocks/mkdocs serve -a 0.0.0.0:8000 -t material
