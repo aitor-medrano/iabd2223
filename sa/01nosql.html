@@ -6,21 +6,25 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Uso de Apache Hive tanto con tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos.">
       
       
-      <link rel="icon" href="/iabd2223/imagenes/favicon.png">
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/sa/01nosql.html">
+      
+      <link rel="icon" href="../imagenes/favicon.png">
       <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.14">
     
     
       
-        <title>Inteligencia Artificial y Big Data</title>
+        <title>Apache Hive. Acceso a HDFS con un interfaz similar a tablas relacionales mediante SQL. - Inteligencia Artificial y Big Data</title>
       
     
     
-      <link rel="stylesheet" href="/iabd2223/assets/stylesheets/main.3de6f41f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.3de6f41f.min.css">
       
         
-        <link rel="stylesheet" href="/iabd2223/assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cc9b2e1e.min.css">
         
           
           
@@ -39,7 +43,7 @@
       
     
     
-    <script>__md_scope=new URL("/iabd2223/",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -72,6 +76,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#nosql" class="md-skip">
+          Saltar a contenido
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -82,9 +91,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabecera">
-    <a href="/iabd2223/index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
       
-  <img src="/iabd2223/imagenes/logoIABD3.png" alt="logo">
+  <img src="../imagenes/logoIABD3.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -100,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Apache Hive. Acceso a HDFS con un interfaz similar a tablas relacionales mediante SQL.
             
           </span>
         </div>
@@ -167,9 +176,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/iabd2223/index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
       
-  <img src="/iabd2223/imagenes/logoIABD3.png" alt="logo">
+  <img src="../imagenes/logoIABD3.png" alt="logo">
 
     </a>
     Inteligencia Artificial y Big Data
@@ -185,7 +194,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/iabd2223/index.html" class="md-nav__link">
+      <a href="../index.html" class="md-nav__link">
         Inicio
       </a>
     </li>
@@ -252,7 +261,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/iabd2223/index.html" class="md-nav__link">
+      <a href="../index.html" class="md-nav__link">
         S1.- Ingeniería de datos / NoSQL
       </a>
     </li>
@@ -299,7 +308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/iabd2223/index.html" class="md-nav__link">
+      <a href="../index.html" class="md-nav__link">
         S1.- Ingeniería de datos / NoSQL
       </a>
     </li>
@@ -346,7 +355,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/iabd2223/index.html" class="md-nav__link">
+      <a href="../index.html" class="md-nav__link">
         S1.- Ingeniería de datos / NoSQL
       </a>
     </li>
@@ -393,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/iabd2223/index.html" class="md-nav__link">
+      <a href="../index.html" class="md-nav__link">
         S1.- Presentación
       </a>
     </li>
@@ -431,6 +440,8 @@
   
   
   
+    
+  
   
 </nav>
                   </div>
@@ -441,8 +452,28 @@
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
-  <h1>404 - Not found</h1>
+                
 
+
+<h1 id="nosql">NoSQL<a class="headerlink" href="#nosql" title="Permanent link">&para;</a></h1>
+<p><em>Apache Hive</em> (<a href="https://hive.apache.org/">https://hive.apache.org/</a>) es una tecnología distribuida diseñada y construida sobre un clúster de <em>Hadoop</em>. Permite leer, escribir y gestionar grandes <em>datasets</em> (con escala de petabytes) que residen en HDFS haciendo uso de un lenguaje dialecto de SQL, conocido como <em>HiveSQL</em>, lo que simplifica mucho el desarrollo y la gestión de <em>Hadoop</em>.</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Última actualización:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 29, 2022</span>
+      
+        <br>
+        Creado:
+        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 29, 2022</span>
+      
+    
+  </small>
+</div>
+
+              
             </article>
           </div>
         </div>
@@ -499,10 +530,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "/iabd2223/", "features": ["header.autohide", "navigation.top", "navigation.tracking", "content.code.annotate"], "search": "/iabd2223/assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="/iabd2223/assets/javascripts/bundle.c2e1ee47.min.js"></script>
+      <script src="../assets/javascripts/bundle.c2e1ee47.min.js"></script>
       
     
   </body>
