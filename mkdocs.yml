@@ -4,10 +4,15 @@ use_directory_urls: false
 
 nav:
   - "Inicio": "index.md"
-  - "Sistemas de almacenamiento":
-      - "1.- Ingenieria de datos / NoSQL": "index.md"
-  - "Proyectos de Innovación Aplicada":
-      - "1.- PIA Lara I - Presentación": "index.md"
+  - "UF1 - Toma de decisiones":
+    - "UT2.- Sistemas de almacenamiento":
+        - "S1.- Ingeniería de datos / NoSQL": "index.md"
+    - "UT5.- Ecosistema Hadoop":
+        - "S1.- Ingeniería de datos / NoSQL": "index.md"
+    - "UT6.- Reto: Datos en el cloud":
+        - "S1.- Ingeniería de datos / NoSQL": "index.md"
+    - "UT7.- PIAFP Lara":
+        - "S1.- Presentación": "index.md"
 
 theme:
   language: es
@@ -23,7 +28,6 @@ theme:
   features:
     - header.autohide
     - navigation.top
-    - navigation.expand
     - navigation.tracking
     - content.code.annotate
 
@@ -37,10 +41,12 @@ extra:
       link: mailto:<a.medrano@edu.gva.es>
   analytics:
     provider: google
-    property: G-MV889H0W63
+    property: G-MFP4QLMMV7
 
 plugins:
   - search
+  - git-revision-date-localized:
+      enable_creation_date: true
 
 markdown_extensions:
   - attr_list
