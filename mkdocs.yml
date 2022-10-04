@@ -5,50 +5,86 @@ use_directory_urls: false
 nav:
   - "Inicio": "index.md"
   - "UF1 - Toma de decisiones":
-    - "UT2.- Sistemas de almacenamiento":
-        - "S1.- Ingeniería de datos / NoSQL": "index.md"
-    - "UT5.- Ecosistema Hadoop":
-        - "S1.- Ingeniería de datos / NoSQL": "index.md"
-    - "UT6.- Reto: Datos en el cloud":
-        - "S1.- Ingeniería de datos / NoSQL": "index.md"
-    - "UT7.- PIAFP Lara":
-        - "S1.- Presentación": "index.md"
+      - "UT2.- Sistemas de almacenamiento":
+          - "sa/index.md"
+          - "S18.- Ingeniería de datos / NoSQL": "sa/01nosql.md"
+          - "S24.- MongoDB": "sa/02mongo.md"
+          - "S26.- Modelado de datos NoSQL": "sa/03modelado.md"
+          - "S26.- Formatos de datos": "sa/04formatos.md"
+          - "S28.- Agregaciones, Replicación y Particionado": "sa/05mongo-avanzado.md"
+          - "S30.- MongoDB y Python": "sa/06pymongo.md"
+      - "UT5.- Ecosistema Hadoop":
+          - "hadoop/index.md"
+          - "S1.- Hadoop": "hadoop/01hadoop.md"
+      - "UT6.- Reto: Datos en el cloud":
+          - "cloud/index.md"
+          - "S1.- Cloud": "cloud/01cloud.md"
+      - "UT7.- PIAFP Lara": "https://aitor-medrano.github.io/pia2223/"
 
 theme:
   language: es
   name: "material"
-  favicon: "imagenes/favicon.png"
+  favicon: "images/favicon.png"
   palette:
     primary: indigo
     accent: "light blue"
   font:
     text: Roboto
     code: Roboto Mono
-  logo: "imagenes/logoIABD3.png"
+  logo: "images/logoIABD3.png"
   features:
     - header.autohide
     - navigation.top
     - navigation.tracking
+    - navigation.indexes
     - content.code.annotate
+    - announce.dismiss
+    - toc.follow
+
+extra_css:
+  - stylesheets/extra.css
 
 extra:
   search:
-    language: "en"
+    language: "es"
   social:
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/aitormedrano
     - icon: fontawesome/solid/envelope
       link: mailto:<a.medrano@edu.gva.es>
+  consent:
+    title: Consentimiento de cookie
+    description: >-
+      Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación
+      y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes.
+      Con tu consentimiento, me ayudas a mejorar estos materiales.
+
   analytics:
     provider: google
     property: G-MFP4QLMMV7
+    feedback:
+      title: ¿Ha sido útil está página?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: Sí, ha sido util
+          data: 1
+          note: >-
+            Gracias por tu colaboración!
+        - icon: material/emoticon-sad-outline
+          name: La página es mejorable
+          data: 0
+          note: >-
+            Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
 
 plugins:
   - search
-  - git-revision-date-localized:
-      enable_creation_date: true
+  - social:
+      cards: true
+#  - git-revision-date-localized:
+#      enable_creation_date: true
 
 markdown_extensions:
+  - abbr
   - attr_list
   - admonition
   - pymdownx.highlight:
