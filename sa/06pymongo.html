@@ -1,0 +1,1172 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Acceso a MongoDB desde Python mediante la librería PyMongo">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/sa/06pymongo.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>PyMongo - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="PyMongo - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Acceso a MongoDB desde Python mediante la librería PyMongo" >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/06pymongo.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/sa/06pymongo.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="PyMongo - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Acceso a MongoDB desde Python mediante la librería PyMongo" >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/06pymongo.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pymongo" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PyMongo
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02mongo.html" class="md-nav__link">
+        S24.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mflix" class="md-nav__link">
+    MFlix
+  </a>
+  
+    <nav class="md-nav" aria-label="MFlix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estructura-del-proyecto" class="md-nav__link">
+    Estructura del proyecto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#preparando-el-entorno" class="md-nav__link">
+    Preparando el entorno
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arrancando-y-probando" class="md-nav__link">
+    Arrancando y Probando
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#primeras-consultas" class="md-nav__link">
+    Primeras consultas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trabajando-con-cursores" class="md-nav__link">
+    Trabajando con cursores
+  </a>
+  
+    <nav class="md-nav" aria-label="Trabajando con cursores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#limitando" class="md-nav__link">
+    Limitando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordenando" class="md-nav__link">
+    Ordenando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saltando" class="md-nav__link">
+    Saltando
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agregaciones-basicas" class="md-nav__link">
+    Agregaciones básicas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="pymongo">PyMongo<a class="headerlink" href="#pymongo" title="Permanent link">&para;</a></h1>
+<p>Para acceder a MongoDB desde Python nos vamos a centrar en la librería <a href="https://pypi.org/project/pymongo/">PyMongo</a>.</p>
+<p>Para instalar la librería mediante <code>pip</code> usaremos el comando (recuerda hacerlo dentro de un entorno virtual):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install pymongo
+</code></pre></div>
+<p>Se recomienda consultar la <a href="https://pymongo.readthedocs.io/en/stable/">documentación</a> o el <a href="https://pymongo.readthedocs.io/en/stable/api/index.html">API</a> para cualquier duda o aclaración.</p>
+<div class="admonition info">
+<p class="admonition-title">Versión</p>
+<p>En el momento de escribir los apuntes, estamos utilizando la versión 4.2.0 de PyMongo.</p>
+</div>
+<h2 id="mflix">MFlix<a class="headerlink" href="#mflix" title="Permanent link">&para;</a></h2>
+<p><a href="https://s3.amazonaws.com/edu-downloads.10gen.com/M220P/2022/July/static/handouts/m220/mflix-python.zip">https://s3.amazonaws.com/edu-downloads.10gen.com/M220P/2022/July/static/handouts/m220/mflix-python.zip</a></p>
+<h3 id="estructura-del-proyecto">Estructura del proyecto<a class="headerlink" href="#estructura-del-proyecto" title="Permanent link">&para;</a></h3>
+<p>verything you will implement is located in the mflix/db.py file, which contains all database interfacing methods. The API will make calls to db.py to interact with MongoDB.</p>
+<p>The unit tests in tests will test these database access methods directly, without going through the API. The UI will run these methods in integration tests, and therefore requires the full application to be running.</p>
+<p>The API layer is fully implemented, as is the UI. If you need to run on a port other than 5000, you can edit the index.html file in the build directory to modify the value of window.host.</p>
+<p>Please do not modify the API layer in any way, movies.py and user.py under the mflix/api directory. Doing so will most likely result in the frontend application failing to validate some of the labs.</p>
+<h3 id="preparando-el-entorno">Preparando el entorno<a class="headerlink" href="#preparando-el-entorno" title="Permanent link">&para;</a></h3>
+<p>Descargamos y descomprimimos el archivo
+Dentro de la carpeta, vamos a crear un entorno virtual con venv:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>virtualenv mflix_venv
+</code></pre></div>
+<p>A continuación, lo activamos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">source</span> mflix_venv/bin/activate
+</code></pre></div>
+<p>E instalamos los requisitos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install -r requirements.txt
+</code></pre></div>
+<p>Running the Application</p>
+<p>In the mflix-python directory you can find a file called dotini.</p>
+<p>Open this file and enter your Atlas SRV connection string as directed in the comment. This is the information the driver will use to connect. Make sure not to wrap your Atlas SRV connection between quotes:</p>
+<p>COPY
+MFLIX_DB_URI = mongodb+srv://...
+Rename this file to .ini with the following command:</p>
+<p>COPY
+mv dotini_unix .ini  # on Unix
+ren dotini_win .ini # on Windows
+Note: Once you rename this file to .ini, it will no longer be visible in Finder or File Explorer. However, it will be visible from Command Prompt or Terminal, so if you need to edit it again, you can open it from there:</p>
+<p>COPY
+vi .ini       # on Unix
+notepad .ini  # on Windows</p>
+<h3 id="arrancando-y-probando">Arrancando y Probando<a class="headerlink" href="#arrancando-y-probando" title="Permanent link">&para;</a></h3>
+<p>Para arrancar la aplicación ejecutaremos el script <code>run.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>python run.py
+</code></pre></div>
+<p>Al ejecutar el script, arrancará la aplicación y podremos acceder a ella a través de <a href="http://127.0.0.1:5000/">http://127.0.0.1:5000/</a>.</p>
+<p>PANTALLAZO</p>
+<p>Si queremos ejecutar los test:</p>
+<p>Running the Unit Tests</p>
+<p>To run the unit tests for this course, you will use pytest and needs to be run from mflix-python directory. Each course lab contains a module of unit tests that you can call individually with a command like the following:</p>
+<p>COPY
+pytest -m LAB_UNIT_TEST_NAME
+Each ticket will contain the command to run that ticket's specific unit tests. For example to run the Connection Ticket test your shell command will be:</p>
+<p>COPY
+pytest -m connection</p>
+<p>Un ejemplo básico podría ser similar a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;mongodb://localhost:27017/?readPreference=primary&amp;appname=MongoDB%20Compass&amp;ssl=false&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="nb">filter</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 3 "></span>    <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 4 "></span>        <span class="s1">&#39;$lt&#39;</span><span class="p">:</span> <span class="mi">30</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="p">}</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="p">}</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">test_db</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">test</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">people_coll</span> <span class="o">=</span> <span class="n">test_db</span><span class="o">.</span><span class="n">people</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">result</span> <span class="o">=</span> <span class="n">people_coll</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+<span class="linenos" data-linenos="10 "></span>  <span class="nb">filter</span> <span class="o">=</span> <span class="nb">filter</span>
+<span class="linenos" data-linenos="11 "></span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span><span class="err">````</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span><span class="c1">## MongoClient</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="n">A</span> <span class="n">partir</span> <span class="n">de</span> <span class="n">la</span> <span class="n">URI</span> <span class="n">de</span> <span class="n">conexión</span> <span class="n">a</span> <span class="n">MongoDB</span><span class="p">,</span> <span class="n">hemos</span> <span class="n">de</span> <span class="n">instanciar</span> <span class="n">la</span> <span class="n">clase</span> <span class="p">[</span><span class="err">`</span><span class="n">MongoClient</span><span class="err">`</span><span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">pymongo</span><span class="o">.</span><span class="n">readthedocs</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">en</span><span class="o">/</span><span class="n">stable</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">pymongo</span><span class="o">/</span><span class="n">mongo_client</span><span class="o">.</span><span class="n">html</span><span class="c1">#pymongo.mongo_client.MongoClient):</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="err">```</span>  <span class="n">python</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;mongodb+srv://usuario:contrasenya@host&quot;</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">cliente</span> <span class="o">=</span> <span class="n">MongoCliente</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+</code></pre></div>
+<p>Podemos obtener información de la conexión mediante la propiedad <code>state</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">print</span><span class="p">(</span><span class="n">cliente</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+</code></pre></div>
+<p>Por ejemplo, en nuestro caso, nos hemos conectado a MongoAtlas y de la salida del estado podemos ver los diferentes <em>hosts</em> que forman parte del conjunto de réplicas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">Database</span><span class="p">(</span><span class="nx">MongoClient</span><span class="p">(</span><span class="nx">host</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ac-hrdpnx0-shard-00-02.4hm7u8y.mongodb.net:27017&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ac-hrdpnx0-shard-00-01.4hm7u8y.mongodb.net:27017&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ac-hrdpnx0-shard-00-00.4hm7u8y.mongodb.net:27017&#39;</span><span class="p">],</span><span class="w"> </span><span class="nx">document_class</span><span class="o">=</span><span class="nx">dict</span><span class="p">,</span><span class="w"> </span><span class="nx">tz_aware</span><span class="o">=</span><span class="nx">False</span><span class="p">,</span><span class="w"> </span><span class="nx">connect</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span><span class="w"> </span><span class="nx">authsource</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">replicaset</span><span class="o">=</span><span class="s1">&#39;atlas-pxc2m9-shard-0&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">ssl</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span><span class="w"> </span><span class="nx">connecttimeoutms</span><span class="o">=</span><span class="mf">200</span><span class="p">,</span><span class="w"> </span><span class="nx">retrywrites</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;stats&#39;</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Parámetros adicionales</p>
+<p>A la hora de crear el cliente, también podemos indicarle opciones de configuración:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>cliente200Retry = MongoClient(uri, connectTimeoutMS=200, retryWrites=True)
+</code></pre></div>
+</div>
+<p>También podemos obtener un listado de las bases de datos mediante <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.list_database_names"><code>list_database_names()</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">print</span><span class="p">(</span><span class="n">cliente</span><span class="o">.</span><span class="n">list_database_names</span><span class="p">())</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># [&#39;sample_airbnb&#39;, &#39;sample_analytics&#39;, &#39;sample_geospatial&#39;, &#39;sample_guides&#39;, &#39;sample_mflix&#39;, &#39;sample_restaurants&#39;, &#39;sample_supplies&#39;, &#39;sample_training&#39;, &#39;sample_weatherdata&#39;, &#39;admin&#39;, &#39;local&#39;]</span>
+</code></pre></div>
+<p>Para conectarnos a una base de datos en concreto, únicamente accederemos a ella como una propiedad del cliente:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">bd</span> <span class="o">=</span> <span class="n">cliente</span><span class="o">.</span><span class="n">sample_mflix</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">bd</span> <span class="o">=</span> <span class="n">cliente</span><span class="p">[</span><span class="s2">&quot;sample_mflix&#39;] # tb podemos acceder como si fuera un diccionario</span>
+</code></pre></div>
+<div class="admonition tip inline end">
+<p class="admonition-title">Bases de datos y colecciones Lazy</p>
+<p>Es conveniente tener en cuenta que tantos las colecciones como las bases de datos se crean y carga de forma perezosa, esto es, hasta que no realizamos una operación sobre ellas, no se accede realmente a ellas. Así pues, para crear realmente una colección, hemos de insertar un documento en ella.</p>
+</div>
+<p>Una vez tenemos la base de datos, el siguiente paso es obtener una colección:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">coleccion</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">movies</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">coleccion</span> <span class="o">=</span> <span class="n">bd</span><span class="p">[</span><span class="s2">&quot;movies&#39;] </span>
+</code></pre></div>
+<p>Si queremos obtener el nombre de todas las colecciones usaremos el método <code>list_collection_names()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">print</span><span class="p">(</span><span class="n">bd</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">())</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># [&#39;sessions&#39;, &#39;theaters&#39;, &#39;movies&#39;, &#39;comments&#39;, &#39;users&#39;]</span>
+</code></pre></div>
+<h2 id="primeras-consultas">Primeras consultas<a class="headerlink" href="#primeras-consultas" title="Permanent link">&para;</a></h2>
+<p>Finalmente, sobre una colección ya podemos realizar consultas y otras operaciones:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">movies</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">movies</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">movies</span><span class="o">.</span><span class="n">count_documents</span><span class="p">({})</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># 23530</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">movies</span><span class="o">.</span><span class="n">find_one</span><span class="p">()</span>
+</code></pre></div>
+<p>Por ejemplo, podemos filtrar las películas de Salma Hayek:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Salma Hayek&quot;</span> <span class="p">}</span> <span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># return the count of movies with &quot;Salma Hayek&quot; in the &quot;cast&quot;</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Salma Hayek&quot;</span> <span class="p">}</span> <span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</code></pre></div>
+<p>Para mostrar los documentos BSON, vamos a utilizar la función <code>dumps</code> que transforma el documento a JSON:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># find all movies with Salma Hayek</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># then pretty print</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Salma Hayek&quot;</span> <span class="p">}</span> <span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span><span class="kn">from</span> <span class="nn">bson.json_util</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="linenos" data-linenos="5 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># find all movies with Salma Hayek, but only project the &quot;_id&quot; and &quot;title&quot; fields</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Salma Hayek&quot;</span> <span class="p">},</span> <span class="p">{</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># find all movies with Salma Hayek, but only project the &quot;title&quot; field</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Salma Hayek&quot;</span> <span class="p">},</span> <span class="p">{</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span> <span class="p">}</span> <span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+<h2 id="trabajando-con-cursores">Trabajando con cursores<a class="headerlink" href="#trabajando-con-cursores" title="Permanent link">&para;</a></h2>
+<p>A continuación vamos a realizar algunas operaciones sobre los <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html">cursores</a> con PyMongo y a comparar a cómo podemos realizar la misma operación mediante el motor de agregaciones.</p>
+<h3 id="limitando">Limitando<a class="headerlink" href="#limitando" title="Permanent link">&para;</a></h3>
+<p>Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante el método <code>.limit()</code> equivalente a la agregación <code>$limit</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">PyMongo</label><label for="__tabbed_1_2">Agregación</label><label for="__tabbed_1_3">Salida</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">limited_cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">{</span> <span class="s2">&quot;directors&quot;</span><span class="p">:</span> <span class="s2">&quot;Sam Raimi&quot;</span> <span class="p">},</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class="linenos" data-linenos="5 "></span>
+<span class="linenos" data-linenos="6 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">limited_cursor</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">{</span> <span class="s2">&quot;$match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;directors&quot;</span><span class="p">:</span> <span class="s2">&quot;Sam Raimi&quot;</span> <span class="p">}</span> <span class="p">},</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">{</span> <span class="s2">&quot;$project&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span>    <span class="p">{</span> <span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span>
+</span><span class="linenos" data-linenos="5 "></span><span class="p">]</span>
+<span class="linenos" data-linenos="6 "></span>
+<span class="linenos" data-linenos="7 "></span><span class="n">limited_aggregation</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span> <span class="n">pipeline</span> <span class="p">)</span>
+<span class="linenos" data-linenos="8 "></span>
+<span class="linenos" data-linenos="9 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">limited_aggregation</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="s2">&quot;Bruce Campbell&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">            </span><span class="s2">&quot;Ellen Sandweiss&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">            </span><span class="s2">&quot;Richard DeManincor&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="s2">&quot;Betsy Baker&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Evil Dead&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Evil Dead II&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">            </span><span class="s2">&quot;Bruce Campbell&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">            </span><span class="s2">&quot;Sarah Berry&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">            </span><span class="s2">&quot;Dan Hicks&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">            </span><span class="s2">&quot;Kassie Wesley DePaiva&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">        </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="p">]</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="ordenando">Ordenando<a class="headerlink" href="#ordenando" title="Permanent link">&para;</a></h3>
+<p>Para ordenar usaremos el método <code>.sort()</code> que además de los campos de ordenación, indicaremos si el criterio será ascendente o descendente, de forma similar a como lo hacemos con la operación de agregación <code>$sort</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">PyMongo</label><label for="__tabbed_2_2">Agregación</label><label for="__tabbed_2_3">Salida</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">DESCENDING</span><span class="p">,</span> <span class="n">ASCENDING</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">sorted_cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="p">{</span> <span class="s2">&quot;directors&quot;</span><span class="p">:</span> <span class="s2">&quot;Sam Raimi&quot;</span> <span class="p">},</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="hll"><span class="linenos" data-linenos="6 "></span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)</span>
+</span><span class="linenos" data-linenos="7 "></span>
+<span class="linenos" data-linenos="8 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">sorted_cursor</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">{</span> <span class="s2">&quot;$match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;directors&quot;</span><span class="p">:</span> <span class="s2">&quot;Sam Raimi&quot;</span> <span class="p">}</span> <span class="p">},</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">{</span> <span class="s2">&quot;$project&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span>    <span class="p">{</span> <span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">ASCENDING</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class="linenos" data-linenos="5 "></span><span class="p">]</span>
+<span class="linenos" data-linenos="6 "></span>
+<span class="linenos" data-linenos="7 "></span><span class="n">sorted_aggregation</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span> <span class="n">pipeline</span> <span class="p">)</span>
+<span class="linenos" data-linenos="8 "></span>
+<span class="linenos" data-linenos="9 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">sorted_aggregation</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">        </span><span class="s2">&quot;Bruce Campbell&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="s2">&quot;Ellen Sandweiss&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="s2">&quot;Richard DeManincor&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">        </span><span class="s2">&quot;Betsy Baker&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Evil Dead&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1981</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1987</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Evil Dead II&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">        </span><span class="s2">&quot;Bruce Campbell&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">        </span><span class="s2">&quot;Sarah Berry&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">        </span><span class="s2">&quot;Dan Hicks&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">        </span><span class="s2">&quot;Kassie Wesley DePaiva&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1990</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span><span class="w">    </span><span class="err">...</span><span class="w"></span>
+<span class="linenos" data-linenos="25 "></span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="26 "></span><span class="p">]</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>En el caso de tener una clave compuesta de ordenación, le pasaremos como parámetro una lista de tuplas clave/criterio:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">PyMongo</label><label for="__tabbed_3_2">Agregación</label><label for="__tabbed_3_3">Salida</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">sorted_cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Tom Hanks&quot;</span> <span class="p">},</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">([(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)])</span>
+</span><span class="linenos" data-linenos="5 "></span>
+<span class="linenos" data-linenos="6 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">sorted_cursor</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">{</span> <span class="s2">&quot;$match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Tom Hanks&quot;</span> <span class="p">}</span> <span class="p">},</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">{</span> <span class="s2">&quot;$project&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span>    <span class="p">{</span> <span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">ASCENDING</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">ASCENDING</span> <span class="p">}</span> <span class="p">}</span>
+</span><span class="linenos" data-linenos="5 "></span><span class="p">]</span>
+<span class="linenos" data-linenos="6 "></span>
+<span class="linenos" data-linenos="7 "></span><span class="n">sorted_aggregation</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span> <span class="n">pipeline</span> <span class="p">)</span>
+<span class="linenos" data-linenos="8 "></span>
+<span class="linenos" data-linenos="9 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">sorted_aggregation</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">        </span><span class="s2">&quot;Tom Hanks&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="s2">&quot;Daryl Hannah&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="s2">&quot;Eugene Levy&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">        </span><span class="s2">&quot;John Candy&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Splash&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1984</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">        </span><span class="s2">&quot;Tom Hanks&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">        </span><span class="s2">&quot;Jackie Gleason&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">        </span><span class="s2">&quot;Eva Marie Saint&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">        </span><span class="s2">&quot;Hector Elizondo&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nothing in Common&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1986</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="w">    </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span><span class="w">        </span><span class="s2">&quot;Tom Hanks&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="25 "></span><span class="w">        </span><span class="s2">&quot;Elizabeth Perkins&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="26 "></span><span class="w">        </span><span class="s2">&quot;Robert Loggia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="27 "></span><span class="w">        </span><span class="s2">&quot;John Heard&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="28 "></span><span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos="29 "></span><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Big&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="30 "></span><span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1988</span><span class="w"></span>
+<span class="linenos" data-linenos="31 "></span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="32 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="33 "></span><span class="w">    </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="34 "></span><span class="w">        </span><span class="s2">&quot;Sally Field&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="35 "></span><span class="w">        </span><span class="s2">&quot;Tom Hanks&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="36 "></span><span class="w">        </span><span class="s2">&quot;John Goodman&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="37 "></span><span class="w">        </span><span class="s2">&quot;Mark Rydell&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="38 "></span><span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos="39 "></span><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Punchline&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="40 "></span><span class="w">    </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1988</span><span class="w"></span>
+<span class="linenos" data-linenos="41 "></span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="42 "></span><span class="err">...</span><span class="w"></span>
+<span class="linenos" data-linenos="43 "></span><span class="p">]</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="saltando">Saltando<a class="headerlink" href="#saltando" title="Permanent link">&para;</a></h3>
+<p>Cuando paginamos los resultados, para saltar los documentos, haremos uso del método <code>.skip()</code>, el cual es similar a la operación <code>$skip</code>.</p>
+<p>Por ejemplo, la siguiente consulta devuelve 13 documentos, de manera que al saltarnos 12, sólo nos devolverá uno:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">PyMongo</label><label for="__tabbed_4_2">Agregación</label><label for="__tabbed_4_3">Salida</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">skipped_sorted_cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">{</span> <span class="s2">&quot;directors&quot;</span><span class="p">:</span> <span class="s2">&quot;Sam Raimi&quot;</span> <span class="p">},</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> 
+<span class="hll"><span class="linenos" data-linenos="4 "></span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="n">ASCENDING</span><span class="p">)</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+</span></code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos=" 2 "></span>    <span class="p">{</span> <span class="s2">&quot;$match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;directors&quot;</span><span class="p">:</span> <span class="s2">&quot;Sam Raimi&quot;</span> <span class="p">}</span> <span class="p">},</span>
+<span class="linenos" data-linenos=" 3 "></span>    <span class="p">{</span> <span class="s2">&quot;$project&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">},</span>
+<span class="linenos" data-linenos=" 4 "></span>    <span class="p">{</span> <span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">ASCENDING</span> <span class="p">}</span> <span class="p">},</span>
+<span class="hll"><span class="linenos" data-linenos=" 5 "></span>    <span class="p">{</span> <span class="s2">&quot;$skip&quot;</span><span class="p">:</span> <span class="mi">12</span> <span class="p">}</span>
+</span><span class="linenos" data-linenos=" 6 "></span><span class="p">]</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">sorted_skipped_aggregation</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span> <span class="n">pipeline</span> <span class="p">)</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">sorted_skipped_aggregation</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">&quot;cast&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="s2">&quot;James Franco&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">            </span><span class="s2">&quot;Mila Kunis&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">            </span><span class="s2">&quot;Rachel Weisz&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="s2">&quot;Michelle Williams&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">        </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Oz the Great and Powerful&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">        </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2013</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="p">]</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h2 id="agregaciones-basicas">Agregaciones básicas<a class="headerlink" href="#agregaciones-basicas" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">match_stage</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;$match&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;directors&quot;</span><span class="p">:</span> <span class="s2">&quot;Sam Raimi&quot;</span> <span class="p">}</span> <span class="p">}</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">project_stage</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;$project&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">}</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="n">match_stage</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span>    <span class="n">project_stage</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="p">]</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">sam_raimi_aggregation</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span> <span class="n">pipeline</span> <span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="nb">print</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">sam_raimi_aggregation</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">unwind_stage</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;$unwind&quot;</span><span class="p">:</span> <span class="s2">&quot;$directors&quot;</span> <span class="p">}</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">group_stage</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 4 "></span>    <span class="s2">&quot;$group&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 5 "></span>        <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 6 "></span>            <span class="s2">&quot;director&quot;</span><span class="p">:</span> <span class="s2">&quot;$directors&quot;</span>
+<span class="linenos" data-linenos=" 7 "></span>        <span class="p">},</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="s2">&quot;average_rating&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;$avg&quot;</span><span class="p">:</span> <span class="s2">&quot;$imdb.rating&quot;</span> <span class="p">}</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="p">}</span>
+<span class="linenos" data-linenos="10 "></span><span class="p">}</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="n">sort_stage</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="s2">&quot;average_rating&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span> <span class="p">}</span>
+<span class="linenos" data-linenos="14 "></span><span class="p">}</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># create pipeline from four different stages</span>
+<span class="linenos" data-linenos="17 "></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="18 "></span>    <span class="n">unwind_stage</span><span class="p">,</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="n">group_stage</span><span class="p">,</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="n">sort_stage</span>
+<span class="linenos" data-linenos="21 "></span><span class="p">]</span>
+<span class="linenos" data-linenos="22 "></span>
+<span class="linenos" data-linenos="23 "></span><span class="c1"># aggregate using pipeline</span>
+<span class="linenos" data-linenos="24 "></span><span class="n">director_ratings</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="linenos" data-linenos="25 "></span>
+<span class="linenos" data-linenos="26 "></span><span class="c1"># iterate through the resulting cursor</span>
+<span class="linenos" data-linenos="27 "></span><span class="nb">list</span><span class="p">(</span><span class="n">director_ratings</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>
+<p>First Write
+    insert_one
+    update_one -&gt; upsert
+        Si ya existía , al obtener raw_result, la propiedad nModified = 0 y updatedExisting sería True</p>
+</li>
+<li>
+<p>Write Concern</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">db</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">with_options</span><span class="p">(</span><span class="n">write_concern</span><span class="o">=</span><span class="n">WriteConcern</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="s2">&quot;majority&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">hashedpw</span>
+<span class="linenos" data-linenos="5 "></span><span class="p">})</span>
+</code></pre></div>
+<ul>
+<li>
+<p>Update operations</p>
+<p>update_one
+update_many</p>
+<p>Las operaciones de modificación devuelven un UpdateResult que contiene las propiedades <code>aknowledge</code>, <code>matched_count</code>, <code>modified_count</code> y <code>upserted_id</code>.
+<code>modified_count</code> y <code>matched_count</code> serán 0 en caso de un upsert.</p>
+</li>
+<li>
+<p>Join entre movies y comments
+$lookup -&gt; from, let, pipeline, as // from, localField, foreignField, as</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos=" 2 "></span>    <span class="p">{</span>
+<span class="linenos" data-linenos=" 3 "></span>        <span class="s2">&quot;$match&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 4 "></span>            <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span>        <span class="p">}</span>
+<span class="linenos" data-linenos=" 6 "></span>    <span class="p">},</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="p">{</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="s2">&quot;$lookup&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 9 "></span>            <span class="s2">&quot;from&quot;</span><span class="p">:</span> <span class="s1">&#39;comments&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span>            <span class="s2">&quot;let&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;$_id&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="11 "></span>            <span class="s2">&quot;pipeline&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="linenos" data-linenos="12 "></span>                <span class="p">{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span>
+<span class="linenos" data-linenos="13 "></span>                    <span class="p">{</span><span class="s1">&#39;$expr&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$eq&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;$movie_id&#39;</span><span class="p">,</span> <span class="s1">&#39;$$id&#39;</span><span class="p">]}}</span>
+<span class="linenos" data-linenos="14 "></span>                    <span class="p">},</span> <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:</span>
+<span class="linenos" data-linenos="15 "></span>                        <span class="p">{</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}}</span>
+<span class="linenos" data-linenos="16 "></span>            <span class="p">],</span>
+<span class="linenos" data-linenos="17 "></span>            <span class="s2">&quot;as&quot;</span><span class="p">:</span> <span class="s1">&#39;comments&#39;</span>
+<span class="linenos" data-linenos="18 "></span>        <span class="p">}</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="p">}</span>
+<span class="linenos" data-linenos="20 "></span><span class="p">]</span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span><span class="n">movie</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</code></pre></div>
+<p>Al hacer join, los comentarios tienen que unirse a las películas con campos de tipo ObjectId:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">comment_doc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+<span class="linenos" data-linenos="2 "></span>                <span class="s2">&quot;movie_id&quot;</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">movie_id</span><span class="p">),</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">comment</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">db</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">comment_doc</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span>
+<span class="linenos" data-linenos="5 "></span><span class="n">db</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">update_one</span><span class="p">(</span>
+<span class="linenos" data-linenos="6 "></span>    <span class="p">{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">comment_id</span><span class="p">),</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">user_email</span><span class="p">},</span>
+<span class="linenos" data-linenos="7 "></span>    <span class="p">{</span><span class="s2">&quot;$set&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">}}</span>
+<span class="linenos" data-linenos="8 "></span><span class="p">)</span>
+</code></pre></div>
+<p>Al crear un pool de conexiones, especificar tamaño del pool y timeout:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">db</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="s2">&quot;_database&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 2 "></span>    <span class="n">DB_URI</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;DB_URI&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos=" 3 "></span>    <span class="n">DB_NAME</span> <span class="o">=</span> <span class="n">current_app</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;DB_NAME&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos=" 4 "></span>    <span class="k">if</span> <span class="n">db</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 5 "></span>        <span class="n">db</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">_database</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 6 "></span>            <span class="n">DB_URI</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span>            <span class="n">maxPoolSize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>            <span class="n">wtimeout</span><span class="o">=</span><span class="mi">2500</span>
+<span class="linenos" data-linenos=" 9 "></span>        <span class="p">)[</span><span class="n">DB_NAME</span><span class="p">]</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="k">return</span> <span class="n">db</span>
+</code></pre></div>
+<p>Siempre especificar un <code>wtimemout</code> con se realiza una escritura con un una mayoría de escrituras, por si fallase algún nodo, no se quedase colgado esperando.</p>
+<p>db.users.with_options(write_concern=WriteConcern(w="majority"), wtimeout=5000).insert_one({
+    "name": name,
+    "email": email,
+    "password": hashedpw
+})</p>
+<p>Siempre configurar y capturar los errores de tipo <code>serverSelectionTimeout</code>.</p>
+<p>DuplicateKeyError puede saltar en _id y en otros campos si creamos un índice <em>unique</em>.</p>
+<p>Principio de "menos privilegios".</p>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<p><a href="https://www.askpython.com/python-modules/python-mongodb">https://www.askpython.com/python-modules/python-mongodb</a></p>
+<ul>
+<li><a href="https://pymongo.readthedocs.io/en/stable/tutorial.html">Tutorial oficial de PyMongo</a></li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>

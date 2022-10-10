@@ -1,0 +1,1235 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="xxx">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/sa/04formatos.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>Formatos de datos - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#4051b5">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Formatos de datos - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="xxx" >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/04formatos.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/sa/04formatos.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Formatos de datos - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="xxx" >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/04formatos.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#filas-vs-columnas" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Formatos de datos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02mongo.html" class="md-nav__link">
+        S24.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#filas-vs-columnas" class="md-nav__link">
+    Filas vs Columnas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avro" class="md-nav__link">
+    Avro
+  </a>
+  
+    <nav class="md-nav" aria-label="Avro">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#schema" class="md-nav__link">
+    Schema
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fastavro" class="md-nav__link">
+    Fastavro
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fastavro-y-pandas" class="md-nav__link">
+    Fastavro y Pandas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprimiendo-los-datos" class="md-nav__link">
+    Comprimiendo los datos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parquet" class="md-nav__link">
+    Parquet
+  </a>
+  
+    <nav class="md-nav" aria-label="Parquet">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parquet-y-python" class="md-nav__link">
+    Parquet y Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parquet-y-pandas" class="md-nav__link">
+    Parquet y Pandas
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparando-tamanos" class="md-nav__link">
+    Comparando tamaños
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Formatos de datos</h1>
+
+<p>En el primer bloque ya vimos una pequeña introducción a los diferentes <a href="https://manoli-iborra.github.io/bigdata2122/apuntes04.html#formato-de-datos_1">formatos de datos</a>.</p>
+<p>Las propiedades que ha de tener un formato de datos son:</p>
+<ul>
+<li>independiente del lenguaje</li>
+<li>expresivo, con soporte para estructuras complejas y anidadas</li>
+<li>eficiente, rápido y reducido</li>
+<li>dinámico, de manera que los programas puedan procesar y definir nuevos tipos de datos.</li>
+<li>formato de fichero <em>standalone</em> y que permita <strong>dividirlo</strong> y comprimirlo.</li>
+</ul>
+<p>Para que Hadoop pueda procesar documento, es imprescindible que el formato del fichero permita su división en fragmentos (<em>splittable in chunks</em>).</p>
+<p>Si los clasificamos respecto al formato de almacenamiento tenemos:</p>
+<ul>
+<li>texto (más lentos, ocupan más pero son más expresivos y permiten su interoperabilidad): CSV, XML, JSON, etc...</li>
+<li>binarios (mejor rendimiento, ocupan menos, menos expresivos): Avro, Parquet, ORC, etc...</li>
+</ul>
+<p>Si comparamos los formatos más empleados a partir de las propiedades descritas tenemos:</p>
+<table>
+<thead>
+<tr>
+<th>Característica</th>
+<th>CSV</th>
+<th>XML / JSON</th>
+<th>SequenceFile</th>
+<th>Avro</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Independencia del lenguaje</td>
+<td>:thumbsup:</td>
+<td>:thumbsup:</td>
+<td>:fontawesome-regular-thumbs-down:</td>
+<td>:thumbsup:</td>
+</tr>
+<tr>
+<td>Expresivo</td>
+<td>:fontawesome-regular-thumbs-down:</td>
+<td>:thumbsup:</td>
+<td>:thumbsup:</td>
+<td>:thumbsup:</td>
+</tr>
+<tr>
+<td>Eficiente</td>
+<td>:fontawesome-regular-thumbs-down:</td>
+<td>:fontawesome-regular-thumbs-down:</td>
+<td>:thumbsup:</td>
+<td>:thumbsup:</td>
+</tr>
+<tr>
+<td>Dinámico</td>
+<td>:thumbsup:</td>
+<td>:thumbsup:</td>
+<td>:fontawesome-regular-thumbs-down:</td>
+<td>:thumbsup:</td>
+</tr>
+<tr>
+<td><em>Standalone</em></td>
+<td>:grey_question:</td>
+<td>:thumbsup:</td>
+<td>:fontawesome-regular-thumbs-down:</td>
+<td>:thumbsup:</td>
+</tr>
+<tr>
+<td>Dividible</td>
+<td>:grey_question:</td>
+<td>:grey_question:</td>
+<td>:thumbsup:</td>
+<td>:thumbsup:</td>
+</tr>
+</tbody>
+</table>
+<!--
+https://www.xenonstack.com/blog/data-serialization-hadoop
+-->
+
+<p>Las ventajas de elegir el formato correcto son:</p>
+<ul>
+<li>Mayor rendimiento en la lectura y/o escritura</li>
+<li>Ficheros <em>trozeables</em> (<em>splittables</em>)</li>
+<li>Soporte para esquemas que evolucionan</li>
+<li>Soporte para compresión de los datos (por ejemplo, mediante <em>Snappy</em>).</li>
+</ul>
+<h2 id="filas-vs-columnas">Filas vs Columnas<a class="headerlink" href="#filas-vs-columnas" title="Permanent link">&para;</a></h2>
+<p>Los formatos con los que estamos más familiarizados, como son CSV o JSON, se basan en filas, donde cada registro se almacena en una fila o documento. Estos formatos son más lentos en ciertas consultas y su almacenamiento no es óptimo.</p>
+<p>En un formato basado en columnas, cada fila almacena toda la información de una columna. Al basarse en columnas, ofrece mejor rendimiento para consultas de determinadas columnas y/o agregaciones, y el almacenamiento es más óptimo (como todos los datos de una columna son del mismo tipo, la compresión es mayor).</p>
+<p>Supongamos que tenemos los siguientes datos:</p>
+<figure style="align: center;">
+    <img src="images/04formatos-tabla.png" width="500">
+    <figcaption>Ejemplo de tabla</figcaption>
+</figure>
+
+<p>Dependiendo del almacenamiento en filas o columnas tendríamos la siguiente representación:</p>
+<figure style="align: center;">
+    <img src="images/04formatos-filacolumna.png">
+    <figcaption>Comparación filas y columnas</figcaption>
+</figure>
+
+<p>En un formato columnar los datos del mismo tipo se agrupan, lo que mejora el rendimiento de acceso y reduce el tamaño:</p>
+<figure style="align: center;">
+    <img src="images/04formatos-column-encoding.png">
+    <figcaption>Comparación filas y columnas</figcaption>
+</figure>
+
+<p>El artículo <a href="https://blog.openbridge.com/how-to-be-a-hero-with-powerful-parquet-google-and-amazon-f2ae0f35ee04">Apache Parquet: How to be a hero with the open-source columnar data format</a> compara un formato basado en filas, como CSV, con uno basado en columnas como Parquet, en base al tiempo y el coste de su lectura en AWS (por ejemplo, AWS Athena cobra 5$ por cada TB escaneado):</p>
+<figure style="align: center;">
+    <img src="images/04formatos-comparativa1.png">
+    <figcaption>Comparación CSV y Parquet</figcaption>
+</figure>
+
+<p>En la tabla podemos observar como 1TB de un fichero CSV en texto plano pasa a ocupar sólo 130GB mediante Parquet, lo que provoca que las posteriores consultas tarden menos y, en consecuencia, cuesten menos.</p>
+<p>En la siguiente tabla comparamos un fichero CSV compuesto de cuatro columnas almacenado en S3 mediante tres formatos:</p>
+<figure style="align: center;">
+    <img src="images/02formatos-comparativa2.png">
+    <figcaption>Comparación filas y columnas</figcaption>
+</figure>
+
+<p>Queda claro que la elección del formato de los datos y la posibilidad de elegir el formato dependiendo de sus futuros casos de uso puede conllevar un importante ahorro en tiempo y costes.</p>
+<h2 id="avro">Avro<a class="headerlink" href="#avro" title="Permanent link">&para;</a></h2>
+<figure style="float: right;">
+    <img src="images/04avro-logo.png" width="150">
+    <figcaption>Logo de Apache Avro</figcaption>
+</figure>
+
+<p><a href="https://avro.apache.org/">Apache Avro</a> es un formato de almacenamiento basado en filas para <em>Hadoop</em>, utilizado para la serialización de datos, ya que es más rápido y ocupa menos espacio que JSON, debido a que la serialización de los datos se realiza en un formato binario compacto.</p>
+<p><em>Avro</em> se basa en esquemas, los cuales se realizan mediante JSON para definir los tipos de datos y protocolos. Cuando los datos <code>.avro</code> son leídos siempre está presente el esquema con el que han sido escritos.</p>
+<h3 id="schema">Schema<a class="headerlink" href="#schema" title="Permanent link">&para;</a></h3>
+<p>Los esquemas se componen de tipos primitivos (<code>null</code>, <code>boolean</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>bytes</code>, y <code>string</code>) y compuestos (<code>record</code>, <code>enum</code>, <code>array</code>, <code>map</code>, <code>union</code>, y <code>fixed</code>).</p>
+<p>Un ejemplo de esquema podría ser:</p>
+<div class="highlight"><span class="filename">empleado.avsc</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">   </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;record&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">   </span><span class="nt">&quot;namespace&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SeveroOchoa&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">   </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Empleado&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">   </span><span class="nt">&quot;fields&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nombre&quot;</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Altura&quot;</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;float&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Edad&quot;</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">   </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<h3 id="python">Python<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
+<p>Para poder serializar y deserializar documentos <em>Avro</em> mediante <em>Python</em>, previamente debemos instalar la librería <code>avro</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install avro-python3
+<span class="linenos" data-linenos="2 "></span><span class="c1"># o si utilizamos Anaconda</span>
+<span class="linenos" data-linenos="3 "></span>conda install -c conda-forge avro-python3
+</code></pre></div>
+<p>Vamos a realizar un ejemplo donde primero leemos un esquema de un archivo <em>Avro</em>, y con dicho esquema, escribiremos nuevos datos en un fichero. A continuación, abrimos el fichero escrito y leemos y mostramos los datos:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Código Python</label><label for="__tabbed_1_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">avro</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">avro.datafile</span> <span class="kn">import</span> <span class="n">DataFileReader</span><span class="p">,</span> <span class="n">DataFileWriter</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">from</span> <span class="nn">avro.io</span> <span class="kn">import</span> <span class="n">DatumReader</span><span class="p">,</span> <span class="n">DatumWriter</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># abrimos el fichero en modo binario y leemos el esquema</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">schema</span> <span class="o">=</span> <span class="n">avro</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;empleado.avsc&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># escribimos un fichero a partir del esquema leído</span>
+<span class="linenos" data-linenos="11 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;empleados.avro&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos="12 "></span>    <span class="n">writer</span> <span class="o">=</span> <span class="n">DataFileWriter</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">DatumWriter</span><span class="p">(),</span> <span class="n">schema</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">writer</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;Carlos&quot;</span><span class="p">,</span> <span class="s2">&quot;altura&quot;</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="s2">&quot;edad&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">})</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="n">writer</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;Juan&quot;</span><span class="p">,</span> <span class="s2">&quot;altura&quot;</span><span class="p">:</span> <span class="mi">175</span><span class="p">})</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">writer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># abrimos el archivo creado, lo leemos y mostramos línea a línea</span>
+<span class="linenos" data-linenos="18 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;empleados.avro&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="n">reader</span> <span class="o">=</span> <span class="n">DataFileReader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">DatumReader</span><span class="p">())</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="c1"># copiamos los metadatos del fichero leído</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="n">metadata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
+<span class="linenos" data-linenos="22 "></span>    <span class="c1"># obtenemos el schema del fichero leído</span>
+<span class="linenos" data-linenos="23 "></span>    <span class="n">schemaFromFile</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;avro.schema&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="c1"># recuperamos los empleados</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="n">empleados</span> <span class="o">=</span> <span class="p">[</span><span class="n">empleado</span> <span class="k">for</span> <span class="n">empleado</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">]</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="n">reader</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos" data-linenos="27 "></span>
+<span class="linenos" data-linenos="28 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Schema de empleado.avsc:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">schema</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="29 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Schema del fichero empleados.avro:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">schemaFromFile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="30 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Empleados:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">empleados</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="err">Schema</span><span class="w"> </span><span class="err">de</span><span class="w"> </span><span class="err">empleado.avsc</span><span class="p">:</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;record&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;empleado&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;namespace&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SeveroOchoa&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nombre&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;altura&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;null&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="p">],</span><span class="w"> </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;edad&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}]}</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="err">Schema</span><span class="w"> </span><span class="err">del</span><span class="w"> </span><span class="kc">f</span><span class="err">ichero</span><span class="w"> </span><span class="err">empleados.avro</span><span class="p">:</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="p">{</span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;record&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;empleado&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">mespace&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;SeveroOchoa&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">f</span><span class="err">ields&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&#39;</span><span class="kc">null</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">],</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;de</span><span class="kc">fault</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">No</span><span class="kc">ne</span><span class="p">}]}</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="err">Empleados</span><span class="p">:</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="p">[{</span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Carlos&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Jua</span><span class="kc">n</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">175</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">No</span><span class="kc">ne</span><span class="p">}]</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="fastavro">Fastavro<a class="headerlink" href="#fastavro" title="Permanent link">&para;</a></h3>
+<p>Para trabajar con <em>Avro</em> y grandes volúmenes de datos, se utiliza la librería <em>Fastavro</em> (<a href="https://github.com/fastavro/fastavro">https://github.com/fastavro/fastavro</a>) la cual ofrece un rendimiento mucho mejor (en vez de estar codificada en <em>Python</em> puro, tiene algunos fragmentos realizados mediante <em>Cython</em>).</p>
+<p>Primero, hemos de instalar la librería:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install fastavro
+<span class="linenos" data-linenos="2 "></span><span class="c1"># o si utilizamos Anaconda</span>
+<span class="linenos" data-linenos="3 "></span>conda install -c conda-forge fastavro
+</code></pre></div>
+<p>Como podéis observar a continuación, hemos repetido el ejemplo y el código es muy similar:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Código Python</label><label for="__tabbed_2_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">fastavro</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">fastavro</span> <span class="kn">import</span> <span class="n">reader</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># abrimos el fichero en modo binario y leemos el esquema</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;empleado.avsc&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="n">schemaJSON</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">schemaDict</span> <span class="o">=</span> <span class="n">fastavro</span><span class="o">.</span><span class="n">parse_schema</span><span class="p">(</span><span class="n">schemaJSON</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="n">empleados</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;Carlos&quot;</span><span class="p">,</span> <span class="s2">&quot;altura&quot;</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="s2">&quot;edad&quot;</span><span class="p">:</span> <span class="mi">44</span><span class="p">},</span>
+<span class="linenos" data-linenos="12 "></span>            <span class="p">{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;Juan&quot;</span><span class="p">,</span> <span class="s2">&quot;altura&quot;</span><span class="p">:</span> <span class="mi">175</span><span class="p">}]</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># escribimos un fichero a partir del esquema leído</span>
+<span class="linenos" data-linenos="15 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;empleadosf.avro&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos="16 "></span>    <span class="n">fastavro</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">schemaDict</span><span class="p">,</span> <span class="n">empleados</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># abrimos el archivo creado, lo leemos y mostramos línea a línea</span>
+<span class="linenos" data-linenos="19 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;empleadosf.avro&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="n">reader</span> <span class="o">=</span> <span class="n">fastavro</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="c1"># copiamos los metadatos del fichero leído</span>
+<span class="linenos" data-linenos="22 "></span>    <span class="n">metadata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+<span class="linenos" data-linenos="23 "></span>    <span class="c1"># obtenemos el schema del fichero leído</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="n">schemaReader</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">writer_schema</span><span class="p">)</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="n">schemaFromFile</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;avro.schema&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="c1"># recuperamos los empleados</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="n">empleados</span> <span class="o">=</span> <span class="p">[</span><span class="n">empleado</span> <span class="k">for</span> <span class="n">empleado</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">]</span>
+<span class="linenos" data-linenos="28 "></span>
+<span class="linenos" data-linenos="29 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Schema de empleado.avsc:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">schemaDict</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="30 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Schema del fichero empleadosf.avro:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">schemaFromFile</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="31 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Empleados:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">empleados</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="err">Schema</span><span class="w"> </span><span class="err">de</span><span class="w"> </span><span class="err">empleado.avsc</span><span class="p">:</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="p">{</span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;record&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;SeveroOchoa.empleado&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">f</span><span class="err">ields&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;de</span><span class="kc">fault</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">No</span><span class="kc">ne</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&#39;</span><span class="kc">null</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">]}],</span><span class="w"> </span><span class="err">&#39;__</span><span class="kc">fasta</span><span class="err">vro_parsed&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">True</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;__</span><span class="kc">na</span><span class="err">med_schemas&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;SeveroOchoa.empleado&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;record&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;SeveroOchoa.empleado&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">f</span><span class="err">ields&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;de</span><span class="kc">fault</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">No</span><span class="kc">ne</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&#39;</span><span class="kc">null</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">]}]}}}</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="err">Schema</span><span class="w"> </span><span class="err">del</span><span class="w"> </span><span class="kc">f</span><span class="err">ichero</span><span class="w"> </span><span class="err">empleados</span><span class="kc">f</span><span class="err">.avro</span><span class="p">:</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="p">{</span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;record&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;SeveroOchoa.empleado&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">f</span><span class="err">ields&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;de</span><span class="kc">fault</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">No</span><span class="kc">ne</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">na</span><span class="err">me&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">ype&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">&#39;</span><span class="kc">null</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;i</span><span class="kc">nt</span><span class="err">&#39;</span><span class="p">]}]}</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="err">Empleados</span><span class="p">:</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="p">[{</span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Carlos&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Jua</span><span class="kc">n</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;al</span><span class="kc">tura</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="mi">175</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;edad&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">No</span><span class="kc">ne</span><span class="p">}]</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="fastavro-y-pandas">Fastavro y Pandas<a class="headerlink" href="#fastavro-y-pandas" title="Permanent link">&para;</a></h3>
+<p>Finalmente, vamos a realizar un último ejemplo con las dos librerías más utilizadas.</p>
+<p>Vamos a leer un fichero CSV de <a href="resources/pdi_sales.csv">ventas</a> mediante Pandas, y tras limpiar los datos y quedarnos únicamente con las ventas de Alemania, almacenaremos el resultado del procesamiento en Avro.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Acceso Local</label><label for="__tabbed_3_2">Acceso HDFS</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">fastavro</span> <span class="kn">import</span> <span class="n">writer</span><span class="p">,</span> <span class="n">parse_schema</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># Leemos el csv mediante pandas</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;pdi_sales.csv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># Limpiamos los datos (strip a los códigos postales) y nos quedamos con Alemania</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Zip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Zip&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">filtro</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Country</span><span class="o">==</span><span class="s2">&quot;Germany&quot;</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">filtro</span><span class="p">]</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># 1. Definimos el esquema</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="s1">&#39;namespace&#39;</span> <span class="p">:</span> <span class="s1">&#39;SeveroOchoa&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;record&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="16 "></span>    <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+<span class="linenos" data-linenos="17 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ProductID&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="18 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="19 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Zip&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="20 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Units&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="21 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Revenue&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="22 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}</span>
+<span class="linenos" data-linenos="23 "></span>    <span class="p">]</span>
+<span class="linenos" data-linenos="24 "></span><span class="p">}</span>
+<span class="linenos" data-linenos="25 "></span><span class="n">schemaParseado</span> <span class="o">=</span> <span class="n">parse_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+<span class="linenos" data-linenos="26 "></span>
+<span class="linenos" data-linenos="27 "></span><span class="c1"># 2. Convertimos el dataframe a una lista de diccionarios</span>
+<span class="linenos" data-linenos="28 "></span><span class="n">records</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="29 "></span>
+<span class="linenos" data-linenos="30 "></span><span class="c1"># 3. Persistimos en un fichero avro</span>
+<span class="linenos" data-linenos="31 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sales.avro&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos="32 "></span>    <span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">schemaParseado</span><span class="p">,</span> <span class="n">records</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">fastavro</span> <span class="kn">import</span> <span class="n">parse_schema</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">hdfs</span> <span class="kn">import</span> <span class="n">InsecureClient</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">hdfs.ext.avro</span> <span class="kn">import</span> <span class="n">AvroWriter</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">from</span> <span class="nn">hdfs.ext.dataframe</span> <span class="kn">import</span> <span class="n">write_dataframe</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># 1. Nos conectamos a HDFS</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">HDFS_HOSTNAME</span> <span class="o">=</span> <span class="s1">&#39;iabd-virtualbox&#39;</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">HDFSCLI_PORT</span> <span class="o">=</span> <span class="mi">9870</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">HDFSCLI_CONNECTION_STRING</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;http://</span><span class="si">{</span><span class="n">HDFS_HOSTNAME</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">HDFSCLI_PORT</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="linenos" data-linenos="11 "></span><span class="n">hdfs_client</span> <span class="o">=</span> <span class="n">InsecureClient</span><span class="p">(</span><span class="n">HDFSCLI_CONNECTION_STRING</span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># 2. Leemos el dataframe</span>
+<span class="linenos" data-linenos="14 "></span><span class="k">with</span> <span class="n">hdfs_client</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;/user/iabd/pdi_sales.csv&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># Limpiamos los datos (strip a los códigos postales) y nos quedamos con Alemania</span>
+<span class="linenos" data-linenos="18 "></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Zip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Zip&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">filtro</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Country</span><span class="o">==</span><span class="s2">&quot;Germany&quot;</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">filtro</span><span class="p">]</span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span><span class="c1"># 3. Definimos el esquema</span>
+<span class="linenos" data-linenos="23 "></span><span class="n">schema</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Sales&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="s1">&#39;namespace&#39;</span> <span class="p">:</span> <span class="s1">&#39;SeveroOchoa&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;record&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="s1">&#39;fields&#39;</span><span class="p">:</span> <span class="p">[</span>
+<span class="linenos" data-linenos="28 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ProductID&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="29 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="30 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Zip&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="31 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Units&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;int&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="32 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Revenue&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="33 "></span>        <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Country&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;string&#39;</span><span class="p">}</span>
+<span class="linenos" data-linenos="34 "></span>    <span class="p">]</span>
+<span class="linenos" data-linenos="35 "></span><span class="p">}</span>
+<span class="linenos" data-linenos="36 "></span><span class="n">schemaParseado</span> <span class="o">=</span> <span class="n">parse_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+<span class="linenos" data-linenos="37 "></span>
+<span class="linenos" data-linenos="38 "></span><span class="c1"># 4a. Persistimos en un fichero avro dentro de HDFS mediante la extension AvroWriter de hdfs</span>
+<span class="linenos" data-linenos="39 "></span><span class="k">with</span> <span class="n">AvroWriter</span><span class="p">(</span><span class="n">hdfs_client</span><span class="p">,</span> <span class="s1">&#39;/user/iabd/sales.avro&#39;</span><span class="p">,</span> <span class="n">schemaParseado</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+<span class="linenos" data-linenos="40 "></span>    <span class="n">records</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="s1">&#39;records&#39;</span><span class="p">)</span> <span class="c1"># diccionario</span>
+<span class="linenos" data-linenos="41 "></span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="linenos" data-linenos="42 "></span>        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="linenos" data-linenos="43 "></span>
+<span class="linenos" data-linenos="44 "></span><span class="c1"># 4b. O directamente persistimos el dataframe mediante la extension write_dataframe de hdfs</span>
+<span class="linenos" data-linenos="45 "></span><span class="n">write_dataframe</span><span class="p">(</span><span class="n">hdfs_client</span><span class="p">,</span> <span class="s1">&#39;/user/iabd/sales2.avro&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">)</span>  <span class="c1"># infiere el esquema</span>
+<span class="linenos" data-linenos="46 "></span><span class="n">write_dataframe</span><span class="p">(</span><span class="n">hdfs_client</span><span class="p">,</span> <span class="s1">&#39;/user/iabd/sales3.avro&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schemaParseado</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Para el acceso HDFS hemos utilizados las extensiones <a href="https://hdfscli.readthedocs.io/en/latest/api.html#module-hdfs.ext.avro">Fastavro</a> y <a href="https://hdfscli.readthedocs.io/en/latest/api.html#module-hdfs.ext.dataframe">Pandas</a> de la librería HDFS del apartado anterior.</p>
+<h3 id="comprimiendo-los-datos">Comprimiendo los datos<a class="headerlink" href="#comprimiendo-los-datos" title="Permanent link">&para;</a></h3>
+<p>¿Y sí comprimimos los datos para ocupen menos espacio en nuestro clúster y por tanto, nos cuesten menos dinero?</p>
+<p><em>Fastavro</em> soporta dos tipos de compresión: <em>gzip</em> (mediante el algoritmo <code>deflate</code>) y <code>snappy</code>. <strong>Snappy</strong> es una biblioteca de compresión y descompresión de datos de gran rendimiento que se utiliza con frecuencia en proyectos Big Data, la cual hemos de instalar previamente mediante <code>pip install python-snappy</code>.</p>
+<p>Para indicar el tipo de compresión, únicamente hemos de añadir un parámetros extra con el algoritmo de compresión en la función/constructor de persistencia:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Fastavro y gzip</label><label for="__tabbed_4_2">AvroWriter y snappy</label><label for="__tabbed_4_3">write_dataframe y snappy</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">schemaParseado</span><span class="p">,</span> <span class="n">records</span><span class="p">,</span> <span class="s1">&#39;deflate&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">with</span> <span class="n">AvroWriter</span><span class="p">(</span><span class="n">hdfs_client</span><span class="p">,</span> <span class="s1">&#39;/user/iabd/sales.avro&#39;</span><span class="p">,</span> <span class="n">schemaParseado</span><span class="p">,</span> <span class="s1">&#39;snappy&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">write_dataframe</span><span class="p">(</span><span class="n">hdfs_client</span><span class="p">,</span> <span class="s1">&#39;/user/iabd/sales3.avro&#39;</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">schemaParseado</span><span class="p">,</span> <span class="n">codec</span><span class="o">=</span><span class="s1">&#39;snappy&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Comparando algoritmos de compresión</p>
+<p>Respecto a la compresión, sobre un fichero de 100GB, podemos considerar media si ronda los 50GB y alta si baja a los 40GB.</p>
+<table>
+<thead>
+<tr>
+<th>Algoritmo</th>
+<th>Velocidad</th>
+<th>Compresión</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Gzip</td>
+<td>Media</td>
+<td>Media</td>
+</tr>
+<tr>
+<td>Bzip2</td>
+<td>Lenta</td>
+<td>Alta</td>
+</tr>
+<tr>
+<td>Snappy</td>
+<td>Alta</td>
+<td>Media</td>
+</tr>
+</tbody>
+</table>
+<p>Más que un tema de espacio, necesitamos que los procesos sean eficientes y por eso priman los algoritmos que son más rápidos. Si te interesa el tema, es muy interesante el artículo <a href="http://comphadoop.weebly.com">Data Compression in Hadoop</a>.</p>
+<p>Por ejemplo, si realizamos el ejemplo de <a href="#fastavro-y-pandas">Fast Avro y Pandas</a> con acceso local obtenemos los siguientes tamaños:</p>
+<ul>
+<li>Sin compresión: 6,9 MiB</li>
+<li>Gzip: 1,9 MiB</li>
+<li>Snappy: 2,8 MiB</li>
+</ul>
+</div>
+<h2 id="parquet">Parquet<a class="headerlink" href="#parquet" title="Permanent link">&para;</a></h2>
+<figure style="float: right;">
+    <img src="images/04parquet-logo.png" width="150">
+    <figcaption>Logo de Apache Parquet</figcaption>
+</figure>
+
+<p><a href="https://parquet.apache.org/">Apache Parquet</a> es un formato de almacenamiento basado en columnas para <em>Hadoop</em>, con soporte para todos los frameworks de procesamiento de datos, así como lenguajes de programación. De la misma forma que <em>Avro</em>, se trata de un formato de datos auto-descriptivo, de manera que embebe el esquema o estructura de los datos con los propios datos en sí. Parquet es idóneo para analizar datasets que contienen muchas columnas.</p>
+<figure style="float: right;">
+    <img src="images/04parquet-format.gif" width="450">
+    <figcaption>Formato de un archivo Parquet</figcaption>
+</figure>
+
+<p>Cada fichero Parquet almacena los datos en binario organizados en grupos de filas. Para cada grupo de filas (<em>row group</em>), los valores de los datos se organizan en columnas, lo que facilita la compresión a nivel de columna.</p>
+<p>La columna de metadatos de un fichero Parquet se almacena al final del fichero, lo que permite que las escrituras sean rápidas con una única pasada. Los metadatos pueden incluir información como los tipos de datos, esquemas de codificación/compresión, estadísticas, nombre de los elementos, etc...</p>
+<!--
+https://www.upsolver.com/blog/apache-parquet-why-use
+https://towardsdatascience.com/understanding-apache-parquet-7197ba6462a9
+-->
+
+<h3 id="parquet-y-python">Parquet y Python<a class="headerlink" href="#parquet-y-python" title="Permanent link">&para;</a></h3>
+<p>Para interactuar con el formato Parquet mediante Python, la librería más utilizada es la que ofrece <a href="https://arrow.apache.org/">Apache Arrow</a>, en concreto la librería <a href="https://arrow.apache.org/docs/python/"><em>PyArrow</em></a>.</p>
+<p>Así pues, la instalamos mediante pip:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install pyarrow
+</code></pre></div>
+<p><em>Apache Arrow</em> usa un tipo de estructura denominada tabla para almacenar los datos bidimentsional (sería muy similar a un <em>dataframe</em> de <em>Pandas</em>). La documentación de <em>PyArrow</em> dispone de un <a href="https://arrow.apache.org/cookbook/py/">libro de recetas</a> con ejemplos con código para los diferentes casos de uso que se nos puedan plantear.</p>
+<p>Vamos a simular el mismo ejemplo que hemos realizado previamente mediante <em>Avro</em>, y vamos a crear un fichero en formato <em>JSON</em> con empleados, y tras persistirlo en formato <em>Parquet</em>, lo vamos a recuperar:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Empleados en columnas</label><label for="__tabbed_5_2">Empleados en Filas</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">dict-parquet.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">pyarrow.parquet</span> <span class="k">as</span> <span class="nn">pq</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># 1.- Definimos el esquema</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">schema</span><span class="p">([</span> <span class="p">(</span><span class="s1">&#39;nombre&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">()),</span>
+<span class="linenos" data-linenos=" 6 "></span>                    <span class="p">(</span><span class="s1">&#39;altura&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">()),</span>
+<span class="linenos" data-linenos=" 7 "></span>                    <span class="p">(</span><span class="s1">&#39;edad&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">())</span>  <span class="p">])</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># 2.- Almacenamos los empleados por columnas</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">empleados</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Carlos&quot;</span><span class="p">,</span> <span class="s2">&quot;Juan&quot;</span><span class="p">],</span>
+<span class="linenos" data-linenos="11 "></span>            <span class="s2">&quot;altura&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">180</span><span class="p">,</span> <span class="mi">44</span><span class="p">],</span>
+<span class="linenos" data-linenos="12 "></span>            <span class="s2">&quot;edad&quot;</span><span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">34</span><span class="p">]}</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># 3.- Creamos una tabla Arrow y la persistimos mediante Parquet</span>
+<span class="linenos" data-linenos="15 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">from_pydict</span><span class="p">(</span><span class="n">empleados</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span><span class="n">pq</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="n">tabla</span><span class="p">,</span> <span class="s1">&#39;empleados.parquet&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># 4.- Leemos el fichero generado</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">table2</span> <span class="o">=</span> <span class="n">pq</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s1">&#39;empleados.parquet&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">schemaFromFile</span> <span class="o">=</span> <span class="n">table2</span><span class="o">.</span><span class="n">schema</span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Schema del fichero empleados.parquet:</span><span class="se">\n</span><span class="si">{</span><span class="n">schemaFromFile</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="23 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tabla de Empleados:</span><span class="se">\n</span><span class="si">{</span><span class="n">table2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Para que <em>pyarrow</em> pueda leer los empleados como documentos JSON, a día de hoy sólo puede hacerlo leyendo documentos individuales almacenados en fichero:</p>
+<p>Por lo tanto, creamos el fichero <code>empleados.json</code> con la siguiente información:</p>
+<div class="highlight"><span class="filename">empleados.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Carlos&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;altura&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;edad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Juan&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;altura&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">175</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>De manera que podemos leer los datos JSON y persistirlos en Parquet del siguiente modo:</p>
+<div class="highlight"><span class="filename">json-parquet.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">pyarrow.parquet</span> <span class="k">as</span> <span class="nn">pq</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">pyarrow</span> <span class="kn">import</span> <span class="n">json</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># 1.- Definimos el esquema</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">schema</span> <span class="o">=</span> <span class="n">pa</span><span class="o">.</span><span class="n">schema</span><span class="p">([</span> <span class="p">(</span><span class="s1">&#39;nombre&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">string</span><span class="p">()),</span>
+<span class="linenos" data-linenos=" 7 "></span>                    <span class="p">(</span><span class="s1">&#39;altura&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">()),</span>
+<span class="linenos" data-linenos=" 8 "></span>                    <span class="p">(</span><span class="s1">&#39;edad&#39;</span><span class="p">,</span> <span class="n">pa</span><span class="o">.</span><span class="n">int32</span><span class="p">())</span>  <span class="p">])</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># 2.- Leemos los empleados</span>
+<span class="linenos" data-linenos="11 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s2">&quot;empleados.json&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># 3.- Persistimos la tabla en Parquet</span>
+<span class="linenos" data-linenos="13 "></span><span class="n">pq</span><span class="o">.</span><span class="n">write_table</span><span class="p">(</span><span class="n">tabla</span><span class="p">,</span> <span class="s1">&#39;empleados-json.parquet&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># 4.- Leemos el fichero generado</span>
+<span class="linenos" data-linenos="16 "></span><span class="n">table2</span> <span class="o">=</span> <span class="n">pq</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s1">&#39;empleados-json.parquet&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span><span class="n">schemaFromFile</span> <span class="o">=</span> <span class="n">table2</span><span class="o">.</span><span class="n">schema</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Schema del fichero empleados-json.parquet:</span><span class="se">\n</span><span class="si">{</span><span class="n">schemaFromFile</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="20 "></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Tabla de Empleados:</span><span class="se">\n</span><span class="si">{</span><span class="n">table2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>En ambos casos obtendríamos algo similar a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>Schema del fichero empleados.parquet:
+<span class="linenos" data-linenos=" 2 "></span>nombre: string
+<span class="linenos" data-linenos=" 3 "></span>altura: int32
+<span class="linenos" data-linenos=" 4 "></span>edad: int32
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span>Tabla de Empleados:
+<span class="linenos" data-linenos=" 7 "></span>pyarrow.Table
+<span class="linenos" data-linenos=" 8 "></span>nombre: string
+<span class="linenos" data-linenos=" 9 "></span>altura: int32
+<span class="linenos" data-linenos="10 "></span>edad: int32
+<span class="linenos" data-linenos="11 "></span>----
+<span class="linenos" data-linenos="12 "></span>nombre: [[&quot;Carlos&quot;,&quot;Juan&quot;]]
+<span class="linenos" data-linenos="13 "></span>altura: [[180,44]]
+<span class="linenos" data-linenos="14 "></span>edad: [[null,34]]
+</code></pre></div>
+<h3 id="parquet-y-pandas">Parquet y Pandas<a class="headerlink" href="#parquet-y-pandas" title="Permanent link">&para;</a></h3>
+<p>En el caso del uso de <em>Pandas</em> el código todavía se simplifica más. Si reproducimos el mismo ejemplo que hemos realizado con Avro tenemos que los <em>Dataframes</em> ofrecen el método <code>to_parquet</code> para exportar a un fichero <em>Parquet</em>:</p>
+<div class="highlight"><span class="filename">csv-parquet.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;pdi_sales.csv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Zip&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Zip&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">filtro</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Country</span><span class="o">==</span><span class="s2">&quot;Germany&quot;</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">filtro</span><span class="p">]</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># A partir de un DataFrame, persistimos los datos</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;sales.parquet&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>Si quisiéramos almacenar el archivo directamente en HDFS, necesitamos indicarle a Pandas la dirección del sistema de archivos que tenemos configurado en <code>core-site.xml</code>:</p>
+<div class="highlight"><span class="filename">core-site.ml</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;name&gt;</span>fs.defaultFS<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nt">&lt;value&gt;</span>hdfs://iabd-virtualbox:9000<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="4 "></span><span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<p>Así pues, únicamente necesitamos modificar el nombre del archivo donde serializamos los datos a <em>Parquet</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;hdfs://iabd-virtualbox:9000/sales.parquet&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="comparando-tamanos">Comparando tamaños<a class="headerlink" href="#comparando-tamanos" title="Permanent link">&para;</a></h2>
+<p>Si comparamos los tamaños de los archivos respecto al formato de datos empleado con únicamente las ventas de Alemania tendríamos:</p>
+<ul>
+<li><code>ger_sales.csv</code>: 9,7 MiB</li>
+<li><code>ger_sales.avro</code>: 6,9 MiB<ul>
+<li><code>ger_sales-gzip.avro</code>: 1,9 MiB</li>
+<li><code>ger_sales-snappy.avro</code>:  2,8 MiB</li>
+</ul>
+</li>
+<li><code>ger_sales.parquet</code>: 2,3 MiB<ul>
+<li><code>ger_sales-gzip.parquet</code>: 1,6 MiB</li>
+<li><code>ger_sales-snappy.parquet</code>: 2,3 MiBa</li>
+</ul>
+</li>
+</ul>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.perfectlyrandom.org/2019/11/29/handling-avro-files-in-python/">Handling Avro files in Python</a></li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Mediante <em>Python</em>, carga los datos de los <a href="https://s3.amazonaws.com/nyc-tlc/trip+data/yellow_tripdata_2020-01.csv">taxis</a> XXX y crea dentro de <code>/user/iabd/datos</code> los siguientes archivos con el formato adecuado:</p>
+<ul>
+<li><code>taxis.avro</code>: la fecha (<em>tpep_pickup_datetime</em>), el <em>VendorID</em> y el coste de cada viaje (<em>total_amount</em>)</li>
+<li>(opcional) <code>taxis.parquet</code> con los mismos atributos.</li>
+</ul>
+</li>
+</ol>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>

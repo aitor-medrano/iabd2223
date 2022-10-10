@@ -6,31 +6,31 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Uso de Apache Hive tanto con tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos.">
-      
       
       
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/sa/01nosql.html">
       
-      <link rel="icon" href="../imagenes/favicon.png">
-      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.14">
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
-        <title>Apache Hive. Acceso a HDFS con un interfaz similar a tablas relacionales mediante SQL. - Inteligencia Artificial y Big Data</title>
+        <title>S18.- Almacenamiento de datos. NoSQL - Inteligencia Artificial y Big Data</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.3de6f41f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.cc9b2e1e.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
           
           
           <meta name="theme-color" content="#4051b5">
         
       
+      
+
     
     
     
@@ -43,7 +43,9 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -53,10 +55,39 @@
   
 
 
-  <script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&gtag("event","search",{search_term:this.value})}),"undefined"!=typeof location$&&location$.subscribe(function(e){gtag("config","G-MFP4QLMMV7",{page_path:e.pathname})})})</script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7"></script>
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
 
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
 
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="S18.- Almacenamiento de datos. NoSQL - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/01nosql.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/sa/01nosql.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="S18.- Almacenamiento de datos. NoSQL - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/01nosql.png" >
+      
     
     
   </head>
@@ -77,7 +108,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#nosql" class="md-skip">
+        <a href="#almacenamiento-de-datos" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -93,7 +124,7 @@
   <nav class="md-header__inner md-grid" aria-label="Cabecera">
     <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
       
-  <img src="../imagenes/logoIABD3.png" alt="logo">
+  <img src="../images/logoIABD3.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -109,7 +140,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Apache Hive. Acceso a HDFS con un interfaz similar a tablas relacionales mediante SQL.
+              S18.- Almacenamiento de datos. NoSQL
             
           </span>
         </div>
@@ -132,7 +163,7 @@
       </label>
       <nav class="md-search__options" aria-label="Search">
         
-        <button type="reset" class="md-search__icon md-icon" aria-label="Limpiar" tabindex="-1">
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
         </button>
       </nav>
@@ -178,7 +209,7 @@
   <label class="md-nav__title" for="__drawer">
     <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
       
-  <img src="../imagenes/logoIABD3.png" alt="logo">
+  <img src="../images/logoIABD3.png" alt="logo">
 
     </a>
     Inteligencia Artificial y Big Data
@@ -207,14 +238,22 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
+      
+        
+          
+        
+          
+        
       
       
         <label class="md-nav__link" for="__nav_2">
@@ -233,20 +272,38 @@
               
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" checked>
       
       
       
+        
+          
+            
+          
+        
+          
+        
+          
+        
       
-        <label class="md-nav__link" for="__nav_2_1">
-          UT2.- Sistemas de almacenamiento
-          <span class="md-nav__icon md-icon"></span>
-        </label>
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
       
       <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
         <label class="md-nav__title" for="__nav_2_1">
@@ -256,51 +313,214 @@
         <ul class="md-nav__list" data-md-scrollfix>
           
             
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../index.html" class="md-nav__link">
-        S1.- Ingeniería de datos / NoSQL
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-            
           
             
               
-  
   
   
     
-    <li class="md-nav__item md-nav__item--nested">
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
       
-      
-      
-      
-        <label class="md-nav__link" for="__nav_2_2">
-          UT5.- Ecosistema Hadoop
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S18.- Almacenamiento de datos. NoSQL
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="2">
-        <label class="md-nav__title" for="__nav_2_2">
-          <span class="md-nav__icon md-icon"></span>
-          UT5.- Ecosistema Hadoop
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
+      <a href="01nosql.html" class="md-nav__link md-nav__link--active">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#almacenamiento-de-datos" class="md-nav__link">
+    Almacenamiento de Datos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-solo-sql" class="md-nav__link">
+    No Solo SQL
+  </a>
+  
+    <nav class="md-nav" aria-label="No Solo SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas" class="md-nav__link">
+    Características
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esquema-dinamicos" class="md-nav__link">
+    Esquema dinámicos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particionado" class="md-nav__link">
+    Particionado
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacion" class="md-nav__link">
+    Replicación
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implantando-nosql" class="md-nav__link">
+    Implantando NoSQL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelos-de-datos" class="md-nav__link">
+    Modelos de Datos
+  </a>
+  
+    <nav class="md-nav" aria-label="Modelos de Datos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documental" class="md-nav__link">
+    Documental
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clave-valor" class="md-nav__link">
+    Clave-Valor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basado-en-columnas" class="md-nav__link">
+    Basado en columnas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grafos" class="md-nav__link">
+    Grafos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consistencia" class="md-nav__link">
+    Consistencia
+  </a>
+  
+    <nav class="md-nav" aria-label="Consistencia">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sistemas-consistentes" class="md-nav__link">
+    Sistemas consistentes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sistemas-de-consistencia-eventual" class="md-nav__link">
+    Sistemas de consistencia eventual
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teorema-de-cap" class="md-nav__link">
+    Teorema de CAP
+  </a>
+  
+    <nav class="md-nav" aria-label="Teorema de CAP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clasificacion-segun-cap" class="md-nav__link">
+    Clasificación según CAP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base" class="md-nav__link">
+    BASE
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
           
             
               
@@ -308,8 +528,8 @@
   
   
     <li class="md-nav__item">
-      <a href="../index.html" class="md-nav__link">
-        S1.- Ingeniería de datos / NoSQL
+      <a href="02mongo.html" class="md-nav__link">
+        S24.- MongoDB
       </a>
     </li>
   
@@ -328,90 +548,10 @@
   
   
   
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_2_3">
-          UT6.- Reto: Datos en el cloud
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="UT6.- Reto: Datos en el cloud" data-md-level="2">
-        <label class="md-nav__title" for="__nav_2_3">
-          <span class="md-nav__icon md-icon"></span>
-          UT6.- Reto: Datos en el cloud
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../index.html" class="md-nav__link">
-        S1.- Ingeniería de datos / NoSQL
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
       </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4" type="checkbox" id="__nav_2_4" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_2_4">
-          UT7.- PIAFP Lara
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="UT7.- PIAFP Lara" data-md-level="2">
-        <label class="md-nav__title" for="__nav_2_4">
-          <span class="md-nav__icon md-icon"></span>
-          UT7.- PIAFP Lara
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../index.html" class="md-nav__link">
-        S1.- Presentación
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
     </li>
   
 
@@ -440,8 +580,178 @@
   
   
   
-    
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#almacenamiento-de-datos" class="md-nav__link">
+    Almacenamiento de Datos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#no-solo-sql" class="md-nav__link">
+    No Solo SQL
+  </a>
+  
+    <nav class="md-nav" aria-label="No Solo SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteristicas" class="md-nav__link">
+    Características
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#esquema-dinamicos" class="md-nav__link">
+    Esquema dinámicos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#particionado" class="md-nav__link">
+    Particionado
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replicacion" class="md-nav__link">
+    Replicación
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implantando-nosql" class="md-nav__link">
+    Implantando NoSQL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelos-de-datos" class="md-nav__link">
+    Modelos de Datos
+  </a>
+  
+    <nav class="md-nav" aria-label="Modelos de Datos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#documental" class="md-nav__link">
+    Documental
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clave-valor" class="md-nav__link">
+    Clave-Valor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basado-en-columnas" class="md-nav__link">
+    Basado en columnas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#grafos" class="md-nav__link">
+    Grafos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consistencia" class="md-nav__link">
+    Consistencia
+  </a>
+  
+    <nav class="md-nav" aria-label="Consistencia">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sistemas-consistentes" class="md-nav__link">
+    Sistemas consistentes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sistemas-de-consistencia-eventual" class="md-nav__link">
+    Sistemas de consistencia eventual
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#teorema-de-cap" class="md-nav__link">
+    Teorema de CAP
+  </a>
+  
+    <nav class="md-nav" aria-label="Teorema de CAP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clasificacion-segun-cap" class="md-nav__link">
+    Clasificación según CAP
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base" class="md-nav__link">
+    BASE
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -449,36 +759,575 @@
               </div>
             
           
-          <div class="md-content" data-md-component="content">
-            <article class="md-content__inner md-typeset">
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>S18.- Almacenamiento de datos. NoSQL</h1>
+
+<h2 id="almacenamiento-de-datos">Almacenamiento de Datos<a class="headerlink" href="#almacenamiento-de-datos" title="Permanent link">&para;</a></h2>
+<p>Se puede decir que estamos en la [tercera plataforma] del almacenamiento de datos. La primera llegó con los primeros computadores y se materializó en las bases de datos jerárquicas y en red, así como en el almacenamiento ISAM. La segunda vino de la mano de internet y las arquitecturas cliente-servidor, lo que dió lugar a las bases de datos relacionales.</p>
+<p>La tercera se ve motivada por el big data, los dispositivos móviles, las arquitecturas cloud, las redes de IoT y las tecnologías/redes sociales. Es tal el volumen de datos que se genera que aparecen nuevos paradigmas como NoSQL, NewSQL y las plataformas de Big Data. En esta sesión nos vamos a centrar en NoSQL.</p>
+<p>NoSQL aparece como una necesidad debida al creciente volumen de datos sobre usuarios, objetos y productos que las empresas tienen que almacenar, así como la frecuencia con la que se accede a los datos. Los SGDB relacionales existentes no fueron diseñados teniendo en cuenta la escalabilidad ni la flexibilidad necesaria por las frecuentes modificaciones que necesitan las aplicaciones modernas; tampoco aprovechan que el almacenamiento a día de hoy es muy barato, ni el nivel de procesamiento que alcanzan las máquinas actuales.</p>
+<figure style="align: center;">
+    <img src="images/01nosql.png">
+    <figcaption>Motivación de NoSQL</figcaption>
+</figure>
+
+<p>La solución es el despliegue de las aplicaciones y sus datos en clústeres de servidores, distribuyendo el procesamiento en múltiples máquinas.</p>
+<h2 id="no-solo-sql">No Solo SQL<a class="headerlink" href="#no-solo-sql" title="Permanent link">&para;</a></h2>
+<p>Si definimos NoSQL formalmente, podemos decir que se trata de un conjunto de tecnologías que permiten el procesamiento rápido y eficiente de conjuntos de datos dando la mayor importancia al rendimiento, la fiabilidad y la agilidad.</p>
+<p>Si nos basamos en el acrónimo, el término se refiere a cualquier almacén de datos que no sigue un modelo relacional, los datos no son relacionales y por tanto no utilizan SQL como lenguaje de consulta. Así pues, los sistemas NoSQL se centran en sistemas complementarios a los SGBD relacionales, que fijan sus prioridades en la escalabilidad y la disponibilidad en contra de la atomicidad y consistencia de los datos.</p>
+<p><a name="acid"></a></p>
+<div class="admonition info">
+<p class="admonition-title">ACID</p>
+<p>Las bases de datos relacionales cumplen las características ACID para ofrecer transaccionalidad sobre los datos:</p>
+<ul>
+<li><strong>A</strong>tomicidad: las transacciones implican que se realizan todas las operaciones o no se realiza ninguna.</li>
+<li><strong>C</strong>onsistencia: la base de datos asegura que los datos pasan de un estado válido o otro también.</li>
+<li><strong>I</strong>solation (Aislamiento): Una transacción no afecta a otras transacciones, de manera que la modificación de un registro / documento no es visible por otras lecturas.</li>
+<li><strong>Du</strong>rabilidad: La escritura de los datos asegura que una vez finalizada una operación, los datos no se perderán.</li>
+</ul>
+</div>
+<p>Los diferentes tipos de bases de datos NoSQL existentes se pueden agrupar en cuatro categorías:</p>
+<ul>
+<li>
+<p><strong>Clave-Valor</strong>: Los almacenes clave-valor son las bases de datos NoSQL más simples. Cada elemento de la base de datos se almacena con un nombre de atributo (o clave) junto a su valor. Los almacenes más conocidos son <em>Redis</em>, <em>Riak</em> y <em>AWS DynamoDB</em>. Algunos almacenes, como es el caso de Redis, permiten que cada valor tenga un tipo (por ejemplo, integer) lo cual añade funcionalidad extra.</p>
+</li>
+<li>
+<p><strong>Documentales</strong>: Cada clave se asocia a una estructura compleja que se conoce como documento. Este puede contener diferentes pares clave-valor, o pares de clave-array o incluso documentos anidados, como en un documento JSON. Los ejemplos más conocidos son <em>MongoDB</em> y <em>CouchDB</em>.</p>
+</li>
+<li>
+<p><strong>Grafos</strong>: Los almacenes de grafos se usan para almacenar información sobre redes, como pueden ser conexiones sociales. Los ejemplos más conocidos son <em>Neo4J</em>, <em>AWS Neptune</em> y <em>ArangoDB</em>.</p>
+</li>
+<li>
+<p><strong>Basados en columnas</strong>: Los almacenes basados en columnas como <em>BigTable</em>, <em>Cassandra</em> y <em>HBase</em> están optimizados para consultas sobre grandes conjuntos de datos, y almacenan los datos como columnas en vez de como filas.</p>
+</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/01nosql-databases.jpg">
+    <figcaption>Sistemas NoSQL</figcaption>
+</figure>
+
+<h3 id="caracteristicas">Características<a class="headerlink" href="#caracteristicas" title="Permanent link">&para;</a></h3>
+<p>Si nos centramos en sus beneficios y los comparamos con las base de datos relacionales, las bases de datos NoSQL son más escalables, ofrecen un rendimiento mayor y sus modelos de datos resuelven varios problemas que no se plantearon al definir el modelo relacional:</p>
+<ul>
+<li>Grandes volúmenes de datos estructurados, semi-estructurados y sin estructurar. Casi todas las implementaciones NoSQL ofrecen algún tipo de representación para datos sin esquema, lo que permite comenzar con una estructura y con el paso del tiempo, añadir nuevos campos, ya sean sencillos o anidados a datos ya existentes.</li>
+<li>Sprints ágiles, iteraciones rápidas y frecuentes <em>commits</em>/<em>pushes</em> de código, al emplear una sintaxis sencilla para la realización de consultas y la posibilidad de tener un modelo que vaya creciendo al mismo ritmo que el desarrollo.</li>
+<li>Arquitectura eficiente y escalable diseñada para trabajar con clusters en vez de una arquitectura monolítica y costosa. Las soluciones NoSQL soportan la escalabilidad de un modo transparente para el desarrollador.</li>
+</ul>
+<p>Una característica adicional que comparten los sistemas NoSQL es que ofrecen un mecanismo de caché de datos integrado (en los sistemas relacionales se pueden configurar de manera externa), de manera que se pueden configurar los sistemas para que los datos se mantengan en memoria y se persistan de manera periódica. El uso de una caché conlleva que la consistencia de los datos no sea completa y podamos tener una consistencia eventual.</p>
+<h3 id="esquema-dinamicos">Esquema dinámicos<a class="headerlink" href="#esquema-dinamicos" title="Permanent link">&para;</a></h3>
+<p>Las bases de datos relacionales requieren definir los esquemas antes de añadir los datos. Una base de datos SQL necesita saber de antemano los datos que vamos a almacenar; por ejemplo, si nos centramos en los datos de un cliente, serían el nombre, apellidos, número de teléfono, etc…​</p>
+<p>Esto casa bastante mal con los enfoques de desarrollo ágil, ya que cada vez que añadimos nuevas funcionalidades, el esquema de la base de datos suele cambiar. De modo que si a mitad de desarrollo decidimos almacenar los productos favoritos de un cliente del cual guardábamos su dirección y números de teléfono, tendríamos que añadir una nueva columna a la base de datos y migrar la base de datos entera a un nuevo esquema.</p>
+<p>Si la base de datos es grande, conlleva un proceso lento que implica parar el sistema durante un tiempo considerable. Si frecuentemente cambiamos los datos que la aplicación almacena (al usar un desarrollo iterativo), también tendremos períodos frecuentes de inactividad del sistema. Así pues, no hay un modo efectivo mediante una base de datos relacional, de almacenar los datos que están desestructurados o que no se conocen de antemano.</p>
+<p>Las bases de datos NoSQL se construyen para permitir la inserción de datos sin un esquema predefinido. Esto facilita la modificación de la aplicación en tiempo real, sin preocuparse por interrupciones de servicio. Aunque no tengamos un esquema al guardar la información, sí que podemos definir esquemas de lectura (<em>schema-on-read</em>) para comprobar que la información almacenada tiene el formato que espera cargar cada aplicación.</p>
+<p>De este modo se consigue un desarrollo más rápido, integración de código más robusto y menos tiempo empleado en la administración de la base de datos.</p>
+<h3 id="particionado">Particionado<a class="headerlink" href="#particionado" title="Permanent link">&para;</a></h3>
+<p>Dado el modo en el que se estructuran las bases de datos relacionales, normalmente escalan verticalmente - un único servidor que almacena toda la base de datos para asegurar la disponibilidad continua de los datos. Esto se traduce en costes que se incrementan rápidamente, con un límites definidos por el propio hardware, y en un pequeño número de puntos críticos de fallo dentro de la infraestructura de datos.</p>
+<p>La solución es escalar horizontalmente, añadiendo nuevos servidores en vez de concentrarse en incrementar la capacidad de un único servidor. Este escalado horizontal se conoce como <strong><em>Sharding</em></strong> o Particionado.</p>
+<figure style="align: center;">
+    <img src="images/01particionado.jpg">
+    <figcaption>Particionado de los datos</figcaption>
+</figure>
+
+<p>El particionado no es único de las bases de datos NoSQL. Las bases de datos relacionales también lo soportan. Si en un sistema relacional queremos particionar los datos, podemos distinguir entre particionado:</p>
+<ul>
+<li><strong>Horizontal</strong>: diferentes filas en diferentes particiones.</li>
+<li><strong>Vertical</strong>: diferentes columnas en particiones distintas.</li>
+</ul>
+<p>En el caso de las bases de datos NoSQL, el particionado depende del modelo de la base de datos:</p>
+<ul>
+<li>Los almacenes clave-valor y las bases de datos documentales normalmente se particionan horizontalmente.</li>
+<li>Las bases de datos basados en columnas se pueden particionar horizontal o verticalmente.</li>
+</ul>
+<p>Escalar horizontalmente una base de datos relacional entre muchas instancias de servidores se puede conseguir pero normalmente conlleva el uso de SANs (<em>Storage Area Networks</em>) y otras triquiñuelas para hacer que el hardware actúe como un único servidor.</p>
+<p>Como los sistemas SQL no ofrecen esta prestación de forma nativa, los equipos de desarrollo se las tienen que ingeniar para conseguir desplegar múltiples bases de datos relacionales en varias máquinas. Para ello:</p>
+<ul>
+<li>Los datos se almacenan en cada instancia de base de datos de manera autónoma</li>
+<li>El código de aplicación se desarrolla para distribuir los datos y las consultas y agregar los resultados de los datos a través de todas las instancias de bases de datos</li>
+<li>Se debe desarrollar código adicional para gestionar los fallos sobre los recursos, para realizar joins entre diferentes bases de datos, balancear los datos y/o replicarlos, etc…​</li>
+</ul>
+<p>Además, muchos beneficios de las bases de datos como la integridad transaccional se ven comprometidos o incluso eliminados al emplear un escalado horizontal.</p>
+<h4 id="auto-sharding">Auto-sharding<a class="headerlink" href="#auto-sharding" title="Permanent link">&para;</a></h4>
+<p>Por contra, las bases de datos NoSQL normalmente soportan <strong><em>auto-sharding</em></strong>, lo que implica que de manera nativa y automáticamente se dividen los datos entre un número arbitrario de servidores, sin que la aplicación sea consciente de la composición del pool de servidores. Los datos y las consultas se balancean entre los servidores.</p>
+<p>El particionado se realiza mediante un método consistente, como puede ser:</p>
+<ul>
+<li>Por <strong>rangos</strong> de su id: por ejemplo "los usuarios del 1 al millón están en la partición 1" o "los usuarios cuyo nombre va de la A a la E" en una partición, en otra de la M a la Q, y de la R a la Z en la tercera.</li>
+<li>Por <strong>listas</strong>: dividiendo los datos por la categoría del dato, es decir, en el caso de datos sobre libros, las novelas en una partición, las recetas de cocina en otra, etc..</li>
+<li>Mediante un función <strong><em>hash</em></strong>, la cual devuelve un valor para un elemento que determine a que partición pertenece.</li>
+</ul>
+<h4 id="cuando-particionar">Cuando particionar<a class="headerlink" href="#cuando-particionar" title="Permanent link">&para;</a></h4>
+<p>El motivo para particionar los datos se debe a:</p>
+<ul>
+<li>limitaciones de almacenamiento: los datos no caben en un único servidor, tanto a nivel de disco como de memoria RAM.</li>
+<li>rendimiento: al balancear la carga entre particiones las escrituras serán más rápidas que al centrarlas en un único servidor.</li>
+<li>disponibilidad: si un servidor esta ocupado, otro servidor puede devolver los datos. La carga de los servidores se reduce.</li>
+</ul>
+<p>No particionaremos los datos cuando la cantidad sea pequeña, ya que el hecho de distribuir los datos conlleva unos costes que pueden no compensar con un volumen de datos insuficiente. Tampoco esperaremos a particionar cuando tengamos muchísimos datos, ya que el proceso de particionado puede provocar sobrecarga del sistema.</p>
+<p>La nube facilita de manera considerable este escalado, mediante proveedores como Amazon Web Services el cual ofrece virtualmente una capacidad ilimitada bajo demanda, y preocupándose de todas las tareas necesarias para la administración de la base de datos.</p>
+<p>Los desarrolladores ya no necesitamos construir plataformas complejas para nuestras aplicaciones, de modo que nos podemos centrar en escribir código de aplicación. Una granja de servidores con <em>commodity hardware</em> puede ofrecer el mismo procesamiento y capacidad de almacenamiento que un único servidor de alto rendimiento por mucho menos coste.</p>
+<h3 id="replicacion">Replicación<a class="headerlink" href="#replicacion" title="Permanent link">&para;</a></h3>
+<p>La replicación mantiene copias idénticas de los datos en múltiples servidores, lo que facilita que las aplicaciones siempre funcionen y los datos se mantengan seguros, incluso si alguno de los servidores sufre algún problema.</p>
+<p>La mayoría de las bases de datos NoSQL también soportan la replicación automática, lo que implica una alta disponibilidad y recuperación frente a desastres sin la necesidad de aplicaciones de terceros encargadas de ello. Desde el punto de vista del desarrollador, el entorno de almacenamiento es virtual y ajeno al código de aplicación.</p>
+<figure style="align: center;">
+    <img src="images/01replicacion.jpg">
+    <figcaption>Replicación de los datos</figcaption>
+</figure>
+
+<p>La replicación de los datos se utiliza para alcanzar:</p>
+<ul>
+<li><strong>escalabilidad</strong>, incrementando el rendimiento al poder distribuir las consultas en diferentes nodos, y mejorar la redundancia al permitir que cada nodo tenga una copia de los datos.</li>
+<li><strong>disponibilidad</strong>, ofreciendo tolerancia a fallos de hardware o corrupción de la base de datos. Al replicar los datos vamos a poder tener una copia de la base de datos, dar soporte a un servidor de datos agregados, o tener nodos a modo de copias de seguridad que pueden tomar el control en caso de fallo.</li>
+<li><strong>aislamiento</strong> (la i en ACID - <em>isolation</em>), entendido como la propiedad que define cuando y cómo al realizar cambios en un nodo se propagan al resto de nodos. Si replicamos los datos podemos crear copias sincronizadas para separar procesos de la base de datos de producción, pudiendo ejecutar informes, analítica de datos o copias de seguridad en nodos secundarios de modo que no tenga un impacto negativo en el nodo principal, así como ofrecer un sistema sencillo para separar el entorno de producción del de preproducción.</li>
+</ul>
+<div class="admonition caution">
+<p class="admonition-title">Replicación vs particionado</p>
+<p>No hay que confundir la replicación (copia de los datos en varias máquinas) con el particionado (cada máquina tiene un subconjunto de los datos). El entorno más seguro y con mejor rendimiento es aquel que tiene los datos particionados y replicados (cada máquina que tiene un subconjunto de los datos está replicada en 2 o más).</p>
+</div>
+<h3 id="implantando-nosql">Implantando NoSQL<a class="headerlink" href="#implantando-nosql" title="Permanent link">&para;</a></h3>
+<p>Normalmente, las empresas empezarán con una prueba de baja escalabilidad de una base de datos NoSQL, de modo que les permita comprender la tecnología asumiendo muy poco riesgo. La mayoría de las bases de datos NoSQL también son open-source, y por tanto se pueden probar sin ningún coste extra. Al tener unos ciclos de desarrollo más rápidos, las empresas pueden innovar con mayor velocidad y mejorar la experiencia de sus cliente a un menor coste.</p>
+<p>Elegir la base de datos correcta para el proyecto es un tema importante. Se deben considerar las diferentes alternativas a las infraestructuras legacy teniendo en cuenta varios factores:</p>
+<ul>
+<li>la escalabilidad o el rendimiento más allá de las capacidades del sistema existente</li>
+<li>identificar alternativas viables respecto al software propietario</li>
+<li>incrementar la velocidad y agilidad del proceso de desarrollo</li>
+</ul>
+<p>Así pues, al elegir un base de datos hemos de tener en cuenta las siguientes dimensiones:</p>
+<ul>
+<li>Modelo de Datos: A elegir entre un modelo documental, basado en columnas, de grafos o mediante clave-valor.</li>
+<li>Modelo de Consultas: Dependiendo de la aplicación, puede ser aceptable un modelo de consultas que sólo accede a los registros por su clave primaria. En cambio, otras aplicaciones pueden necesitar consultar por diferentes valores de cada registro. Además, si la aplicación necesita modificar los registros, la base de datos necesita consultar los datos por un índice secundario.</li>
+<li>Modelo de Consistencia: Los sistemas NoSQL normalmente mantienen múltiples copias de los datos para ofrecer disponibilidad y escalabilidad al sistema, lo que define la consistencia del mismo. Los sistemas NoSQL tienden a ser consistentes o eventualmente consistentes.</li>
+<li>APIs: No existe un estándar para interactuar con los sistemas NoSQL. Cada sistema presenta diferentes diseños y capacidades para los equipos de desarrollo. La madurez de un API puede suponer una inversión en tiempo y dinero a la hora de desarrollar y mantener el sistema NoSQL.</li>
+<li>
+<p>Soporte Comercial y de la Comunidad: Los usuarios deben considerar la salud de la compañia o de los proyectos al evaluar una base de datos. El producto debe evolucionar y se mantenga para introducir nuevas prestaciones y corregir fallos. Una base de datos con una comunidad fuerte de usuarios:</p>
+<ul>
+<li>permite encontrar y contratar desarrolladores con destrezas en el producto.</li>
+<li>facilita encontrar información, documentación y ejemplos de código.</li>
+<li>ayuda a las empresas a retener el talento.</li>
+<li>favorece que otras empresas de software integren sus productos y participen en el ecosistema de la base de datos.</li>
+</ul>
+</li>
+</ul>
+<h4 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h4>
+<p>Una vez conocemos los diferentes sistemas y qué elementos puede hacer que nos decidamos por una solución u otra, conviene repasar los casos de uso más comunes:</p>
+<ul>
+<li>Si vamos a crear una aplicación web cuyo campos sean personalizables, usaremos una solución documental.</li>
+<li>Como una capa de caché, mediante un almacén clave-valor.</li>
+<li>Para almacenar archivos binarios sin preocuparse de la gestión de permisos del sistema de archivos, y poder realizar consultas sobre sus metadatos, ya sea mediante una solución documental o un almacén clave-valor.</li>
+<li>Para almacenar un enorme volumen de datos, donde la consistencia no es lo más importante, pero si la disponibilidad y su capacidad de ser distribuida, mediante una solución documental o basada en columnas.</li>
+</ul>
+<h2 id="modelos-de-datos">Modelos de Datos<a class="headerlink" href="#modelos-de-datos" title="Permanent link">&para;</a></h2>
+<p>La principal clasificación de los sistemas de bases de datos NoSQL se realiza respecto a los diferentes modelos de datos:</p>
+<h3 id="documental">Documental<a class="headerlink" href="#documental" title="Permanent link">&para;</a></h3>
+<p>Mientras las bases de datos relacionales almacenan los datos en filas y columnas, las bases de datos documentales emplean documentos. Estos documentos utilizan una estructura JSON, ofreciendo un modo natural e intuitivo para modelar datos de manera similar a la orientación a objetos, donde cada documento es un objeto.</p>
+<figure style="align: center;">
+    <img src="images/01document.png" width="300px">
+    <figcaption>Representación de un documento</figcaption>
+</figure>
+
+<p>Los documentos se agrupan en colecciones o bases de datos, dependiendo del sistema, lo que permite agrupar documentos.</p>
+<p>Los documentos contienen uno o más campos, donde cada campo contiene un valor con un tipo, ya sea cadena, fecha, binario o array u otro documento. En vez de extender los datos entre múltiples columnas y tablas, cada registro y sus datos asociados se almacenan de manera unida en un único documento. Esto simplifica el acceso a los datos y reduce (y en ocasiones elimina) la necesidad de <em>joins</em> y transacciones complejas.</p>
+<p>Dicho de otra manera, en las bases de datos documentales, los datos que van juntos y se emplean juntos, se almacenan juntos.</p>
+<h4 id="caracteristicas_1">Características<a class="headerlink" href="#caracteristicas_1" title="Permanent link">&para;</a></h4>
+<p>En una base de datos documental, la noción de esquema es dinámico: cada documento puede contener diferentes campos. Esta flexibilidad puede ser útil para modelar datos desestructurados y polimórficos, lo que facilita la evolución del desarrollo al permitir añadir nuevos campos de manera dinámica.</p>
+<p>Perfectamente podemos tener dos documentos que pertenecen a la misma colección, pero con atributos diferentes. Por ejemplo, un primer documento puede ser el siguiente:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;BW001&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nt">&quot;nombre&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bruce&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nt">&quot;apellido&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Wayne&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">  </span><span class="nt">&quot;edad&quot;</span><span class="w">      </span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">  </span><span class="nt">&quot;salario&quot;</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="mi">10000000</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Mientras que un segundo documento dentro de la misma colección podría ser:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;JK1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nt">&quot;nombre&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Joker&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nt">&quot;edad&quot;</span><span class="w">      </span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nt">&quot;salario&quot;</span><span class="w">    </span><span class="p">:</span><span class="w"> </span><span class="mi">5000000</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="nt">&quot;direccion&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">               </span><span class="c1">// (1)!</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nt">&quot;calle&quot;</span><span class="w">   </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Asilo Arkham&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nt">&quot;ciudad&quot;</span><span class="w">  </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Gotham&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nt">&quot;proyectos&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">               </span><span class="c1">// (2)!</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="s2">&quot;desintoxicacion-virus&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="s2">&quot;top-secret-007&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<ol>
+<li>Un objeto o subdocumento permite agrupar información similar a una relación 1:1 de un modelo relacional. De esta manera, no necesitamos una tabla <code>Direccion</code>.</li>
+<li>Un array puede contener valores o documentos, de manera que podríamos tener un array de documentos, permitiendo agrupar información similar a una relación 1:N de un modelo relacional. De esta manera, no necesitamos una tabla <code>Proyectos</code>.</li>
+</ol>
+<p>Normalmente, cada documento contiene un elemento clave, sobre el cual se puede obtener un documento de manera unívoca. De todos modos, las bases de datos documentales ofrecen un completo mecanismo de consultas, posibilitando obtener información por cualquier campo del documento. Algunos productos ofrecen opciones de indexado para optimizar las consultas, como pueden ser índices compuestos, dispersos, con tiempo de vida (TTL), únicos, de texto o geoespaciales.</p>
+<p>Además, estos sistemas ofrecen productos que permiten analizar los datos, mediante funciones de agregación o implementación de MapReduce.</p>
+<p>Respecto a la modificaciones, los documentos se pueden actualizar en una única sentencia, sin necesidad de dar rodeos para elegir los datos a modificar.</p>
+<h4 id="casos-de-uso_1">Casos de uso<a class="headerlink" href="#casos-de-uso_1" title="Permanent link">&para;</a></h4>
+<p>Las bases de datos documentales sirven para propósito general, válidos para un amplio abanico de aplicaciones gracias a la flexibilidad que ofrece el modelo de datos, lo que permite consultar cualquier campo y modelar de manera natural de manera similar a la programación orientada a objetos.</p>
+<p>Entre los casos de éxito de estos sistemas cabe destacar:</p>
+<ul>
+<li>Sistemas de flujo de eventos: entre diferentes aplicaciones dentro de una empresa</li>
+<li>Gestores de Contenido, plataformas de Blogging: al almacenar los documentos mediante JSON, facilita la estructura de datos para guardar los comentarios, registros de usuarios, etc…​</li>
+<li>Analíticas Web, datos en Tiempo Real: al permitir modificar partes de un documento, e insertar nuevos atributos a un documento cuando se necesita una nueva métrica</li>
+<li>Aplicaciones eCommerce: conforme las aplicaciones crecen, el esquema también lo hace</li>
+</ul>
+<p>Si nos centramos en aquellos casos donde no conviene este tipo de sistemas podemos destacar:</p>
+<ul>
+<li>Sistemas operacionales con transacciones complejas.</li>
+<li>Sistemas con consultas agregadas que modifican su estructura. Si los criterios de las consultas no paran de cambiar, acabaremos normalizando los datos.</li>
+</ul>
+<p>Los productos más destacados son:</p>
+<ul>
+<li>MongoDB: <a href="http://www.mongodb.com">http://www.mongodb.com</a>. Esta base de datos la vamos a estudiar en profundidad en esta unidad de trabajo.</li>
+<li>CouchDB: <a href="http://couchdb.apache.org">http://couchdb.apache.org</a></li>
+</ul>
+<h3 id="clave-valor">Clave-Valor<a class="headerlink" href="#clave-valor" title="Permanent link">&para;</a></h3>
+<p>Un almacén clave-valor es una simple tabla <em>hash</em> donde todos los accesos a la base de datos se realizan a través de la clave primaria.</p>
+<p>Desde una perspectiva de modelo de datos, los almacenes de clave-valor son los más básicos.</p>
+<p>Su funcionamiento es similar a tener una tabla relacional con dos columnas, por ejemplo <code>id</code> y <code>nombre</code>, siendo <code>id</code> la columna utilizada como clave y <code>nombre</code> como valor. Mientras que en una base de datos en el campo <code>nombre</code> sólo podemos almacenar datos de tipo cadena o numérico, en un almacén clave-valor, el valor puede ser de un dato simple o un objeto. Cuando una aplicación accede mediante la clave y el valor, se almacenan el par de elementos. Si la clave ya existe, el valor se modifica.</p>
+<figure style="align: center;">
+    <img src="images/01key-value.jpg" width="400px">
+    <figcaption>Representación de un almacén clave-valor</figcaption>
+</figure>
+
+<p>El cliente puede tanto obtener el valor por la clave, asignar un valor a una clave o eliminar una clave del almacén. El valor, sin embargo, es opaco al sistema, el cual no sabe que hay dentro de él, ya que los datos sólo se pueden consultar por la clave, lo cual puede ser un inconveniente. Así pues, la aplicación es responsable de saber qué hay almacenado en cada valor.</p>
+<p>Por ejemplo, <a href="https://riak.com">Riak</a> utiliza el concepto de <em>bucket</em> (cubo) como una manera de agrupar claves, de manera similar a una tabla.</p>
+<p>Por ejemplo, <em>Riak</em> permite interactuar con la base de datos mediante peticiones HTTP:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl -v -X PUT &lt;http://localhost:8091/riak/heroes/ace&gt; -H <span class="s2">&quot;Content-Type: application/json&quot;</span> -d <span class="o">{</span><span class="s2">&quot;nombre&quot;</span> : <span class="s2">&quot;Batman&quot;</span>, <span class="s2">&quot;color&quot;</span> : <span class="s2">&quot;Negro&quot;</span><span class="o">}</span>
+</code></pre></div>
+<p>Algunos almacenes clave-valor, como puede ser <a href="https://redis.io">Redis</a>, permiten almacenar datos con cualquier estructura, como por ejemplos listas, conjuntos, hashes y pueden realizar operaciones como intersección, unión, diferencia y rango.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Comandos Redis</label><label for="__tabbed_1_2">Python</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>SET nombre &quot;Bruce Wayne&quot;      // String
+<span class="linenos" data-linenos="2 "></span>HSET heroe nombre &quot;Batman&quot;    // Hash – set
+<span class="linenos" data-linenos="3 "></span>HSET heroe color &quot;Negro&quot;
+<span class="linenos" data-linenos="4 "></span>SADD &quot;heroe:amigos&quot; &quot;Robin&quot; &quot;Alfred&quot;   // Set – create/update
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">redis</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">()</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">r</span><span class="o">.</span><span class="n">mset</span><span class="p">({</span><span class="s2">&quot;Croatia&quot;</span><span class="p">:</span> <span class="s2">&quot;Zagreb&quot;</span><span class="p">,</span> <span class="s2">&quot;Bahamas&quot;</span><span class="p">:</span> <span class="s2">&quot;Nassau&quot;</span><span class="p">})</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">r</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Bahamas&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># b&#39;Nassau&#39;</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Estas prestaciones hacen que <em>Redis</em> se extrapole a ámbitos ajenos a un almacén clave-valor. Otra característica que ofrecen algunos almacenes es que permiten crear un segundo nivel de consulta o incluso definir más de una clave para un mismo objeto.</p>
+<p>Como los almacenes clave-valor siempre utilizan accesos por clave primaria, de manera general tienen un gran rendimiento y son fácilmente escalables.</p>
+<p>Si queremos que su rendimiento sea máximo, pueden configurarse para que mantengan la información en memoria y que se serialice de manera periódica, a costa de tener una consistencia eventual de los datos.</p>
+<h4 id="casos-de-uso_2">Casos de uso<a class="headerlink" href="#casos-de-uso_2" title="Permanent link">&para;</a></h4>
+<p>Este modelo es muy útil para representar datos desestructurados o polimórficos, ya que no fuerzan ningún esquema más allá de los pares de clave-valor.</p>
+<p>Entre los casos de uso de estos almacenes podemos destacar el almacenaje de:</p>
+<ul>
+<li>Información sobre la sesión de navegación (<em>sessionid</em>)</li>
+<li>Perfiles de usuario, preferencias</li>
+<li>Datos del carrito de la compra</li>
+<li>Cachear datos</li>
+</ul>
+<p>Todas estas operaciones van a asociada a operaciones de recuperación, modificación o inserción de los datos de una sola vez, de ahí su elección.</p>
+<p>En cambio, no conviene utilizar estos almacenes cuando queremos realizar:</p>
+<ul>
+<li>Relaciones entre datos</li>
+<li>Transacciones entre varias operaciones</li>
+<li>Consultas por los datos del valor</li>
+<li>Operaciones con conjuntos de claves</li>
+</ul>
+<p>Los almacenes más empleados son:</p>
+<ul>
+<li>Riak: <a href="https://riak.com">https://riak.com</a></li>
+<li>Redis: <a href="http://redis.io">http://redis.io</a></li>
+<li>AWS DynamoDB: <a href="http://aws.amazon.com/dynamodb">http://aws.amazon.com/dynamodb</a></li>
+<li>Voldemort: <a href="http://www.project-voldemort.com/voldemort">http://www.project-voldemort.com/voldemort</a> implementación open-source de <em>Amazon DynamoDB</em></li>
+</ul>
+<h3 id="basado-en-columnas">Basado en columnas<a class="headerlink" href="#basado-en-columnas" title="Permanent link">&para;</a></h3>
+<p>Las bases de datos relacionales utilizan la fila como unidad de almacenamiento, lo que permite un buen rendimiento de escritura. Sin embargo, cuando las escrituras son ocasionales y es más comun tener que leer unas pocas columnas de muchas filas a la vez, es mejor utilizar como unidad de almacenamiento un grupos de columnas. Es decir, lo que hacemos es girar el modelo 90 grados, de manera que los registros se almacenan en columnas en vez de hacerlo por filas.</p>
+<p>Supongamos que tenemos los siguientes datos:</p>
+<figure style="align: center;">
+    <img src="images/04formatos-tabla.png" width="400">
+    <figcaption>Ejemplo de tabla</figcaption>
+</figure>
+
+<p>Dependiendo del almacenamiento en filas o columnas tendríamos la siguiente representación:</p>
+<figure style="align: center;">
+    <img src="images/04formatos-filacolumna.png">
+    <figcaption>Comparación filas y columnas</figcaption>
+</figure>
+
+<p>En un formato columnar los datos del mismo tipo se agrupan, lo que permite codificarlos/comprimirlos, lo que mejora el rendimiento de acceso y reduce el tamaño:</p>
+<figure style="align: center;">
+    <img src="images/04formatos-column-encoding.png">
+    <figcaption>Comparación filas y columnas</figcaption>
+</figure>
+
+<div class="admonition question">
+<p class="admonition-title">Autoevaluación</p>
+<p>Si tenemos que añadir un nuevo registro ¿Qué modelo será más eficiente?</p>
+</div>
+<p>Sin embargo, a medida que se incrementa la utilización de análisis de datos en memoria, con soluciones como <em>Spark</em>, los beneficios relativos de la base de datos columnares comparados con los de las bases de datos orientadas a filas pueden llegar a ser menos importantes.</p>
+<h4 id="representacion">Representación<a class="headerlink" href="#representacion" title="Permanent link">&para;</a></h4>
+<p>Un modelo basado en columnas se representa como una estructura agregada de dos niveles. El primer nivel formado por un almacén clave-valor, siendo la clave el identificador de la fila, y el valor un nuevo mapa con los datos agregados de la fila (familias de columnas). Los valores de este segundo nivel son las columnas. De este modo, podemos acceder a los datos de un fila, o a una determinada columna:</p>
+<figure style="align: center;">
+    <img src="images/01column.jpg" width="600px">
+    <figcaption>Representación de un almacén basado en columnas</figcaption>
+</figure>
+
+<div class="admonition info">
+<p class="admonition-title">BigTable</p>
+<p>Los modelos de datos basados en columnas se basan en la implementación de <em>Google</em> de la tecnología <em>BigTable</em> (<a href="http://research.google.com/archive/bigtable.html">http://research.google.com/archive/bigtable.html</a>), la cual consiste en columnas separadas y sin esquema, a modo de mapa de dos niveles.</p>
+</div>
+<p>Así pues, los almacenes basados en columnas utilizan un mapa ordenado multi-dimensional y distribuido para almacenar los datos. Están pensados para que cada fila tenga una gran número de columnas (del orden del millón), almacenando las diferentes versiones que tenga una fila (pudiendo almacenar del orden de miles de millones de filas).</p>
+<h4 id="familias-de-columnas">Familias de columnas<a class="headerlink" href="#familias-de-columnas" title="Permanent link">&para;</a></h4>
+<p>Una <strong>columna</strong> consiste en un pareja <code>name</code>-<code>value</code>, donde el nombre hace de clave. Además, contiene un atributo <code>timestamp</code> para poder expirar datos y resolver conflictos de escritura.</p>
+<p>Un ejemplo de columna podría ser:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bruce&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">12345667890</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Una fila es una colección de columnas agrupadas a una clave. Si agrupamos filas similares tendremos una <strong>familia de columnas</strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1">// familia de columnas</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="c1">// fila</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nt">&quot;tim-gordon&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tim&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="err">apellido</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Gordon&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="err">ul</span><span class="kc">t</span><span class="err">imaVisi</span><span class="kc">ta</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2015/12/12&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="c1">// fila</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nt">&quot;bruce-wayne&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bruce&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="err">apellido</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Wayne&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="err">lugar</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Gotham&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Con este ejemplo, podemos ver como las diferentes filas de la misma tabla (familia de columnas) no tienen por que compartir el mismo conjunto de columnas.</p>
+<p>Además, las columnas se pueden anidar dentro de otras formando <strong>super-columnas</strong>, donde el valor es un nuevo mapa de columnas.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;libro:978-84-16152-08-7&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">value</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="err">au</span><span class="kc">t</span><span class="err">or</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Grant Morrison&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="kc">t</span><span class="err">i</span><span class="kc">tul</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Batman - Asilo Arkham&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="err">isb</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;978-84-16152-08-7&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Cuando se utilizan super columnas para crear familias de columnas tendremos una familia de super columnas.</p>
+<p>En resumen, las bases de datos basadas en columnas, almacenan los datos en familias de columnas como filas, las cuales tienen muchas columnas asociadas al identificador de una fila. Las familias de columnas son grupos de datos relacionados, a las cuales normalmente se accede de manera conjunta.</p>
+<h4 id="operaciones">Operaciones<a class="headerlink" href="#operaciones" title="Permanent link">&para;</a></h4>
+<p>A la hora de consultar los datos, éstos se pueden obtener por la clave primaria de la familia. Así pues, podemos obtener toda una familia, o la columna de una familia:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">//</span> <span class="n">Mediante</span> <span class="n">Cassandra</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">GET</span> <span class="n">Clientes</span><span class="p">[</span><span class="s1">&#39;bruce-wayne&#39;</span><span class="p">];</span>  <span class="o">//</span> <span class="n">familia</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">GET</span> <span class="n">Clientes</span><span class="p">[</span><span class="s1">&#39;bruce-wayne&#39;</span><span class="p">][</span><span class="s1">&#39;lugar&#39;</span><span class="p">];</span> <span class="o">//</span> <span class="n">columna</span>
+</code></pre></div>
+<p>Algunos productos ofrecen un soporte limitado para índices secundarios, pero con restricciones. Por ejemplo, <em>Cassandra</em> ofrece el lenguaje CQL similar a SQL pero sin joins, ni subconsultas donde las restricciones de <em>where</em> son sencillas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Clientes</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="k">SELECT</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="n">email</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Clientes</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="k">SELECT</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="n">email</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">Clientes</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">lugar</span><span class="o">=</span><span class="s1">&#39;Gotham&#39;</span><span class="w"></span>
+</code></pre></div>
+<p>Las actualizaciones se realizan en dos pasos: primero encontrar el registro y segundo modificarlo. En estos sistemas, una modificación puede suponer una reescritura completa del registro independientemente que hayan cambiado unos pocos <em>bytes</em> del mismo.</p>
+<h4 id="casos-de-uso_3">Casos de uso<a class="headerlink" href="#casos-de-uso_3" title="Permanent link">&para;</a></h4>
+<p>Las bases de datos columnares se han empleado durante décadas ofreciendo beneficios a las aplicaciones de negocio modernas, como la analítica de datos, <em>business intelligence</em> y <em>data warehousing</em>.</p>
+<p>Son multipropósito, aunque su uso se centra en el mercado del big data, la analítica de datos, cubos multidimensionales OLAP y/o almacenar metadatos y realizar analítica en tiempo real.</p>
+<p>Además de poder comprimir los datos, los datos están auto-indexados, lo que implica que utiliza menos espacio en disco, y acelera la ejecución de consultas agregadas entre múltiples tablas que implica el uso de joins.</p>
+<p>En cambio, no se recomienda su uso en aplicaciones de procesamiento transaccional (OLTP), ya que las bases de datos relaciones gestionan mejor el procesamiento concurrente y el aislamiento de las operaciones.</p>
+<p>Los productos más destacados son:</p>
+<ul>
+<li>HBase : <a href="http://hbase.apache.org">http://hbase.apache.org</a>, el cual se basa en Hadoop - <a href="http://hadoop.apache.org">http://hadoop.apache.org</a></li>
+<li>Cassandra : <a href="http://cassandra.apache.org">http://cassandra.apache.org</a></li>
+<li>Amazon Redshift: <a href="https://aws.amazon.com/es/redshift/">https://aws.amazon.com/es/redshift/</a></li>
+</ul>
+<h3 id="grafos">Grafos<a class="headerlink" href="#grafos" title="Permanent link">&para;</a></h3>
+<p>Las bases de datos de grafos almacenan entidades y las relaciones entre estas entidades. Las entidades se conocen como nodos, los cuales tienen propiedades. Cada nodo es similar a una instancia de un objeto. Las relaciones, también conocidas como vértices, a su vez tienen propiedades, y su sentido es importante.</p>
+<figure style="align: center;">
+    <img src="images/01grafo.png" width="500px">
+    <figcaption>Representación de un grafo</figcaption>
+</figure>
+
+<p>Los nodos se organizan mediante relaciones que facilitan encontrar patrones de información existente entre los nodos. Este tipo de organización permite almacenar los datos una vez e interpretar los datos de diferentes maneras dependiendo de sus relaciones.</p>
+<p>Los nodos son entidades que tienen propiedades, tales como el nombre. Por ejemplo, en el gráfico cada nodo tiene una propiedad <code>name</code>. También podemos ver que las relaciones tienen tipos, como <code>label</code>, <code>since</code>, etc…​ Estas propiedades permiten organizar los nodos. Las relaciones pueden tener múltiples propiedades, y además tienen dirección, con lo cual si queremos incluir bidireccionalidad tenemos que añadir dos relaciones en sentidos opuestos. Tanto los nodos como las relaciones tienen un atributo <code>id</code> que los identifica.</p>
+<p>Por ejemplo, podemos comenzar a crear el grafo anterior mediante Neo4J de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">Node</span><span class="w"> </span><span class="n">alice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graphDb</span><span class="p">.</span><span class="na">createNode</span><span class="p">();</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="n">alice</span><span class="p">.</span><span class="na">setProperty</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Alice&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">Node</span><span class="w"> </span><span class="n">bob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">graphDb</span><span class="p">.</span><span class="na">createNode</span><span class="p">();</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="n">bob</span><span class="p">.</span><span class="na">setProperty</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bob&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span>
+<span class="linenos" data-linenos="6 "></span><span class="n">alice</span><span class="p">.</span><span class="na">createRelationshipTo</span><span class="p">(</span><span class="n">bob</span><span class="p">,</span><span class="w"> </span><span class="n">FRIEND</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="n">bob</span><span class="p">.</span><span class="na">createRelationshipTo</span><span class="p">(</span><span class="n">alice</span><span class="p">,</span><span class="w"> </span><span class="n">FRIEND</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<p>Los nodos permiten tener diferentes tipos de relaciones entre ellos y así representar relaciones entre las entidades del dominio, y tener relaciones secundarias para características como categoría, camino, árboles de tiempo, listas enlazas para acceso ordenado, etc…​ Al no existir un límite en el número ni en el tipo de relaciones que puede tener un nodo, todas se pueden representar en la misma base de datos.</p>
+<h4 id="traversing">Traversing<a class="headerlink" href="#traversing" title="Permanent link">&para;</a></h4>
+<p>Una vez tenemos creado un grafo de nodos y relaciones, podemos consultar el grafo de muchas maneras; por ejemplo "obtener todos los nodos que son miembros del grupo de ajedrez y que tienen más de 20 años". Realizar una consulta se conoce como hacer un <em>traversing</em> (recorrido) del mismo.</p>
+<p>Ejemplo de Traversing mediante Neo4J:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">Node</span><span class="w"> </span><span class="n">ajedrez</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nodeIndex</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;chess&quot;</span><span class="p">).</span><span class="na">getSingle</span><span class="p">();</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="n">allRelationships</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ajedrez</span><span class="p">.</span><span class="na">getRelationships</span><span class="p">(</span><span class="n">Direction</span><span class="p">.</span><span class="na">INCOMING</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<p>Una ventaja a destacar de las bases de datos basadas en grafos es que podemos cambiar los requisitos de <em>traversing</em> sin tener que cambiar los nodos o sus relaciones.</p>
+<p>En las bases de datos de grafos, recorrer las relaciones es muy rápido, ya que no se calculan en tiempo de consulta, sino que se persisten como una relación, y por tanto no hay que hacer ningún cálculo.</p>
+<p>En cambio, en una base de datos relacional, para crear una estructura de grafo se realiza para una relación sencilla (<em>¿Quien es mi jefe?"</em>). Para poder añadir otras relaciones necesitamos muchos cambios en el esquema y trasladar datos entre tablas. Además, necesitamos de antemano saber que consultas queremos realizar para modelar las tablas y las relaciones acorde a las consultas.</p>
+<p>Así pues, estos sistemas ofrecen modelos ricos de consultas donde se pueden investigar las relaciones simples y complejas entre los nodos para obtener información directa e indirecta de los datos del sistemas. Los tipos de análisis que se realizan sobre estos sistema se ciñen a los tipos de relación existente entre los datos.</p>
+<h4 id="casos-de-uso_4">Casos de uso<a class="headerlink" href="#casos-de-uso_4" title="Permanent link">&para;</a></h4>
+<p>Mientras que el modelo de grafos no es muy intuitivo y tiene una importante curva de aprendizaje, se puede usar en un gran número de aplicaciones.</p>
+<p>Su principal atractivo es que facilitan almacenar las relaciones entre entidades de una aplicación, como por ejemplo en una red social, o las intersecciones existentes entre carreteras. Es decir, se emplean para almacenar datos que se representan como nodos interconectados.</p>
+<p>Por lo tanto, los casos de uso son:</p>
+<ul>
+<li>Datos conectados: redes sociales con diferentes tipos de conexiones entre los usuarios.</li>
+<li>Enrutamiento, entrega o servicios basados en la posición: si las relaciones almacenan la distancia entre los nodos, podemos realizar consultas sobre lugares cercanos, trayecto más corto, etc…​</li>
+<li>Motores de recomendaciones: de compras, de lugares visitados, etc…​</li>
+</ul>
+<p>En cambio, no se recomienda su uso cuando necesitemos modificar todos o un subconjunto de entidades, ya que modificar una propiedad en todos los nodos es una operación compleja.</p>
+<p>Los productos más destacados son:</p>
+<ul>
+<li>Neo4j: <a href="http://neo4j.com">http://neo4j.com</a></li>
+<li>ArangoDB: <a href="https://www.arangodb.com/">https://www.arangodb.com/</a></li>
+<li>Apache Giraph: <a href="https://giraph.apache.org/">https://giraph.apache.org/</a></li>
+<li>Amazon Neptune: <a href="https://aws.amazon.com/es/neptune/">https://aws.amazon.com/es/neptune/</a></li>
+</ul>
+<h2 id="consistencia">Consistencia<a class="headerlink" href="#consistencia" title="Permanent link">&para;</a></h2>
+<p>En un sistema consistente, las escrituras de una aplicación son visibles en siguientes consultas. Con una consistencia eventual, las escrituras no son visibles inmediatamente.</p>
+<p>Por ejemplo, en un sistema de control de stock, si el sistema es consistente, cada consulta obtendrá el estado real del inventario, mientras que si tiene consistencia eventual, puede que no sea el estado real en un momento concreto pero terminará siéndolo en breve.</p>
+<h3 id="sistemas-consistentes">Sistemas consistentes<a class="headerlink" href="#sistemas-consistentes" title="Permanent link">&para;</a></h3>
+<p>Cada aplicación tiene diferentes requisitos para la consistencia de los datos. Para muchas aplicaciones, es imprescindible que los datos sean consistentes en todo momento. Como los equipos de desarrollo han estado trabajo con un modelo de datos relacional durante décadas, este enfoque parece natural. Sin embargo, en otras ocasiones, la consistencia eventual es un traspiés aceptable si conlleva una mayor flexibilidad en la disponibilidad del sistema.</p>
+<p>Las bases de datos documentales y de grafos pueden ser consistentes o eventualmente consistentes. Por ejemplo, <em>MongoDB</em> ofrece un consistencia configurable. De manera predeterminada, los datos son consistentes, de modo que todas las escrituras y lecturas se realizan sobre la copia principal de los datos. Pero como opción, las consultas de lectura, se pueden realizar con las copias secundarias donde los datos tendrán consistencia eventual. La elección de la consistencia se realiza a nivel de consulta.</p>
+<h3 id="sistemas-de-consistencia-eventual">Sistemas de consistencia eventual<a class="headerlink" href="#sistemas-de-consistencia-eventual" title="Permanent link">&para;</a></h3>
+<p>Con los sistemas eventualmente consistentes, hay un período de tiempo en el que todas las copias de los datos no están sincronizados. Esto puede ser aceptable para aplicaciones de sólo-lectura y almacenes de datos que no cambian frecuentemente, como los archivos históricos. Dentro del mismo saco podemos meter las aplicaciones con alta tasa de escritura donde las lecturas sean poco frecuentes, como un archivo de log.</p>
+<p>Un claro ejemplo de sistema eventualmente consistente es el servicio DNS, donde tras registrar un dominio, puede tardar varios días en propagar los datos a través de Internet, pero siempre están disponibles aunque contenga una versión antigua de los datos.</p>
+<p>Respecto a las bases de datos NoSQL, los almacenes de clave-valor y los basados en columnas son sistemas eventualmente consistentes. Estos tienen que soportar conflictos en las actualizaciones de registros individuales.</p>
+<p>Como las escrituras se pueden aplicar a cualquier copia de los datos, puede ocurrir, y no sería muy extraño, que hubiese un conflicto de escritura.</p>
+<p>Algunos sistemas como <em>Riak</em> utilizan vectores de reloj para determinar el orden de los eventos y asegurar que la operación más reciente gana en caso de un conflicto.</p>
+<p>Otros sistemas como <em>CouchDB</em>, retienen todos los valores conflictivos y permiten al usuario resolver el conflicto. Otro enfoque seguido por <em>Cassandra</em> sencillamente asume que el valor más grande es el correcto.</p>
+<p>Por estos motivos, las escrituras tienden a comportarse bien en sistemas eventualmente consistentes, pero las actualizaciones pueden conllevar sacrificios que complican la aplicación.</p>
+<h2 id="teorema-de-cap">Teorema de CAP<a class="headerlink" href="#teorema-de-cap" title="Permanent link">&para;</a></h2>
+<p>Propuesto por <em>Eric Brewer</em> en el año 2000, prueba que podemos crear una base de datos distribuida que elija dos de las siguientes tres características:</p>
+<ul>
+<li><strong>C</strong>onsistencia: las escrituras son atómicas y todas las peticiones posteriores obtienen el nuevo valor, independientemente del lugar de la petición.</li>
+<li>Disponibilidad (<em><strong>A</strong>vailable</em>): la base de datos devolverá siempre un valor. En la práctica significa que no hay <em>downtime</em>.</li>
+<li>Tolerancia a <strong>P</strong>articiones: el sistema funcionará incluso si la comunicación con un servidor se interrumpe de manera temporal (para ello, ha de dividir los datos entre diferentes nodos). Es decir, implica que se pueden recibir lecturas desde unos nodos que no contienen información escrita en otros.</li>
+</ul>
+<p>En otras palabras, podemos crear un sistema de base de datos que sea consistente y tolerante a particiones (CP), un sistema que sea disponible y tolerante a particiones (AP), o un sistema que sea consistente y disponible (CA). Pero no es posible crear una base de datos distribuida que sea consistente, disponible y tolerante a particiones al mismo tiempo.</p>
+<figure style="align: center;">
+    <img src="images/01teorema.png" width="400px">
+    <figcaption>Teorema de CAP</figcaption>
+</figure>
+
+<p>El teorema CAP es útil cuando consideramos el sistema de base de datos que necesitamos, ya que nos permite decidir cual de las tres características vamos a descartar. La elección realmente se centra entre la disponibilidad y la consistencia, ya que la tolerancia a particiones es una decisión de arquitectura (sea o no distribuida).</p>
+<p>Aunque el teorema dicte que si en un sistema distribuido elegimos disponibilidad no podemos tener consistencia, todavía podemos obtener consistencia eventual. Es decir, cada nodo siempre estará disponible para servir peticiones, aunque estos nodos no puedan asegurar que la información que contienen sea consistente (pero si bastante precisa), en algún momento lo será.</p>
+<p>Algunas bases de datos tolerantes a particiones se pueden ajustar para ser más o menos consistentes o disponible a nivel de petición. Por ejemplo, <em>Riak</em> trabaja de esta manera, permitiendo a los clientes decidir en tiempo de petición que nivel de consistencia necesitan.</p>
+<h3 id="clasificacion-segun-cap">Clasificación según CAP<a class="headerlink" href="#clasificacion-segun-cap" title="Permanent link">&para;</a></h3>
+<p>El siguiente gráfico muestra como dependiendo de estos atributos podemos clasificar los sistemas NoSQL:</p>
+<figure style="align: center;">
+    <img src="images/01teoremaCAPam.png" width="400px">
+    <figcaption>Clasificación según CAP</figcaption>
+</figure>
+
+<p>Así pues, las bases de datos NoSQL se clasifican en:</p>
+<ul>
+<li><strong>CP</strong>: Consistente y tolerantes a particiones. Tanto <em>MongoDB</em> como <em>HBase</em> son CP, ya que dentro de una partición pueden no estar disponibles para responder una determinada consulta (por ejemplo, evitando lecturas en los nodos secundarios), aunque son tolerantes a fallos porque cualquier nodo secundario se puede convertir en principal y asumir el rol del nodo caído.</li>
+<li><strong>AP</strong>: Disponibles y tolerantes a particiones. <em>DynamoDB</em> permite replicar los datos entre sus nodos aunque no garantiza la consistencia en ninguno de los sus servidores.</li>
+<li><strong>CA</strong>: Consistentes y disponible. Aquí es donde situaríamos a los SGDB relacionales. Por ejemplo, <em>PostreSQL</em> es CA (aunque ambas soluciones ofrecen productos complementarios para dar soporte al particionado, como Redis Cluster y PgCluster), ya que no distribuyen los datos y por tanto la partición no es una restricción.</li>
+</ul>
+<p>Lo bueno es que la gran mayoría de sistemas permiten configurarse para cambiar su tipo CAP, lo que permite que <em>MongoDB</em> pase de CP a AP, o <em>CouchDB</em> de AP a CP.</p>
+<h3 id="base">BASE<a class="headerlink" href="#base" title="Permanent link">&para;</a></h3>
+<p>Partiendo del teorema de CAP, de forma análoga al modelo transaccional <a href="#acid">ACID</a> para las bases de datos relacionales que dan soporte a la transaccionalidad ofreciendo en todo momento un sistema consistente, las bases de datos distribuidas siguen el modelo transaccional BASE, el cual se centra en la alta disponibilidad y significa:</p>
+<ul>
+<li>Básicamente disponible (<strong><em>B</em></strong><em>asically</em> <strong><em>A</em></strong><em>vailable</em>): la base de datos siempre responde a las solicitudes recibidas, ya sea con una respuesta exitosa o con un error, aún en el caso de que el sistema soporte la tolerancia a particiones (de manera que caiga algún nodo o no esté accesible por problemas de la red). Esto puedo implicar lecturas desde nodos que no han recibido la última escritura, por lo que el resultado puede no ser consistente.</li>
+<li>Estado blando (<strong><em>S</em></strong><em>oft State</em>): la base de datos puede encontrarse en un estado inconsistente cuando se produce una lectura, de modo que es posible realizar dos veces la misma lectura y obtener dos resultados distintos a pesar de que no haya habido ninguna escritura entre ambas operaciones, sino que la escritura se había realizado antes en el tiempo y no se había persistido hasta ese momento.</li>
+<li>Consistencia eventual (<strong><em>E</em></strong><em>ventual consistency</em>): tras cada escritura, la consistencia de la base de datos sólo se alcanza una vez el cambio ha sido propagado a todos los nodos. Durante el tiempo que tarda en producirse la consistencia, observamos un estado blando de la base de datos.</li>
+</ul>
+<p>Una base de datos que sigue el modelo transaccional BASE prefiere la disponibilidad antes que la consistencia (es decir, desde el punto de vista del teorema CAP es AP).</p>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://link.springer.com/book/10.1007/978-1-4842-1329-2">Next Generation Databases</a>: NoSQL, NewSQL, and Big Data</li>
+<li><a href="https://www.informit.com/store/nosql-distilled-a-brief-guide-to-the-emerging-world-9780321826626">NoSQL Distilled</a>: A Brief Guide to the Emerging World of Polyglot Persistence</li>
+<li><a href="https://dataschool.com/data-modeling-101/row-vs-column-oriented-databases/">Row vs Column Oriented Databases</a></li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 2p) Contesta a las siguientes preguntas:</p>
+<ol>
+<li>¿Qué significa el prefijo No del acrónimo <em>NoSQL</em>?</li>
+<li>¿Un sistema puede soportar al mismo tiempo replicación y particionado?</li>
+<li>Para los siguientes supuestos, indica qué modelo de datos emplearías y justifica tu respuesta:<ol>
+<li>Wiki sobre de personajes de cómics.</li>
+<li>Información académica de un país (centros, alumnos, profesores, asignaturas, calificaciones, …​)</li>
+</ol>
+</li>
+<li>Investiga en qué consiste la <em>persistencia políglota</em>.</li>
+<li>Clasifica las siguientes bases de datos según el teorema de CAP en CA, CP o AP: <em>BigTable, Cassandra, CouchDB, DynamoDB, HBase, MongoDB, Redis, Riak, Voldemort</em>.</li>
+</ol>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) Crea una presentación de 5-6 diapositivas donde expliques en qué consiste el movimiento <em>NewSQL</em>, su relación con <em>NoSQL</em> y qué ofrecen bases de datos como <em>CockroachDB</em> y/o <em>VoltDB</em>.</p>
+</li>
+</ol>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
               
                 
-
-
-<h1 id="nosql">NoSQL<a class="headerlink" href="#nosql" title="Permanent link">&para;</a></h1>
-<p><em>Apache Hive</em> (<a href="https://hive.apache.org/">https://hive.apache.org/</a>) es una tecnología distribuida diseñada y construida sobre un clúster de <em>Hadoop</em>. Permite leer, escribir y gestionar grandes <em>datasets</em> (con escala de petabytes) que residen en HDFS haciendo uso de un lenguaje dialecto de SQL, conocido como <em>HiveSQL</em>, lo que simplifica mucho el desarrollo y la gestión de <em>Hadoop</em>.</p>
-
-  <hr>
-<div class="md-source-file">
-  <small>
-    
-      Última actualización:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 29, 2022</span>
-      
-        <br>
-        Creado:
-        <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 29, 2022</span>
-      
-    
-  </small>
-</div>
-
               
-            </article>
-          </div>
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
         </div>
         
-          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Volver al principio
           </a>
@@ -486,6 +1335,42 @@
       </main>
       
         <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Unidad de Trabajo 2.- Sistemas de almacenamiento" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              Unidad de Trabajo 2.- Sistemas de almacenamiento
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="02mongo.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S24.- MongoDB" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              S24.- MongoDB
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -511,13 +1396,13 @@
       
     
     <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
     </a>
   
     
     
     <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M464 64c26.5 0 48 21.49 48 48 0 15.1-7.1 29.3-19.2 38.4L275.2 313.6a32.1 32.1 0 0 1-38.4 0L19.2 150.4C7.113 141.3 0 127.1 0 112c0-26.51 21.49-48 48-48h416zM217.6 339.2a63.9 63.9 0 0 0 76.8 0L512 176v208c0 35.3-28.7 64-64 64H64c-35.35 0-64-28.7-64-64V176l217.6 163.2z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
     </a>
   
 </div>
@@ -530,10 +1415,66 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
     
     
-      <script src="../assets/javascripts/bundle.c2e1ee47.min.js"></script>
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
     
   </body>
