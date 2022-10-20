@@ -678,3 +678,36 @@ http://www.tsc.uc3m.es/~miguel/MLG/adjuntos/Hadoop.pdf
 -->
 
 FIXME: corregir con info/apuntes del MEC, tema 1 BDA sobre especificaciones del hw de Hadoop
+
+<!--
+4.6.- Principio SCV.
+Mientras que el teorema CAP tiene que ver con almacenamiento de datos distribuídos, el principio SCV está relacionado con el procesamiento distribuído de los datos. Es decir, no tiene que ver con la escritura y lectura (consistente o no) de los datos en entornos distribuídos sino con el procesamiento que se realiza sobre ellos dentro de los nodos de un sistema de procesamiento distribuído.
+De modo similar a lo que ocurría con el teorema CAP, el principio SCV establece que un sistema de procesamiento distribuído sólo puede soportar como máximo 2 de las siguientes 3 características.
+Velocidad (speed). Consistencia (consistency). Volumen (volume).
+Velocidad:
+Se refiere a cuánto tardan en procesarse los datos desde el momento en el que son recibidos en el sistema analítico. Por lo general se excluye el tiempo que se tarda en capturar los datos, considerando sólo lo que se tarda en generar la estadística o ejecutar el algoritmo en cuestión.
+Esta velocidad es más alta si estamos ante un sistema de analítica en tiempo real que si se trata de un sistema de analítica por lotes (del inglés batch).
+Consistencia:
+Se refiere en este caso a la precisión de los resultados de la analítica (no confundir, por lo tanto, con el significado de la C del teorema CAP).
+Tal precisión depende de si para la analítica se utilizan todos los datos disponibles (precisión alta) o de si por el contrario se emplean técnicas de muestreo para seleccionar sólo un subconjunto de los mismos con la intención de producir resultados (de menor precisión) en un menor tiempo.
+Volumen:
+Se refiere a la cantidad de datos que pueden ser procesados.
+Hay que tener en cuenta que en entornos de Big Data, el alto volumen de datos es una características siempre presente (una de las 5 Vs).
+De igual modo que hicimos al estudiar el teorema CAP, nos fijaremos en una serie de escenarios para mostrar que no podemos conseguir un sistema que cumpla a la vez las 3 características del principio SCV.
+        
+ Si se requiere velocidad (S) y consistencia (C), no podemos procesar un alto volumen (V) de datos ya que eso aumenta el tiempo de respuesta.
+Si se requiere consistencia (C) y poder procesar grande volúmenes de datos (V), no es posible realizar tal procesado a una alta velocidad (S).
+Si necesitamos procesar un alto volumen de datos (V) a una alta velocidad (S), entonces necesitaremos emplear técnicas de muestreo para seleccionar sólo un subconjunto de esos datos, lo cual producirá un resultado no consistente (C).
+
+
+Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar analítica en tiempo real con todos ellos?
+Mostrar retroalimentación
+No, ya que para que sea en tiempo real debemos cumplir S, por lo que necesitaríamos realizar la analítica sobre un subconjunto de los datos, encontrándonos en el caso S+V, y produciendo por lo tanto un resultado no totalmente consistente (C).
+
+Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar procesamiento por lotes empleando todo ese conjunto de datos?
+Mostrar retroalimentación
+Sí, ya que al ser analítica por lotes en lugar de en tiempo real, la característica S ya no es necesaria, de modo que podemos encontrarnos en un caso C+V, utilizando todos los datos sin ningún tipo de muestreo para así producir un resultado consistente (C).
+
+Revisar gráficos de https://learning.oreilly.com/library/view/next-generation-databases/9781484213292/9781484213308_Ch02.xhtml#Sec11
+
+-->

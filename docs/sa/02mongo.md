@@ -1,6 +1,6 @@
 ---
 title: MongoDB
-description: xxx
+description: Características de MongoDB. Instalación mediante Docker, uso de MongoAtlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos.
 ---
 
 *MongoDB* (<http://www.mongodb.com>) es una de las bases de datos NoSQL más conocidas. Sigue un modelo de datos documental, donde los documentos se basan en JSON.
@@ -294,11 +294,11 @@ Para poder trabajar con MongoDB desde cualquier aplicación necesitamos un drive
 
 En versiones anteriores, una herramienta de terceros bastante utilizada era [RoboMongo](http://robomongo.org) / Robo3T / [Studio3T](https://studio3t.com/) el cual extiende el shell y ofrece un IDE más amigable. A días de hoy, MongoDB tiene su propio IDE conocido como [Mongo Compass](https://www.mongodb.com/es/products/compass).
 
-### Mongo Compass
+### MongoDB Compass
 
 En el curso nos vamos a centrar en el uso del shell y la conectividad de MongoDB mediante Python, pero no está de más conocer las herramientas visuales que facilitan el trabajo con MongoDB en el día a día.
 
-Una de ellas es [Mongo Compass](https://www.mongodb.com/es/products/compass), que facilita la exploración y manipulación de los datos. De una manera flexible e intuitiva, Compass ofrece visualizaciones detalladas de los esquemas, métricas de rendimiento en tiempo real así como herramientas para la creación de consultas.
+Una de ellas es [MongoDB Compass](https://www.mongodb.com/es/products/compass), que facilita la exploración y manipulación de los datos. De una manera flexible e intuitiva, Compass ofrece visualizaciones detalladas de los esquemas, métricas de rendimiento en tiempo real así como herramientas para la creación de consultas.
 
 Existen tres versiones de Compass, una completa con todas las características, una de sólo lectura sin posibilidad de insertar, modificar o eliminar datos (perfecta para analítica de datos) y una última versión *isolated* que solo permite la conexión a una instancia local.
 

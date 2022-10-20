@@ -7,18 +7,18 @@ nav:
   - "UF1 - Toma de decisiones":
       - "UT2.- Sistemas de almacenamiento":
           - "sa/index.md"
-          - "S18.- Ingeniería de datos / NoSQL": "sa/01nosql.md"
-          - "S24.- MongoDB": "sa/02mongo.md"
-          - "S26.- Modelado de datos NoSQL": "sa/03modelado.md"
-          - "S26.- Formatos de datos": "sa/04formatos.md"
-          - "S28.- Agregaciones, Replicación y Particionado": "sa/05mongo-avanzado.md"
-          - "S30.- MongoDB y Python": "sa/06pymongo.md"
-      - "UT5.- Ecosistema Hadoop":
-          - "hadoop/index.md"
-          - "S1.- Hadoop": "hadoop/01hadoop.md"
-      - "UT6.- Reto: Datos en el cloud":
-          - "cloud/index.md"
-          - "S1.- Cloud": "cloud/01cloud.md"
+          - "S18.- Almacenamiento de datos. NoSQL": "sa/01nosql.md"
+          - "S19.- MongoDB": "sa/02mongo.md"
+          - "S21.- Modelado de datos NoSQL": "sa/03modelado.md"
+          - "S21.- Formatos de datos": "sa/04formatos.md"
+      #     - "S26.- Agregaciones, Replicación y Particionado": "sa/05mongo-avanzado.md"
+      #     - "S28.- MongoDB y Python": "sa/06pymongo.md"
+      # - "UT5.- Ecosistema Hadoop":
+      #     - "hadoop/index.md"
+      #     - "S1.- Hadoop": "hadoop/01hadoop.md"
+      # - "UT6.- Reto: Datos en el cloud":
+      #     - "cloud/index.md"
+      #     - "S1.- Cloud": "cloud/01cloud.md"
       - "UT7.- PIAFP Lara": "https://aitor-medrano.github.io/pia2223/"
 
 theme:
@@ -92,6 +92,9 @@ markdown_extensions:
       linenums_style: pymdownx-inline
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg      
   - pymdownx.superfences
   - pymdownx.caret
   - pymdownx.mark
