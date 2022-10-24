@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="asdf">
+        <meta name="description" content="Modelado de datos NoSQL, analizando al carga de trabajo, las relaciones 1:1, 1:N, 1:S (squillions), N:M, ya sea mediante documentos embebidos o referencias. Patrones de diseño sobre modelos NoSQL y validación de esquemas.">
       
       
       
@@ -17,7 +17,7 @@
     
     
       
-        <title>Modelado NoSQL - Inteligencia Artificial y Big Data</title>
+        <title>Modelado de datos NoSQL - Inteligencia Artificial y Big Data</title>
       
     
     
@@ -68,9 +68,9 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Modelado NoSQL - Inteligencia Artificial y Big Data" >
+        <meta  property="og:title"  content="Modelado de datos NoSQL - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="asdf" >
+        <meta  property="og:description"  content="Modelado de datos NoSQL, analizando al carga de trabajo, las relaciones 1:1, 1:N, 1:S (squillions), N:M, ya sea mediante documentos embebidos o referencias. Patrones de diseño sobre modelos NoSQL y validación de esquemas." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/03modelado.png" >
       
@@ -84,9 +84,9 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Modelado NoSQL - Inteligencia Artificial y Big Data" >
+        <meta  name="twitter:title"  content="Modelado de datos NoSQL - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="asdf" >
+        <meta  name="twitter:description"  content="Modelado de datos NoSQL, analizando al carga de trabajo, las relaciones 1:1, 1:N, 1:S (squillions), N:M, ya sea mediante documentos embebidos o referencias. Patrones de diseño sobre modelos NoSQL y validación de esquemas." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/03modelado.png" >
       
@@ -110,7 +110,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#relacionando-documentos" class="md-skip">
+        <a href="#metodologia" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -142,7 +142,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Modelado NoSQL
+              Modelado de datos NoSQL
             
           </span>
         </div>
@@ -240,12 +240,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
       
       
       
@@ -272,18 +274,26 @@
               
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" checked>
       
       
       
         
           
             
+          
+        
+          
+        
+          
+        
           
         
           
@@ -333,7 +343,210 @@
   
     <li class="md-nav__item">
       <a href="02mongo.html" class="md-nav__link">
-        S24.- MongoDB
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S21.- Modelado de datos NoSQL
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="03modelado.html" class="md-nav__link md-nav__link--active">
+        S21.- Modelado de datos NoSQL
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#metodologia" class="md-nav__link">
+    Metodología
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definir-la-carga" class="md-nav__link">
+    Definir la carga
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelar-las-relaciones" class="md-nav__link">
+    Modelar las relaciones
+  </a>
+  
+    <nav class="md-nav" aria-label="Modelar las relaciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#referencias-manuales" class="md-nav__link">
+    Referencias manuales
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dbref" class="md-nav__link">
+    DBRef
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datos-embebidos" class="md-nav__link">
+    Datos embebidos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relaciones-11" class="md-nav__link">
+    Relaciones 1:1
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relaciones-1n" class="md-nav__link">
+    Relaciones 1:N
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#relaciones-nm" class="md-nav__link">
+    Relaciones N:M
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jerarquicas" class="md-nav__link">
+    Jerárquicas
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#patrones" class="md-nav__link">
+    Patrones
+  </a>
+  
+    <nav class="md-nav" aria-label="Patrones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#representacion" class="md-nav__link">
+    Representación
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frecuencia-de-acceso" class="md-nav__link">
+    Frecuencia de acceso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#agrupacion" class="md-nav__link">
+    Agrupación
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validacion-de-esquemas" class="md-nav__link">
+    Validación de esquemas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04formatos.html" class="md-nav__link">
+        S21.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05agregaciones.html" class="md-nav__link">
+        S26.- Agregaciones
       </a>
     </li>
   
@@ -392,11 +605,25 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#relacionando-documentos" class="md-nav__link">
-    Relacionando documentos
+  <a href="#metodologia" class="md-nav__link">
+    Metodología
   </a>
   
-    <nav class="md-nav" aria-label="Relacionando documentos">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definir-la-carga" class="md-nav__link">
+    Definir la carga
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modelar-las-relaciones" class="md-nav__link">
+    Modelar las relaciones
+  </a>
+  
+    <nav class="md-nav" aria-label="Modelar las relaciones">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -413,56 +640,43 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
+          <li class="md-nav__item">
   <a href="#datos-embebidos" class="md-nav__link">
     Datos embebidos
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#relaciones" class="md-nav__link">
-    Relaciones
-  </a>
-  
-    <nav class="md-nav" aria-label="Relaciones">
-      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
-    1:1
+  <a href="#relaciones-11" class="md-nav__link">
+    Relaciones 1:1
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#1n" class="md-nav__link">
-    1:N
+  <a href="#relaciones-1n" class="md-nav__link">
+    Relaciones 1:N
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#nm" class="md-nav__link">
-    N:M
+  <a href="#relaciones-nm" class="md-nav__link">
+    Relaciones N:M
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jerarquicas" class="md-nav__link">
+    Jerárquicas
   </a>
   
 </li>
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#jerarquicas" class="md-nav__link">
-    Jerárquicas
-  </a>
   
 </li>
       
@@ -475,64 +689,22 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#duplicidad-caducidad-e-integridad" class="md-nav__link">
-    Duplicidad, caducidad e integridad
+  <a href="#representacion" class="md-nav__link">
+    Representación
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#attribute-pattern" class="md-nav__link">
-    Attribute Pattern
+  <a href="#frecuencia-de-acceso" class="md-nav__link">
+    Frecuencia de acceso
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#extended-reference-pattern" class="md-nav__link">
-    Extended Reference Pattern
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#subset-pattern" class="md-nav__link">
-    Subset Pattern
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#computed-pattern" class="md-nav__link">
-    Computed Pattern
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#bucket-pattern" class="md-nav__link">
-    Bucket Pattern
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#schema-versioning-pattern" class="md-nav__link">
-    Schema Versioning Pattern
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tree-pattern" class="md-nav__link">
-    Tree Pattern
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#polymorphic-pattern" class="md-nav__link">
-    Polymorphic Pattern
+  <a href="#agrupacion" class="md-nav__link">
+    Agrupación
   </a>
   
 </li>
@@ -578,53 +750,172 @@
                   
 
 
-  <h1>Modelado NoSQL</h1>
+  <h1>S21.- Modelado de datos NoSQL</h1>
 
-<p>things you need to keep in the back of your mind before you model:</p>
-<p>The document model lets, and encourages, you to keep information that is used together inside one single document.
-Atomicity, consistency, isolation, and durability (ACID) can be implemented by leveraging the document model, which is preferred, or by using MongoDB transactions.
-Making early decisions and compromises about very large datasets will help make the data more manageable. For example, deleting or archiving documents after a given period of time may reduce the resources needed for the project.
-Using a distributed system, like MongoDB, means that data can be written and read on servers all over the world. Carefully planning the location of the servers will improve performance and resilience of the applications.</p>
-<ol>
-<li>
-<p>Definir la carga (<em>workload</em>):</p>
+<p>Antes de estudiar como modelar de forma adecuada nuestros datos en un modelo de datos documental, en concreto dentro de <em>MongoDB</em>, es conveniente recordar que:</p>
 <ul>
-<li>Comprender para qué operaciones estamos modelando</li>
-<li>Cuantificar y calificar las operaciones de lectura y escritura</li>
-<li>Listar las operaciones más importantes</li>
+<li>Mediante un documento podemos mantener toda la información que se utiliza junta en un único documento, sin necesidad de separar los datos en diferentes colecciones.</li>
+<li>Las propiedades transaccionales <a href="02mongo.html#acid">ACID</a> se cumplen a nivel de documento. Si tenemos la información separada en varios documentos, tenemos que utilizar el <a href="https://www.mongodb.com/docs/manual/core/transactions/">modelo transaccional</a> de <em>MongoDB</em> de forma programativa.</li>
 </ul>
-<p>Diferentes cargas pueden provocar diferentes soluciones de modelado.</p>
+<p>Dependiendo del tipo de relación entre dos documentos, normalizaremos los datos para minimizar la redundancia pero manteniendo en la medida de lo posible que mediante operaciones atómicas se mantenga la integridad de los datos. Para ello, bien crearemos referencias entre dos documentos o embeberemos un documento dentro de otro, pero intentando que la información más utilizada quepa en un único documento.</p>
+<p>MongoDB es una base de datos documental, no relacional, donde el esquema no se debe basar en el uso de claves ajenas/<em>joins</em>, ya que realmente no existen. A la hora de diseñar un esquema, si nos encontramos que el esquema esta en 3FN o si cuando hacemos consultas estamos teniendo que realizar varias consultas de manera programativa (primero acceder a una tabla, con ese <code>_id</code> ir a otra tabla, etc… o hacemos un uso extensivo del operador <code>$lookup</code> mediante el <em>framework</em> de agregación.) es que no estamos siguiendo el enfoque adecuado.</p>
+<p>En resumen, diseñar un buen modelo de datos puede suponer que nuestro código sea más legible y mantenible, así como un mayor rendimiento de nuestras aplicaciones.</p>
+<h2 id="metodologia">Metodología<a class="headerlink" href="#metodologia" title="Permanent link">&para;</a></h2>
+<p>A la hora de tomar decisiones sobre nuestro modelo, nuestra primera decisión es si vamos a modelar para obtener una mayor simplicidad del esquema o queremos un mejor rendimiento.</p>
+<p>Si nuestro equipo de desarrollo es pequeño o estamos desarrollando una única aplicación, nos decantaremos por la <strong>simplicidad</strong> cuando las consultas suelan ser siempre las mismas, pudiendo embeber la mayoría de entidades en un único documento. En cambio, si nuestro equipo es grande, multiples aplicaciones realizan un gran número de lecturas/escrituras, nos centraremos en el <strong>rendimiento</strong>, donde nos centraremos en el tamaño de los datos, la cantidad de las operaciones y su calificación/importancia, y embebiendo o relacionando los documentos conforme sea mejor.</p>
+<div class="admonition tip">
+<p class="admonition-title">Simplicidad vs Rendimiento</p>
+<p>Es más fácil optimizar el código de una aplicación para obtener mejor rendimiento que simplificar el código o el esquema de una aplicación compleja. Así pues, en un principio, siempre hemos de apostar por la simplicidad.</p>
+</div>
+<p>Desde MongoDB recomiendan seguir la siguiente metodología a la hora de definir nuestro modelo de datos, la cual han separado en tres fases:</p>
+<figure style="align: center;">
+    <img src="images/03data-modeling-metodology.png" width="500px">
+    <figcaption>Metodología de modelado de datos</figcaption>
+</figure>
+
+<ol>
+<li>Definir la <strong>carga</strong> (<em>workload</em>):<ul>
+<li>Comprender para qué operaciones estamos modelando.</li>
+<li>Cuantificar y calificar las operaciones de lectura y escritura.</li>
+<li>Listar las operaciones más importantes.</li>
+</ul>
 </li>
-<li>
-<p>Modelar las relaciones</p>
-<ul>
-<li>de forma similar a los modelos relacionales, las relaciones 1:1, 1:M y N:M.</li>
+<li>Modelar las <strong>relaciones</strong><ul>
 <li>Las relaciones 1:1 normalmente se modelan con un documento embebido</li>
 <li>las relaciones 1:M y N:M mediante un array de documentos o referencias a documentos de otra colección.</li>
-<li>El hecho de decidir si utilizar un documento embebido o crear un enlace entre diferentes documentos es la decisión más crítica a la hora de modelar.</li>
+</ul>
+</li>
+<li>Reconocer y aplicar <strong>patrones</strong> de diseño sobre el esquema<ul>
+<li>Realizar transformaciones sobre el esquema, que se centran en el rendimiento, mantenimiento o simplificación de los requisitos.</li>
+</ul>
+</li>
+</ol>
+<p>Si cruzamos nuestra decisión de simplicidad/rendimiento con la metodología tenemos:</p>
+<table>
+<thead>
+<tr>
+<th>Objetivo</th>
+<th>Simplicidad</th>
+<th>Simplicidad y Rendimiento</th>
+<th>Rendimiento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Definir la carga</td>
+<td>Operaciones más frecuentes</td>
+<td>Mayoría de operaciones<br />Tamaño de los datos<br />Cantidad de operaciones</td>
+<td>Todas las operaciones<br />Tamaño de los datos <br />Cantidad de operaciones<br />Calificación de las operaciones</td>
+</tr>
+<tr>
+<td>2. Entidades y relaciones</td>
+<td>Embeber siempre que sea posible</td>
+<td>Embeber y relacionar</td>
+<td>Embeber y relacionar</td>
+</tr>
+<tr>
+<td>3. Patrones de transformación</td>
+<td>Patrón A</td>
+<td>Patrones A y B</td>
+<td>Patrones A, B y C</td>
+</tr>
+</tbody>
+</table>
+<p>A continuación veremos cada una de estas fases en detalle.</p>
+<h2 id="definir-la-carga">Definir la carga<a class="headerlink" href="#definir-la-carga" title="Permanent link">&para;</a></h2>
+<p>En esta primera fase es muy importante comprender para qué operaciones estamos modelando, para ello hemos medir los datos a almacenar, cuantificar y calificar las operaciones de lectura y escritura, así como listar las operaciones más importantes, con métricas como operaciones por segundo, latencia requerida o atributos utilizados en las consultas.</p>
+<p>Para ello, partiremos de diferentes escenarios de uso de la aplicación, los logs y estadísticas que tengamos disponibles o el conocimiento de los analistas de negocio.</p>
+<p>Dependiendo de la carga, puede provocar diferentes soluciones de modelado, ya que en unas pueden ser más importantes las lecturas y en otras las escrituras.</p>
+<div class="admonition note">
+<p class="admonition-title">Ejemplo de carga</p>
+<p>El siguiente ejemplo está extraído del curso <a href="https://university.mongodb.com/courses/M320/about">M320 de Modelado de datos</a> de la <em>MongoDB University</em>.</p>
+<ul>
+<li>Caso de uso<ul>
+<li>Una organización ha desplegado 100.000.000 de sensores meteorológicos.</li>
+<li>El objeto es capturar en una base de datos los datos transmitidos de todos los dispositivos para realizar predicciones y analizar tendencias.</li>
+</ul>
+</li>
+<li>Datos principales<ul>
+<li>Número de dispositivos: 100.000.000</li>
+<li>Duración: 10 años</li>
+<li>Análisis: 10 años</li>
+</ul>
+</li>
+<li>Supuestos:<ul>
+<li>Para las predicciones, son igual de válidos los datos por hora que por minutos.</li>
+<li>Para análisis más profundos, es necesario mantener los datos por minutos. </li>
 </ul>
 </li>
 <li>
-<p>Reconocer y Aplicar patrones de diseño</p>
+<p>Operaciones:</p>
+<table>
+<thead>
+<tr>
+<th>Actor</th>
+<th>CRUD</th>
+<th>Datos en operaciones</th>
+<th>Tipo de operación</th>
+<th>Ratio</th>
+<th>Información extra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sensor</td>
+<td>envío de datos cada minuto</td>
+<td><code>sensor_id</code>, métricas</td>
+<td>escritura</td>
+<td>1.666.667 por seg</td>
+<td>se almacena una copia (no hace falta redundancia), 1000 bytes de datos leídos, tiempo de vida de 10 años</td>
+</tr>
+<tr>
+<td>sistema</td>
+<td>identificar sensores inoperativos</td>
+<td><code>sensor_id</code>, tiempos de métricas</td>
+<td>lectura</td>
+<td>1 por hora</td>
+<td>latencia y tiempo de consulta de 1 hora, mediante un full scan de los datos, los datos se renuevan cada hora</td>
+</tr>
+<tr>
+<td>sistema</td>
+<td>agregar datos cada hora</td>
+<td><code>sensor_id</code>, métricas</td>
+<td>escritura</td>
+<td>1 por hora</td>
+<td>redundancia en la mayoría de nodos, tiempo de vida de 10 años</td>
+</tr>
+<tr>
+<td>analista / científico de datos</td>
+<td>ejecutar 10 consultas analíticas por hora</td>
+<td>métricas de temperatura</td>
+<td>lectura</td>
+<td>100 por hora (10 por hora por 10 analistas)</td>
+<td>latencia y tiempo de consulta de 10 minutos, mediante un full scan de los datos, los datos se renuevan cada hora</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Operación detallada:</p>
 <ul>
-<li>Ofrecen transformaciones sobre el esquema, que se centran en el rendimiento, mantenimiento o simplificación de los requisitos.</li>
+<li>Actor: sensor</li>
+<li>Descripción: Envío de datos meteorológicos al servidor</li>
+<li>Tipo: escritura</li>
+<li>Datos: <code>sensor_id</code>, <code>timestamp</code>, métricas del sensor</li>
+<li>Frecuencia: 1.600.000 por seg === 100.000.000 por hora / 60</li>
+<li>Tamaño de datos: 1000 bytes</li>
+<li>Tiempo de vida: 10 años</li>
+<li>Duración de los datos: 1 nodo, sin necesidad de redundancia</li>
 </ul>
 </li>
-</ol>
-<p>MongoDB es una base de datos documental, no relacional, donde el esquema no se debe basar en el uso de claves ajenas/joins, ya que no existen.</p>
-<p>A la hora de diseñar un esquema, si nos encontramos que el esquema esta en 3FN o si cuando hacemos consultas (recordad que no hay joins) estamos teniendo que realizar varias consultas de manera programativa (primero acceder a una tabla, con ese _id ir a otra tabla, etc…​.) es que no estamos siguiendo el enfoque adecuado.</p>
-<p>MongoDB no soporta transacciones, ya que su enfoque distribuido dificultaría y penalizaría el rendimiento. En cambio, sí que asegura que las operaciones sean atómicas. Los posibles enfoques para solucionar la falta de transacciones son:</p>
-<ol>
-<li>Restructurar el código para que toda la información esté contenida en un único documento.</li>
-<li>Implementar un sistema de bloqueo por software (semáforo, etc…​).</li>
-<li>Tolerar un grado de inconsistencia en el sistema.</li>
-</ol>
-<p>Dependiendo del tipo de relación entre dos documentos, normalizaremos los datos para minimizar la redundancia pero manteniendo en la medida de lo posible que mediante operaciones atómicas se mantenga la integridad de los datos. Para ello, bien crearemos referencias entre dos documentos o embeberemos un documento dentro de otro.</p>
-<h2 id="relacionando-documentos">Relacionando documentos<a class="headerlink" href="#relacionando-documentos" title="Permanent link">&para;</a></h2>
-<p>Las aplicaciones que emplean MongoDB utilizan dos técnicas para relacionar documentos:</p>
+</ul>
+<p>De este supuesto podemos deducir que la carga es mayoritariamente de escrituras (con un ratio de 99% de escrituras y 1% de lecturas), donde debemos en la medida de lo posible, reducirlas o agruparlas. Además, la mayoría de lecturas requieren un full scan de los datos con baja latencia, de manera que podemos ejecutar esas consultas sobre nodos dedicados a la analítica. La creación de consultas agregadas o pre-calculadas puede acelerar estas consultas.</p>
+</div>
+<h2 id="modelar-las-relaciones">Modelar las relaciones<a class="headerlink" href="#modelar-las-relaciones" title="Permanent link">&para;</a></h2>
+<p>Las aplicaciones que emplean <em>MongoDB</em> utilizan dos técnicas para relacionar documentos:</p>
 <ul>
-<li>Referencias <em>Manuales</em></li>
-<li>Uso de <em>DBRef</em></li>
+<li>Crear referencias</li>
+<li>Embeber documentos</li>
 </ul>
 <h3 id="referencias-manuales">Referencias manuales<a class="headerlink" href="#referencias-manuales" title="Permanent link">&para;</a></h3>
 <p>De manera similar a una base de datos relacional, se almacena el campo <code>_id</code> de un documento en otro documento a modo de clave ajena. De este modo, la aplicación realiza una segunda consulta para obtener los datos relacionados. Estas referencias son sencillas y suficientes para la mayoría de casos de uso.</p>
@@ -636,33 +927,62 @@ Using a distributed system, like MongoDB, means that data can be written and rea
 <p>Por ejemplo, si nos basamos en el gráfico anterior, podemos conseguir referenciar manualmente estos objetos del siguiente modo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kd">var</span><span class="w"> </span><span class="nx">idUsuario</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">();</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span>
-<span class="linenos" data-linenos=" 3 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">usuario</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">usuario</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">({</span><span class="w"></span>
 <span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="nx">idUsuario</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;123xyz&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos=" 6 "></span><span class="p">});</span><span class="w"></span>
 <span class="linenos" data-linenos=" 7 "></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">contacto</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">contacto</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">({</span><span class="w"></span>
 <span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="nx">usuario_id</span><span class="o">:</span><span class="w"> </span><span class="nx">idUsuario</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nx">telefono</span><span class="o">:</span><span class="w">  </span><span class="s2">&quot;123 456 7890&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nx">telefono</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;123 456 7890&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="11 "></span><span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;xyz@ejemplo.com&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos="12 "></span><span class="p">});</span><span class="w"></span>
 </code></pre></div>
-<p>FIXME: Para relacionar los dos documentos, haremos uso de la operación <a href="https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/"><code>$lookup</code></a> para hacer el <em>join</em>, o haremos una segunda consulta para la segunda colección.</p>
-<p>FIXME: poner código</p>
+<p>Para relacionar los dos documentos, haremos uso de la operación <a href="https://www.mongodb.com/docs/manual/reference/operator/aggregation/lookup/"><code>$lookup</code></a> para hacer el <em>join</em>, o haremos una segunda consulta para la segunda colección. Un ejemplo de <em>join</em> mediante <code>$lookup</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">usuario</span><span class="p">.</span><span class="nx">aggregate</span><span class="p">([</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">$lookup</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+</span><span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="kr">from</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;contacto&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="nx">localField</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;_id&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="nx">foreignField</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;usuario_id&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="kr">as</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;contacto_data&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span><span class="p">}</span><span class="w"> </span><span class="p">])</span><span class="w"></span>
+</code></pre></div>
+<p>Y como resultado obtenemos un documento con el usuario y la información del contacto dentro de un array embebido (aunque en este ejemplo sólo tenemos un contacto para el usuario)</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"> </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;634589696e96ece54fbcbca2&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">123</span><span class="err">xyz&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">co</span><span class="kc">nta</span><span class="err">c</span><span class="kc">t</span><span class="err">o_da</span><span class="kc">ta</span><span class="p">:</span><span class="w"> </span>
+<span class="linenos" data-linenos="4 "></span><span class="w">   </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;634589696e96ece54fbcbca3&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">       </span><span class="err">usuario_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;634589696e96ece54fbcbca2&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">       </span><span class="kc">telef</span><span class="err">o</span><span class="kc">n</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">123</span><span class="w"> </span><span class="mi">456</span><span class="w"> </span><span class="mi">7890</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="w">       </span><span class="err">email</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;xyz@ejemplo.com&#39;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>El operador <code>$lookup</code> lo estudiaremos en profundidad en la siguiente sesión.</p>
 <h3 id="dbref">DBRef<a class="headerlink" href="#dbref" title="Permanent link">&para;</a></h3>
 <p>Son referencias de un documento a otro mediante el valor del campo <code>_id</code>, el nombre de la colección y, opcionalmente, el nombre de la base de datos. Estos objetos siguen una convención para representar un documento mediante la notación <code>{ "$ref" : &lt;nombreColeccion&gt;, "$id" : &lt;valorCampo_id&gt;, "$db" : &lt;nombreBaseDatos&gt; }</code>.</p>
 <p>Al incluir estos nombres, las <em>DBRef</em> permite referenciar documentos localizados en diferentes colecciones.</p>
-<p>Así pues, si reescribimos el código anterior mediante <em>DBRef</em> tendríamos que el contacto queda de la siguiente manera:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">contacto</span><span class="p">.</span><span class="nx">insert</span><span class="p">({</span><span class="w"></span>
+<p>Así pues, si reescribimos el código anterior mediante <em>DBRef</em> tendríamos que el contacto lo insertamos de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">contacto</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">({</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">usuario_id</span><span class="o">:</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">DBRef</span><span class="p">(</span><span class="s2">&quot;usuario&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">idUsuario</span><span class="p">),</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">telefono</span><span class="o">:</span><span class="w">  </span><span class="s2">&quot;123-456-7890&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">telefono</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;123-456-7890&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;xyz@example.com&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos="5 "></span><span class="p">});</span><span class="w"></span>
 </code></pre></div>
+<p>Y al recuperarlo, vemos que ha almacenado la referencia:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;6345899d6e96ece54fbcbca4&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">usuario_id</span><span class="p">:</span><span class="w"> </span><span class="err">DBRe</span><span class="kc">f</span><span class="err">(</span><span class="s2">&quot;usuario&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;634589696e96ece54fbcbca2&quot;</span><span class="err">))</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="kc">telef</span><span class="err">o</span><span class="kc">n</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">123-456-7890</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">  </span><span class="err">email</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;xyz@example.com&#39;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
 <p>De manera similar a las referencias manuales, mediante consultas adicionales se obtendrán los documentos referenciados.</p>
-<p>Muchos drivers (incluido el de Python, mediante la clase <a href="https://pymongo.readthedocs.io/en/stable/api/bson/dbref.html">DBRef</a>) contienen métodos auxiliares que realizan las consultas con referencias DBRef automáticamennte.</p>
-<p>Desde la propia documentación de <em>MongoDB</em> recomiendan el uso de referencias manuales y el uso de <code>$lookup</code>, a no ser que dispongamos documentos de una colección que referencian a documentos que se encuentran en varias colecciones diferentes.</p>
-<h2 id="datos-embebidos">Datos embebidos<a class="headerlink" href="#datos-embebidos" title="Permanent link">&para;</a></h2>
+<p>Muchos drivers (incluido el de Python, mediante la clase <a href="https://pymongo.readthedocs.io/en/stable/api/bson/dbref.html">DBRef</a>) contienen métodos auxiliares que realizan las consultas con referencias DBRef automáticamente.</p>
+<div class="admonition warning">
+<p class="admonition-title">Evita DBRef</p>
+<p>Desde la propia documentación de <em>MongoDB</em> recomiendan el uso de referencias manuales y el operador <code>$lookup</code>, a no ser que dispongamos documentos de una colección que referencian a documentos que se encuentran en varias colecciones diferentes.</p>
+</div>
+<h3 id="datos-embebidos">Datos embebidos<a class="headerlink" href="#datos-embebidos" title="Permanent link">&para;</a></h3>
 <p>En cambio, si dentro de un documento almacenamos los datos mediante sub-documentos, ya sea dentro de un atributo o un array, podremos obtener todos los datos mediante un único acceso, sin necesidad de claves ajenas ni comprobaciones de integridad referencial.</p>
 <figure style="align: center;">
     <img src="images/03data-model-denormalized.png" width="500px">
@@ -674,47 +994,70 @@ Using a distributed system, like MongoDB, means that data can be written and rea
 <li>relaciones "contiene" entre entidades, entre relaciones de documentos "uno a uno" o "uno a pocos".</li>
 <li>relaciones "uno a muchos" entre entidades. En estas relaciones los documentos hijo (o "muchos") siempre aparecen dentro del contexto del padre o del documento "uno".</li>
 </ul>
-<p>Los datos embebidos ofrecen mejor rendimiento al permitir obtener los datos mediante una única operación, así como modificar datos relacionados en una sola operación atómica de escritura.</p>
+<p>Los datos embebidos/incrustados ofrecen mejor rendimiento al permitir obtener los datos mediante una única operación, así como modificar datos relacionados en una sola operación atómica de escritura (sin necesidad de transacciones)</p>
 <p>Un aspecto a tener en cuenta es que un documento BSON puede contener un máximo de 16MB. Si quisiéramos que un atributo contenga más información, tendríamos que utilizar el API de GridFS.</p>
-<h2 id="relaciones">Relaciones<a class="headerlink" href="#relaciones" title="Permanent link">&para;</a></h2>
-<p>Vamos a estudiar en detalle cada uno de los tipos de relaciones, para intentar clarificar cuando es conveniente utilizar referencias o datos embebidos.</p>
-<h3 id="11">1:1<a class="headerlink" href="#11" title="Permanent link">&para;</a></h3>
-<p>Cuando existe una relación 1:1, como pueda ser entre Persona y Curriculum, o Persona y Direccion hay que embeber un documento dentro del otro, como parte de un atributo.</p>
-<p>Ejemplo relación 1:1 - Persona/Dirección</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<p>Vamos a estudiar en detalle cada uno de los tipos de <a href="https://www.mongodb.com/docs/manual/applications/data-models-relationships/">relaciones</a>, para intentar clarificar cuando es conveniente utilizar referencias o datos embebidos.</p>
+<h3 id="relaciones-11">Relaciones 1:1<a class="headerlink" href="#relaciones-11" title="Permanent link">&para;</a></h3>
+<p>Cuando existe una relación 1:1, como pueda ser entre <code>Persona</code> y <code>Curriculum</code>, o <code>Persona</code> y <code>Direccion</code> hay que embeber un documento dentro del otro, como parte de un atributo:</p>
+<div class="highlight"><span class="filename">persona.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Aitor&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">edad</span><span class="o">:</span><span class="w"> </span><span class="mf">38</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">edad</span><span class="o">:</span><span class="w"> </span><span class="mf">45</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">direccion</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="nx">calle</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Mayor&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="nx">calle</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Secreta&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="nx">ciudad</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Elx&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos="7 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
 <span class="linenos" data-linenos="8 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <p>La principal ventaja de este planteamiento es que mediante una única consulta podemos obtener tanto los detalles del usuario como su dirección.</p>
 <p>Un par de aspectos que nos pueden llevar a no embeberlos son:</p>
-<p>la frecuencia de acceso. Si a uno de ellos se accede raramente, puede que convenga tenerlos separados para liberar memoria.</p>
-<p>el tamaño de los elementos. Si hay uno que es mucho más grande que el otro, o uno lo modificamos muchas más veces que el otro, para que cada vez que hagamos un cambio en un documento no tengamos que modificar el otro será mejor separarlos en documentos separados.</p>
+<ul>
+<li>la frecuencia de acceso. Si a uno de ellos se accede raramente, puede que convenga tenerlos separados para liberar memoria.</li>
+<li>el tamaño de los elementos. Si hay uno que es mucho más grande que el otro, o uno lo modificamos muchas más veces que el otro, para que cada vez que hagamos un cambio en un documento no tengamos que modificar el otro será mejor separarlos en documentos separados.</li>
+</ul>
 <p>Pero siempre teniendo en cuenta la atomicidad de los datos, ya que si necesitamos modificar los dos documentos al mismo tiempo, tendremos que embeber uno dentro del otro.</p>
-<h3 id="1n">1:N<a class="headerlink" href="#1n" title="Permanent link">&para;</a></h3>
+<h3 id="relaciones-1n">Relaciones 1:N<a class="headerlink" href="#relaciones-1n" title="Permanent link">&para;</a></h3>
 <p>Vamos a distinguir dos tipos:</p>
 <ul>
-<li><strong>1 a muchos</strong>, como puede ser entre Editorial y Libro. Para este tipo de relación es mejor usar referencias entre los documentos colocando la referencia en el lado del muchos:</li>
-</ul>
-<p>Ejemplo relación 1:N - Editorial</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<li>
+<p><strong>1 a pocos (1:F)</strong> (<em>one to few</em>), como por ejemplo, dentro de un blog, la relación entre <code>Mensaje</code> y <code>Comentario</code>. En este caso, la mejor solución es crear un array dentro de la entidad 1 (en nuestro caso, <code>Mensaje</code>). De este modo, el <code>Mensaje</code> contiene un array de <code>Comentario</code>:</p>
+<div class="highlight"><span class="filename">mensaje.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La broma asesina&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://es.wikipedia.org/wiki/Batman:_The_Killing_Joke&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nx">texto</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La dualidad de Batman y Joker&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nx">comentarios</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">      </span><span class="nx">autor</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Bruce Wayne&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">      </span><span class="nx">fecha</span><span class="o">:</span><span class="w"> </span><span class="nx">ISODate</span><span class="p">(</span><span class="s2">&quot;2022-10-11T09:31:32Z&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">      </span><span class="nx">comentario</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;A mí me encantó&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">      </span><span class="nx">autor</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Bruno Díaz&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">      </span><span class="nx">fecha</span><span class="o">:</span><span class="w"> </span><span class="nx">ISODate</span><span class="p">(</span><span class="s2">&quot;2022-10-11T10:07:28Z&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">      </span><span class="nx">comentario</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;El mejor&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition caution">
+<p class="admonition-title">Vigilar el tamaño</p>
+<p>Hay que tener siempre en mente la restricción de los 16 MB de BSON. Si vamos a embeber muchos documentos y estos son grandes, hay que vigilar no llegar a dicho tamaño.</p>
+</div>
+</li>
+<li>
+<p><strong>1 a muchos (1:N)</strong> (<em>one to many</em>), como puede ser entre <code>Editorial</code> y <code>Libro</code>. Para este tipo de relación es mejor usar referencias entre los documentos colocando la referencia en el lado del muchos:</p>
+<div class="highlight"><span class="filename">editorial.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;O&#39;Reilly&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">pais</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;EE.UU.&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Ejemplo relación 1:N - Libro</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<div class="highlight"><span class="filename">libros.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1234</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;MongoDB: The Definitive Guide&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nx">autor</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;Kristina Chodorow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Mike Dirolf&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
 <span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nx">numPaginas</span><span class="o">:</span><span class="w"> </span><span class="mf">216</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="nx">editorial_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 7 "></span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="p">},</span><span class="w"></span>
 <span class="linenos" data-linenos=" 8 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1235</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;50 Tips and Tricks for MongoDB Developer&quot;</span><span class="p">,</span><span class="w"></span>
@@ -723,88 +1066,110 @@ Using a distributed system, like MongoDB, means that data can be written and rea
 <span class="linenos" data-linenos="13 "></span><span class="w">  </span><span class="nx">editorial_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="14 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<ul>
-<li><strong>1 a pocos</strong>, como por ejemplo, dentro de un blog, la relación entre Mensaje y Comentario. En este caso, la mejor solución es crear un array dentro de la entidad 1 ( en nuestro caso, Mensaje). De este modo, el Mensaje contiene un array de Comentario:</li>
-</ul>
-<p>Ejemplo relación 1:N - Mensaje/Comentario</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La broma asesina&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;http://es.wikipedia.org/wiki/Batman:_The_Killing_Joke&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nx">texto</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La dualidad de Batman y Joker&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nx">comentarios</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 7 "></span><span class="w">      </span><span class="nx">autor</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Bruce Wayne&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="w">      </span><span class="nx">fecha</span><span class="o">:</span><span class="w"> </span><span class="nx">ISODate</span><span class="p">(</span><span class="s2">&quot;2015-04-01T09:31:32Z&quot;</span><span class="p">),</span><span class="w"></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="w">      </span><span class="nx">comentario</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;A mi me encantó&quot;</span><span class="w"></span>
-<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="12 "></span><span class="w">      </span><span class="nx">autor</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Bruno Díaz&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="13 "></span><span class="w">      </span><span class="nx">fecha</span><span class="o">:</span><span class="w"> </span><span class="nx">ISODate</span><span class="p">(</span><span class="s2">&quot;2015-04-03T10:07:28Z&quot;</span><span class="p">),</span><span class="w"></span>
-<span class="linenos" data-linenos="14 "></span><span class="w">      </span><span class="nx">comentario</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;El mejor&quot;</span><span class="w"></span>
-<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="linenos" data-linenos="16 "></span><span class="w">  </span><span class="p">]</span><span class="w"></span>
-<span class="linenos" data-linenos="17 "></span><span class="p">}</span><span class="w"></span>
+<p>Si cada vez que recuperamos un libro queremos tener el nombre de la editorial y con una sola consulta recuperar todos los datos, en vez poner la referencia a la editorial, podemos embeber toda la información (esto se conoce como el patrón <a href="#referencia-extendida"><em>referencia extendida</em></a>), a costa de que un futuro cambio en el nombre de la editorial conlleve modificar muchos libros:</p>
+<div class="highlight"><span class="filename">libros2.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1234</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;MongoDB: The Definitive Guide&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nx">autor</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;Kristina Chodorow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Mike Dirolf&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nx">numPaginas</span><span class="o">:</span><span class="w"> </span><span class="mf">216</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="nx">editorial</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;O&#39;Reilly&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">    </span><span class="nx">pais</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;EE.UU.&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="p">},{</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1235</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;50 Tips and Tricks for MongoDB Developer&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">  </span><span class="nx">autor</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Kristina Chodorow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">  </span><span class="nx">numPaginas</span><span class="o">:</span><span class="w"> </span><span class="mf">68</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">  </span><span class="nx">editorial</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">    </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">    </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;O&#39;Reilly&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">    </span><span class="nx">pais</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;EE.UU.&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Hay que tener siempre en mente la restricción de los 16 MB de BSON. Si vamos a embeber muchos documentos y estos son grandes, hay que vigilar no llegar a dicho tamaño.
-En ocasiones las relaciones 1 a muchos se traducen en documentos embebidos cuando la información que nos interesa es la que contiene en un momento determinado. Por ejemplo, dentro de Pedido, el precio de los productos debe embeberse, ya que si en un futuro se modifica el precio de un producto determinado debido a una oferta, el pedido realizado no debe modificar su precio total.</p>
-<p>Del mismo modo, al almacenar la dirección de una persona, también es conveniente embeberla. No queremos que la dirección de envío de un pedido se modique si un usuario modifica sus datos personales.</p>
-<h3 id="nm">N:M<a class="headerlink" href="#nm" title="Permanent link">&para;</a></h3>
-<p>Más que relaciones muchos a muchos, suelen ser relaciones pocos a pocos, como por ejemplo, Libro y Autor, o Profesor y Estudiante.</p>
-<p>Supongamos que tenemos libros de la siguiente manera y autores con la siguiente estructura:</p>
-<p>Ejemplo relación N:N - Libro</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<p>Un caso particular en las relaciones uno a muchos que se traducen en documentos embebidos es cuando la información que nos interesa tiene un valor concreto en un momento determinado. Por ejemplo, dentro de un pedido, el precio de los productos debe embeberse, ya que si en un futuro se modifica el precio de un producto determinado debido a una oferta, el pedido realizado no debe modificar su precio total.</p>
+<p>Del mismo modo, al almacenar la dirección de una persona, también es conveniente embeberla. No queremos que la dirección de envío de un pedido ya enviado se modifique si un usuario cambia sus datos personales.</p>
+<p>En cambio, si necesitamos acceder por separado a los diferentes objetos de una relación, puede que nos convenga separarlo en dos colecciones distintas, aunque luego tengamos que hacer un <em>join</em>.</p>
+</li>
+<li>
+<p><strong>1 a muchísimos/tropecientos (1:S)</strong> (<em>one to squillions/zillions</em>), como puede ser entre una aplicación y los mensajes del log, los cuales pueden llegar a tener un volumen de millones de mensaje por aplicación. Teniendo siempre en mente la restricción de los 16MB de BSON, podemos modelar estas relaciones mediante un array de referencias:</p>
+<div class="highlight"><span class="filename">aplicacion.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;111111&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Gestión de clientes&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<div class="highlight"><span class="filename">logs.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;123456&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">app</span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;111111&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nx">actividad</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Alta Cliente&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;El cliente XXX se ha creado correctamente&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="nx">date</span><span class="o">:</span><span class="w"> </span><span class="nx">ISODate</span><span class="p">(</span><span class="s2">&quot;2022-10-12&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="p">},{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;123457&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="nx">app</span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;111111&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nx">actividad</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Modificación Cliente&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">  </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;No se ha podido modificar el XXX por un error del sistema&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">  </span><span class="nx">date</span><span class="o">:</span><span class="w"> </span><span class="nx">ISODate</span><span class="p">(</span><span class="s2">&quot;2022-10-12&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="p">},</span><span class="w"></span>
+</code></pre></div>
+<p>De esta manera, pasamos la relación de 1 a muchos a realmente ser de muchos a 1, donde cada mensaje de log almacena la aplicación a la que pertenecen, y ya no tenemos que mantener un array de logs dentro de cada aplicación.</p>
+</li>
+</ul>
+<h3 id="relaciones-nm">Relaciones N:M<a class="headerlink" href="#relaciones-nm" title="Permanent link">&para;</a></h3>
+<p>Más que relaciones muchos a muchos, suelen ser relaciones pocos a pocos, como por ejemplo, <code>Libro</code> y <code>Autor</code>, o <code>Profesor</code> y <code>Estudiante</code>.</p>
+<p>Supongamos que tenemos libros modelados de la siguiente manera:</p>
+<div class="highlight"><span class="filename">libro.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La historia interminable&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">anyo</span><span class="o">:</span><span class="w"> </span><span class="mf">1979</span><span class="w"></span>
 <span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Ejemplo relación N:M - Autor</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<p>Y autores con la siguiente estructura:</p>
+<div class="highlight"><span class="filename">autor.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Michael Ende&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">pais</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Alemania&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Podemos resolver estas relaciones de tres maneras:</p>
+<p>Podemos resolver esta relación de tres maneras:</p>
 <ol>
 <li>
 <p>Siguiendo un enfoque relacional, empleando un documento como la entidad que agrupa con referencias manuales a los dos documentos.</p>
-<p>Ejemplo relación N:M - Autor/Libro</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="nx">autor_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span><span class="nx">libro_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"></span>
-<span class="linenos" data-linenos="4 "></span><span class="p">}</span><span class="w"></span>
+<div class="highlight"><span class="filename">libro-autor.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">autor_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">libro_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <p>Este enfoque se desaconseja porque necesita tres consultas para obtener toda la información.</p>
 </li>
 <li>
-<p>Mediante 2 documentos, cada uno con un array que contenga los ids del otro documento (2 Way Embedding). Hay que tener cuidado porque podemos tener problemas de inconsistencia de datos si no actualizamos correctamente.</p>
-<p>Ejemplo relación N:N - Libro referencia a Autor</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 2 "></span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 3 "></span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La historia interminable&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 4 "></span><span class="nx">anyo</span><span class="o">:</span><span class="w"> </span><span class="mf">1979</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 5 "></span><span class="nx">autores</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">]</span><span class="w"></span>
+<p>Mediante 2 documentos, cada uno con un array que contenga los ids del otro documento (<em>2 Way Embedding</em>). Hay que tener cuidado porque podemos tener problemas de inconsistencia de datos si no actualizamos correctamente.</p>
+<div class="highlight"><span class="filename">libro-con-autores.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La historia interminable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nx">anyo</span><span class="o">:</span><span class="w"> </span><span class="mf">1979</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nx">autores</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">]</span><span class="w"></span>
 <span class="linenos" data-linenos=" 6 "></span><span class="p">},{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 7 "></span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Momo&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="nx">anyo</span><span class="o">:</span><span class="w"> </span><span class="mf">1973</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="10 "></span><span class="nx">autores</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Momo&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="nx">anyo</span><span class="o">:</span><span class="w"> </span><span class="mf">1973</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nx">autores</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">]</span><span class="w"></span>
 <span class="linenos" data-linenos="11 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Ejemplo relación N:M - Autor referencia a Libro</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Michael Ende&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="4 "></span><span class="nx">pais</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Alemania&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="5 "></span><span class="nx">libros</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="p">]</span><span class="w"></span>
+<div class="highlight"><span class="filename">autor-con-libros.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Michael Ende&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">pais</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Alemania&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">  </span><span class="nx">libros</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">]</span><span class="w"></span>
 <span class="linenos" data-linenos="6 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 </li>
 <li>
-<p>Embeber un documento dentro de otro (One Way Embedding). Por ejemplo:</p>
-<p>Ejemplo relación N:M - Autor embebido en Libro</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<p>Embeber un documento dentro de otro (<em>One Way Embedding</em>). Por ejemplo:</p>
+<div class="highlight"><span class="filename">libro-con-autores-embebidos.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La historia interminable&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 4 "></span><span class="w">    </span><span class="nx">anyo</span><span class="o">:</span><span class="w"> </span><span class="mf">1979</span><span class="p">,</span><span class="w"></span>
@@ -817,120 +1182,434 @@ En ocasiones las relaciones 1 a muchos se traducen en documentos embebidos cuand
 <span class="linenos" data-linenos="11 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <p>En principio este enfoque no se recomienda porque el documento puede crecer mucho y provocar anomalías de modificaciones donde la información no es consistente. Si se opta por esta solución, hay que tener en cuenta que si un documento depende de otro para su creación (por ejemplo, si metemos los profesores dentro de los estudiantes, no vamos a poder dar de alta a profesores sin haber dado de alta previamente a un alumno).</p>
+<p>A modo de resumen, en las relaciones N:M, hay que establecer el tamaño de N y M. Si N como máximo vale 3 y M 500000, entonces deberíamos seguir un enfoque de embeber la N dentro de la M (<em>One Way Embedding</em>).</p>
+<p>En cambio, si N vale 3 y M vale 5, entonces podemos hacer que ambos embeban al otro documento (<em>Two Way Embedding</em>).</p>
 </li>
 </ol>
-<p>A modo de resumen, en las relaciones N:M, hay que establecer el tamaño de N y M. Si N como máximo vale 3 y M 500000, entonces deberíamos seguir un enfoque de embeber la N dentro de la M (One Way Embedding).</p>
-<p>En cambio, si N vale 3 y M vale 5, entonces podemos hacer que ambos embeban al otro documento (Two Way Embedding).</p>
 <div class="admonition tip">
 <p class="admonition-title">Rendimiento e Integridad</p>
 <p>A modo de resumen, embeber documentos ofrece un mejor rendimiento que referenciar, ya que con una única operación (ya sea una lectura o una escritura) podemos acceder a varios documentos.</p>
 </div>
-<p>Más información en <a href="http://docs.mongodb.org/manual/applications/data-models-relationships/">http://docs.mongodb.org/manual/applications/data-models-relationships/</a></p>
-<h2 id="jerarquicas">Jerárquicas<a class="headerlink" href="#jerarquicas" title="Permanent link">&para;</a></h2>
-<p>Si tenemos que modelar alguna entidad que tenga hijos y nos importa las relaciones padre-hijos (categoría-subcategoría), podemos tanto embeber un array con los hijos de un documento (children), como embeber un array con los padres de un documento (ancestors)</p>
-<p>Más información en <a href="http://docs.mongodb.org/manual/applications/data-models-tree-structures/">http://docs.mongodb.org/manual/applications/data-models-tree-structures/</a></p>
+<div class="admonition caution">
+<p class="admonition-title">Cuidado con los arrays</p>
+<p>Los array no pueden crecer de forma descontrolada.
+Si hay un par de cientos de documentos en el lado de N, no hay que embeberlos. Si hay más de unos pocos miles de documentos en el lado de N, no hay que usar un array de referencias.
+Arrays con una alta cardinalidad son una clara pista para no embeber.</p>
+</div>
+<h3 id="jerarquicas">Jerárquicas<a class="headerlink" href="#jerarquicas" title="Permanent link">&para;</a></h3>
+<p>Si tenemos que modelar alguna entidad que tenga hijos y nos importa las relaciones padre-hijos (categoría-subcategoría), podemos tanto embeber un array con los hijos de un documento (<em>children</em>), como embeber un array con los padres de un documento (<em>ancestors</em>)</p>
+<p>Más información en <a href="https://www.mongodb.com/docs/manual/applications/data-models-tree-structures/">https://www.mongodb.com/docs/manual/applications/data-models-tree-structures/</a></p>
 <h2 id="patrones">Patrones<a class="headerlink" href="#patrones" title="Permanent link">&para;</a></h2>
-<p><a href="https://www.mongodb.com/blog/post/building-with-patterns-a-summary">https://www.mongodb.com/blog/post/building-with-patterns-a-summary</a></p>
-<p><a href="https://www.mongodb.com/developer/products/mongodb/schema-design-anti-pattern-summary/">https://www.mongodb.com/developer/products/mongodb/schema-design-anti-pattern-summary/</a></p>
+<p>Ahora que ya hemos estudiado como modelar las relaciones entre diferentes documentos, hay un <a href="https://www.mongodb.com/blog/post/building-with-patterns-a-summary">conjunto de patrones</a>, e igual de importante, <a href="https://www.mongodb.com/developer/products/mongodb/schema-design-anti-pattern-summary">anti-patrones</a>, que nos pueden ayudar a la hora de diseñar o migrar un sistema.</p>
+<p>Podemos agrupar los patrones en tres categorías:</p>
+<ul>
+<li>Representación: atributo, versionado de documentos y esquema, polimórfico</li>
+<li>Frecuencia de acceso: subconjuntos, aproximación, referencia cruzada</li>
+<li>Agrupación: calculado, cubo, atípico</li>
+</ul>
 <figure style="align: center;">
     <img src="images/03patterns.png">
     <figcaption>Patrones y Casos de Uso - mongodb.com</figcaption>
 </figure>
 
-<h3 id="duplicidad-caducidad-e-integridad">Duplicidad, caducidad e integridad<a class="headerlink" href="#duplicidad-caducidad-e-integridad" title="Permanent link">&para;</a></h3>
-<h3 id="attribute-pattern">Attribute Pattern<a class="headerlink" href="#attribute-pattern" title="Permanent link">&para;</a></h3>
-<h3 id="extended-reference-pattern">Extended Reference Pattern<a class="headerlink" href="#extended-reference-pattern" title="Permanent link">&para;</a></h3>
-<p>In this case, the Extended Reference Pattern will easily take care of the additional queries our application is making. To implement the pattern we can modify the inventory item documents by adding frequently-accessed order data directly to them. This will result in lowering the number of related queries on the orders collection, since the relevant data about the orders will now be part of the inventory item documents.</p>
-<h3 id="subset-pattern">Subset Pattern<a class="headerlink" href="#subset-pattern" title="Permanent link">&para;</a></h3>
-<h3 id="computed-pattern">Computed Pattern<a class="headerlink" href="#computed-pattern" title="Permanent link">&para;</a></h3>
-<p>En vez de calcular un dato agregado en cada lectura, en una colección aparte se guardan los datos calculados, de manera que cuando llega un nuevo registro, se recalcula este valor y se modifica el documento oportuno.</p>
-<p>Tiene sentido en aplicaciones donde hay muchas más lecturas que escrituras.</p>
-<p>The Computed Pattern allows your application to calculate values at write time. In this case, the sum of the number of views would be calculated in a rolling fashion by book genre.</p>
-<h3 id="bucket-pattern">Bucket Pattern<a class="headerlink" href="#bucket-pattern" title="Permanent link">&para;</a></h3>
-<p>Agrupar los datos por fecha o categoría para reducir la cantidad de documentos o el tamaño de los mismos.</p>
-<p>The Bucket pattern allows us to record data in hour interval documents, which can then be stored in yearly collections. This makes it easy to store, analyze, and purge the data within the given time requirements.</p>
-<h3 id="schema-versioning-pattern">Schema Versioning Pattern<a class="headerlink" href="#schema-versioning-pattern" title="Permanent link">&para;</a></h3>
-<p>Añade un atributo schema_version para indicar que versión del esquema cumplen los datos.
-Permite evitar downtime al realizar la actualización del esquema</p>
-<p>This pattern allows for the application to quickly identify which document structure it is dealing with, the old one or the new. This helps to minimize downtime for the application user, while allowing the database to smoothly transition to the new schema.</p>
-<h3 id="tree-pattern">Tree Pattern<a class="headerlink" href="#tree-pattern" title="Permanent link">&para;</a></h3>
-<p>Representación de datos jerárquicos.</p>
-<p>Referencias de hijos, padre, array de <em>ancestors</em>, <em>materilized paths</em>.</p>
-<h3 id="polymorphic-pattern">Polymorphic Pattern<a class="headerlink" href="#polymorphic-pattern" title="Permanent link">&para;</a></h3>
-<p>The problem states that bodegas sell a variety of items from different categories, with different purposes and properties. In this case, the Polymorphic Pattern will be the best candidate to catalog this set of goods.</p>
+<h3 id="representacion">Representación<a class="headerlink" href="#representacion" title="Permanent link">&para;</a></h3>
+<p>Los patrones de representación se centran en la representación del esquema. Destacamos los patrones:</p>
+<ul>
+<li>Atributo</li>
+<li>Versionado de documento</li>
+<li>Versionado de esquema</li>
+<li>Polimórfico</li>
+</ul>
+<h4 id="atributo">Atributo<a class="headerlink" href="#atributo" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-attribute-pattern">atributo / <em>attribute</em></a> se utiliza cuando tenemos un conjunto de valores separados entre varios campos que semánticamente están agrupados.</p>
+<p>Supongamos que tenemos un documento con información sobre el precio de un producto:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="err">produc</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ps5&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">precio_es</span><span class="p">:</span><span class="w"> </span><span class="mf">549.99</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="err">precio_uk</span><span class="p">:</span><span class="w"> </span><span class="mf">479.99</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">  </span><span class="err">precio_us</span><span class="p">:</span><span class="w"> </span><span class="mf">499.99</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Agrupamos los atributos en un campo <code>precios</code> (normalmente un array de documentos embebidos):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="err">produc</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ps5&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">precios</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;es&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">549.99</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uk&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">479.99</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">499.99</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Al añadir un nuevo elemento, en vez de añadir un nuevo campo al documento, crearemos un nuevo documento dentro del array.</p>
+<p>Además, con este patrón podríamos añadir más información, como puede ser la moneda:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="err">produc</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ps5&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">precios</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;es&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">549.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da=</span><span class="s2">&quot;eur&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uk&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">479.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da=</span><span class="s2">&quot;pound&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">499.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da=</span><span class="s2">&quot;dollar&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Como ventaja, podemos destacar que esta solución facilita la indexación de los campos y que permite realizar la ordenación de los datos por los campos embebidos.</p>
+<h4 id="versionado-de-documentos">Versionado de documentos<a class="headerlink" href="#versionado-de-documentos" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-document-versioning-pattern">versionado de documentos / <em>document versioning</em></a> se utiliza cuando necesitamos mantener diferentes versiones de un documento, por ejemplo, para mantener un histórico.</p>
+<p>En ese caso, podemos añadir un atributo <code>revision</code>  (de manera similar a como lo hace <em>git</em>) a modo de un contador con las diferentes versiones de cada documento. Además, tendremos dos colecciones, una con los datos históricos, y otra con los últimos datos (y sobre la cual se suelen hacer las consultas).</p>
+<h4 id="versionado-de-esquema">Versionado de esquema<a class="headerlink" href="#versionado-de-esquema" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-schema-versioning-pattern">versionado de esquema / <em>schema versioning</em></a> se utiliza cuando tenemos diferentes esquemas para un mismo documento, ya sea por una evolución de nuestro modelo, por la integración de datos externos, etc...</p>
+<p>Para ello, añadiremos un atributo <code>schema_version</code> para indicar que versión del esquema cumplen los datos y poder identificar la estructura del documento con el que estamos trabajando. Además, nos permite evitar el <em>downtime</em> al realizar la actualización del esquema facilitando la transición del esquema antiguo al nuevo.</p>
+<p>Supongamos que partimos del siguiente esquema para nuestros clientes:</p>
+<div class="highlight"><span class="filename">cliente.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="w">    </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;12345&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aitor Medrano&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="err">email</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a.medrano@edu.gva.es&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="kc">telef</span><span class="err">o</span><span class="kc">n</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;612 34 56 78&quot;</span><span class="w"></span>
+</code></pre></div>
+<p>Y conforme evoluciona nuestra aplicación vemos que vamos añadiendo más y más métodos de contacto, por lo que decidimos crear un documento embebido para agrupar funcionalmente dichos datos. Esta acción puede provocar accesos errores al teléfono o al email, por que creamos el atributo <code>schema_version</code> para saber cuál es la estructura que nuestra aplicación espera leer:</p>
+<div class="highlight"><span class="filename">cliente-esquema-v2.json</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="w">    </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;12345&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span><span class="err">schema_versio</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aitor Medrano&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="err">co</span><span class="kc">nta</span><span class="err">c</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">        </span><span class="err">email</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a.medrano@edu.gva.es&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">        </span><span class="kc">telef</span><span class="err">o</span><span class="kc">n</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;612 34 56 78&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="linenos" data-linenos="7 "></span><span class="w">        </span><span class="kc">t</span><span class="err">wi</span><span class="kc">tter</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;@aitormedrano&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span>
+<span class="linenos" data-linenos="9 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<h4 id="polimorfico">Polimórfico<a class="headerlink" href="#polimorfico" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/developer/products/mongodb/polymorphic-pattern/">polimórfico / <em>polymorphic</em></a> se utiliza cuando tenemos un conjunto de documentos que tienen más similitudes que diferencias y necesitamos que estén en una única colección.</p>
+<p>Supongamos que tenemos una base de datos sobre películas, y tenemos una colección para los directores, otra para los actores/actrices, otra para los músicos, etc... Claramente dichos documentos compartirán muchos atributos, como son el nombre, la fecha de nacimiento, sexo, lugar de origen, etc... los cuales podemos colocar en la misma colección añadiendo un atributo <code>type</code> con el tipo del documento (por ejemplo, <code>actor</code>, <code>músico</code>, <code>director</code>, etc...). Aquellos datos que son diferentes, los podemos colocar en subdocumentos para agrupar sus atributos de forma semántica.</p>
+<p>Al agruparlos en una única colección, además de ser más fácil de implementar, permite unificar las consultas en una única colección.</p>
+<h3 id="frecuencia-de-acceso">Frecuencia de acceso<a class="headerlink" href="#frecuencia-de-acceso" title="Permanent link">&para;</a></h3>
+<p>Son los patrones que debemos utilizar cuando los casos de uso hagan lecturas de forma intensiva, destacando los patrones:</p>
+<ul>
+<li>Subconjunto</li>
+<li>Aproximación</li>
+<li>Referencia cruzada</li>
+</ul>
+<h4 id="subconjunto">Subconjunto<a class="headerlink" href="#subconjunto" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-subset-pattern">subconjunto / <em>subset</em></a> se utiliza cuando tenemos documentos muy grandes, con muchos atributos y que contienen colecciones de muchos documentos que normalmente no se necesitan al recuperar un documento.</p>
+<p>Es decir, tenemos documentos de los cuales sólo necesitamos un subconjunto de sus datos. Al aplicar este patrón, creamos dos colecciones, una con los datos originales, y otra los atributos más utilizados, relacionando ambas colecciones mediante un atributo que cree una relación 1:1.</p>
+<p>Si retomamos el ejemplo de la base de datos de película, al entrar en una película normalmente no recuperaremos toda la información de la misma ni el listado completo de actores y demás personal que haya trabajado en la misma.
+Probablemente, con una pequeña sinopsis, el director y los tres o cuatro actores/actrices principales sea suficiente, lo que conllevará consultas más rápidas y menos tiempo de respuesta al transmitir menos información.</p>
+<h4 id="aproximacion">Aproximación<a class="headerlink" href="#aproximacion" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-approximation-pattern">aproximación / <em>approximation</em></a> se utiliza cuando tenemos una aplicación que realiza muchísimas escrituras y la exactitud en el resultado no es prioritario.</p>
+<p>Por ejemplo, si necesitamos almacenar la cantidad de visitas a una página web, o la población de una determinada ciudad, con un valor aproximado de los datos puede ser suficiente. En vez de realizar una operación de inserción/modificación con cada visita, la aplicación cliente puede ir acumulando las operaciones y comnunicarse con la base de datos cada 100 operaciones, lo que supone ahorrarnos 99 operaciones.</p>
+<p>La aplicación cliente puede utilizar un contador para ir contando las operaciones y al llegar a 100 realizar una modificación o, en vez de un contador, llamar a una función que devuelva un numero aleatorio entre 0 y 100, el cual devolverá 0 alrededor del 1% de las veces, de manera que al cumplirse la condición, realicemos la operación de modificación.</p>
+<p>De esta manera, conseguiremos realizar menos escrituras y mantener ciertos valores estadísticos válidos. En contra, no tendremos el valor exacto y la implementación se debe realizar en el cliente.</p>
+<h4 id="referencia-extendida">Referencia extendida<a class="headerlink" href="#referencia-extendida" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-extended-reference-pattern">referencia extendida / <em>extended reference</em></a> se utiliza cuando vemos que realizamos muchos <em>join</em> para obtener toda la información a la que la aplicación suele acceder.</p>
+<p>Para ello, duplicaremos los datos de los documentos referenciados.</p>
+<p>Aunque ya vimos un ejemplo de este patrón en las relaciones 1:N, supongamos que tenemos una colección de pedidos que referencia al cliente que realiza la compra:</p>
+<div class="highlight"><span class="filename">pedidos.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;12345&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="kc">fe</span><span class="err">cha</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-13T17:41:33Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="err">clie</span><span class="kc">nte</span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;112233&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="err">pedido</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="err">produc</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ps5&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="err">ca</span><span class="kc">nt</span><span class="err">idad</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mi">499</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Y otra colección de clientes con los datos del comprador:</p>
+<div class="highlight"><span class="filename">clientes.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;12345&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aitor Medrano&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="err">calle</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Secreta&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="err">ciudad</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Elx&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="err">ca</span><span class="kc">te</span><span class="err">goria</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Platino&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">  </span><span class="err">co</span><span class="kc">nta</span><span class="err">c</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">      </span><span class="kc">t</span><span class="err">ipo</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">      </span><span class="err">valor</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a.medrano@edu.gva.es&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="p">},</span><span class="w">     </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">      </span><span class="kc">t</span><span class="err">ipo</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;telefono&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">      </span><span class="err">valor</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;612 345 678&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="p">}</span><span class="w"> </span>
+<span class="linenos" data-linenos="15 "></span><span class="w">  </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Si cada vez que recuperamos un pedido nos interesa el nombre y la dirección de la persona que lo realiza, vamos a necesitar siempre un <em>join</em>. El patrón referencia extendida se traduce en duplicar los datos aunque haya redundancia para evitar dicho <em>join</em>:</p>
+<div class="highlight"><span class="filename">pedidos-extendido.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;12345&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="kc">fe</span><span class="err">cha</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-13T17:41:33Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="err">clie</span><span class="kc">nte</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;112233&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aitor Medrano&quot;</span><span class="p">,</span><span class="w"></span>
+</span><span class="hll"><span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="err">calle</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Secreta&quot;</span><span class="p">,</span><span class="w"></span>
+</span><span class="hll"><span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="err">ciudad</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Elx&quot;</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="err">pedido</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="err">produc</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ps5&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="err">ca</span><span class="kc">nt</span><span class="err">idad</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mi">499</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<h3 id="agrupacion">Agrupación<a class="headerlink" href="#agrupacion" title="Permanent link">&para;</a></h3>
+<p>Los patrones de agrupación se utilizan para escalar el esquema de manera rápida y de forma eficiente. Se utilizan para aplicaciones que hacen muchas más lecturas que escrituras, destacando los patrones:</p>
+<ul>
+<li>Calculado</li>
+<li>Cubo</li>
+<li>Atípico</li>
+</ul>
+<h4 id="calculado">Calculado<a class="headerlink" href="#calculado" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-computed-pattern">calculado / <em>computed</em></a> se utiliza cuando queremos evitar tener que recalcular datos en cada lectura. Para ello, en una colección aparte se guardan los datos calculados, de manera que cuando llega un nuevo registro a la colección con los datos, se recalcula este valor y se modifica el documento oportuno en la colección de datos calculados.</p>
+<figure style="align: center;">
+    <img src="images/03computed-pattern.png" width="600">
+    <figcaption>Patrón calculado - mongodb.com</figcaption>
+</figure>
+
+<p>Este patrón tiene sentido en aplicaciones donde hay muchas más lecturas que escrituras, ya que el cálculo se realiza en tiempo de escritura.</p>
+<h4 id="cubo">Cubo<a class="headerlink" href="#cubo" title="Permanent link">&para;</a></h4>
+<p>Cuando trabajamos con IoT, analítica de datos, o series temporales es normal crear una colección con un documento por cada medida que se tome.</p>
+<div class="highlight"><span class="filename">sensor.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">   </span><span class="err">se</span><span class="kc">ns</span><span class="err">or_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">   </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-01-31T10:00:00.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">   </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">   </span><span class="err">se</span><span class="kc">ns</span><span class="err">or_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">   </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-01-31T10:01:00.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">   </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="p">},</span><span class="w"></span>
+</code></pre></div>
+<p>Para evitar la creación de índices que ocupen muchísima memoria RAM, mediante el patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-bucket-pattern">cubo / bucket</a> crearemos un array de documentos con cada medida y un resumen con los datos agregados:</p>
+<div class="highlight"><span class="filename">sensor-cubo.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="err">se</span><span class="kc">ns</span><span class="err">or_id</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="kc">fe</span><span class="err">cha_i</span><span class="kc">n</span><span class="err">icio</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-01-31T10:00:00.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">    </span><span class="kc">fe</span><span class="err">cha_</span><span class="kc">f</span><span class="err">i</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-01-31T10:59:59.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="err">medidas</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">       </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">          </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-01-31T10:00:00.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">          </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">       </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">       </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">          </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-01-31T10:01:00.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">          </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">       </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">   </span><span class="err">ca</span><span class="kc">nt</span><span class="err">idad</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">   </span><span class="err">suma</span><span class="p">:</span><span class="w"> </span><span class="mi">80</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Estos documentos los podemos agrupar por horas, días, etc... lo cuales podemos colocar en colecciones con datos trimestrales, anuales, etc... De esta manera, nos facilita el almacenamiento, análisis y purga de los datos dentro de los requisitos temporales de nuestras aplicaciones.</p>
+<h4 id="atipico">Atípico<a class="headerlink" href="#atipico" title="Permanent link">&para;</a></h4>
+<p>El patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-outlier-pattern">atípico / <em>outlier</em></a> se utiliza cuando tenemos datos que son atípicos, es decir, que se salen del rango normal de comportamiento de la aplicación.</p>
+<p>Supongamos que tenemos una aplicación de cine donde marcamos en una lista las películas que queremos ver (<em>whistlist</em>), y suponemos que los usuarios colocarán dentro de dicho array un máximo de 100 películas. ¿Qué sucede si un usuario quiere añadir 1000 películas? Ese usuario es un caso atípico, y en vez de cambiar todo el modelo de datos por él, se crea una excepción mediante el patrón atípico.</p>
+<p>Para ello, podemos añadir un atributo al documento, al que podemos llamar <code>outlier</code> que marcaremos a <code>true</code> cuando necesitemos acceder a otra colección para recuperar las películas favoritas que le faltan al usuario.</p>
+<p>Con una primera consulta, si vemos que tenemos un <code>outlier</code>, desde la aplicación haremos el <em>join</em> para recuperar el resto de datos.</p>
 <div class="admonition note">
 <p class="admonition-title">Otros patrones</p>
-</div>
-<p>asdf</p>
-<h2 id="validacion-de-esquemas">Validación de esquemas<a class="headerlink" href="#validacion-de-esquemas" title="Permanent link">&para;</a></h2>
-<p>Aunque los esquemas son dinámicos y podemos añadir nuevos campos confome evoluciona nuestro modelo, podemos validar los esquemas para:</p>
 <ul>
-<li>asegurar la existencia de un campo</li>
-<li>asegurar que un campo está rellenado (no nulo)</li>
-<li>asegurar el tipo de datos de un campo</li>
-<li>restringir entre un conjunto de valores</li>
+<li>Patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-tree-pattern">Árbol / <em>Tree</em></a>: Para la representación de datos jerárquicos y evitar <em>joins</em> a la hora de hacer consultas, incluyendo la referencia de hijos, padres, array de <em>ancestors</em>, etc...</li>
+<li>Patrón <a href="https://www.mongodb.com/blog/post/building-with-patterns-the-preallocation-pattern">Preasignación / <em>Pre-Allocation</em></a>: El cual plantea una definición inicial de una estructura de datos para simplificar posteriormente su uso. Este patrón era más necesario en versiones antiguas de MongoDB, cuando gestionaba la memoria de forma menos eficiente que las versiones actuales. </li>
 </ul>
-<p>Para ello se utiliza el operador <a href="https://www.mongodb.com/docs/manual/reference/operator/query/jsonSchema/#json-schema"><code>$jsonSchema</code></a>. Por ejemplo:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="err">$jso</span><span class="kc">n</span><span class="err">Schema</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 3 "></span><span class="w">     </span><span class="err">required</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;major&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;gpa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;address&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="linenos" data-linenos=" 4 "></span><span class="w">     </span><span class="err">proper</span><span class="kc">t</span><span class="err">ies</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos=" 6 "></span><span class="w">           </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 7 "></span><span class="w">           </span><span class="err">descrip</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;must be a string and is required&quot;</span><span class="w"></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="err">address</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="10 "></span><span class="w">           </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="11 "></span><span class="w">           </span><span class="err">required</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;zipcode&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
-<span class="linenos" data-linenos="12 "></span><span class="w">           </span><span class="err">proper</span><span class="kc">t</span><span class="err">ies</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="13 "></span><span class="w">               </span><span class="nt">&quot;street&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
-<span class="linenos" data-linenos="14 "></span><span class="w">               </span><span class="nt">&quot;zipcode&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
-<span class="linenos" data-linenos="15 "></span><span class="w">           </span><span class="p">}</span><span class="w"></span>
-<span class="linenos" data-linenos="16 "></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="linenos" data-linenos="17 "></span><span class="w">     </span><span class="p">}</span><span class="w"></span>
-<span class="linenos" data-linenos="18 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
-<span class="linenos" data-linenos="19 "></span><span class="p">}</span><span class="w"></span>
+</div>
+<h2 id="validacion-de-esquemas">Validación de esquemas<a class="headerlink" href="#validacion-de-esquemas" title="Permanent link">&para;</a></h2>
+<p>Aunque los esquemas son dinámicos y podemos añadir nuevos campos conforme evoluciona nuestro modelo, podemos validar los esquemas para:</p>
+<ul>
+<li>asegurar la existencia de un campo.</li>
+<li>asegurar que un campo está rellenado (no nulo).</li>
+<li>asegurar el tipo de datos de un campo.</li>
+<li>restringir entre un conjunto de valores.</li>
+</ul>
+<p>Desde la versión 3.6 de MongoDB, podemos utilizar el operador <a href="https://www.mongodb.com/docs/manual/reference/operator/query/jsonSchema/#json-schema"><code>$jsonSchema</code></a> para <a href="https://www.mongodb.com/docs/manual/core/schema-validation/">validar los documentos</a>.</p>
+<p>Para ello, definimos un documento con, al menos, las propiedades:</p>
+<ul>
+<li><code>required</code>: indica los campos obligatorios</li>
+<li><code>properties</code>: define los nombres de los campos y sus <a href="https://www.mongodb.com/docs/manual/reference/bson-types/">tipos</a> (mediante la propiedad <code>bsonType</code>).</li>
+</ul>
+<p>Por ejemplo, vamos a basarnos en un documento que vimos en la sesión anterior:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="err">yo</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;631704a042aae0893122f2d6&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Ai</span><span class="kc">t</span><span class="err">or&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="err">apellidos</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Medra</span><span class="kc">n</span><span class="err">o&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="kc">fna</span><span class="err">c</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;1977-10-03T00:00:00.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="err">hobbies</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">&#39;programació</span><span class="kc">n</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;videojuegos&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;balo</span><span class="kc">n</span><span class="err">ces</span><span class="kc">t</span><span class="err">o&#39;</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">  </span><span class="err">casado</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">  </span><span class="err">hijos</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="err">co</span><span class="kc">nta</span><span class="err">c</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="err">wi</span><span class="kc">tter</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;@ai</span><span class="kc">t</span><span class="err">ormedra</span><span class="kc">n</span><span class="err">o&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">email</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;a.medra</span><span class="kc">n</span><span class="err">o@edu.gva.es&#39;</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="kc">fe</span><span class="err">chaCreacio</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1662452896</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>De este modo, podemos validar un documento contra uno o más esquemas a la vez, lo que facilita la evolución de los esquemas a lo lago del tiempo.</p>
-<p><a href="https://www.mongodb.com/docs/manual/core/schema-validation/specify-json-schema/#std-label-schema-validation-json">https://www.mongodb.com/docs/manual/core/schema-validation/specify-json-schema/#std-label-schema-validation-json</a></p>
-<p><a href="https://www.mongodb.com/docs/manual/core/schema-validation/use-json-schema-query-conditions/#std-label-use-json-schema-query-conditions">https://www.mongodb.com/docs/manual/core/schema-validation/use-json-schema-query-conditions/#std-label-use-json-schema-query-conditions</a></p>
-<p>FIXME: revisar la validación de los esquemas
-<a href="https://www.mongodb.com/docs/manual/core/schema-validation/">https://www.mongodb.com/docs/manual/core/schema-validation/</a>
-<a href="https://www.digitalocean.com/community/tutorials/how-to-use-schema-validation-in-mongodb">https://www.digitalocean.com/community/tutorials/how-to-use-schema-validation-in-mongodb</a></p>
+<p>Podríamos definir su validador de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="err">validador</span><span class="w"> </span><span class="err">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="err">valida</span><span class="kc">t</span><span class="err">or</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="err">$jso</span><span class="kc">n</span><span class="err">Schema</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">      </span><span class="err">required</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;fnac&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;contacto&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">      </span><span class="err">proper</span><span class="kc">t</span><span class="err">ies</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">          </span><span class="err">descrip</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;debe ser un string y es un campo obligatorio&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">        </span><span class="err">apellidos</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="kc">fna</span><span class="err">c</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;date&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">        </span><span class="err">hobbies</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">          </span><span class="err">u</span><span class="kc">n</span><span class="err">iqueI</span><span class="kc">te</span><span class="err">ms</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">          </span><span class="err">i</span><span class="kc">te</span><span class="err">ms</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">            </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="w">        </span><span class="err">casado</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bool&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="25 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="26 "></span><span class="w">        </span><span class="err">hijos</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="27 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="28 "></span><span class="w">          </span><span class="err">mi</span><span class="kc">n</span><span class="err">imum</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="29 "></span><span class="w">          </span><span class="err">maximum</span><span class="p">:</span><span class="w"> </span><span class="mi">49</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="30 "></span><span class="w">          </span><span class="err">descrip</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;la cantidad de hijos debe ser positiva e inferior a 50&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="31 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="32 "></span><span class="w">        </span><span class="err">co</span><span class="kc">nta</span><span class="err">c</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="33 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;object&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="34 "></span><span class="w">          </span><span class="err">required</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;email&quot;</span><span class="w"> </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos="35 "></span><span class="w">          </span><span class="err">proper</span><span class="kc">t</span><span class="err">ies</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="36 "></span><span class="w">            </span><span class="nt">&quot;twitter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="37 "></span><span class="w">            </span><span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="38 "></span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="39 "></span><span class="w">        </span><span class="p">},</span><span class="w"> </span>
+<span class="linenos" data-linenos="40 "></span><span class="w">        </span><span class="kc">fe</span><span class="err">chaCreacio</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="41 "></span><span class="w">          </span><span class="err">bso</span><span class="kc">n</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;timestamp&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="42 "></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="43 "></span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="44 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="45 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="46 "></span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="47 "></span><span class="err">db.crea</span><span class="kc">te</span><span class="err">Collec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">(</span><span class="s2">&quot;personas&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">validador)</span><span class="w"></span>
+</code></pre></div>
+<p>De manera, que si ahora insertamos la persona, no tendremos ningún error. Vamos a crear una nueva persona que no cumpla la validación:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">mal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">nombre</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Usuario mal&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="nx">hijos</span><span class="o">:</span><span class="w"> </span><span class="mf">333</span><span class="p">,</span><span class="w">  </span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">contacto</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">twitter</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;@usuario_mal&#39;</span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">personas</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">(</span><span class="nx">mal</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>Y recibiremos un error de validación describiendo los errores encontrado:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="err">Mo</span><span class="kc">n</span><span class="err">goServerError</span><span class="p">:</span><span class="w"> </span><span class="err">Docume</span><span class="kc">nt</span><span class="w"> </span><span class="kc">fa</span><span class="err">iled</span><span class="w"> </span><span class="err">valida</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="err">Addi</span><span class="kc">t</span><span class="err">io</span><span class="kc">nal</span><span class="w"> </span><span class="err">i</span><span class="kc">nf</span><span class="err">orma</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">:</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="p">{</span><span class="w"> </span><span class="kc">fa</span><span class="err">ili</span><span class="kc">n</span><span class="err">gDocume</span><span class="kc">nt</span><span class="err">Id</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="err">de</span><span class="kc">ta</span><span class="err">ils</span><span class="p">:</span><span class="w"> </span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="err">opera</span><span class="kc">t</span><span class="err">orName</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;$jso</span><span class="kc">n</span><span class="err">Schema&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">     </span><span class="err">schemaRulesNo</span><span class="kc">t</span><span class="err">Sa</span><span class="kc">t</span><span class="err">is</span><span class="kc">f</span><span class="err">ied</span><span class="p">:</span><span class="w"> </span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">      </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">opera</span><span class="kc">t</span><span class="err">orName</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;proper</span><span class="kc">t</span><span class="err">ies&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">          </span><span class="err">proper</span><span class="kc">t</span><span class="err">iesNo</span><span class="kc">t</span><span class="err">Sa</span><span class="kc">t</span><span class="err">is</span><span class="kc">f</span><span class="err">ied</span><span class="p">:</span><span class="w"> </span>
+<span class="hll"><span class="linenos" data-linenos=" 9 "></span><span class="w">           </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">proper</span><span class="kc">t</span><span class="err">yName</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;hijos&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos="10 "></span><span class="w">               </span><span class="err">de</span><span class="kc">ta</span><span class="err">ils</span><span class="p">:</span><span class="w"> </span>
+<span class="linenos" data-linenos="11 "></span><span class="w">                </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">opera</span><span class="kc">t</span><span class="err">orName</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;maximum&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">                    </span><span class="err">speci</span><span class="kc">f</span><span class="err">iedAs</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">maximum</span><span class="p">:</span><span class="w"> </span><span class="mi">49</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">                    </span><span class="err">reaso</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;compariso</span><span class="kc">n</span><span class="w"> </span><span class="kc">fa</span><span class="err">iled&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">                    </span><span class="err">co</span><span class="kc">ns</span><span class="err">ideredValue</span><span class="p">:</span><span class="w"> </span><span class="mi">333</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos="15 "></span><span class="w">             </span><span class="p">{</span><span class="w"> </span><span class="err">proper</span><span class="kc">t</span><span class="err">yName</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;co</span><span class="kc">nta</span><span class="err">c</span><span class="kc">t</span><span class="err">o&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos="16 "></span><span class="w">               </span><span class="err">de</span><span class="kc">ta</span><span class="err">ils</span><span class="p">:</span><span class="w"> </span>
+<span class="linenos" data-linenos="17 "></span><span class="w">                </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">opera</span><span class="kc">t</span><span class="err">orName</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;required&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">                    </span><span class="err">speci</span><span class="kc">f</span><span class="err">iedAs</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">required</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">&#39;email&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">                    </span><span class="err">missi</span><span class="kc">n</span><span class="err">gProper</span><span class="kc">t</span><span class="err">ies</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">&#39;email&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="err">opera</span><span class="kc">t</span><span class="err">orName</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;required&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="w">          </span><span class="err">speci</span><span class="kc">f</span><span class="err">iedAs</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="err">required</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">n</span><span class="err">ombre&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">fna</span><span class="err">c&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;co</span><span class="kc">nta</span><span class="err">c</span><span class="kc">t</span><span class="err">o&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos="22 "></span><span class="w">          </span><span class="err">missi</span><span class="kc">n</span><span class="err">gProper</span><span class="kc">t</span><span class="err">ies</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">&#39;</span><span class="kc">fna</span><span class="err">c&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Expresiones de validación</p>
+<p>También podemos añadir expresiones de validación entre campos, de manera que el valor de un campo depende del valor de otro:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">createCollection</span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;ventas&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">validator</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="s2">&quot;$and&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w">         </span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="c1">// Mediante expresiones de consultas</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="s2">&quot;$expr&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">          </span><span class="s2">&quot;$lt&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;$lineaPedido.precioConDescuento&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;$lineaPedido.precio&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">      </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="c1">// Mediante el esquema JSON                    </span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">        </span><span class="s2">&quot;$jsonSchema&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">          </span><span class="s2">&quot;properties&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">            </span><span class="s2">&quot;productos&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;bsonType&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;array&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">          </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</div>
+<p>Si queremos añadir una validación a una colección ya existente, podemos hacer uso del comando <a href="https://www.mongodb.com/docs/manual/reference/command/collMod/"><code>collMod</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>db.runCommand<span class="o">(</span><span class="s2">&quot;collMod&quot;</span>: &lt;nombreColeccion&gt;, <span class="s2">&quot;validator&quot;</span>: &lt;esquemaValidador&gt;<span class="o">)</span>
+</code></pre></div>
+<p>Más información sobre la validación de esquemas en <a href="https://www.mongodb.com/docs/manual/core/schema-validation/">https://www.mongodb.com/docs/manual/core/schema-validation/</a> y en <a href="https://www.digitalocean.com/community/tutorials/how-to-use-schema-validation-in-mongodb">https://www.digitalocean.com/community/tutorials/how-to-use-schema-validation-in-mongodb</a></p>
+<div class="admonition important">
+<p class="admonition-title">Consejo final</p>
+<p>Independientemente de la carga, la manera que modelemos las relaciones y los patrones que apliquemos, lo más importante es que el modelado va a depender directamente de la forma que nuestras aplicaciones accedan a los datos. Por ello es tan importante definir primero los casos de uso/historias de usuario que van provocar el acceso a los datos.</p>
+</div>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
-<p>Vídeo <a href="https://www.youtube.com/watch?v=DUCvYbcgGsQ">A Complete Methodology of Data Modeling for MongoDB</a></p>
-<p><a href="https://andreshevia.com/2020/10/18/diseno-de-modelos-de-datos-nosql/">https://andreshevia.com/2020/10/18/diseno-de-modelos-de-datos-nosql/</a></p>
-<p><a href="https://www.mongodb.com/developer/products/mongodb/mongodb-schema-design-best-practices/">https://www.mongodb.com/developer/products/mongodb/mongodb-schema-design-best-practices/</a></p>
-<p><a href="https://medium.com/geekculture/mongodb-data-modeling-matters-first-step-to-optimization-data-modeling-series-1-158be911ecb8">https://medium.com/geekculture/mongodb-data-modeling-matters-first-step-to-optimization-data-modeling-series-1-158be911ecb8</a></p>
-<p><a href="https://www.mongodb.com/developer/products/mongodb/schema/tutorials/">https://www.mongodb.com/developer/products/mongodb/schema/tutorials/</a>
-<a href="https://www.mongodb.com/developer/products/mongodb/schema-design-anti-pattern-summary/">https://www.mongodb.com/developer/products/mongodb/schema-design-anti-pattern-summary/</a></p>
-<p><a href="https://www.mongodb.com/blog/post/performance-best-practices-mongodb-data-modeling-and-memory-sizing">https://www.mongodb.com/blog/post/performance-best-practices-mongodb-data-modeling-and-memory-sizing</a></p>
+<ul>
+<li>Curso <a href="https://university.mongodb.com/courses/M320/about">M320: Data Modeling</a> de la <em>MongoDB University</em></li>
+<li>Vídeo <a href="https://www.youtube.com/watch?v=DUCvYbcgGsQ"><em>A Complete Methodology of Data Modeling for MongoDB</em></a></li>
+<li><a href="https://digibuo.uniovi.es/dspace/bitstream/handle/10651/47241/New%20cardinality.pdf"><em>New Cardinality Notations and Styles for Modeling NoSQL Document-store Databases</em></a></li>
+<li><a href="https://www.mongodb.com/developer/products/mongodb/mongodb-schema-design-best-practices/#type-of-relationships"><em>MongoDB Schema Design Best Practices</em></a></li>
+<li><a href="https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design-part-1"><em>6 Rules of Thumb for MongoDB Schema Design</em></a></li>
+<li><a href="https://www.mongodb.com/blog/post/performance-best-practices-mongodb-data-modeling-and-memory-sizing">Performance Best Practices: MongoDB Data Modeling and Memory Sizing</a></li>
+</ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>(1p) Estimación de la carga de trabajo en un proceso de ingesta de datos. (Metodología curso MongoDB University)</li>
-<li>(2p) Ejercicios de modelado de relaciones 1:1, 1:N, N:M que impliquen documentos embebidos y/o relaciones</li>
-<li>(1p) Consultas agregadas sobre documentos con o sin referencias a otras colecciones.</li>
+<li>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Define el modelo de datos necesario para la siguiente aplicación de e-commerce:</p>
+<ul>
+<li>Tenemos una aplicación que vende productos. Estos productos se almacenan en diferentes almacenes, de los cuales conocemos su nombre y dirección (calle, número, ciudad y país). Los productos que vendemos pueden localizarse hasta un máximo de 200 almacenes.</li>
+<li>De cada producto, necesitamos almacenar su nombre y descripción, sí como un máximo de 1000 análisis realizados por los usuarios. De cada análisis, almacenaremos la fecha, el propio cuerpo del análisis y el usuario que lo ha realizado.</li>
+<li>Finalmente, de los usuarios, además de su nombre, almacenaremos los datos de sus tarjetas de crédito (un máximo de 10), como son el tipo, número, fecha de expedición y código de seguridad. También guardaremos la dirección de envío donde va a recibir los productos.</li>
+<li>Las operaciones prioritarias para la aplicación son:<ul>
+<li>listado de productos con información de sus almacenes</li>
+<li>listado de análisis de un determinado producto</li>
+<li>creación de usuario y su/s tarjeta/s de crédito en una única operación</li>
+</ul>
+</li>
+</ul>
+<p>Para ello, crea diferentes colecciones/documentos json con datos de muestra así como validadores para cada una de las colecciones que necesites.</p>
+</li>
+<li>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Nuestro ayuntamiento está diseñando un plan energético para fomentar la instalación de placas solares. Aquellos viviendas que se sitúen en barrios que generan más energía de la que consumen recibirán un bono económico por el exceso de energía.</p>
+<p>Nuestra base de datos almacena, para cada vivienda, cuanta energía produce por hora (en kW), cuanta consume, y cuanta necesita consumir de la red eléctrica. Un dato de una muestra de energía sería:</p>
+<div class="highlight"><span class="filename">energia.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;6316fc1597eb703de2add36e&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nt">&quot;propietario_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;6317048697eb703de2add36f&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T13:01:00.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nt">&quot;kW hora&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="nt">&quot;consumo&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nt">&quot;generado&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nt">&quot;necesidad-red&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Y los datos de un propietario:</p>
+<div class="highlight"><span class="filename">cliente.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;6317048697eb703de2add36f&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aitor Medrano&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nt">&quot;direccion&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="nt">&quot;calle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Secreta&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="nt">&quot;numero&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nt">&quot;ciudad&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Elche&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nt">&quot;barrio&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Carrús&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">    </span><span class="nt">&quot;provincia&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alicante&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="nt">&quot;cp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;03206&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Refactoriza el documento/colección aplicando los patrones que consideres necesarios, explicando cada uno de los patrones que hayas empleado, con el objetivo de recuperar para cada día, la medidas acumuladas para un determinado barrio.</p>
+</li>
 </ol>
 <!--
+https://university.mongodb.com/exam/guide
 
-RDBMS Parent-Child Tables vs. MongoDB Nested Sub-Document or Array
+https://github.com/JaimeRC/mongodb-university-courses/blob/master/M320:%20Data%20Modeling/Chapter%204:%20Patterns%20(Part%202)/README.md
 
-A table has a relationship to other tables, relations like one-to-one, one-to-many, or many-to-many by linking attributes from both tables.
+https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_15.xhtml#_idParaDest-284
 
-MongoDB can express the relationships between collections similarly. However, MongoDB has an additional feature, the ability to take the fields of child table and embed it with the parent table as a single collection.
-
-This grouping leads to a data model with far fewer collections than the number of tables in the corresponding relational model.
-
-----
-
-RDBMS Join vs. MongoDB Embedding, Linking, or $lookup
-
-Joins are used in a relational database to get data from two or more tables.
-
-With MongoDB, there is a $lookup operator to perform the same link between collections.
-
-Additionally, some relationships are also expressed by embedding the child table in the parent table. For these relationship, there is no need to use the $lookup keyword, as the data is already pre-joined in the document. The document model makes things much natural and queries so much simpler.
-
+https://www.mongodb.com/docs/manual/core/schema-validation/view-existing-validation-rules/#std-label-schema-view-validation-rules
 -->
 
 
@@ -998,6 +1677,42 @@ Additionally, some relationships are also expressed by embedding the child table
       </main>
       
         <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="02mongo.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S19.- MongoDB" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              S19.- MongoDB
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="04formatos.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S21.- Formatos de datos" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              S21.- Formatos de datos
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

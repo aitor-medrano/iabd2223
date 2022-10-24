@@ -292,6 +292,12 @@
         
           
         
+          
+        
+          
+        
+          
+        
       
       
         
@@ -529,7 +535,49 @@
   
     <li class="md-nav__item">
       <a href="02mongo.html" class="md-nav__link">
-        S24.- MongoDB
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04formatos.html" class="md-nav__link">
+        S21.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05agregaciones.html" class="md-nav__link">
+        S26.- Agregaciones
       </a>
     </li>
   
@@ -780,7 +828,7 @@
 <p>La solución es el despliegue de las aplicaciones y sus datos en clústeres de servidores, distribuyendo el procesamiento en múltiples máquinas.</p>
 <h2 id="no-solo-sql">No Solo SQL<a class="headerlink" href="#no-solo-sql" title="Permanent link">&para;</a></h2>
 <p>Si definimos NoSQL formalmente, podemos decir que se trata de un conjunto de tecnologías que permiten el procesamiento rápido y eficiente de conjuntos de datos dando la mayor importancia al rendimiento, la fiabilidad y la agilidad.</p>
-<p>Si nos basamos en el acrónimo, el término se refiere a cualquier almacén de datos que no sigue un modelo relacional, los datos no son relacionales y por tanto no utilizan SQL como lenguaje de consulta. Así pues, los sistemas NoSQL se centran en sistemas complementarios a los SGBD relacionales, que fijan sus prioridades en la escalabilidad y la disponibilidad en contra de la atomicidad y consistencia de los datos.</p>
+<p>Si nos basamos en el acrónimo, el término se refiere a cualquier almacén de datos que no sigue un modelo relacional, los datos no son relacionales y por tanto no utilizan SQL como lenguaje de consulta. Otra aceptación implica que el No hace referencia a <em>not only</em>, es decir, que los sistemas NoSQL se centran en sistemas complementarios a los SGBD relacionales, que fijan sus prioridades en la escalabilidad y la disponibilidad en contra de la atomicidad y consistencia de los datos.</p>
 <p><a name="acid"></a></p>
 <div class="admonition info">
 <p class="admonition-title">ACID</p>
@@ -828,17 +876,17 @@
 <p>De este modo se consigue un desarrollo más rápido, integración de código más robusto y menos tiempo empleado en la administración de la base de datos.</p>
 <h3 id="particionado">Particionado<a class="headerlink" href="#particionado" title="Permanent link">&para;</a></h3>
 <p>Dado el modo en el que se estructuran las bases de datos relacionales, normalmente escalan verticalmente - un único servidor que almacena toda la base de datos para asegurar la disponibilidad continua de los datos. Esto se traduce en costes que se incrementan rápidamente, con un límites definidos por el propio hardware, y en un pequeño número de puntos críticos de fallo dentro de la infraestructura de datos.</p>
-<p>La solución es escalar horizontalmente, añadiendo nuevos servidores en vez de concentrarse en incrementar la capacidad de un único servidor. Este escalado horizontal se conoce como <strong><em>Sharding</em></strong> o Particionado.</p>
-<figure style="align: center;">
-    <img src="images/01particionado.jpg">
-    <figcaption>Particionado de los datos</figcaption>
-</figure>
-
+<p>La solución es escalar horizontalmente, añadiendo nuevos servidores en vez de concentrarse en incrementar la capacidad de un único servidor, lo que permite tratar con conjuntos de datos más grandes de lo que sería capaz cualquier máquina por sí sola. Este escalado horizontal se conoce como <strong><em>Sharding</em></strong> o Particionado.</p>
 <p>El particionado no es único de las bases de datos NoSQL. Las bases de datos relacionales también lo soportan. Si en un sistema relacional queremos particionar los datos, podemos distinguir entre particionado:</p>
 <ul>
 <li><strong>Horizontal</strong>: diferentes filas en diferentes particiones.</li>
 <li><strong>Vertical</strong>: diferentes columnas en particiones distintas.</li>
 </ul>
+<figure style="align: center;">
+    <img src="images/01sharding01.png" width="600px">
+    <figcaption>Particionado de los datos - digitalocean.com</figcaption>
+</figure>
+
 <p>En el caso de las bases de datos NoSQL, el particionado depende del modelo de la base de datos:</p>
 <ul>
 <li>Los almacenes clave-valor y las bases de datos documentales normalmente se particionan horizontalmente.</li>
@@ -856,9 +904,23 @@
 <p>Por contra, las bases de datos NoSQL normalmente soportan <strong><em>auto-sharding</em></strong>, lo que implica que de manera nativa y automáticamente se dividen los datos entre un número arbitrario de servidores, sin que la aplicación sea consciente de la composición del pool de servidores. Los datos y las consultas se balancean entre los servidores.</p>
 <p>El particionado se realiza mediante un método consistente, como puede ser:</p>
 <ul>
-<li>Por <strong>rangos</strong> de su id: por ejemplo "los usuarios del 1 al millón están en la partición 1" o "los usuarios cuyo nombre va de la A a la E" en una partición, en otra de la M a la Q, y de la R a la Z en la tercera.</li>
-<li>Por <strong>listas</strong>: dividiendo los datos por la categoría del dato, es decir, en el caso de datos sobre libros, las novelas en una partición, las recetas de cocina en otra, etc..</li>
-<li>Mediante un función <strong><em>hash</em></strong>, la cual devuelve un valor para un elemento que determine a que partición pertenece.</li>
+<li>
+<p>Por <strong>rangos</strong> de su id: por ejemplo "los usuarios del 1 al millón están en la partición 1" o "los usuarios cuyo nombre va de la A a la E" en una partición, en otra de la M a la Q, y de la R a la Z en la tercera.</p>
+<p><figure style="align: center;">
+    <img src="images/01sharding03range.png" width="600px">
+    <figcaption>Particionado por rango - digitalocean.com</figcaption>
+</figure></p>
+</li>
+<li>
+<p>Por <strong>listas</strong>: dividiendo los datos por la categoría del dato, es decir, en el caso de datos sobre libros, las novelas en una partición, las recetas de cocina en otra, etc..</p>
+</li>
+<li>
+<p>Mediante un función <strong><em>hash</em></strong>, la cual devuelve un valor para un elemento que determine a que partición pertenece.</p>
+<p><figure style="align: center;">
+    <img src="images/01sharding02hash.png" width="600px">
+    <figcaption>Particionado por hash - digitalocean.com</figcaption>
+</figure></p>
+</li>
 </ul>
 <h4 id="cuando-particionar">Cuando particionar<a class="headerlink" href="#cuando-particionar" title="Permanent link">&para;</a></h4>
 <p>El motivo para particionar los datos se debe a:</p>
@@ -868,14 +930,24 @@
 <li>disponibilidad: si un servidor esta ocupado, otro servidor puede devolver los datos. La carga de los servidores se reduce.</li>
 </ul>
 <p>No particionaremos los datos cuando la cantidad sea pequeña, ya que el hecho de distribuir los datos conlleva unos costes que pueden no compensar con un volumen de datos insuficiente. Tampoco esperaremos a particionar cuando tengamos muchísimos datos, ya que el proceso de particionado puede provocar sobrecarga del sistema.</p>
-<p>La nube facilita de manera considerable este escalado, mediante proveedores como Amazon Web Services el cual ofrece virtualmente una capacidad ilimitada bajo demanda, y preocupándose de todas las tareas necesarias para la administración de la base de datos.</p>
+<p>La nube facilita de manera considerable este escalado, mediante proveedores como AWS o Azure los cuales ofrecen virtualmente una capacidad ilimitada bajo demanda, y despreocupándose de todas las tareas necesarias para la administración de la base de datos.</p>
 <p>Los desarrolladores ya no necesitamos construir plataformas complejas para nuestras aplicaciones, de modo que nos podemos centrar en escribir código de aplicación. Una granja de servidores con <em>commodity hardware</em> puede ofrecer el mismo procesamiento y capacidad de almacenamiento que un único servidor de alto rendimiento por mucho menos coste.</p>
 <h3 id="replicacion">Replicación<a class="headerlink" href="#replicacion" title="Permanent link">&para;</a></h3>
 <p>La replicación mantiene copias idénticas de los datos en múltiples servidores, lo que facilita que las aplicaciones siempre funcionen y los datos se mantengan seguros, incluso si alguno de los servidores sufre algún problema.</p>
 <p>La mayoría de las bases de datos NoSQL también soportan la replicación automática, lo que implica una alta disponibilidad y recuperación frente a desastres sin la necesidad de aplicaciones de terceros encargadas de ello. Desde el punto de vista del desarrollador, el entorno de almacenamiento es virtual y ajeno al código de aplicación.</p>
+<p>Existen dos formas de realiza la replicación:</p>
+<h4 id="maestro-esclavo-primario-secundario">Maestro-esclavo / Primario-secundario<a class="headerlink" href="#maestro-esclavo-primario-secundario" title="Permanent link">&para;</a></h4>
+<p>Todas las escrituras se realizan en el nodo principal y después se replican a los nodos secundarios. El nodo primario es un SPOF (<em>single point of failure</em>).</p>
 <figure style="align: center;">
-    <img src="images/01replicacion.jpg">
-    <figcaption>Replicación de los datos</figcaption>
+    <img src="images/01replication-master-slave.jpg" width="500px">
+    <figcaption>Replicación primario-secundario</figcaption>
+</figure>
+
+<h4 id="par-a-par-peer-to-peer">Par-a-par (<em>peer-to-peer</em>)<a class="headerlink" href="#par-a-par-peer-to-peer" title="Permanent link">&para;</a></h4>
+<p>Todos los nodos tienen el mismo nivel jerárquico, de manera que todos admiten escrituras. Al poder haber escrituras simultáneas sobre el mismo datos en diferentes nodos, pueden darse inconsistencia en los datos.</p>
+<figure style="align: center;">
+    <img src="images/01replication-peer-to-peer.png" width="500px">
+    <figcaption>Replicación Peer-to-peer</figcaption>
 </figure>
 
 <p>La replicación de los datos se utiliza para alcanzar:</p>
@@ -887,23 +959,27 @@
 <div class="admonition caution">
 <p class="admonition-title">Replicación vs particionado</p>
 <p>No hay que confundir la replicación (copia de los datos en varias máquinas) con el particionado (cada máquina tiene un subconjunto de los datos). El entorno más seguro y con mejor rendimiento es aquel que tiene los datos particionados y replicados (cada máquina que tiene un subconjunto de los datos está replicada en 2 o más).</p>
+<p><figure style="align: center;">
+    <img src="images/01sharding-replication.png" width="500px">
+    <figcaption>Replicación y particionado - codingexplained.com/figcaption&gt;
+</figure></p>
 </div>
 <h3 id="implantando-nosql">Implantando NoSQL<a class="headerlink" href="#implantando-nosql" title="Permanent link">&para;</a></h3>
 <p>Normalmente, las empresas empezarán con una prueba de baja escalabilidad de una base de datos NoSQL, de modo que les permita comprender la tecnología asumiendo muy poco riesgo. La mayoría de las bases de datos NoSQL también son open-source, y por tanto se pueden probar sin ningún coste extra. Al tener unos ciclos de desarrollo más rápidos, las empresas pueden innovar con mayor velocidad y mejorar la experiencia de sus cliente a un menor coste.</p>
-<p>Elegir la base de datos correcta para el proyecto es un tema importante. Se deben considerar las diferentes alternativas a las infraestructuras legacy teniendo en cuenta varios factores:</p>
+<p>Elegir la base de datos correcta para el proyecto es un tema importante. Se deben considerar las diferentes alternativas a las infraestructuras <em>legacy</em> teniendo en cuenta varios factores:</p>
 <ul>
-<li>la escalabilidad o el rendimiento más allá de las capacidades del sistema existente</li>
-<li>identificar alternativas viables respecto al software propietario</li>
-<li>incrementar la velocidad y agilidad del proceso de desarrollo</li>
+<li>la escalabilidad o el rendimiento más allá de las capacidades del sistema existente.</li>
+<li>identificar alternativas viables respecto al software propietario.</li>
+<li>incrementar la velocidad y agilidad del proceso de desarrollo.</li>
 </ul>
 <p>Así pues, al elegir un base de datos hemos de tener en cuenta las siguientes dimensiones:</p>
 <ul>
-<li>Modelo de Datos: A elegir entre un modelo documental, basado en columnas, de grafos o mediante clave-valor.</li>
-<li>Modelo de Consultas: Dependiendo de la aplicación, puede ser aceptable un modelo de consultas que sólo accede a los registros por su clave primaria. En cambio, otras aplicaciones pueden necesitar consultar por diferentes valores de cada registro. Además, si la aplicación necesita modificar los registros, la base de datos necesita consultar los datos por un índice secundario.</li>
-<li>Modelo de Consistencia: Los sistemas NoSQL normalmente mantienen múltiples copias de los datos para ofrecer disponibilidad y escalabilidad al sistema, lo que define la consistencia del mismo. Los sistemas NoSQL tienden a ser consistentes o eventualmente consistentes.</li>
+<li>modelo de datos: A elegir entre un modelo documental, basado en columnas, de grafos o mediante clave-valor.</li>
+<li>modelo de consultas: Dependiendo de la aplicación, puede ser aceptable un modelo de consultas que sólo accede a los registros por su clave primaria. En cambio, otras aplicaciones pueden necesitar consultar por diferentes valores de cada registro. Además, si la aplicación necesita modificar los registros, la base de datos necesita consultar los datos por un índice secundario.</li>
+<li>modelo de consistencia: Los sistemas NoSQL normalmente mantienen múltiples copias de los datos para ofrecer disponibilidad y escalabilidad al sistema, lo que define la consistencia del mismo. Los sistemas NoSQL tienden a ser consistentes o eventualmente consistentes.</li>
 <li>APIs: No existe un estándar para interactuar con los sistemas NoSQL. Cada sistema presenta diferentes diseños y capacidades para los equipos de desarrollo. La madurez de un API puede suponer una inversión en tiempo y dinero a la hora de desarrollar y mantener el sistema NoSQL.</li>
 <li>
-<p>Soporte Comercial y de la Comunidad: Los usuarios deben considerar la salud de la compañia o de los proyectos al evaluar una base de datos. El producto debe evolucionar y se mantenga para introducir nuevas prestaciones y corregir fallos. Una base de datos con una comunidad fuerte de usuarios:</p>
+<p>soporte comercial y de la comunidad: Los usuarios deben considerar la salud de la compañia o de los proyectos al evaluar una base de datos. El producto debe evolucionar y mantenerse para introducir nuevas prestaciones y corregir fallos. Una base de datos con una comunidad fuerte de usuarios:</p>
 <ul>
 <li>permite encontrar y contratar desarrolladores con destrezas en el producto.</li>
 <li>facilita encontrar información, documentación y ejemplos de código.</li>
@@ -915,10 +991,10 @@
 <h4 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h4>
 <p>Una vez conocemos los diferentes sistemas y qué elementos puede hacer que nos decidamos por una solución u otra, conviene repasar los casos de uso más comunes:</p>
 <ul>
-<li>Si vamos a crear una aplicación web cuyo campos sean personalizables, usaremos una solución documental.</li>
-<li>Como una capa de caché, mediante un almacén clave-valor.</li>
-<li>Para almacenar archivos binarios sin preocuparse de la gestión de permisos del sistema de archivos, y poder realizar consultas sobre sus metadatos, ya sea mediante una solución documental o un almacén clave-valor.</li>
-<li>Para almacenar un enorme volumen de datos, donde la consistencia no es lo más importante, pero si la disponibilidad y su capacidad de ser distribuida, mediante una solución documental o basada en columnas.</li>
+<li>si vamos a crear una aplicación web cuyo campos sean personalizables, usaremos una solución documental.</li>
+<li>como una capa de caché, mediante un almacén clave-valor.</li>
+<li>para almacenar archivos binarios sin preocuparse de la gestión de permisos del sistema de archivos, y poder realizar consultas sobre sus metadatos, ya sea mediante una solución documental o un almacén clave-valor.</li>
+<li>para almacenar un enorme volumen de datos, donde la consistencia no es lo más importante, pero si la disponibilidad y su capacidad de ser distribuida, mediante una solución documental o basada en columnas.</li>
 </ul>
 <h2 id="modelos-de-datos">Modelos de Datos<a class="headerlink" href="#modelos-de-datos" title="Permanent link">&para;</a></h2>
 <p>La principal clasificación de los sistemas de bases de datos NoSQL se realiza respecto a los diferentes modelos de datos:</p>
@@ -1248,6 +1324,7 @@
 <li><a href="https://link.springer.com/book/10.1007/978-1-4842-1329-2">Next Generation Databases</a>: NoSQL, NewSQL, and Big Data</li>
 <li><a href="https://www.informit.com/store/nosql-distilled-a-brief-guide-to-the-emerging-world-9780321826626">NoSQL Distilled</a>: A Brief Guide to the Emerging World of Polyglot Persistence</li>
 <li><a href="https://dataschool.com/data-modeling-101/row-vs-column-oriented-databases/">Row vs Column Oriented Databases</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/understanding-database-sharding">Understanding Database Sharding</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
@@ -1356,13 +1433,13 @@
       
       
         
-        <a href="02mongo.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S24.- MongoDB" rel="next">
+        <a href="02mongo.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S19.- MongoDB" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Siguiente
               </span>
-              S24.- MongoDB
+              S19.- MongoDB
             </div>
           </div>
           <div class="md-footer__button md-icon">

@@ -288,6 +288,12 @@
         
           
         
+          
+        
+          
+        
+          
+        
       
       
         
@@ -331,7 +337,49 @@
   
     <li class="md-nav__item">
       <a href="02mongo.html" class="md-nav__link">
-        S24.- MongoDB
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04formatos.html" class="md-nav__link">
+        S21.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05agregaciones.html" class="md-nav__link">
+        S26.- Agregaciones
       </a>
     </li>
   
@@ -484,11 +532,130 @@ Uso mediante Docker ... poner enlaces para instalar Mongo desde comandos
 Restore/dump</p>
 <p>Consultas sencillas (1h)
 CRUD</p>
+<p>En MongoDB, los documentos se almacenan en formato:</p>
+<p>BSON
+JSON
+CSV
+SQL</p>
+<p>Para borrar todos los datos de una colección llamada pruebas usaremos:</p>
+<p>db.pruebas.deleteMany({})
+db.pruebas.deleteOne({})
+db.pruebas.drop()
+db.pruebas.removeCollection()
+db.pruebas.unset()</p>
+<p>Sobre la colección <code>trips</code> trabajada en el aula, para recuperar la duración de los viajes de las clientes nacidos en los años 1977 y 1981 ejecutaremos la consulta:</p>
+<p>db.trips.find({ "birth year": {$in: [1977, 1981]} }, {tripduration:1})
+db.trips.find({ "birth year": {$in: [1977, 1981]} , {usertype:"Customer"}})
+db.trips.find({ "birth year": {$in: [1977, 1981]} , {usertype:"Customer"}}, {tripduration:0})
+db.trips.find({ "birth year": {$in: [1977, 1981]} , {usertype:"Customer"}}, {tripduration:1})</p>
 <h2 id="03-modelado-1h">03 Modelado (1h)<a class="headerlink" href="#03-modelado-1h" title="Permanent link">&para;</a></h2>
-<p>Modelado
-    Relaciones
-    Patrones</p>
+<p>22 - Relaciones 1 a muchos
+Para las relaciones uno a muchos:
+    Si hay pocos datos, lo mejor en colocar las referencias en un array.
+    Si hay pocos datos, lo mejor es colocar los documentos embebidos dentro de un array.
+    Si hay muchos datos, lo mejor en colocar las referencias en un array.
+    Si hay muchos datos, lo mejor es colocar los documentos embebidos dentro de un array.
+    Si hay muchos datos, la referencia se coloca en el muchos hacia el 1.
+    Si hay muchos datos, el documento embebido se coloca en el muchos hacia el 1.
+    Si hay muchísimos datos, la referencia se coloca en el muchos hacia el 1.
+    Si hay muchísimos datos, lo mejor en colocar las referencias en un array.</p>
+<p>Respecto a la validación de los documentos respecto a un esquema:
+    Es obligatorio definir siempre un esquema.
+    Si hemos añadido una validación, los nuevos documentos no pueden contener nuevos campos
+    Sólo podemos comprobar la existencia y el tipo de los datos
+    Siempre indicaremos el esquema a validar cuando creamos las colecciones
+    Podemos definir expresiones de validación entre campos</p>
+<p>Para validar un docume</p>
 <h2 id="framework-de-agregacion-1h">Framework de agregación (1h)<a class="headerlink" href="#framework-de-agregacion-1h" title="Permanent link">&para;</a></h2>
+<p>var pipeline = [
+        { $match: {
+            genres: {$in: ["Romance"]}, // Romance movies only.
+            released: {$lte: new ISODate("2001-01-01T00:00: 00Z") }}},
+        { $sort: {"imdb.rating": -1}}, // Sort by IMDB rating.
+        { $limit: 3 }, // Limit to 3 results.
+        { $project: { title: 1, genres: 1, released: 1, "imdb.rating": 1}}
+    ];</p>
+<p>var pipeline = [
+     {$group: {
+         _id: "$rated",
+         "numTitles": { $sum: 1},
+     }}
+    ];</p>
+<p>var pipeline = [
+    { $match: {
+    released: {$lte: new ISODate("2001-01-01T00:00:00Z") }}},
+    { $group: {
+        _id: {"$arrayElemAt": ["$genres", 0]},
+        "popularity": { $avg: "$imdb.rating"},
+        "top_movie": { $max: "$imdb.rating"},
+        "longest_runtime": { $max: "$runtime"}
+    }},
+    { $sort: { popularity: -1}},
+    { $project: {
+        _id: 1,
+        popularity: 1,
+        top_movie: 1,
+        adjusted_runtime: { $add: [ "$longest_runtime", 12 ] } } }
+    ];</p>
+<p>var pipeline = [</p>
+<p>{ $match: {
+    released: {$lte: new ISODate("2001-01-01T00:00:00Z") },
+        runtime: {$lte: 218},
+        "imdb.rating": {$gte: 7.0}
+    }
+    },
+    { $sort: {"imdb.rating": -1}},
+    { $group: {
+        _id: {"$arrayElemAt": ["$genres", 0]},
+        "titulo_recomendado": {$first: "$title"},
+        "nota_recomendado": {$first: "$imdb.rating"},
+        "tiempo_recomendado": {$first: "$runtime"},
+        "popularidad": { $avg: "$imdb.rating"},
+        "mejor_nota": { $max: "$imdb.rating"},
+        "tiempo_maslargo": { $max: "$runtime"}
+    }},
+    { $sort: { popularity: -1}},
+    { $project: {
+        _id: 1,
+            popularidad: 1,
+            mejor_nota: 1,
+            titulo_recomendado: 1,
+            nota_recomendado: 1,
+            tiempo_recomendado: 1,
+            tiempo_ajustado_maslargo: { $add: [ "$tiempo_maslargo", 12 ] } } }
+];</p>
+<p>db.movies.aggregate(pipeline);</p>
+<p>var pipeline = [
+             { $group: {
+                 _id: "$movie_id",
+                 "sumComments": { $sum: 1}
+             }},
+             { $sort: { "sumComments": -1}},
+             { $limit: 5},
+             { $lookup: {
+                 from: "movies",
+                 localField: "_id",
+                 foreignField: "_id",
+                 as: "movie"
+             }},
+             { $unwind: "$movie" },
+             { $project: {
+                 "movie.title": 1,
+                 "movie.imdb.rating": 1,
+                 "sumComments": 1,
+             }},
+             { $out: "most_commented_movies" }
+    ];
+db.comments.aggregate(pipeline);</p>
+<p>var pipeline = [
+    { $match: {
+        "awards.wins": { $gte: 1},
+        genres: {$in: ["Documentary"]},
+    }},
+    { $sort: {"awards.wins": -1}}, // Sort by award wins.
+    { $limit: 3},
+    { $project: { title: 1, genres: 1, awards: 1}},
+];</p>
 <h2 id="04-formatos-1h">04 Formatos (1h)<a class="headerlink" href="#04-formatos-1h" title="Permanent link">&para;</a></h2>
 <p>csv
 json

@@ -294,6 +294,12 @@
         
           
         
+          
+        
+          
+        
+          
+        
       
       
         
@@ -344,12 +350,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          S24.- MongoDB
+          S19.- MongoDB
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="02mongo.html" class="md-nav__link md-nav__link--active">
-        S24.- MongoDB
+        S19.- MongoDB
       </a>
       
         
@@ -609,6 +615,48 @@
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04formatos.html" class="md-nav__link">
+        S21.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05agregaciones.html" class="md-nav__link">
+        S26.- Agregaciones
+      </a>
     </li>
   
 
@@ -920,7 +968,7 @@
                   
 
 
-  <h1>S24.- MongoDB</h1>
+  <h1>S19.- MongoDB</h1>
 
 <p><em>MongoDB</em> (<a href="http://www.mongodb.com">http://www.mongodb.com</a>) es una de las bases de datos NoSQL más conocidas. Sigue un modelo de datos documental, donde los documentos se basan en JSON.</p>
 <div class="admonition tip inline end">
@@ -930,8 +978,8 @@
 <p><em>MongoDB</em> destaca porque:</p>
 <ul>
 <li>Soporta esquemas dinámicos: diferentes documentos de una misma colección pueden tener atributos diferentes.</li>
-<li>Soporte limitado de <em>joins</em>, ya que no escalan bien.</li>
-<li>No soporta transacciones. Lo que en un <abbr title="Sistema gestor de base de datos relacional">RDMS</abbr> puede suponer múltiples operaciones, con MongoDB se puede hacer en una sola operación al insertar/actualizar todo un documento de una sola vez.</li>
+<li>Aunque inicialmente tenía un soporte limitado de <em>joins</em>, desde la versión 5.2 se pueden realizar incluso entre colecciones particionadas.</li>
+<li>Soporte de transacciones sólo a nivel de aplicación. Lo que en un <abbr title="Sistema gestor de base de datos relacional">RDMS</abbr> puede suponer múltiples operaciones, con MongoDB se puede hacer en una sola operación al insertar/actualizar todo un documento de una sola vez, pero si queremos crear una transacción entre dos documentos, la gestión la debe realizar el driver.</li>
 </ul>
 <h2 id="conceptos">Conceptos<a class="headerlink" href="#conceptos" title="Permanent link">&para;</a></h2>
 <p>Hay una serie de conceptos que conviene conocer antes de entrar en detalle:</p>
@@ -2099,6 +2147,21 @@
           </div>
         </a>
       
+      
+        
+        <a href="03modelado.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S21.- Modelado de datos NoSQL" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              S21.- Modelado de datos NoSQL
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
       
     </nav>
   
