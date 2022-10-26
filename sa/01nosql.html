@@ -1270,7 +1270,7 @@
 </code></pre></div>
 <p>Una ventaja a destacar de las bases de datos basadas en grafos es que podemos cambiar los requisitos de <em>traversing</em> sin tener que cambiar los nodos o sus relaciones.</p>
 <p>En las bases de datos de grafos, recorrer las relaciones es muy rápido, ya que no se calculan en tiempo de consulta, sino que se persisten como una relación, y por tanto no hay que hacer ningún cálculo.</p>
-<p>En cambio, en una base de datos relacional, para crear una estructura de grafo se realiza para una relación sencilla (<em>¿Quien es mi jefe?"</em>). Para poder añadir otras relaciones necesitamos muchos cambios en el esquema y trasladar datos entre tablas. Además, necesitamos de antemano saber que consultas queremos realizar para modelar las tablas y las relaciones acorde a las consultas.</p>
+<p>En cambio, en una base de datos relacional, para crear una estructura de grafo se realiza para una relación sencilla (<em>¿Quien es mi jefe?"</em>). Para poder añadir otras relaciones necesitamos muchos cambios en el esquema y trasladar datos entre tablas. Además, necesitamos de antemano saber qué consultas queremos realizar para modelar las tablas y las relaciones acorde a las consultas.</p>
 <p>Así pues, estos sistemas ofrecen modelos ricos de consultas donde se pueden investigar las relaciones simples y complejas entre los nodos para obtener información directa e indirecta de los datos del sistemas. Los tipos de análisis que se realizan sobre estos sistema se ciñen a los tipos de relación existente entre los datos.</p>
 <h4 id="casos-de-uso_4">Casos de uso<a class="headerlink" href="#casos-de-uso_4" title="Permanent link">&para;</a></h4>
 <p>Mientras que el modelo de grafos no es muy intuitivo y tiene una importante curva de aprendizaje, se puede usar en un gran número de aplicaciones.</p>
@@ -1318,9 +1318,9 @@
 
 <p>El teorema CAP es útil cuando consideramos el sistema de base de datos que necesitamos, ya que nos permite decidir cual de las tres características vamos a descartar. La elección realmente se centra entre la disponibilidad y la consistencia, ya que la tolerancia a particiones es una decisión de arquitectura (sea o no distribuida).</p>
 <p>Aunque el teorema dicte que si en un sistema distribuido elegimos disponibilidad no podemos tener consistencia, todavía podemos obtener consistencia eventual. Es decir, cada nodo siempre estará disponible para servir peticiones, aunque estos nodos no puedan asegurar que la información que contienen sea consistente (pero si bastante precisa), en algún momento lo será.</p>
-<p>Algunas bases de datos tolerantes a particiones se pueden ajustar para ser más o menos consistentes o disponible a nivel de petición. Por ejemplo, <em>Riak</em> trabaja de esta manera, permitiendo a los clientes decidir en tiempo de petición que nivel de consistencia necesitan.</p>
+<p>Algunas bases de datos tolerantes a particiones se pueden ajustar para ser más o menos consistentes o disponible a nivel de petición. Por ejemplo, <em>Riak</em> trabaja de esta manera, permitiendo a los clientes decidir en tiempo de petición qué nivel de consistencia necesitan.</p>
 <h3 id="clasificacion-segun-cap">Clasificación según CAP<a class="headerlink" href="#clasificacion-segun-cap" title="Permanent link">&para;</a></h3>
-<p>El siguiente gráfico muestra como dependiendo de estos atributos podemos clasificar los sistemas NoSQL:</p>
+<p>El siguiente gráfico muestra cómo dependiendo de estos atributos podemos clasificar los sistemas NoSQL:</p>
 <figure style="align: center;">
     <img src="images/01teoremaCAPam.png" width="400px">
     <figcaption>Clasificación según CAP</figcaption>
@@ -1330,7 +1330,7 @@
 <ul>
 <li><strong>CP</strong>: Consistente y tolerantes a particiones. Tanto <em>MongoDB</em> como <em>HBase</em> son CP, ya que dentro de una partición pueden no estar disponibles para responder una determinada consulta (por ejemplo, evitando lecturas en los nodos secundarios), aunque son tolerantes a fallos porque cualquier nodo secundario se puede convertir en principal y asumir el rol del nodo caído.</li>
 <li><strong>AP</strong>: Disponibles y tolerantes a particiones. <em>DynamoDB</em> permite replicar los datos entre sus nodos aunque no garantiza la consistencia en ninguno de los sus servidores.</li>
-<li><strong>CA</strong>: Consistentes y disponible. Aquí es donde situaríamos a los SGDB relacionales. Por ejemplo, <em>PostreSQL</em> es CA (aunque ambas soluciones ofrecen productos complementarios para dar soporte al particionado, como Redis Cluster y PgCluster), ya que no distribuyen los datos y por tanto la partición no es una restricción.</li>
+<li><strong>CA</strong>: Consistentes y disponible. Aquí es donde situaríamos a los SGDB relacionales. Por ejemplo, <em>PostreSQL</em> es CA (aunque ofrece un producto complementario para dar soporte al particionado, como PgCluster), ya que no distribuyen los datos y por tanto la partición no es una restricción.</li>
 </ul>
 <p>Lo bueno es que la gran mayoría de sistemas permiten configurarse para cambiar su tipo CAP, lo que permite que <em>MongoDB</em> pase de CP a AP, o <em>CouchDB</em> de AP a CP.</p>
 <h3 id="base">BASE<a class="headerlink" href="#base" title="Permanent link">&para;</a></h3>
