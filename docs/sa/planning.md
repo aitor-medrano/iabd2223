@@ -43,34 +43,124 @@ db.trips.find({ "birth year": {$in: [1977, 1981]} , {usertype:"Customer"}}, {tri
 
 ## 03 Modelado (1h)
 
-Modelado
-    Relaciones
-    Patrones
-
-
 22 - Relaciones 1 a muchos
 Para las relaciones uno a muchos:
-
-Si hay pocos datos, lo mejor en colocar las referencias en un array.
-Si hay pocos datos, lo mejor es colocar los documentos embebidos dentro de un array.
-Si hay muchos datos, lo mejor en colocar las referencias en un array.
-Si hay muchos datos, lo mejor es colocar los documentos embebidos dentro de un array.
-Si hay muchos datos, la referencia se coloca en el muchos hacia el 1.
-Si hay muchos datos, el documento embebido se coloca en el muchos hacia el 1.
-Si hay muchísimos datos, la referencia se coloca en el muchos hacia el 1.
-Si hay muchísimos datos, lo mejor en colocar las referencias en un array.
-
+    Si hay pocos datos, lo mejor en colocar las referencias en un array.
+    Si hay pocos datos, lo mejor es colocar los documentos embebidos dentro de un array.
+    Si hay muchos datos, lo mejor en colocar las referencias en un array.
+    Si hay muchos datos, lo mejor es colocar los documentos embebidos dentro de un array.
+    Si hay muchos datos, la referencia se coloca en el muchos hacia el 1.
+    Si hay muchos datos, el documento embebido se coloca en el muchos hacia el 1.
+    Si hay muchísimos datos, la referencia se coloca en el muchos hacia el 1.
+    Si hay muchísimos datos, lo mejor en colocar las referencias en un array.
 
 Respecto a la validación de los documentos respecto a un esquema:
-Es obligatorio definir siempre un esquema.
-Si hemos añadido una validación, los nuevos documentos no pueden contener nuevos campos
-Sólo podemos comprobar la existencia y el tipo de los datos
-Siempre indicaremos el esquema a validar cuando creamos las colecciones
-Podemos definir expresiones de validación entre campos
+    Es obligatorio definir siempre un esquema.
+    Si hemos añadido una validación, los nuevos documentos no pueden contener nuevos campos
+    Sólo podemos comprobar la existencia y el tipo de los datos
+    Siempre indicaremos el esquema a validar cuando creamos las colecciones
+    Podemos definir expresiones de validación entre campos
 
 Para validar un docume
 
 ## Framework de agregación (1h)
+
+var pipeline = [
+        { $match: {
+            genres: {$in: ["Romance"]}, // Romance movies only.
+            released: {$lte: new ISODate("2001-01-01T00:00: 00Z") }}},
+        { $sort: {"imdb.rating": -1}}, // Sort by IMDB rating.
+        { $limit: 3 }, // Limit to 3 results.
+        { $project: { title: 1, genres: 1, released: 1, "imdb.rating": 1}}
+    ];
+
+var pipeline = [
+     {$group: {
+         _id: "$rated",
+         "numTitles": { $sum: 1},
+     }}
+    ];
+
+var pipeline = [
+    { $match: {
+    released: {$lte: new ISODate("2001-01-01T00:00:00Z") }}},
+    { $group: {
+        _id: {"$arrayElemAt": ["$genres", 0]},
+        "popularity": { $avg: "$imdb.rating"},
+        "top_movie": { $max: "$imdb.rating"},
+        "longest_runtime": { $max: "$runtime"}
+    }},
+    { $sort: { popularity: -1}},
+    { $project: {
+        _id: 1,
+        popularity: 1,
+        top_movie: 1,
+        adjusted_runtime: { $add: [ "$longest_runtime", 12 ] } } }
+    ];
+
+var pipeline = [
+
+{ $match: {
+    released: {$lte: new ISODate("2001-01-01T00:00:00Z") },
+        runtime: {$lte: 218},
+        "imdb.rating": {$gte: 7.0}
+    }
+    },
+    { $sort: {"imdb.rating": -1}},
+    { $group: {
+        _id: {"$arrayElemAt": ["$genres", 0]},
+        "titulo_recomendado": {$first: "$title"},
+        "nota_recomendado": {$first: "$imdb.rating"},
+        "tiempo_recomendado": {$first: "$runtime"},
+        "popularidad": { $avg: "$imdb.rating"},
+        "mejor_nota": { $max: "$imdb.rating"},
+        "tiempo_maslargo": { $max: "$runtime"}
+    }},
+    { $sort: { popularity: -1}},
+    { $project: {
+        _id: 1,
+            popularidad: 1,
+            mejor_nota: 1,
+            titulo_recomendado: 1,
+            nota_recomendado: 1,
+            tiempo_recomendado: 1,
+            tiempo_ajustado_maslargo: { $add: [ "$tiempo_maslargo", 12 ] } } }
+];
+
+db.movies.aggregate(pipeline);
+
+var pipeline = [
+             { $group: {
+                 _id: "$movie_id",
+                 "sumComments": { $sum: 1}
+             }},
+             { $sort: { "sumComments": -1}},
+             { $limit: 5},
+             { $lookup: {
+                 from: "movies",
+                 localField: "_id",
+                 foreignField: "_id",
+                 as: "movie"
+             }},
+             { $unwind: "$movie" },
+             { $project: {
+                 "movie.title": 1,
+                 "movie.imdb.rating": 1,
+                 "sumComments": 1,
+             }},
+             { $out: "most_commented_movies" }
+    ];
+db.comments.aggregate(pipeline);
+
+var pipeline = [
+    { $match: {
+        "awards.wins": { $gte: 1},
+        genres: {$in: ["Documentary"]},
+    }},
+    { $sort: {"awards.wins": -1}}, // Sort by award wins.
+    { $limit: 3},
+    { $project: { title: 1, genres: 1, awards: 1}},
+];
 
 ## 04 Formatos (1h)
 

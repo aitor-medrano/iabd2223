@@ -11,8 +11,8 @@ description: Características de MongoDB. Instalación mediante Docker, uso de M
 *MongoDB* destaca porque:
 
 * Soporta esquemas dinámicos: diferentes documentos de una misma colección pueden tener atributos diferentes.
-* Soporte limitado de *joins*, ya que no escalan bien.
-* No soporta transacciones. Lo que en un RDMS puede suponer múltiples operaciones, con MongoDB se puede hacer en una sola operación al insertar/actualizar todo un documento de una sola vez.
+* Aunque inicialmente tenía un soporte limitado de *joins*, desde la versión 5.2 se pueden realizar incluso entre colecciones particionadas.
+* Soporte de transacciones sólo a nivel de aplicación. Lo que en un RDMS puede suponer múltiples operaciones, con MongoDB se puede hacer en una sola operación al insertar/actualizar todo un documento de una sola vez, pero si queremos crear una transacción entre dos documentos, la gestión la debe realizar el driver.
 
 ## Conceptos
 
@@ -122,6 +122,15 @@ Para lanzar el contenedor de Docker al que llamaremos `iadb-mongo` mediante el s
 docker run -p 127.0.0.1:27017:27017 --name iabd-mongo -d mongo
 ```
 
+!!! caution "MongoDB y procesadores AVX"
+    Si tenemos un procesador sin soporte para AVX, necesitamos instalar una versión inferior a la 5.0.
+
+    Así pues, podemos indicar la versión 4.4:
+
+    ``` bash
+    docker run -p 127.0.0.1:27017:27017 --name iabd-mongo -d mongo:4.4
+    ```   
+    
 A continuación vamos a descargar el conjunto de datos [sampledata.archive.gz](https://atlas-education-staging.s3.amazonaws.com/sampledata.archive.gz) que ofrece *MongoDB* a modo de prueba, el cual vamos a emplear a lo largo de las diferentes sesiones.
 
 Volvemos al terminal de nuestro sistema y copiamos los datos desde nuestro sistema a la carpeta `/tmp` del contenedor:
@@ -1284,7 +1293,7 @@ db.people.drop()
     * Dashboard del cluster
     * Bases de datos / colecciones creadas
 
-    A continuación, conéctate mediante MongoDB Compass y adjunta una captura de pantalla tras conectar con el clúster.
+    A continuación, conéctate mediante *MongoDB Compass* y adjunta una captura de pantalla tras conectar con el clúster.
 
 2. (RA5075.1 / CE5.1d / 2p) Haciendo uso de `mongosh`, escribe los comandos necesarios para:
     1. Obtener las bases de datos creadas.

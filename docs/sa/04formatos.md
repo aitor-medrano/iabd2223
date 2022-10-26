@@ -1,6 +1,6 @@
 ---
-title: Formatos de datos
-description: xxx
+title: Formatos de datos en Big Data
+description: Formatos de datos en Big Data
 ---
 
 En la primera unidad de trabajo ya vimos una pequeña introducción a los diferentes [formatos de datos](https://manoli-iborra.github.io/bigdata2122/apuntes04.html#formato-de-datos_1).

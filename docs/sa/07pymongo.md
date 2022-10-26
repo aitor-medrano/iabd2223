@@ -18,6 +18,9 @@ Se recomienda consultar la [documentación](https://pymongo.readthedocs.io/en/st
 !!! info "Versión"
     En el momento de escribir los apuntes, estamos utilizando la versión 4.2.0 de PyMongo.
 
+
+FIXME: Preferencia de lectura y escritura
+
 ## MFlix
 
 <https://s3.amazonaws.com/edu-downloads.10gen.com/M220P/2022/July/static/handouts/m220/mflix-python.zip>
