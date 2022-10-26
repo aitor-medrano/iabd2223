@@ -1089,6 +1089,13 @@
 <p>Para lanzar el contenedor de Docker al que llamaremos <code>iadb-mongo</code> mediante el siguiente comando:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker run -p <span class="m">127</span>.0.0.1:27017:27017 --name iabd-mongo -d mongo
 </code></pre></div>
+<div class="admonition caution">
+<p class="admonition-title">MongoDB y procesadores AVX</p>
+<p>Si tenemos un procesador sin soporte para AVX, necesitamos instalar una versión inferior a la 5.0.</p>
+<p>Así pues, podemos indicar la versión 4.4:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker run -p <span class="m">127</span>.0.0.1:27017:27017 --name iabd-mongo -d mongo:4.4
+</code></pre></div>
+</div>
 <p>A continuación vamos a descargar el conjunto de datos <a href="https://atlas-education-staging.s3.amazonaws.com/sampledata.archive.gz">sampledata.archive.gz</a> que ofrece <em>MongoDB</em> a modo de prueba, el cual vamos a emplear a lo largo de las diferentes sesiones.</p>
 <p>Volvemos al terminal de nuestro sistema y copiamos los datos desde nuestro sistema a la carpeta <code>/tmp</code> del contenedor:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker cp sampledata.archive.gz iabd-mongo:/tmp
