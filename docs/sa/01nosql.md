@@ -5,7 +5,7 @@ description: Almacenamiento de Datos. NoSQL, características, replicación y pa
 
 ## Almacenamiento de Datos
 
-Se puede decir que estamos en la [tercera plataforma] del almacenamiento de datos. La primera llegó con los primeros computadores y se materializó en las bases de datos jerárquicas y en red, así como en el almacenamiento ISAM. La segunda vino de la mano de internet y las arquitecturas cliente-servidor, lo que dió lugar a las bases de datos relacionales.
+Se puede decir que estamos en la [tercera plataforma](https://en.wikipedia.org/wiki/Third_platform) del almacenamiento de datos. La primera llegó con los primeros computadores y se materializó en las bases de datos jerárquicas y en red, así como en el almacenamiento ISAM. La segunda vino de la mano de internet y las arquitecturas cliente-servidor, lo que dio lugar a las bases de datos relacionales.
 
 La tercera se ve motivada por el big data, los dispositivos móviles, las arquitecturas cloud, las redes de IoT y las tecnologías/redes sociales. Es tal el volumen de datos que se genera que aparecen nuevos paradigmas como NoSQL, NewSQL y las plataformas de Big Data. En esta sesión nos vamos a centrar en NoSQL.
 
@@ -16,13 +16,13 @@ NoSQL aparece como una necesidad debida al creciente volumen de datos sobre usua
     <figcaption>Motivación de NoSQL</figcaption>
 </figure>
 
-La solución es el despliegue de las aplicaciones y sus datos en clústeres de servidores, distribuyendo el procesamiento en múltiples máquinas.
+La solución es el ^^despliegue de las aplicaciones y sus datos en clústeres de servidores, distribuyendo el procesamiento en múltiples máquinas^^.
 
 ## No Solo SQL
 
-Si definimos NoSQL formalmente, podemos decir que se trata de un conjunto de tecnologías que permiten el procesamiento rápido y eficiente de conjuntos de datos dando la mayor importancia al rendimiento, la fiabilidad y la agilidad.
+Si definimos NoSQL formalmente, podemos decir que se trata de un conjunto de tecnologías que permiten el procesamiento rápido y eficiente de conjuntos de datos dando la ^^mayor importancia al rendimiento, la fiabilidad y la agilidad^^.
 
-Si nos basamos en el acrónimo, el término se refiere a cualquier almacén de datos que no sigue un modelo relacional, los datos no son relacionales y por tanto no utilizan SQL como lenguaje de consulta. Otra aceptación implica que el No hace referencia a *not only*, es decir, que los sistemas NoSQL se centran en sistemas complementarios a los SGBD relacionales, que fijan sus prioridades en la escalabilidad y la disponibilidad en contra de la atomicidad y consistencia de los datos.
+Si nos basamos en el acrónimo, el término se refiere a cualquier almacén de datos que no sigue un modelo relacional, los datos no son relacionales y por tanto no utilizan SQL como lenguaje de consulta. Otra aceptación implica que el *No* hace referencia a *not only*, es decir, que los sistemas NoSQL se centran en sistemas complementarios a los SGBD relacionales, que fijan sus prioridades en la escalabilidad y la disponibilidad en contra de la atomicidad y consistencia de los datos.
 
 <a name="acid"></a>
 
@@ -32,7 +32,7 @@ Si nos basamos en el acrónimo, el término se refiere a cualquier almacén de d
     * **A**tomicidad: las transacciones implican que se realizan todas las operaciones o no se realiza ninguna.
     * **C**onsistencia: la base de datos asegura que los datos pasan de un estado válido o otro también.
     * **I**solation (Aislamiento): Una transacción no afecta a otras transacciones, de manera que la modificación de un registro / documento no es visible por otras lecturas.
-    * **Du**rabilidad: La escritura de los datos asegura que una vez finalizada una operación, los datos no se perderán.
+    * **D**urabilidad: La escritura de los datos asegura que una vez finalizada una operación, los datos no se perderán.
 
 Los diferentes tipos de bases de datos NoSQL existentes se pueden agrupar en cuatro categorías:
 
@@ -226,7 +226,7 @@ Mientras las bases de datos relacionales almacenan los datos en filas y columnas
 
 Los documentos se agrupan en colecciones o bases de datos, dependiendo del sistema, lo que permite agrupar documentos.
 
-Los documentos contienen uno o más campos, donde cada campo contiene un valor con un tipo, ya sea cadena, fecha, binario o array u otro documento. En vez de extender los datos entre múltiples columnas y tablas, cada registro y sus datos asociados se almacenan de manera unida en un único documento. Esto simplifica el acceso a los datos y reduce (y en ocasiones elimina) la necesidad de *joins* y transacciones complejas.
+Los documentos contienen uno o más campos, donde cada campo contiene un valor con un tipo, ya sea cadena, entero, flotante, fecha, binario o array u otro documento. En vez de extender los datos entre múltiples columnas y tablas, cada registro y sus datos asociados se almacenan de manera unida en un único documento. Esto simplifica el acceso a los datos y reduce (y en ocasiones elimina) la necesidad de *joins* y transacciones complejas.
 
 Dicho de otra manera, en las bases de datos documentales, los datos que van juntos y se emplean juntos, se almacenan juntos.
 
@@ -239,10 +239,10 @@ Perfectamente podemos tener dos documentos que pertenecen a la misma colección,
 ``` json
 {
   "_id": "BW001",
-  "nombre"    : "Bruce",
-  "apellido"  : "Wayne",
-  "edad"      : 35,
-  "salario"   : 10000000
+  "nombre": "Bruce",
+  "apellido": "Wayne",
+  "edad": 35,
+  "salario": 10000000
 }
 ```
 
@@ -251,14 +251,14 @@ Mientras que un segundo documento dentro de la misma colección podría ser:
 ``` json
 {
   "_id": "JK1",
-  "nombre"    : "Joker",
-  "edad"      : 34,
-  "salario"    : 5000000,
-  "direccion" : {               // (1)!
-    "calle"   : "Asilo Arkham",
-    "ciudad"  : "Gotham"
+  "nombre": "Joker",
+  "edad": 34,
+  "salario": 5000000,
+  "direccion": {               // (1)!
+    "calle": "Asilo Arkham",
+    "ciudad": "Gotham"
   },
-  "proyectos" : [               // (2)!
+  "proyectos": [               // (2)!
     "desintoxicacion-virus",
     "top-secret-007"
   ]
@@ -292,8 +292,8 @@ Si nos centramos en aquellos casos donde no conviene este tipo de sistemas podem
 
 Los productos más destacados son:
 
-* MongoDB: <http://www.mongodb.com>. Esta base de datos la vamos a estudiar en profundidad en esta unidad de trabajo.
-* CouchDB: <http://couchdb.apache.org>
+* *MongoDB*: <http://www.mongodb.com>. Esta base de datos la vamos a estudiar en profundidad en esta unidad de trabajo.
+* *CouchDB*: <http://couchdb.apache.org>
 
 ### Clave-Valor
 
@@ -368,10 +368,10 @@ En cambio, no conviene utilizar estos almacenes cuando queremos realizar:
 
 Los almacenes más empleados son:
 
-* Riak: <https://riak.com>
-* Redis: <http://redis.io>
-* AWS DynamoDB: <http://aws.amazon.com/dynamodb>
-* Voldemort: <http://www.project-voldemort.com/voldemort> implementación open-source de *Amazon DynamoDB*
+* *Riak*: <https://riak.com>
+* *Redis*: <http://redis.io>
+* *AWS DynamoDB*: <http://aws.amazon.com/dynamodb>
+* *Voldemort*: <http://www.project-voldemort.com/voldemort> implementación open-source de *Amazon DynamoDB*
 
 ### Basado en columnas
 
@@ -498,13 +498,13 @@ Son multipropósito, aunque su uso se centra en el mercado del big data, la anal
 
 Además de poder comprimir los datos, los datos están auto-indexados, lo que implica que utiliza menos espacio en disco, y acelera la ejecución de consultas agregadas entre múltiples tablas que implica el uso de joins.
 
-En cambio, no se recomienda su uso en aplicaciones de procesamiento transaccional (OLTP), ya que las bases de datos relaciones gestionan mejor el procesamiento concurrente y el aislamiento de las operaciones.
+En cambio, no se recomienda su uso en aplicaciones de procesamiento transaccional (OLTP), ya que las bases de datos relacionales gestionan mejor el procesamiento concurrente y el aislamiento de las operaciones.
 
 Los productos más destacados son:
 
-* HBase : <http://hbase.apache.org>, el cual se basa en Hadoop - <http://hadoop.apache.org>
-* Cassandra : <http://cassandra.apache.org>
-* Amazon Redshift: <https://aws.amazon.com/es/redshift/>
+* *HBase* : <http://hbase.apache.org>, el cual se basa en *Hadoop* - <http://hadoop.apache.org>
+* *Cassandra* : <http://cassandra.apache.org>
+* *Amazon Redshift*: <https://aws.amazon.com/es/redshift/>
 
 ### Grafos
 
@@ -535,9 +535,9 @@ Los nodos permiten tener diferentes tipos de relaciones entre ellos y así repre
 
 #### Traversing
 
-Una vez tenemos creado un grafo de nodos y relaciones, podemos consultar el grafo de muchas maneras; por ejemplo "obtener todos los nodos que son miembros del grupo de ajedrez y que tienen más de 20 años". Realizar una consulta se conoce como hacer un *traversing* (recorrido) del mismo.
+Una vez tenemos creado un grafo de nodos y relaciones, podemos consultar el grafo de muchas maneras; por ejemplo "*obtener todos los nodos que son miembros del grupo de ajedrez y que tienen más de 20 años*". Realizar una consulta se conoce como hacer un *traversing* (recorrido) del mismo.
 
-Ejemplo de Traversing mediante Neo4J:
+Un ejemplo de *traversing* mediante *Neo4J* sería:
 
 ``` java
 Node ajedrez = nodeIndex.get("name", "chess").getSingle();
@@ -548,7 +548,7 @@ Una ventaja a destacar de las bases de datos basadas en grafos es que podemos ca
 
 En las bases de datos de grafos, recorrer las relaciones es muy rápido, ya que no se calculan en tiempo de consulta, sino que se persisten como una relación, y por tanto no hay que hacer ningún cálculo.
 
-En cambio, en una base de datos relacional, para crear una estructura de grafo se realiza para una relación sencilla (*¿Quien es mi jefe?"*). Para poder añadir otras relaciones necesitamos muchos cambios en el esquema y trasladar datos entre tablas. Además, necesitamos de antemano saber que consultas queremos realizar para modelar las tablas y las relaciones acorde a las consultas.
+En cambio, en una base de datos relacional, para crear una estructura de grafo se realiza para una relación sencilla (*¿Quien es mi jefe?"*). Para poder añadir otras relaciones necesitamos muchos cambios en el esquema y trasladar datos entre tablas. Además, necesitamos de antemano saber qué consultas queremos realizar para modelar las tablas y las relaciones acorde a las consultas.
 
 Así pues, estos sistemas ofrecen modelos ricos de consultas donde se pueden investigar las relaciones simples y complejas entre los nodos para obtener información directa e indirecta de los datos del sistemas. Los tipos de análisis que se realizan sobre estos sistema se ciñen a los tipos de relación existente entre los datos.
 
@@ -568,10 +568,10 @@ En cambio, no se recomienda su uso cuando necesitemos modificar todos o un subco
 
 Los productos más destacados son:
 
-* Neo4j: <http://neo4j.com>
-* ArangoDB: <https://www.arangodb.com/>
-* Apache Giraph: <https://giraph.apache.org/>
-* Amazon Neptune: <https://aws.amazon.com/es/neptune/>
+* *Neo4j*: <http://neo4j.com>
+* *ArangoDB*: <https://www.arangodb.com/>
+* *Apache Giraph*: <https://giraph.apache.org/>
+* *Amazon Neptune*: <https://aws.amazon.com/es/neptune/>
 
 ## Consistencia
 
@@ -620,11 +620,11 @@ El teorema CAP es útil cuando consideramos el sistema de base de datos que nece
 
 Aunque el teorema dicte que si en un sistema distribuido elegimos disponibilidad no podemos tener consistencia, todavía podemos obtener consistencia eventual. Es decir, cada nodo siempre estará disponible para servir peticiones, aunque estos nodos no puedan asegurar que la información que contienen sea consistente (pero si bastante precisa), en algún momento lo será.
 
-Algunas bases de datos tolerantes a particiones se pueden ajustar para ser más o menos consistentes o disponible a nivel de petición. Por ejemplo, *Riak* trabaja de esta manera, permitiendo a los clientes decidir en tiempo de petición que nivel de consistencia necesitan.
+Algunas bases de datos tolerantes a particiones se pueden ajustar para ser más o menos consistentes o disponible a nivel de petición. Por ejemplo, *Riak* trabaja de esta manera, permitiendo a los clientes decidir en tiempo de petición qué nivel de consistencia necesitan.
 
 ### Clasificación según CAP
 
-El siguiente gráfico muestra como dependiendo de estos atributos podemos clasificar los sistemas NoSQL:
+El siguiente gráfico muestra cómo dependiendo de estos atributos podemos clasificar los sistemas NoSQL:
 
 <figure style="align: center;">
     <img src="images/01teoremaCAPam.png" width="400px">
@@ -635,13 +635,13 @@ Así pues, las bases de datos NoSQL se clasifican en:
 
 * **CP**: Consistente y tolerantes a particiones. Tanto *MongoDB* como *HBase* son CP, ya que dentro de una partición pueden no estar disponibles para responder una determinada consulta (por ejemplo, evitando lecturas en los nodos secundarios), aunque son tolerantes a fallos porque cualquier nodo secundario se puede convertir en principal y asumir el rol del nodo caído.
 * **AP**: Disponibles y tolerantes a particiones. *DynamoDB* permite replicar los datos entre sus nodos aunque no garantiza la consistencia en ninguno de los sus servidores.
-* **CA**: Consistentes y disponible. Aquí es donde situaríamos a los SGDB relacionales. Por ejemplo, *PostreSQL* es CA (aunque ambas soluciones ofrecen productos complementarios para dar soporte al particionado, como Redis Cluster y PgCluster), ya que no distribuyen los datos y por tanto la partición no es una restricción.
+* **CA**: Consistentes y disponible. Aquí es donde situaríamos a los SGDB relacionales. Por ejemplo, *PostreSQL* es CA (aunque ofrece un producto complementario para dar soporte al particionado, como PgCluster), ya que no distribuyen los datos y por tanto la partición no es una restricción.
 
 Lo bueno es que la gran mayoría de sistemas permiten configurarse para cambiar su tipo CAP, lo que permite que *MongoDB* pase de CP a AP, o *CouchDB* de AP a CP.
 
 ### BASE
 
-Partiendo del teorema de CAP, de forma análoga al modelo transaccional [ACID](#acid) para las bases de datos relacionales que dan soporte a la transaccionalidad ofreciendo en todo momento un sistema consistente, las bases de datos distribuidas siguen el modelo transaccional BASE, el cual se centra en la alta disponibilidad y significa:
+De forma análoga al modelo transaccional [ACID](#acid) para las bases de datos relacionales que dan soporte a la transaccionalidad ofreciendo en todo momento un sistema consistente, las bases de datos distribuidas siguen el modelo transaccional BASE, el cual se centra en la alta disponibilidad y significa:
 
 * Básicamente disponible (***B****asically* ***A****vailable*): la base de datos siempre responde a las solicitudes recibidas, ya sea con una respuesta exitosa o con un error, aún en el caso de que el sistema soporte la tolerancia a particiones (de manera que caiga algún nodo o no esté accesible por problemas de la red). Esto puedo implicar lecturas desde nodos que no han recibido la última escritura, por lo que el resultado puede no ser consistente.
 * Estado blando (***S****oft State*): la base de datos puede encontrarse en un estado inconsistente cuando se produce una lectura, de modo que es posible realizar dos veces la misma lectura y obtener dos resultados distintos a pesar de que no haya habido ninguna escritura entre ambas operaciones, sino que la escritura se había realizado antes en el tiempo y no se había persistido hasta ese momento.
