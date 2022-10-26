@@ -1080,8 +1080,8 @@
 </ul>
 <p>Los productos más destacados son:</p>
 <ul>
-<li>MongoDB: <a href="http://www.mongodb.com">http://www.mongodb.com</a>. Esta base de datos la vamos a estudiar en profundidad en esta unidad de trabajo.</li>
-<li>CouchDB: <a href="http://couchdb.apache.org">http://couchdb.apache.org</a></li>
+<li><em>MongoDB</em>: <a href="http://www.mongodb.com">http://www.mongodb.com</a>. Esta base de datos la vamos a estudiar en profundidad en esta unidad de trabajo.</li>
+<li><em>CouchDB</em>: <a href="http://couchdb.apache.org">http://couchdb.apache.org</a></li>
 </ul>
 <h3 id="clave-valor">Clave-Valor<a class="headerlink" href="#clave-valor" title="Permanent link">&para;</a></h3>
 <p>Un almacén clave-valor es una simple tabla <em>hash</em> donde todos los accesos a la base de datos se realizan a través de la clave primaria.</p>
@@ -1139,10 +1139,10 @@
 </ul>
 <p>Los almacenes más empleados son:</p>
 <ul>
-<li>Riak: <a href="https://riak.com">https://riak.com</a></li>
-<li>Redis: <a href="http://redis.io">http://redis.io</a></li>
-<li>AWS DynamoDB: <a href="http://aws.amazon.com/dynamodb">http://aws.amazon.com/dynamodb</a></li>
-<li>Voldemort: <a href="http://www.project-voldemort.com/voldemort">http://www.project-voldemort.com/voldemort</a> implementación open-source de <em>Amazon DynamoDB</em></li>
+<li><em>Riak</em>: <a href="https://riak.com">https://riak.com</a></li>
+<li><em>Redis</em>: <a href="http://redis.io">http://redis.io</a></li>
+<li><em>AWS DynamoDB</em>: <a href="http://aws.amazon.com/dynamodb">http://aws.amazon.com/dynamodb</a></li>
+<li><em>Voldemort</em>: <a href="http://www.project-voldemort.com/voldemort">http://www.project-voldemort.com/voldemort</a> implementación open-source de <em>Amazon DynamoDB</em></li>
 </ul>
 <h3 id="basado-en-columnas">Basado en columnas<a class="headerlink" href="#basado-en-columnas" title="Permanent link">&para;</a></h3>
 <p>Las bases de datos relacionales utilizan la fila como unidad de almacenamiento, lo que permite un buen rendimiento de escritura. Sin embargo, cuando las escrituras son ocasionales y es más comun tener que leer unas pocas columnas de muchas filas a la vez, es mejor utilizar como unidad de almacenamiento un grupos de columnas. Es decir, lo que hacemos es girar el modelo 90 grados, de manera que los registros se almacenan en columnas en vez de hacerlo por filas.</p>
@@ -1236,12 +1236,12 @@
 <p>Las bases de datos columnares se han empleado durante décadas ofreciendo beneficios a las aplicaciones de negocio modernas, como la analítica de datos, <em>business intelligence</em> y <em>data warehousing</em>.</p>
 <p>Son multipropósito, aunque su uso se centra en el mercado del big data, la analítica de datos, cubos multidimensionales OLAP y/o almacenar metadatos y realizar analítica en tiempo real.</p>
 <p>Además de poder comprimir los datos, los datos están auto-indexados, lo que implica que utiliza menos espacio en disco, y acelera la ejecución de consultas agregadas entre múltiples tablas que implica el uso de joins.</p>
-<p>En cambio, no se recomienda su uso en aplicaciones de procesamiento transaccional (OLTP), ya que las bases de datos relaciones gestionan mejor el procesamiento concurrente y el aislamiento de las operaciones.</p>
+<p>En cambio, no se recomienda su uso en aplicaciones de procesamiento transaccional (OLTP), ya que las bases de datos relacionales gestionan mejor el procesamiento concurrente y el aislamiento de las operaciones.</p>
 <p>Los productos más destacados son:</p>
 <ul>
-<li>HBase : <a href="http://hbase.apache.org">http://hbase.apache.org</a>, el cual se basa en Hadoop - <a href="http://hadoop.apache.org">http://hadoop.apache.org</a></li>
-<li>Cassandra : <a href="http://cassandra.apache.org">http://cassandra.apache.org</a></li>
-<li>Amazon Redshift: <a href="https://aws.amazon.com/es/redshift/">https://aws.amazon.com/es/redshift/</a></li>
+<li><em>HBase</em> : <a href="http://hbase.apache.org">http://hbase.apache.org</a>, el cual se basa en <em>Hadoop</em> - <a href="http://hadoop.apache.org">http://hadoop.apache.org</a></li>
+<li><em>Cassandra</em> : <a href="http://cassandra.apache.org">http://cassandra.apache.org</a></li>
+<li><em>Amazon Redshift</em>: <a href="https://aws.amazon.com/es/redshift/">https://aws.amazon.com/es/redshift/</a></li>
 </ul>
 <h3 id="grafos">Grafos<a class="headerlink" href="#grafos" title="Permanent link">&para;</a></h3>
 <p>Las bases de datos de grafos almacenan entidades y las relaciones entre estas entidades. Las entidades se conocen como nodos, los cuales tienen propiedades. Cada nodo es similar a una instancia de un objeto. Las relaciones, también conocidas como vértices, a su vez tienen propiedades, y su sentido es importante.</p>
@@ -1284,10 +1284,10 @@
 <p>En cambio, no se recomienda su uso cuando necesitemos modificar todos o un subconjunto de entidades, ya que modificar una propiedad en todos los nodos es una operación compleja.</p>
 <p>Los productos más destacados son:</p>
 <ul>
-<li>Neo4j: <a href="http://neo4j.com">http://neo4j.com</a></li>
-<li>ArangoDB: <a href="https://www.arangodb.com/">https://www.arangodb.com/</a></li>
-<li>Apache Giraph: <a href="https://giraph.apache.org/">https://giraph.apache.org/</a></li>
-<li>Amazon Neptune: <a href="https://aws.amazon.com/es/neptune/">https://aws.amazon.com/es/neptune/</a></li>
+<li><em>Neo4j</em>: <a href="http://neo4j.com">http://neo4j.com</a></li>
+<li><em>ArangoDB</em>: <a href="https://www.arangodb.com/">https://www.arangodb.com/</a></li>
+<li><em>Apache Giraph</em>: <a href="https://giraph.apache.org/">https://giraph.apache.org/</a></li>
+<li><em>Amazon Neptune</em>: <a href="https://aws.amazon.com/es/neptune/">https://aws.amazon.com/es/neptune/</a></li>
 </ul>
 <h2 id="consistencia">Consistencia<a class="headerlink" href="#consistencia" title="Permanent link">&para;</a></h2>
 <p>En un sistema consistente, las escrituras de una aplicación son visibles en siguientes consultas. Con una consistencia eventual, las escrituras no son visibles inmediatamente.</p>
