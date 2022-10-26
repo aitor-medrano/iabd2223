@@ -539,9 +539,385 @@
 <h2 id="replicacion">Replicación<a class="headerlink" href="#replicacion" title="Permanent link">&para;</a></h2>
 <p>https://www.mongodb.com/basics/replication</p>
 <p>Un aspecto muy importante de MongoDB es que soporta la replicación de los datos de forma nativa mediante el uso de conjuntos de réplicas.</p>
-<p>FIXME: pensar como explicarlo via MongoAtlas... nada de instalar. con Docker Compose ¿se podría hacer fácil?</p>
 <h3 id="conjunto-de-replicas">Conjunto de réplicas<a class="headerlink" href="#conjunto-de-replicas" title="Permanent link">&para;</a></h3>
-<p>En MongoDB se replican los datos mediante un conjunto de réplicas  (<em>Replica Set</em>) el cual es un grupo de servidores (nodos <em>mongod</em>) donde hay uno que ejerce la función de primario y por tanto recibe las peticiones de los clientes, y el resto de servidores hace de secundarios, manteniendo copias de los datos del primario.</p>
+<p>En MongoDB se replican los datos mediante un conjunto de réplicas  (<em>Replica Set</em>), el cual es un grupo de servidores (nodos <em>mongod</em>) donde uno de ellos ejerce la función de primario y por tanto recibe las peticiones de los clientes, y el resto de servidores hace de secundarios, manteniendo copias de los datos del primario.</p>
+<figure style="align: center;">
+    <img src="images/06replication.png">
+    <figcaption>Conjunto de Réplicas en MongoDB</figcaption>
+</figure>
+
+<p>Si el nodo primario se cae, los secundarios eligen un nuevo primario entre ellos mismos, en un proceso que se conoce como votación. La aplicación se conectará al nuevo primario de manera transparente. Cuando el antiguo nodo primario vuelva en sí, será un nuevo nodo secundario.</p>
+<p>Al usar replicación, si un servidor se cae, siempre vamos a poder obtener los datos a partir de otros servidores del conjunto. Si los datos de un servidor se dañan o son inaccesibles, podemos crear una nueva copia desde uno de los miembros del conjunto.</p>
+<h4 id="elementos-de-un-conjunto-de-replicas">Elementos de un conjunto de réplicas<a class="headerlink" href="#elementos-de-un-conjunto-de-replicas" title="Permanent link">&para;</a></h4>
+<p>Los tipos de nodos que podemos encontrar en un conjunto de réplica son:</p>
+<ul>
+<li>Regular: Es el tipo de nodo más común.</li>
+<li>Primario: Acepta todas las operaciones de escritura de los clientes. Cada conjunto de réplicas tendrá sólo un primario, y como sólo un miembro acepta operaciones de escritura, ofrece consistencia estricta para todas las lecturas realizadas desde él.</li>
+<li>
+<p>Secundario: Los secundarios replican el <em>oplog</em> primario y aplican las operaciones a sus conjuntos de datos. De este modo, los nodos secundarios son un espejo del primario. Si el primario deja de estar disponible, el conjunto de réplica elegirá a un secundario para que sea el nuevo primario, mediante un proceso de votación.</p>
+<p>Por defecto, los clientes realizan las lecturas desde el nodo primario. Sin embargo, los clientes pueden indicar que quieren realizar lecturas desde los nodos secundarios.</p>
+<div class="admonition danger">
+<p class="admonition-title">Consistencia eventual</p>
+<p>Es posible que al realizar lecturas de un nodo secundario la información que se obtenga no refleje el estado del nodo primario.</p>
+</div>
+</li>
+<li>
+<p>Árbitro: se emplea sólo para votar. No contiene copia de los datos y no se puede convertir en primario. Los conjuntos de réplica pueden tener árbitros para añadir votos en las elecciones de un nuevo primario. Siempre tienen un voto, y permiten que los conjuntos de réplica tengan un número impar de nodos, sin la necesidad de tener un miembro que replique los datos. Además, no requieren hardware dedicado.</p>
+<div class="admonition important">
+<p class="admonition-title">A tener en cuenta</p>
+<ul>
+<li>No ejecutar un árbitro en sistemas que también ejecutan los miembros primarios y secundarios del conjunto de réplicas.</li>
+<li>Sólo añadir un árbitro a un conjunto con un número par de miembros.</li>
+<li>Si se añade un árbitro a un conjunto con un número impar de miembros, el conjunto puede sufrir un empate.</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Retrasado (delayed): nodo que se emplea para la recuperación del sistema ante un fallo. Para ello, hay que asignar la propiedad <code>priority:0</code>. Este nodo nunca será un nodo primario.</p>
+</li>
+<li>
+<p>Oculto: empleado para analíticas del sistema.</p>
+</li>
+</ul>
+<h5 id="oplog">oplog<a class="headerlink" href="#oplog" title="Permanent link">&para;</a></h5>
+<p>Para soportar la replicación, el nodo primario almacena todos los cambios en su <a href="https://www.mongodb.com/docs/manual/core/replica-set-oplog/"><em>oplog</em></a>.</p>
+<p>De manera simplificada, el <em>oplog</em> es un diario de todos los cambios que la instancia principal realiza en las bases de datos con el propósito de replicar dichos cambios en un nodo secundario para asegurar que las dos bases de datos sean idénticas.</p>
+<p>El servidor principal mantiene el <em>oplog</em>, y el secundario consulta al principal por nuevas entradas que aplicar a sus propias copias de las bases de datos replicadas. Este proceso se realiza de manera asíncrona, de manera que todos los miembros del conjunto de réplicas contienen una copia del <em>oplog</em>.</p>
+<p>El oplog crea un <em>timestamp</em> para cada entrada. Esto permite que un secundario controle la cantidad de información que se ha modificado desde una lectura anterior, y qué entradas necesita transferir para ponerse al día. Si paramos un secundario y lo reiniciamos más adelante, utilizará el <em>oplog</em> para obtener todos los cambios que ha perdido mientras estaba offline.</p>
+<p>El <em>oplog</em> se almacena en una colección limitada (<em>capped</em>) y ordenada de un tamaño determinado. La opción <code>oplogSize</code> define en MB el tamaño del archivo. Para un sistema de 64 bits con comportamiento de lectura/escritura normales, el <code>oplogSize</code> debería ser de al menos un 5% del espacio de disco disponible. Si el sistema tiene más escrituras que lecturas, puede que necesitemos incrementar este tamaño para asegurar que cualquier nodo secundario pueda estar <em>offline</em> una cantidad de tiempo razonable sin perder información.</p>
+<h4 id="creando-un-conjunto-de-replicas">Creando un conjunto de réplicas<a class="headerlink" href="#creando-un-conjunto-de-replicas" title="Permanent link">&para;</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Replicación y particionado en MongoAtlas</p>
+<p>El cluster gratuito de MongoAtlas ya ofrece replicación de los datos, pero no nos permite administrarlo, al tratarse de un clúster compartido.</p>
+</div>
+<p>Para poder probar tanto la replicación como el particionado, necesitamos tener control sobre los servidores. Por ello, en esta sesión vamos a utilizar <em>Docker</em> para montar la infraestructura.</p>
+<p>Para ello, vamos a partir del archivo de <a href="resources/docker-compose-replicaset.yml">docker-compose-replicaset.yml</a> donde creamos tres contenedores (siendo <code>mongo1</code> el nodo principal y <code>mongo2</code> y <code>mongo3</code> los secundarios) dentro de una misma red y que pertenecen al conjunto de réplicas <code>iabdrs</code>:</p>
+<div class="highlight"><span class="filename">docker-compose-replicaset.yml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>services:
+<span class="linenos" data-linenos=" 2 "></span>  mongo1:
+<span class="linenos" data-linenos=" 3 "></span>    container_name: mongo1
+<span class="linenos" data-linenos=" 4 "></span>    image: mongo
+<span class="linenos" data-linenos=" 5 "></span>    volumes:
+<span class="linenos" data-linenos=" 6 "></span>      - ./rs-init.sh:/scripts/rs-init.sh
+<span class="linenos" data-linenos=" 7 "></span>      - ./init.js:/scripts/init.js
+<span class="linenos" data-linenos=" 8 "></span>    networks:
+<span class="linenos" data-linenos=" 9 "></span>      - mongo-network
+<span class="linenos" data-linenos="10 "></span>    ports:
+<span class="linenos" data-linenos="11 "></span>      - 27017:27017
+<span class="linenos" data-linenos="12 "></span>    depends_on:
+<span class="linenos" data-linenos="13 "></span>      - mongo2
+<span class="linenos" data-linenos="14 "></span>      - mongo3
+<span class="linenos" data-linenos="15 "></span>    links:
+<span class="linenos" data-linenos="16 "></span>      - mongo2
+<span class="linenos" data-linenos="17 "></span>      - mongo3
+<span class="linenos" data-linenos="18 "></span>    restart: always
+<span class="linenos" data-linenos="19 "></span>    entrypoint: [ &quot;/usr/bin/mongod&quot;, &quot;--bind_ip_all&quot;, &quot;--replSet&quot;, &quot;iabdrs&quot; ]
+<span class="linenos" data-linenos="20 "></span>
+<span class="linenos" data-linenos="21 "></span>  mongo2:
+<span class="linenos" data-linenos="22 "></span>    container_name: mongo2
+<span class="linenos" data-linenos="23 "></span>    image: mongo
+<span class="linenos" data-linenos="24 "></span>    networks:
+<span class="linenos" data-linenos="25 "></span>      - mongo-network
+<span class="linenos" data-linenos="26 "></span>    ports:
+<span class="linenos" data-linenos="27 "></span>      - 27018:27017
+<span class="linenos" data-linenos="28 "></span>    restart: always
+<span class="linenos" data-linenos="29 "></span>    entrypoint: [ &quot;/usr/bin/mongod&quot;, &quot;--bind_ip_all&quot;, &quot;--replSet&quot;, &quot;iabdrs&quot; ]
+<span class="linenos" data-linenos="30 "></span>
+<span class="linenos" data-linenos="31 "></span>  mongo3:
+<span class="linenos" data-linenos="32 "></span>    container_name: mongo3
+<span class="linenos" data-linenos="33 "></span>    image: mongo
+<span class="linenos" data-linenos="34 "></span>    networks:
+<span class="linenos" data-linenos="35 "></span>      - mongo-network
+<span class="linenos" data-linenos="36 "></span>    ports:
+<span class="linenos" data-linenos="37 "></span>      - 27019:27017
+<span class="linenos" data-linenos="38 "></span>    restart: always
+<span class="linenos" data-linenos="39 "></span>    entrypoint: [ &quot;/usr/bin/mongod&quot;, &quot;--bind_ip_all&quot;, &quot;--replSet&quot;, &quot;iabdrs&quot; ]
+<span class="linenos" data-linenos="40 "></span>
+<span class="linenos" data-linenos="41 "></span>networks:
+<span class="linenos" data-linenos="42 "></span>  mongo-network:
+<span class="linenos" data-linenos="43 "></span>    driver: bridge
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Despliegue</p>
+<p>Normalmente, cada instancia <code>mongod</code> se coloca en un servidor físico y todos en el puerto estándar.</p>
+<p>En nuestro caso, vamos a crear un conjunto de tres réplicas, y en vez de hacerlo en tres máquinas distintas, como los tres contenedores residen en la misma máquina, lo haremos en tres puertos diferentes (del 27017 al 27019)</p>
+</div>
+<p>El nodo principal necesita cargar un <em>script</em> para inicializarse, el cual cargamos en el volumen como <code>rs-init.sh</code>:</p>
+<div class="highlight"><span class="filename">rs-init.sh</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="ch">#!/bin/bash</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="nv">DELAY</span><span class="o">=</span><span class="m">25</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span>mongosh <span class="s">&lt;&lt;EOF</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="s">var config = {</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="s">    &quot;_id&quot;: &quot;iabdrs&quot;,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="s">    &quot;version&quot;: 1,</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="s">    &quot;members&quot;: [</span>
+<span class="linenos" data-linenos="10 "></span><span class="s">        {</span>
+<span class="linenos" data-linenos="11 "></span><span class="s">            &quot;_id&quot;: 1,</span>
+<span class="linenos" data-linenos="12 "></span><span class="s">            &quot;host&quot;: &quot;mongo1:27017&quot;,</span>
+<span class="linenos" data-linenos="13 "></span><span class="s">            &quot;priority&quot;: 2</span>
+<span class="linenos" data-linenos="14 "></span><span class="s">        },</span>
+<span class="linenos" data-linenos="15 "></span><span class="s">        {</span>
+<span class="linenos" data-linenos="16 "></span><span class="s">            &quot;_id&quot;: 2,</span>
+<span class="linenos" data-linenos="17 "></span><span class="s">            &quot;host&quot;: &quot;mongo2:27017&quot;,</span>
+<span class="linenos" data-linenos="18 "></span><span class="s">            &quot;priority&quot;: 1</span>
+<span class="linenos" data-linenos="19 "></span><span class="s">        },</span>
+<span class="linenos" data-linenos="20 "></span><span class="s">        {</span>
+<span class="linenos" data-linenos="21 "></span><span class="s">            &quot;_id&quot;: 3,</span>
+<span class="linenos" data-linenos="22 "></span><span class="s">            &quot;host&quot;: &quot;mongo3:27017&quot;,</span>
+<span class="linenos" data-linenos="23 "></span><span class="s">            &quot;priority&quot;: 1</span>
+<span class="linenos" data-linenos="24 "></span><span class="s">        }</span>
+<span class="linenos" data-linenos="25 "></span><span class="s">    ]</span>
+<span class="linenos" data-linenos="26 "></span><span class="s">};</span>
+<span class="linenos" data-linenos="27 "></span><span class="s">rs.initiate(config, { force: true });</span>
+<span class="linenos" data-linenos="28 "></span><span class="s">EOF</span>
+<span class="linenos" data-linenos="29 "></span>
+<span class="linenos" data-linenos="30 "></span><span class="nb">echo</span> <span class="s2">&quot;****** Esperando </span><span class="si">${</span><span class="nv">DELAY</span><span class="si">}</span><span class="s2"> segundos a que se apliquen la configuración del conjunto de réplicas ******&quot;</span>
+<span class="linenos" data-linenos="31 "></span>
+<span class="linenos" data-linenos="32 "></span>sleep <span class="nv">$DELAY</span>
+<span class="linenos" data-linenos="33 "></span>
+<span class="linenos" data-linenos="34 "></span>mongosh &lt; /scripts/init.js
+</code></pre></div>
+<p>Finalmente, mediante el archivo <a href="resources/init.js"><code>init.js</code></a> comprobamos el estado de la réplica y creamos el usuario administrador:</p>
+<div class="highlight"><span class="filename">rs-init.sh</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">();</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">createUser</span><span class="p">({</span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">pwd</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">roles</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;root&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">db</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]});</span><span class="w"></span>
+</code></pre></div>
+<p>Así pues, una vez tenemos los tres archivos en la misma carpeta, ya podemos lanzar <em>Docker Compose</em> para crear los contenedores:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker-compose --file docker-compose-replicaset.yml --project-name iabd-mongodb-replica up -d
+</code></pre></div>
+<p>Y finalmente, sólo nos queda ejecutar el <em>script</em> de inicialización sobre el nodo principal:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker <span class="nb">exec</span> mongo1 /scripts/rs-init.sh
+</code></pre></div>
+<p>Al ejecutarse el script, se inicializa el conjunto de replicas y se obtiene su estado (mediante <code>rs.status()</code>) el cual se muestra por consola:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="  1 "></span><span class="err">iabdrs</span><span class="w"> </span><span class="p">[</span><span class="err">direc</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">primary</span><span class="p">]</span><span class="w"> </span><span class="kc">test</span><span class="err">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos="  2 "></span><span class="w">  </span><span class="err">se</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;iabdrs&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos="  3 "></span><span class="w">  </span><span class="err">da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:42.137Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="  4 "></span><span class="w">  </span><span class="err">myS</span><span class="kc">tate</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="  5 "></span><span class="w">  </span><span class="kc">ter</span><span class="err">m</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="  6 "></span><span class="w">  </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceHos</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="  7 "></span><span class="w">  </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceId</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="  8 "></span><span class="w">  </span><span class="err">hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="err">I</span><span class="kc">nter</span><span class="err">valMillis</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;2000&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="  9 "></span><span class="w">  </span><span class="err">majori</span><span class="kc">t</span><span class="err">yVo</span><span class="kc">te</span><span class="err">Cou</span><span class="kc">nt</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 10 "></span><span class="w">  </span><span class="err">wri</span><span class="kc">te</span><span class="err">Majori</span><span class="kc">t</span><span class="err">yCou</span><span class="kc">nt</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 11 "></span><span class="w">  </span><span class="err">vo</span><span class="kc">t</span><span class="err">i</span><span class="kc">n</span><span class="err">gMembersCou</span><span class="kc">nt</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 12 "></span><span class="w">  </span><span class="err">wri</span><span class="kc">ta</span><span class="err">bleVo</span><span class="kc">t</span><span class="err">i</span><span class="kc">n</span><span class="err">gMembersCou</span><span class="kc">nt</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 13 "></span><span class="w">  </span><span class="err">op</span><span class="kc">t</span><span class="err">imes</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 14 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">Commi</span><span class="kc">tte</span><span class="err">dOpTime</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778080</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 15 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">Commi</span><span class="kc">tte</span><span class="err">dWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 16 "></span><span class="w">    </span><span class="err">readCo</span><span class="kc">n</span><span class="err">cer</span><span class="kc">n</span><span class="err">Majori</span><span class="kc">t</span><span class="err">yOpTime</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778080</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 17 "></span><span class="w">    </span><span class="err">appliedOpTime</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778080</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 18 "></span><span class="w">    </span><span class="err">durableOpTime</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778080</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 19 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">AppliedWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 20 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">DurableWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="w"></span>
+<span class="linenos" data-linenos=" 21 "></span><span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 22 "></span><span class="w">  </span><span class="err">las</span><span class="kc">t</span><span class="err">S</span><span class="kc">ta</span><span class="err">bleRecoveryTimes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778030</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 23 "></span><span class="w">  </span><span class="err">elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Ca</span><span class="kc">n</span><span class="err">dida</span><span class="kc">te</span><span class="err">Me</span><span class="kc">tr</span><span class="err">ics</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 24 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">Elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Reaso</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Timeou</span><span class="kc">t</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 25 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">Elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:53:10.197Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 26 "></span><span class="w">    </span><span class="err">elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Term</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 27 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">Commi</span><span class="kc">tte</span><span class="err">dOpTimeA</span><span class="kc">t</span><span class="err">Elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666777979</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;-1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 28 "></span><span class="w">    </span><span class="err">las</span><span class="kc">t</span><span class="err">See</span><span class="kc">n</span><span class="err">OpTimeA</span><span class="kc">t</span><span class="err">Elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666777979</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;-1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 29 "></span><span class="w">    </span><span class="kc">nu</span><span class="err">mVo</span><span class="kc">tes</span><span class="err">Needed</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 30 "></span><span class="w">    </span><span class="err">priori</span><span class="kc">t</span><span class="err">yA</span><span class="kc">t</span><span class="err">Elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 31 "></span><span class="w">    </span><span class="err">elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Timeou</span><span class="kc">t</span><span class="err">Millis</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;10000&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 32 "></span><span class="w">    </span><span class="kc">nu</span><span class="err">mCa</span><span class="kc">t</span><span class="err">chUpOps</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;0&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 33 "></span><span class="w">    </span><span class="kc">ne</span><span class="err">wTermS</span><span class="kc">tart</span><span class="err">Da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:53:10.363Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 34 "></span><span class="w">    </span><span class="err">wMajori</span><span class="kc">t</span><span class="err">yWri</span><span class="kc">te</span><span class="err">Availabili</span><span class="kc">t</span><span class="err">yDa</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:53:11.139Z&quot;</span><span class="err">)</span><span class="w"></span>
+<span class="linenos" data-linenos=" 35 "></span><span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 36 "></span><span class="w">  </span><span class="err">members</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 37 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 38 "></span><span class="w">      </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 39 "></span><span class="w">      </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">go</span><span class="mi">1</span><span class="p">:</span><span class="mi">27017</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 40 "></span><span class="w">      </span><span class="err">heal</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 41 "></span><span class="w">      </span><span class="err">s</span><span class="kc">tate</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 42 "></span><span class="w">      </span><span class="err">s</span><span class="kc">tate</span><span class="err">S</span><span class="kc">tr</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;PRIMARY&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 43 "></span><span class="w">      </span><span class="err">up</span><span class="kc">t</span><span class="err">ime</span><span class="p">:</span><span class="w"> </span><span class="mi">129</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 44 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">ime</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778080</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 45 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">imeDa</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 46 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">AppliedWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 47 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">DurableWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 48 "></span><span class="w">      </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceHos</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 49 "></span><span class="w">      </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceId</span><span class="p">:</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 50 "></span><span class="w">      </span><span class="err">i</span><span class="kc">nf</span><span class="err">oMessage</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Could</span><span class="w"> </span><span class="kc">n</span><span class="err">o</span><span class="kc">t</span><span class="w"> </span><span class="kc">f</span><span class="err">i</span><span class="kc">n</span><span class="err">d</span><span class="w"> </span><span class="err">member</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">sy</span><span class="kc">n</span><span class="err">c</span><span class="w"> </span><span class="kc">fr</span><span class="err">om&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 51 "></span><span class="w">      </span><span class="err">elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Time</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666777990</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 52 "></span><span class="w">      </span><span class="err">elec</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:53:10.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 53 "></span><span class="w">      </span><span class="err">co</span><span class="kc">nf</span><span class="err">igVersio</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 54 "></span><span class="w">      </span><span class="err">co</span><span class="kc">nf</span><span class="err">igTerm</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 55 "></span><span class="w">      </span><span class="err">sel</span><span class="kc">f</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 56 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">Hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="err">Message</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;&#39;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 57 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 58 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 59 "></span><span class="w">      </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 60 "></span><span class="w">      </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">go</span><span class="mi">2</span><span class="p">:</span><span class="mi">27017</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 61 "></span><span class="w">      </span><span class="err">heal</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 62 "></span><span class="w">      </span><span class="err">s</span><span class="kc">tate</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 63 "></span><span class="w">      </span><span class="err">s</span><span class="kc">tate</span><span class="err">S</span><span class="kc">tr</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;SECONDARY&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 64 "></span><span class="w">      </span><span class="err">up</span><span class="kc">t</span><span class="err">ime</span><span class="p">:</span><span class="w"> </span><span class="mi">102</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 65 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">ime</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778070</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 66 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">imeDurable</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778070</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 67 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">imeDa</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:30.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 68 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">imeDurableDa</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:30.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 69 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">AppliedWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 70 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">DurableWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 71 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">Hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.322Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 72 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">Hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="err">Recv</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:41.327Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 73 "></span><span class="w">      </span><span class="err">pi</span><span class="kc">n</span><span class="err">gMs</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;0&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 74 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">Hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="err">Message</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 75 "></span><span class="w">      </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceHos</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">go</span><span class="mi">1</span><span class="p">:</span><span class="mi">27017</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 76 "></span><span class="w">      </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceId</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 77 "></span><span class="w">      </span><span class="err">i</span><span class="kc">nf</span><span class="err">oMessage</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 78 "></span><span class="w">      </span><span class="err">co</span><span class="kc">nf</span><span class="err">igVersio</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 79 "></span><span class="w">      </span><span class="err">co</span><span class="kc">nf</span><span class="err">igTerm</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="linenos" data-linenos=" 80 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 81 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 82 "></span><span class="w">      </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 83 "></span><span class="w">      </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">go</span><span class="mi">3</span><span class="p">:</span><span class="mi">27017</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 84 "></span><span class="w">      </span><span class="err">heal</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 85 "></span><span class="w">      </span><span class="err">s</span><span class="kc">tate</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 86 "></span><span class="w">      </span><span class="err">s</span><span class="kc">tate</span><span class="err">S</span><span class="kc">tr</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;SECONDARY&#39;</span><span class="p">,</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 87 "></span><span class="w">      </span><span class="err">up</span><span class="kc">t</span><span class="err">ime</span><span class="p">:</span><span class="w"> </span><span class="mi">102</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 88 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">ime</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778070</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 89 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">imeDurable</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kc">ts</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778070</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;1&quot;</span><span class="err">)</span><span class="w"> </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 90 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">imeDa</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:30.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 91 "></span><span class="w">      </span><span class="err">op</span><span class="kc">t</span><span class="err">imeDurableDa</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:30.000Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 92 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">AppliedWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 93 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">DurableWallTime</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.457Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 94 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">Hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:40.322Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 95 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">Hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="err">Recv</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2022-10-26T09:54:41.326Z&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 96 "></span><span class="w">      </span><span class="err">pi</span><span class="kc">n</span><span class="err">gMs</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;0&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 97 "></span><span class="w">      </span><span class="err">las</span><span class="kc">t</span><span class="err">Hear</span><span class="kc">t</span><span class="err">bea</span><span class="kc">t</span><span class="err">Message</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 98 "></span><span class="w">      </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceHos</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">go</span><span class="mi">1</span><span class="p">:</span><span class="mi">27017</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 99 "></span><span class="w">      </span><span class="err">sy</span><span class="kc">n</span><span class="err">cSourceId</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="100 "></span><span class="w">      </span><span class="err">i</span><span class="kc">nf</span><span class="err">oMessage</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="101 "></span><span class="w">      </span><span class="err">co</span><span class="kc">nf</span><span class="err">igVersio</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="102 "></span><span class="w">      </span><span class="err">co</span><span class="kc">nf</span><span class="err">igTerm</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="linenos" data-linenos="103 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="104 "></span><span class="w">  </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos="105 "></span><span class="w">  </span><span class="err">ok</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="106 "></span><span class="w">  </span><span class="err">&#39;$clus</span><span class="kc">ter</span><span class="err">Time&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="107 "></span><span class="w">    </span><span class="err">clus</span><span class="kc">ter</span><span class="err">Time</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778080</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="108 "></span><span class="w">    </span><span class="err">sig</span><span class="kc">nature</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="109 "></span><span class="w">      </span><span class="err">hash</span><span class="p">:</span><span class="w"> </span><span class="err">Bi</span><span class="kc">nar</span><span class="err">y(Bu</span><span class="kc">ffer</span><span class="err">.</span><span class="kc">fr</span><span class="err">om(</span><span class="s2">&quot;0000000000000000000000000000000000000000&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;hex&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="110 "></span><span class="w">      </span><span class="err">keyId</span><span class="p">:</span><span class="w"> </span><span class="err">Lo</span><span class="kc">n</span><span class="err">g(</span><span class="s2">&quot;0&quot;</span><span class="err">)</span><span class="w"></span>
+<span class="linenos" data-linenos="111 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="112 "></span><span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="113 "></span><span class="w">  </span><span class="err">opera</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">Time</span><span class="p">:</span><span class="w"> </span><span class="err">Times</span><span class="kc">ta</span><span class="err">mp(</span><span class="p">{</span><span class="w"> </span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="mi">1666778080</span><span class="p">,</span><span class="w"> </span><span class="err">i</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="err">)</span><span class="w"></span>
+<span class="linenos" data-linenos="114 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Una vez que ya hemos arrancando todo, podemos conectarnos a nuestro conjunto de réplica mediante <code>mongosh</code> (si no le pasamos ningún parámetro, se conecta automáticamente a <code>localhost</code> y al puerto 27017). Dentro del shell, los comandos que trabajan con réplicas comienzan por el prefijo <strong><code>rs</code></strong>. Por ejemplo, mediante <code>rs.help()</code> obtendremos la ayuda de los métodos disponibles:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>&gt; mongosh
+<span class="linenos" data-linenos=" 2 "></span>iabdrs <span class="o">[</span>direct: primary<span class="o">]</span> test&gt; rs.help<span class="o">()</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span>  Replica Set Class:
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span>    initiate                                   Initiates the replica set.
+<span class="linenos" data-linenos=" 7 "></span>    config                                     Returns a document that contains the current replica <span class="nb">set</span> configuration.
+<span class="linenos" data-linenos=" 8 "></span>    conf                                       Calls replSetConfig
+<span class="linenos" data-linenos=" 9 "></span>    reconfig                                   Reconfigures an existing replica set, overwriting the existing replica <span class="nb">set</span> configuration.
+<span class="linenos" data-linenos="10 "></span>    reconfigForPSASet                          Reconfigures an existing replica set, overwriting the existing replica <span class="nb">set</span> configuration, <span class="k">if</span> the reconfiguration is a transition from a Primary-Arbiter to a Primary-Secondary-Arbiter set.
+<span class="linenos" data-linenos="11 "></span>    status                                     Calls replSetGetStatus
+<span class="linenos" data-linenos="12 "></span>    isMaster                                   Calls isMaster
+<span class="linenos" data-linenos="13 "></span>    hello                                      Calls hello
+<span class="linenos" data-linenos="14 "></span>    printSecondaryReplicationInfo              Calls db.printSecondaryReplicationInfo
+<span class="linenos" data-linenos="15 "></span>    printSlaveReplicationInfo                  DEPRECATED. Use rs.printSecondaryReplicationInfo
+<span class="linenos" data-linenos="16 "></span>    printReplicationInfo                       Calls db.printReplicationInfo
+<span class="linenos" data-linenos="17 "></span>    add                                        Adds replica <span class="nb">set</span> member to replica set.
+<span class="linenos" data-linenos="18 "></span>    addArb                                     Calls rs.add with <span class="nv">arbiterOnly</span><span class="o">=</span><span class="nb">true</span>
+<span class="linenos" data-linenos="19 "></span>    remove                                     Removes a replica <span class="nb">set</span> member.
+<span class="linenos" data-linenos="20 "></span>    freeze                                     Prevents the current member from seeking election as primary <span class="k">for</span> a period of time. Uses the replSetFreeze <span class="nb">command</span>
+<span class="linenos" data-linenos="21 "></span>    stepDown                                   Causes the current primary to become a secondary which forces an election. If no stepDownSecs is provided, uses <span class="m">60</span> seconds. 
+<span class="linenos" data-linenos="22 "></span>Uses the replSetStepDown <span class="nb">command</span>
+<span class="linenos" data-linenos="23 "></span>    syncFrom                                   Sets the member that this replica <span class="nb">set</span> member will sync from, overriding the default sync target selection logic.
+<span class="linenos" data-linenos="24 "></span>    secondaryOk                                This method is deprecated. Use db.getMongo<span class="o">()</span>.setReadPref<span class="o">()</span> instead
+<span class="linenos" data-linenos="25 "></span>
+<span class="linenos" data-linenos="26 "></span>  For more information on usage: https://docs.mongodb.com/manual/reference/method/js-replication/
+</code></pre></div>
+<p>https://blog.devgenius.io/how-to-deploy-a-mongodb-replicaset-using-docker-compose-a538100db471</p>
+<p>https://github.com/minhhungit/mongodb-cluster-docker-compose</p>
+<p>. Mediante,
+A continuación, crearemos un documento con la configuración donde el _id tiene que ser igual al usado al crear la réplica, y el array de members contiene las replicas creadas donde los puertos han de coincidir.</p>
+<p>Configurando el conjunto de réplicas</p>
+<blockquote>
+<p>config = { _id: "replicaExperto", members:[
+{_id : 0, host : "localhost:27017"},
+  { _id : 1, host : "localhost:27018"},
+{_id : 2, host : "localhost:27019"}
+]};
+Si en los miembros ponemos slaveDelay: numSeg podemos retrasar un nodo respecto al resto (también deberemos indicar que priority : 0 para que no sea un nodo principal). Más información en <a href="http://docs.mongodb.org/manual/core/replica-set-delayed-member/">http://docs.mongodb.org/manual/core/replica-set-delayed-member/</a>
+Tras crear el documento de configuración, podemos iniciar el conjunto mediante:</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">rs</span><span class="p">.</span><span class="nx">initiate</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="s2">&quot;info&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Config now saved locally.  Should come online in about a minute.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="s2">&quot;ok&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Si ahora volvemos a consultar el estado de la réplica tendremos:</p>
+<p>replicaExperto:PRIMARY&gt; rs.status()
+{
+  "set" : "replicaExperto",
+  "date" : ISODate("2016-02-09T17:57:52.273Z"),
+  "myState" : 1,
+  "term" : NumberLong(1),
+  "heartbeatIntervalMillis" : NumberLong(2000),
+  "members" : [
+   {
+      "_id" : 0,
+      "name" : "localhost:27017",
+      "health" : 1,
+      "state" : 1,
+      "stateStr" : "PRIMARY",
+      "uptime" : 89,
+      "optime" : {
+        "ts" : Timestamp(1455040665, 2),
+        "t" : NumberLong(1)
+      },
+      "optimeDate" : ISODate("2016-02-09T17:57:45Z"),
+      "infoMessage" : "could not find member to sync from",
+      "electionTime" : Timestamp(1455040665, 1),
+      "electionDate" : ISODate("2016-02-09T17:57:45Z"),
+      "configVersion" : 1,
+      "self" : true
+    },
+   {
+      "_id" : 1,
+      "name" : "localhost:27018",
+      "health" : 1,
+      "state" : 2,
+      "stateStr" : "SECONDARY",
+      "uptime" : 17,
+      "optime" : {
+        "ts" : Timestamp(1455040665, 2),
+        "t" : NumberLong(1)
+      },
+      "optimeDate" : ISODate("2016-02-09T17:57:45Z"),
+      "lastHeartbeat" : ISODate("2016-02-09T17:57:51.287Z"),
+      "lastHeartbeatRecv" : ISODate("2016-02-09T17:57:47.860Z"),
+      "pingMs" : NumberLong(0),
+      "syncingTo" : "localhost:27017",
+      "configVersion" : 1
+   },
+   {
+      "_id" : 2,
+      "name" : "localhost:27019",
+      "health" : 1,
+      "state" : 2,
+      "stateStr" : "SECONDARY",
+      "uptime" : 17,
+      "optime" : {
+        "ts" : Timestamp(1455040665, 2),
+        "t" : NumberLong(1)
+      },
+      "optimeDate" : ISODate("2016-02-09T17:57:45Z"),
+      "lastHeartbeat" : ISODate("2016-02-09T17:57:51.287Z"),
+      "lastHeartbeatRecv" : ISODate("2016-02-09T17:57:47.869Z"),
+      "pingMs" : NumberLong(1),
+      "syncingTo" : "localhost:27017",
+      "configVersion" : 1
+   }
+  ],
+  "ok" : 1
+}
+La próxima vez que lancemos las réplicas ya no deberemos configurarlas. Así pues, el proceso de enlazar e iniciar las réplicas sólo se realiza una vez.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="  1 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">()</span><span class="w"></span>
 <span class="linenos" data-linenos="  2 "></span><span class="o">&lt;</span><span class="w"> </span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">()</span><span class="w"></span>
 <span class="linenos" data-linenos="  3 "></span><span class="p">{</span><span class="w"></span>
@@ -712,6 +1088,7 @@
 <span class="linenos" data-linenos="49 "></span><span class="w">  </span><span class="nx">isWritablePrimary</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
 <span class="linenos" data-linenos="50 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
+<p>FIXME: esto es importante</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">()</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="nx">rs</span><span class="p">.</span><span class="nx">initiate</span><span class="p">({</span><span class="s2">&quot;_id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;replicaTest&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">members</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
@@ -730,164 +1107,6 @@
 <span class="linenos" data-linenos="16 "></span><span class="nx">rs</span><span class="p">.</span><span class="nx">slaveOk</span><span class="p">()</span><span class="w"></span>
 <span class="linenos" data-linenos="17 "></span><span class="nx">rs</span><span class="p">.</span><span class="nx">stepDown</span><span class="p">(</span><span class="mf">20</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">)</span><span class="w"> </span><span class="c1">// (stepDownSecs, secondaryCatchUpPeriodSecs)</span><span class="w"></span>
 </code></pre></div>
-<p>Conjunto de Réplicas
-Figure 2. Conjunto de Réplicas</p>
-<p>Si el nodo primario se cae, los secundarios eligen un nuevo primario entre ellos mismos, en un proceso que se conoce como votación. La aplicación se conectará al nuevo primario de manera transparente. Cuando el antiguo nodo primario vuelva en sí, será un nuevo nodo secundario.</p>
-<p>Arbitraje de un secundario
-Figure 3. Arbitraje de un secundario
-Al usar replicación, si un servidor se cae, siempre vamos a poder obtener los datos a partir de otros servidores del conjunto. Si los datos de un servidor se dañan o son inaccesibles, podemos crear una nueva copia desde uno de los miembros del conjunto.</p>
-<h4 id="elementos-de-un-conjunto-de-replicas">Elementos de un conjunto de réplicas<a class="headerlink" href="#elementos-de-un-conjunto-de-replicas" title="Permanent link">&para;</a></h4>
-<p>Los tipos de nodos que podemos encontrar en un conjunto de réplica son:</p>
-<ul>
-<li>Regular: Es el tipo de nodo más común.</li>
-<li>Primario: Acepta todas las operaciones de escritura de los clientes. Cada conjunto de réplicas tendrá sólo un primario, y como sólo un miembro acepta operaciones de escritura, ofrece consistencia estricta para todas las lecturas realizadas desde él.</li>
-<li>Secundario: Los secundarios replican el oplog primario y aplican las operaciones a sus conjuntos de datos. De este modo, los nodos secundarios son un espejo del primario. Si el primario deja de estar disponible, el conjunto de réplica elegirá a un secundario para que sea el nuevo primario, mediante un proceso de votación.</li>
-</ul>
-<p>Por defecto, los clientes realizan las lecturas desde el nodo primario. Sin embargo, los clientes pueden indicar que quieren realizar lecturas desde los nodos secundarios.</p>
-<p>Es posible que al realizar lecturas de un nodo secundario la información que se obtenga no refleje el estado del nodo primario.
-Árbitro: se emplea sólo para votar. No contiene copia de los datos y no se puede convertir en primario. Los conjuntos de réplica pueden tener árbitros para añadir votos en las elecciones de un nuevo primario. Siempre tienen un voto, y permiten que los conjuntos de réplica tengan un número impar de nodos, sin la necesidad de tener un miembro que replique los datos. Además, no requieren hardware dedicado.</p>
-<p>No ejecutar un árbitro en sistemas que también ejecutan los miembros primarios y secundarios del conjunto de réplicas.</p>
-<p>Sólo añadir un árbitro a un conjunto con un número par de miembros.</p>
-<p>Si se añade un árbitro a un conjunto con un número impar de miembros, el conjunto puede sufrir un empate.
-Retrasado (delayed): nodo que se emplea para la recuperación del sistema ante un fallo. Para ello, hay que asignar la propiedad priority:0. Este nodo nunca será un nodo primario.</p>
-<p>Oculto: empleado para analíticas del sistema.</p>
-<p>oplog
-Para soportar la replicación, el nodo primario almacena todos los cambios en su oplog.</p>
-<p>De manera simplificada, el oplog es un diario de todos los cambios que la instancia principal realiza en las bases de datos con el propósito de replicar dichos cambios en un nodo secundario para asegurar que las dos bases de datos sean idénticas.</p>
-<p>El servidor principal mantiene el oplog, y el secundario consulta al principal por nuevas entradas que aplicar a sus propias copias de las bases de datos replicadas.</p>
-<p>El oplog crea un timestamp para cada entrada. Esto permite que un secundario controle la cantidad de información que se ha modificado desde una lectura anterior, y qué entradas necesita transferir para ponerse al día. Si paramos un secundario y lo reiniciamos más adelante, utilizará el oplog para obtener todos los cambios que ha perdido mientras estaba offline.</p>
-<p>El oplog se almacena en una colección limitada (capped) y ordenada de un tamaño determinado. La opción oplogSize define en MB el tamaño del archivo. Para un sistema de 64 bits con comportamiento de lectura/escritura normales, el oplogSize debería ser de al menos un 5% del espacio de disco disponible. Si el sistema tiene más escrituras que lecturas, puede que necesitemos incrementar este tamaño para asegurar que cualquier nodo secundario pueda estar offline una cantidad de tiempo razonable sin perder información.</p>
-<p>Más información de oplog en <a href="http://docs.mongodb.org/manual/core/replica-set-oplog/">http://docs.mongodb.org/manual/core/replica-set-oplog/</a></p>
-<h4 id="creando-un-conjunto-de-replicas">Creando un conjunto de réplicas<a class="headerlink" href="#creando-un-conjunto-de-replicas" title="Permanent link">&para;</a></h4>
-<p>A la hora de lanzar una instancia, podemos indicarle mediante parámetros opcionales la siguiente información:</p>
-<p>--dbpath: ruta de la base de datos</p>
-<p>--port: puerto de la base de datos</p>
-<p>--replSet: nombre del conjunto de réplicas</p>
-<p>-–fork: indica que se tiene que crear en un hilo</p>
-<p>--logpath: ruta para almacenar los archivos de log.</p>
-<p>Normalmente, cada instancia mongod se coloca en un servidor físico y todos en el puerto estándar.</p>
-<p>Como ejemplo vamos a crear un conjunto de tres réplicas. Para ello, arrancaremos tres instancias distintas pero que comparten el mismo conjunto de réplicas. Además, en vez de hacerlo en tres máquinas distinas, lo haremos en tres puertos diferentes:</p>
-<p>Las carpeta que se crean tienen que tener los mismos permisos que mongod. Si no existiesen, las tenemos que crear previamente.
-Script de creación del conjunto de réplicas - (creaConjuntoReplicas.sh)</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># !/bin/bash</span>
-<span class="linenos" data-linenos="2 "></span>
-<span class="linenos" data-linenos="3 "></span>mkdir -p /data/db/rs1 /data/db/rs2 /data/db/rs3 /data/logs
-<span class="linenos" data-linenos="4 "></span>mongod --replSet replicaExperto --logpath /data/logs/rs1.log --dbpath /data/db/rs1 --port <span class="m">27017</span> --oplogSize <span class="m">64</span> --smallfiles --fork
-<span class="linenos" data-linenos="5 "></span>mongod --replSet replicaExperto --logpath /data/logs/rs2.log --dbpath /data/db/rs2 --port <span class="m">27018</span> --oplogSize <span class="m">64</span> --smallfiles --fork
-<span class="linenos" data-linenos="6 "></span>mongod --replSet replicaExperto --logpath /data/logs/rs3.log --dbpath /data/db/rs3 --port <span class="m">27019</span> --oplogSize <span class="m">64</span> --smallfiles --fork
-</code></pre></div>
-<p>Y lo lanzamos desde el shell mediante:</p>
-<p>Lanzando la creación de la réplica
-bash &lt; creaConjuntoReplicas.sh
-Al lanzar el script, realmente estamos creando las réplicas, por lo que obtendremos que ha creado hijos y que esta a la espera de conexiones:</p>
-<p>Resultado de crear el conjunto de replicas
-about to fork child process, waiting until server is ready for connections.
-forked process: 1811
-child process started successfully, parent exiting
-about to fork child process, waiting until server is ready for connections.
-forked process: 1814
-child process started successfully, parent exiting
-about to fork child process, waiting until server is ready for connections.
-forked process: 1817
-child process started successfully, parent exiting
-Una vez lanzados las tres réplicas, tenemos que enlazarlas.</p>
-<p>Así pues, nos conectaremos al shell de mongo. Puede ser que necesitemos indicar que nos conectamos al puerto adecuado:</p>
-<p>mongosh --port 27017
-Para comprobar su estado emplearemos el comando rs.status():</p>
-<blockquote>
-<p>rs.status()
-{
-  "startupStatus" : 3,
-  "info" : "run rs.initiate(...) if not yet done for the set",
-  "ok" : 0,
-  "errmsg" : "can't get local.system.replset config from self or any seed (EMPTYCONFIG)"
-}
-Dentro del shell de mongo, los comandos que trabajan con réplicas comienzan por el prefijo rs.. Mediante rs.help() obtendremos la ayuda de los métodos disponibles,
-A continuación, crearemos un documento con la configuración donde el _id tiene que ser igual al usado al crear la réplica, y el array de members contiene las replicas creadas donde los puertos han de coincidir.</p>
-</blockquote>
-<p>Configurando el conjunto de réplicas</p>
-<blockquote>
-<p>config = { _id: "replicaExperto", members:[
-{_id : 0, host : "localhost:27017"},
-  { _id : 1, host : "localhost:27018"},
-{_id : 2, host : "localhost:27019"}
-]};
-Si en los miembros ponemos slaveDelay: numSeg podemos retrasar un nodo respecto al resto (también deberemos indicar que priority : 0 para que no sea un nodo principal). Más información en <a href="http://docs.mongodb.org/manual/core/replica-set-delayed-member/">http://docs.mongodb.org/manual/core/replica-set-delayed-member/</a>
-Tras crear el documento de configuración, podemos iniciar el conjunto mediante:</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">rs</span><span class="p">.</span><span class="nx">initiate</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="s2">&quot;info&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Config now saved locally.  Should come online in about a minute.&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="s2">&quot;ok&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"></span>
-<span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
-</code></pre></div>
-<p>Si ahora volvemos a consultar el estado de la réplica tendremos:</p>
-<p>replicaExperto:PRIMARY&gt; rs.status()
-{
-  "set" : "replicaExperto",
-  "date" : ISODate("2016-02-09T17:57:52.273Z"),
-  "myState" : 1,
-  "term" : NumberLong(1),
-  "heartbeatIntervalMillis" : NumberLong(2000),
-  "members" : [
-   {
-      "_id" : 0,
-      "name" : "localhost:27017",
-      "health" : 1,
-      "state" : 1,
-      "stateStr" : "PRIMARY",
-      "uptime" : 89,
-      "optime" : {
-        "ts" : Timestamp(1455040665, 2),
-        "t" : NumberLong(1)
-      },
-      "optimeDate" : ISODate("2016-02-09T17:57:45Z"),
-      "infoMessage" : "could not find member to sync from",
-      "electionTime" : Timestamp(1455040665, 1),
-      "electionDate" : ISODate("2016-02-09T17:57:45Z"),
-      "configVersion" : 1,
-      "self" : true
-    },
-   {
-      "_id" : 1,
-      "name" : "localhost:27018",
-      "health" : 1,
-      "state" : 2,
-      "stateStr" : "SECONDARY",
-      "uptime" : 17,
-      "optime" : {
-        "ts" : Timestamp(1455040665, 2),
-        "t" : NumberLong(1)
-      },
-      "optimeDate" : ISODate("2016-02-09T17:57:45Z"),
-      "lastHeartbeat" : ISODate("2016-02-09T17:57:51.287Z"),
-      "lastHeartbeatRecv" : ISODate("2016-02-09T17:57:47.860Z"),
-      "pingMs" : NumberLong(0),
-      "syncingTo" : "localhost:27017",
-      "configVersion" : 1
-   },
-   {
-      "_id" : 2,
-      "name" : "localhost:27019",
-      "health" : 1,
-      "state" : 2,
-      "stateStr" : "SECONDARY",
-      "uptime" : 17,
-      "optime" : {
-        "ts" : Timestamp(1455040665, 2),
-        "t" : NumberLong(1)
-      },
-      "optimeDate" : ISODate("2016-02-09T17:57:45Z"),
-      "lastHeartbeat" : ISODate("2016-02-09T17:57:51.287Z"),
-      "lastHeartbeatRecv" : ISODate("2016-02-09T17:57:47.869Z"),
-      "pingMs" : NumberLong(1),
-      "syncingTo" : "localhost:27017",
-      "configVersion" : 1
-   }
-  ],
-  "ok" : 1
-}
-La próxima vez que lancemos las réplicas ya no deberemos configurarlas. Así pues, el proceso de enlazar e iniciar las réplicas sólo se realiza una vez.</p>
 <h4 id="trabajando-con-las-replicas">Trabajando con las réplicas<a class="headerlink" href="#trabajando-con-las-replicas" title="Permanent link">&para;</a></h4>
 <p>Una vez que hemos visto que las tres réplicas están funcionando, vamos a comprobar como podemos trabajar con ellas.</p>
 <p>Para ello, nos conectamos al nodo principal (al ser el puerto predeterminado, podemos omitirlo):</p>

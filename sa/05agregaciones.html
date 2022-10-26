@@ -1657,11 +1657,53 @@
 </ul>
 <p>Más información en <a href="https://www.mongodb.com/docs/manual/core/aggregation-pipeline-limits/">https://www.mongodb.com/docs/manual/core/aggregation-pipeline-limits/</a></p>
 <h2 id="agregaciones-con-compass">Agregaciones con Compass<a class="headerlink" href="#agregaciones-con-compass" title="Permanent link">&para;</a></h2>
-<p>Using Compass' Aggregation Pipeline Builder feature <a href="https://docs.mongodb.com/compass/master/aggregation-pipeline-builder/">https://docs.mongodb.com/compass/master/aggregation-pipeline-builder/</a> , we can easily create, delete and rearrange the stages in a pipeline, and evaluate the output documents in real time. Then we can produce a version of that pipeline in Python, Java, C# or Node.js, using Compass' Export-to-Language feature.
-<a href="https://docs.mongodb.com/compass/master/export-pipeline-to-language">https://docs.mongodb.com/compass/master/export-pipeline-to-language</a></p>
-<p>FIXME: completar</p>
+<p>MongoDB Compass nos ofrece la herramienta <a href="https://docs.mongodb.com/compass/master/aggregation-pipeline-builder/">Aggregation Pipeline Builder</a> para crear, borrar y reorganizar fácilmente fases en un pipeline, así como evaluar los documento resultantes en tiempo real.</p>
+<p>Vamos a practicar con la colección de <code>zips</code>:</p>
+<figure style="align: center;">
+    <img src="images/05compass-aggregations.png">
+    <figcaption>Agregaciones en MongoDB Compass</figcaption>
+</figure>
+
+<p>Y vamos a reproducir la consulta con <code>$lookup</code> que acabamos de realizar, pero en nuestro caso, iremos paso a paso:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="err">db.zips.aggrega</span><span class="kc">te</span><span class="err">(</span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="p">{</span><span class="err">$group</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">      </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$state&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">      </span><span class="nt">&quot;totalPoblacion&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">$sum</span><span class="p">:</span><span class="s2">&quot;$pop&quot;</span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="p">}},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="p">{</span><span class="err">$lookup</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="kc">fr</span><span class="err">om</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;states&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="err">localField</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_id&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">    </span><span class="kc">f</span><span class="err">oreig</span><span class="kc">n</span><span class="err">Field</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abbreviation&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="err">as</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;estados&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">  </span><span class="p">}},</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">  </span><span class="p">{</span><span class="err">$u</span><span class="kc">n</span><span class="err">wi</span><span class="kc">n</span><span class="err">d</span><span class="p">:</span><span class="s2">&quot;$estados&quot;</span><span class="p">},</span><span class="w">  </span>
+<span class="linenos" data-linenos="13 "></span><span class="w">  </span><span class="p">{</span><span class="err">$projec</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="nt">&quot;estado&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$estados.name&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="nt">&quot;poblacion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;$totalPoblacion&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">  </span><span class="p">}}</span><span class="w"> </span>
+<span class="linenos" data-linenos="17 "></span><span class="p">]</span><span class="err">)</span><span class="w"></span>
+</code></pre></div>
+<p>Para ello, pulsamos sobre el botón de <em>Add Stage</em>, seleccionamos el operador <code>$group</code> y escribimos la expresión de agrupación. Al hacerlo, en el panel anexo aparecerán 10 documentos de muestra con el resultado de ejecutar dicha fase:</p>
+<figure style="align: center;">
+    <img src="images/05compass-group.gif">
+    <figcaption>$group en MongoDB Compass</figcaption>
+</figure>
+
+<p>Paso a paso, iremos añadiendo el resto de fases hasta tenerlas todas, pudiendo ver los datos que va generando cada fase:</p>
+<figure style="align: center;">
+    <img src="images/05compass-result.gif">
+    <figcaption>Resultado en MongoDB Compass</figcaption>
+</figure>
+
+<p>Una vez tenemos nuestra agregación, podemos obtener una versión del <em>pipeline</em> en Python, Java, C# o Node.js, mediante la opción <a href="https://docs.mongodb.com/compass/master/export-pipeline-to-language"><em>Export-to-Language</em></a>.</p>
+<figure style="align: center;">
+    <img src="images/05compass-export.png">
+    <figcaption>Exportando la agregación a PyMongo</figcaption>
+</figure>
+
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Documentación oficial del <a href="https://www.mongodb.com/docs/manual/core/aggregation-pipeline/">Aggregation Framework</a>.</li>
 <li>Curso <a href="https://university.mongodb.com/courses/M121/about">M121: The MongoDB Aggregation Framework</a> de la Mongo University.</li>
 <li>Libro <a href="https://www.practical-mongodb-aggregations.com/"><em>Practical MongoDB Aggregations</em></a></li>
 </ul>
@@ -1767,7 +1809,7 @@
 </ol>
 </li>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados">CE5.1d</abbr> / 0.5p) Mejora la siguiente consulta que obtiene los tres documentales más premiados, siempre y cuando hayan ganado algún premio:</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados">CE5.1d</abbr> / 0.5p) Haciendo uso de MongoDBCompass, mejora la siguiente consulta que obtiene los tres documentales más premiados, siempre y cuando hayan ganado algún premio:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kd">var</span><span class="w"> </span><span class="nx">pipeline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">$sort</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;awards.wins&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="p">}},</span><span class="w"> </span><span class="c1">// Ordenamos por premios ganados</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">$match</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;awards.wins&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">$gte</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">}}},</span><span class="w"></span>
@@ -1780,6 +1822,7 @@
 <span class="linenos" data-linenos="10 "></span><span class="p">];</span><span class="w"></span>
 <span class="linenos" data-linenos="11 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">movies</span><span class="p">.</span><span class="nx">aggregate</span><span class="p">(</span><span class="nx">pipeline</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
+<p>Adjunta una captura inicial y otra final, y la exportación de la agregación a Python.</p>
 </li>
 </ol>
 

@@ -1,0 +1,42 @@
+services:
+  mongo1:
+    container_name: mongo1
+    image: mongo
+    volumes:
+      - ./rs-init.sh:/scripts/rs-init.sh
+      - ./init.js:/scripts/init.js
+    networks:
+      - mongo-network
+    ports:
+      - 27017:27017
+    depends_on:
+      - mongo2
+      - mongo3
+    links:
+      - mongo2
+      - mongo3
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "iabdrs" ]
+
+  mongo2:
+    container_name: mongo2
+    image: mongo
+    networks:
+      - mongo-network
+    ports:
+      - 27018:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "iabdrs" ]
+  mongo3:
+    container_name: mongo3
+    image: mongo
+    networks:
+      - mongo-network
+    ports:
+      - 27019:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "iabdrs" ]
+
+networks:
+  mongo-network:
+    driver: bridge
