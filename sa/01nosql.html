@@ -954,6 +954,8 @@
 <p>No particionaremos los datos cuando la cantidad sea pequeña, ya que el hecho de distribuir los datos conlleva unos costes que pueden no compensar con un volumen de datos insuficiente. Tampoco esperaremos a particionar cuando tengamos muchísimos datos, ya que el proceso de particionado puede provocar sobrecarga del sistema.</p>
 <p>La nube facilita de manera considerable este escalado, mediante proveedores como AWS o Azure los cuales ofrecen virtualmente una capacidad ilimitada bajo demanda, y despreocupándose de todas las tareas necesarias para la administración de la base de datos.</p>
 <p>Los desarrolladores ya no necesitamos construir plataformas complejas para nuestras aplicaciones, de modo que nos podemos centrar en escribir código de aplicación. Una granja de servidores con <em>commodity hardware</em> puede ofrecer el mismo procesamiento y capacidad de almacenamiento que un único servidor de alto rendimiento por mucho menos coste.</p>
+<!-- FIXME: Añadir ventajas https://www.mongodb.com/basics/sharding -->
+
 <h3 id="replicacion">Replicación<a class="headerlink" href="#replicacion" title="Permanent link">&para;</a></h3>
 <p>La replicación mantiene copias idénticas de los datos en múltiples servidores, lo que facilita que las aplicaciones siempre funcionen y los datos se mantengan seguros, incluso si alguno de los servidores sufre algún problema.</p>
 <p>La mayoría de las bases de datos NoSQL también soportan la replicación automática, lo que implica una alta disponibilidad y recuperación frente a desastres sin la necesidad de aplicaciones de terceros encargadas de ello. Desde el punto de vista del desarrollador, el entorno de almacenamiento es virtual y ajeno al código de aplicación.</p>
@@ -1190,7 +1192,26 @@
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">12345667890</span><span class="w"></span>
 <span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Una fila es una colección de columnas agrupadas a una clave. Si agrupamos filas similares tendremos una <strong>familia de columnas</strong>:</p>
+<p>Una fila es una colección de columnas agrupadas a una clave.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">        </span><span class="err">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bruce&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">12345667890</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">        </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="err">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Clark&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">        </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">12345667891</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="kc">na</span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">        </span><span class="err">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Barbara&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">        </span><span class="kc">t</span><span class="err">imes</span><span class="kc">ta</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="mi">12345667892</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>Si agrupamos filas similares tendremos una <strong>familia de columnas</strong>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1">// familia de columnas</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="c1">// fila</span><span class="w"></span>

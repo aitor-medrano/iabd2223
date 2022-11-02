@@ -560,8 +560,22 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#consistencias-en-lecturas-y-escrituras" class="md-nav__link">
+    Consistencias en lecturas y escrituras
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#change-streams" class="md-nav__link">
     Change Streams
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transacciones" class="md-nav__link">
+    Transacciones
   </a>
   
 </li>
@@ -1354,6 +1368,9 @@ reverse(): If we want to reverse the order_by() order
 skip(number)
 values(): To return Python dict instances instead of model instances
 By using raw(), we can use the same queries that we described in the previous PyMongo section for querying and still exploit the flexibility and convenience methods provided by the ODM layer.</p>
+<h2 id="consistencias-en-lecturas-y-escrituras">Consistencias en lecturas y escrituras<a class="headerlink" href="#consistencias-en-lecturas-y-escrituras" title="Permanent link">&para;</a></h2>
+<p>FIXME: Revisar notebook curso MongoDB_PYTHON</p>
+<p><a href="https://docs.mongodb.com/manual/reference/read-concern/">https://docs.mongodb.com/manual/reference/read-concern/</a></p>
 <h2 id="change-streams">Change Streams<a class="headerlink" href="#change-streams" title="Permanent link">&para;</a></h2>
 <p>https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-98</p>
 <p>Change streams
@@ -1468,6 +1485,8 @@ On top of the considerations for replica sets, there are a few more to keep in m
 To avoid creating change stream events for orphaned documents, we need to use the new feature of ACID-compliant transactions if we have multi-document updates under sharding
 We can only open a change stream operation against the mongos member in a sharded cluster.</p>
 <p>While sharding an unsharded collection (that is, migrating from a replica set to sharding), the documentKey property of the change stream notification document will include _id until the change stream catches up to the first chunk migration.</p>
+<h2 id="transacciones">Transacciones<a class="headerlink" href="#transacciones" title="Permanent link">&para;</a></h2>
+<p>https://www.mongodb.com/docs/manual/core/transactions/</p>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <p><a href="https://www.askpython.com/python-modules/python-mongodb">https://www.askpython.com/python-modules/python-mongodb</a></p>
 <ul>

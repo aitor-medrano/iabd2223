@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Características de MongoDB. Instalación mediante Docker, uso de MongoAtlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos.">
+        <meta name="description" content="Características de MongoDB. Instalación mediante Docker, uso de Mongo Atlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos.">
       
       
       
@@ -66,7 +66,7 @@
       
         <meta  property="og:title"  content="MongoDB - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="Características de MongoDB. Instalación mediante Docker, uso de MongoAtlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos." >
+        <meta  property="og:description"  content="Características de MongoDB. Instalación mediante Docker, uso de Mongo Atlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/02mongo.png" >
       
@@ -82,7 +82,7 @@
       
         <meta  name="twitter:title"  content="MongoDB - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="Características de MongoDB. Instalación mediante Docker, uso de MongoAtlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos." >
+        <meta  name="twitter:description"  content="Características de MongoDB. Instalación mediante Docker, uso de Mongo Atlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/sa/02mongo.png" >
       
@@ -1220,7 +1220,7 @@
 <p class="admonition-title">Info</p>
 <p>Más información sobre copias de seguridad en <a href="https://www.mongodb.com/docs/manual/core/backups/">https://www.mongodb.com/docs/manual/core/backups/</a>.</p>
 </div>
-<p>Para poder trabajar con MongoDB desde cualquier aplicación necesitamos un driver. MongoDB ofrece <a href="https://www.mongodb.com/docs/drivers/">drivers</a> oficiales para casi todos los lenguajes de programación actuales. En la sesión 30 de 'MongoDB y Python' trabajaremos con <a href="https://pymongo.readthedocs.io/en/stable/">PyMongo</a>.</p>
+<p>Para poder trabajar con MongoDB desde cualquier aplicación necesitamos un driver. MongoDB ofrece <a href="https://www.mongodb.com/docs/drivers/">drivers</a> oficiales para casi todos los lenguajes de programación actuales. En la sesión 28 de 'MongoDB y Python' trabajaremos con <a href="https://pymongo.readthedocs.io/en/stable/">PyMongo</a>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Monitorización</p>
 <p>Tanto <a href="https://www.mongodb.com/docs/database-tools/mongostat/"><code>mongostat</code></a> como <a href="https://www.mongodb.com/docs/database-tools/mongotop/"><code>mongotop</code></a> permiten visualizar el estado del servidor MongoDB, así como algunas estadísticas sobre su rendimiento. Si trabajamos con MongoAtlas estas herramientas están integradas en las diferentes herramientas de monitorización de la plataforma.</p>
@@ -1388,7 +1388,7 @@
 </ol>
 <p>Con este ejemplo, hemos podido observar como los documentos de una misma colección no tienen por qué tener el mismo esquema, ni hemos necesitado definirlo explícitamente antes de insertar datos. Así pues, el esquema se irá generando y actualizando conforme se inserten documentos. Más adelante veremos que podemos definir un esquema para validar que los datos que insertamos cumplan restricciones de tipos de datos o elementos que obligatoriamente deben estar rellenados.</p>
 <h3 id="empleando-javascript">Empleando JavaScript<a class="headerlink" href="#empleando-javascript" title="Permanent link">&para;</a></h3>
-<p>Ya hemos comentado que el <em>shell</em> utiliza <em>JavaScript</em> como lenguaje de interacción, por lo que podemos almacenar los comandos en un script externo y ejecutarlo mediante <code>load()</code>:</p>
+<p>Ya hemos comentado que el <em>shell</em> utiliza <em>JavaScript</em> como lenguaje de interacción, por lo que podemos almacenar los comandos en un script externo y ejecutarlo mediante <a href="https://www.mongodb.com/docs/mongodb-shell/reference/methods/#std-label-mongosh-native-method-load"><code>load()</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">load</span><span class="p">(</span><span class="s2">&quot;scripts/misDatos.js&quot;</span><span class="p">);</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="nx">load</span><span class="p">(</span><span class="s2">&quot;/data/db/scripts/misDatos.js&quot;</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
@@ -1722,7 +1722,7 @@
 </code></pre></div>
 </div>
 <p>Para acceder al autor de los comentarios de un mensaje usaríamos la propiedad <code>comments.author</code>.</p>
-<p>Por ejemplo, para averiguar los mensajes titulados 'Bill of Rights' y que tienen algún comentario creado por <code>Santiago Dollins</code> haríamos:</p>
+<p>Por ejemplo, para averiguar los mensajes titulados <code>Bill of Rights</code> y que tienen algún comentario creado por <code>Santiago Dollins</code> haríamos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">posts</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Bill of Rights&#39;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;comments.author&quot;</span><span class="o">:</span><span class="s1">&#39;Santiago Dollins&#39;</span><span class="p">})</span><span class="w"></span>
 </code></pre></div>
 <h3 id="consultas-sobre-arrays">Consultas sobre arrays<a class="headerlink" href="#consultas-sobre-arrays" title="Permanent link">&para;</a></h3>
@@ -1745,13 +1745,15 @@
 <p class="admonition-title">Criterio con notación punto</p>
 <p>En el ejemplo anterior, si sólo hubiéramos tenido un campo para el filtrado, podríamos haber utilizado la notación punto <code>comments.author</code>.</p>
 </div>
-<p>Si sólo queremos los comentarios escritos por un determinado autor, en vez de en el filtrado, hemos de indicarlo en la proyección:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">posts</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="p">{</span><span class="nx">comments</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">$elemMatch</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">author</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Santiago Dollins&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;xnZKyvWD@jHfVKtUh.com&quot;</span><span class="p">}}}</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<p>Si sólo queremos los comentarios escritos por un determinado autor, además de en el filtrado, hemos de indicarlo en la proyección:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">posts</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="p">{</span><span class="nx">comments</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">$elemMatch</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">author</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Santiago Dollins&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;xnZKyvWD@jHfVKtUh.com&quot;</span><span class="p">}}},</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="p">{</span><span class="nx">comments</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">$elemMatch</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">author</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Santiago Dollins&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">email</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;xnZKyvWD@jHfVKtUh.com&quot;</span><span class="p">}}}</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 <p>Si lo que nos interesa es la cantidad de elementos que contiene un array, emplearemos el operador <a href="https://www.mongodb.com/docs/manual/reference/operator/query/size/"><code>$size</code></a>. Por ejemplo, para obtener los mensajes que tienen 10 etiquetas haríamos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">posts</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="w"> </span><span class="p">{</span><span class="nx">tags</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">$size</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">}}</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
-<p>Finalmente, a la hora de proyectar los datos, si no estamos interesados en todos los valores de un campo que es un array, podemos restringir el resultado mediante el operador <a href="https://www.mongodb.com/docs/manual/reference/operator/projection/slice/"><code>$slice</code></a>. Así pues, si quisiéramos obtener las mensajes titulados <code>US Constitution</code> y que de esos mensajes, mostrar sólo tres etiquetas y dos comentarios, haríamos:</p>
+<p>Finalmente, a la hora de proyectar los datos, si no estamos interesados en todos los valores de un campo que es un array, podemos restringir el resultado mediante el operador <a href="https://www.mongodb.com/docs/manual/reference/operator/projection/slice/"><code>$slice</code></a>. Así pues, si quisiéramos obtener los mensajes titulados <code>US Constitution</code> y que de esos mensajes, mostrara sólo tres etiquetas y dos comentarios, haríamos:</p>
 <div class="highlight"><pre><span></span><code><span class="hll"><span class="linenos" data-linenos=" 1 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">posts</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="w"> </span><span class="p">{</span><span class="nx">title</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;US Constitution&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="nx">comments</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">$slice</span><span class="o">:</span><span class="mf">2</span><span class="p">},</span><span class="w"> </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">$slice</span><span class="o">:</span><span class="mf">3</span><span class="p">}}</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
 </span><span class="linenos" data-linenos=" 2 "></span><span class="o">&lt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;50ab0f8bbcf1bfe2536dc416&quot;</span><span class="p">),</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;We the People ...&#39;</span><span class="p">,</span><span class="w"></span>
@@ -1769,7 +1771,7 @@
 <span class="linenos" data-linenos="15 "></span><span class="w">  </span><span class="nx">date</span><span class="o">:</span><span class="w"> </span><span class="mf">2012</span><span class="o">-</span><span class="mf">11</span><span class="o">-</span><span class="mf">20</span><span class="nx">T05</span><span class="o">:</span><span class="mo">05</span><span class="o">:</span><span class="mf">15.276</span><span class="nx">Z</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 <h3 id="conjunto-de-valores">Conjunto de valores<a class="headerlink" href="#conjunto-de-valores" title="Permanent link">&para;</a></h3>
-<p>Igual que en SQL, a partir de un colección, si queremos obtener todos los diferentes valores que existen en un campo, utilizaremos el método distinct</p>
+<p>Igual que en SQL, a partir de un colección, si queremos obtener todos los diferentes valores que existen en un campo, utilizaremos el método <a href="https://www.mongodb.com/docs/manual/reference/method/db.collection.distinct/"><code>distinct</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="hll"><span class="linenos" data-linenos="1 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">trips</span><span class="p">.</span><span class="nx">distinct</span><span class="p">(</span><span class="s1">&#39;usertype&#39;</span><span class="p">)</span><span class="w"></span>
 </span><span class="linenos" data-linenos="2 "></span><span class="o">&lt;</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s1">&#39;Customer&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;Subscriber&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
 </code></pre></div>
@@ -1778,7 +1780,7 @@
 </span><span class="linenos" data-linenos="2 "></span><span class="o">&lt;</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s1">&#39;Subscriber&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
 </code></pre></div>
 <h3 id="cursores">Cursores<a class="headerlink" href="#cursores" title="Permanent link">&para;</a></h3>
-<p>Al hacer una consulta en el <em>shell</em>, se devuelve un cursor. Este cursor lo podemos guardar en un variable, y partir de ahí trabajar con él como haríamos mediante cualquier lenguaje de programación. Si <code>cur</code> es la variable que referencia al cursor, podremos utilizar los siguientes métodos:</p>
+<p>Al hacer una consulta en el <em>shell</em> se devuelve un cursor. Este cursor lo podemos guardar en un variable, y partir de ahí trabajar con él como haríamos mediante cualquier lenguaje de programación. Si <code>cur</code> es la variable que referencia al cursor, podremos utilizar los siguientes métodos:</p>
 <table>
 <thead>
 <tr>
@@ -1823,7 +1825,7 @@
 <p>También podemos filtrar previamente a ordenar y limitar:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">trips</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">usertype</span><span class="o">:</span><span class="s2">&quot;Customer&quot;</span><span class="p">}).</span><span class="nx">sort</span><span class="p">({</span><span class="s2">&quot;tripduration&quot;</span><span class="o">:-</span><span class="mf">1</span><span class="p">}).</span><span class="nx">limit</span><span class="p">(</span><span class="mf">3</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
-<p>Finalmente, podemos paginar utilizando el método <a href="https://www.mongodb.com/docs/manual/reference/method/cursor.skip/"><code>skip</code></a>, para mostrar viajes de 10 en 10 y a partir de la tercera página, podríamos hacer algo así:</p>
+<p>Finalmente, podemos paginar utilizando el método <a href="https://www.mongodb.com/docs/manual/reference/method/cursor.skip/"><code>skip</code></a>, para mostrar viajes de 10 en 10 a partir de la tercera página, podríamos hacer algo así:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">trips</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">usertype</span><span class="o">:</span><span class="s2">&quot;Customer&quot;</span><span class="p">}).</span><span class="nx">sort</span><span class="p">({</span><span class="s2">&quot;tripduration&quot;</span><span class="o">:-</span><span class="mf">1</span><span class="p">}).</span><span class="nx">limit</span><span class="p">(</span><span class="mf">10</span><span class="p">).</span><span class="nx">skip</span><span class="p">(</span><span class="mf">20</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 <div class="admonition question">
@@ -1875,13 +1877,13 @@
 <p>Si cuando vamos a actualizar, en el criterio de selección no encuentra el documento sobre el que hacer los cambios, no se realiza ninguna acción.</p>
 <p>Si quisiéramos que en el caso de no encontrar nada insertase un nuevo documento, acción conocida como <strong><em>upsert</em></strong> (<em>update + insert</em>), hay que pasarle un tercer parámetro al método con el objeto <code>{upsert:true}</code>. Si encuentra el documento, lo modificará, pero si no, creará uno nuevo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">people</span><span class="p">.</span><span class="nx">updateOne</span><span class="p">({</span><span class="nx">nombre</span><span class="o">:</span><span class="s2">&quot;Andreu Medrano&quot;</span><span class="p">},</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="w">                    </span><span class="p">{</span><span class="nx">name</span><span class="o">:</span><span class="s2">&quot;Andreu Medrano&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">twitter</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;@andreumedrano&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">                    </span><span class="p">{</span><span class="nx">$set</span><span class="o">:</span><span class="p">{</span><span class="nx">name</span><span class="o">:</span><span class="s2">&quot;Andreu Medrano&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">twitter</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;@andreumedrano&quot;</span><span class="p">}},</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">                    </span><span class="p">{</span><span class="nx">upsert</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">})</span><span class="w"></span>
 </code></pre></div>
 <h3 id="operadores-de-actualizacion">Operadores de actualización<a class="headerlink" href="#operadores-de-actualizacion" title="Permanent link">&para;</a></h3>
-<p>MongoDB ofrece un conjunto de operadores para simplificar la modificación de campos.</p>
-<p>El operador más utiilzar es el operador <a href="https://www.mongodb.com/docs/manual/reference/operator/update/set/"><code>$set</code></a>, el cual admite los campos que se van a modificar. Si el campo no existe, lo creará.</p>
-<p>Por ejemplo, para modificar el salario haríamos:</p>
+<p><em>MongoDB</em> ofrece un conjunto de operadores para simplificar la modificación de campos.</p>
+<p>El operador más utilizado es el operador <a href="https://www.mongodb.com/docs/manual/reference/operator/update/set/"><code>$set</code></a>, el cual admite los campos que se van a modificar. Si el campo no existe, lo creará.</p>
+<p>Por ejemplo, para modificar el <code>salario</code> haríamos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="err">db.people.upda</span><span class="kc">te</span><span class="err">O</span><span class="kc">ne</span><span class="err">(</span><span class="p">{</span><span class="kc">n</span><span class="err">ombre</span><span class="p">:</span><span class="s2">&quot;Aitor Medrano&quot;</span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="err">$se</span><span class="kc">t</span><span class="p">:{</span><span class="err">salario</span><span class="p">:</span><span class="w"> </span><span class="mi">1000000</span><span class="p">}}</span><span class="err">)</span><span class="w"></span>
 </code></pre></div>
 <p>Mediante <a href="https://www.mongodb.com/docs/manual/reference/operator/update/inc/"><code>$inc</code></a> podemos incrementar el valor de una variable:</p>
