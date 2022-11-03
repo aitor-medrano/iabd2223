@@ -22,40 +22,48 @@ services:
       - 27118:27017
     entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--configsvr", "--replSet", "rs-config-server", "--bind_ip_all" ]
     links:
-      - mongo1
+      - mongo-shard1a
+      - mongo-shard2a
 
-  mongo1:
-    container_name: mongo1
+  mongo-shard1a:
+    container_name: mongo-shard1a
     image: mongo
     volumes:
-      - ./rs-init.sh:/scripts/rs-init.sh
-      - ./init.js:/scripts/init.js
+      - ./shard1-init.js:/scripts/shard1-init.js
     networks:
       - mongo-network-sharded
     ports:
       - 27119:27017
-    depends_on:
-      - mongo2
-      - mongo3
-    entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--shardsvr", "--bind_ip_all", "--replSet", "iabdrs" ]
+    entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--shardsvr", "--bind_ip_all", "--replSet", "iabdshard1" ]
 
-  mongo2:
-    container_name: mongo2
+  mongo-shard1b:
+    container_name: mongo-shard1b
     image: mongo
     networks:
       - mongo-network-sharded
     ports:
       - 27120:27017
-    entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--shardsvr", "--bind_ip_all", "--replSet", "iabdrs" ]
+    entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--shardsvr", "--bind_ip_all", "--replSet", "iabdshard1" ]
 
-  mongo3:
-    container_name: mongo3
+  mongo-shard2a:
+    container_name: mongo-shard2a
     image: mongo
+    volumes:
+      - ./shard2-init.js:/scripts/shard2-init.js
     networks:
       - mongo-network-sharded
     ports:
       - 27121:27017
-    entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--shardsvr", "--bind_ip_all", "--replSet", "iabdrs" ]
+    entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--shardsvr", "--bind_ip_all", "--replSet", "iabdshard2" ]
+
+  mongo-shard2b:
+    container_name: mongo-shard2b
+    image: mongo
+    networks:
+      - mongo-network-sharded
+    ports:
+      - 27122:27017
+    entrypoint: [ "/usr/bin/mongod", "--port", "27017", "--shardsvr", "--bind_ip_all", "--replSet", "iabdshard2" ]
 
 networks:
   mongo-network-sharded:
