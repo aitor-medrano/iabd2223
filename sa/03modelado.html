@@ -774,13 +774,13 @@
 
   <h1>S21.- Modelado de datos NoSQL</h1>
 
-<p>Antes de estudiar como modelar de forma adecuada nuestros datos en un modelo de datos documental, en concreto dentro de <em>MongoDB</em>, es conveniente recordar que:</p>
+<p>Antes de estudiar cómo modelar de forma adecuada nuestros datos en un modelo de datos documental, en concreto dentro de <em>MongoDB</em>, es conveniente recordar que:</p>
 <ul>
 <li>Mediante un documento podemos mantener toda la información que se utiliza junta en un único documento, sin necesidad de separar los datos en diferentes colecciones.</li>
 <li>Las propiedades transaccionales <a href="02mongo.html#acid">ACID</a> se cumplen a nivel de documento. Si tenemos la información separada en varios documentos, tenemos que utilizar el <a href="https://www.mongodb.com/docs/manual/core/transactions/">modelo transaccional</a> de <em>MongoDB</em> de forma programativa.</li>
 </ul>
 <p>Dependiendo del tipo de relación entre dos documentos, normalizaremos los datos para minimizar la redundancia pero manteniendo en la medida de lo posible que mediante operaciones atómicas se mantenga la integridad de los datos. Para ello, bien crearemos referencias entre dos documentos o embeberemos un documento dentro de otro, pero intentando que la información más utilizada quepa en un único documento.</p>
-<p>MongoDB es una base de datos documental, no relacional, donde el esquema no se debe basar en el uso de claves ajenas/<em>joins</em>, ya que realmente no existen. A la hora de diseñar un esquema, si nos encontramos que el esquema esta en 3FN o si cuando hacemos consultas estamos teniendo que realizar varias consultas de manera programativa (primero acceder a una tabla, con ese <code>_id</code> ir a otra tabla, etc… o hacemos un uso extensivo del operador <code>$lookup</code> mediante el <em>framework</em> de agregación.) es que no estamos siguiendo el enfoque adecuado.</p>
+<p><em>MongoDB</em> es una base de datos documental, no relacional, donde el esquema no se debe basar en el uso de claves ajenas/<em>joins</em>, ya que realmente no existen. A la hora de diseñar un esquema, si nos encontramos que el esquema está en 3FN o si cuando hacemos consultas estamos teniendo que realizar varias consultas de manera programativa (primero acceder a una tabla, con ese <code>_id</code> ir a otra tabla, etc… o hacemos un uso extensivo del operador <code>$lookup</code> mediante el <em>framework</em> de agregación.) es que no estamos siguiendo el enfoque adecuado.</p>
 <p>En resumen, diseñar un buen modelo de datos puede suponer que nuestro código sea más legible y mantenible, así como un mayor rendimiento de nuestras aplicaciones.</p>
 <h2 id="metodologia">Metodología<a class="headerlink" href="#metodologia" title="Permanent link">&para;</a></h2>
 <p>A la hora de tomar decisiones sobre nuestro modelo, nuestra primera decisión es si vamos a modelar para obtener una mayor simplicidad del esquema o queremos un mejor rendimiento.</p>
@@ -845,7 +845,7 @@
 </table>
 <p>A continuación veremos cada una de estas fases en detalle.</p>
 <h2 id="definir-la-carga">Definir la carga<a class="headerlink" href="#definir-la-carga" title="Permanent link">&para;</a></h2>
-<p>En esta primera fase es muy importante comprender para qué operaciones estamos modelando, para ello hemos medir los datos a almacenar, cuantificar y calificar las operaciones de lectura y escritura, así como listar las operaciones más importantes, con métricas como operaciones por segundo, latencia requerida o atributos utilizados en las consultas.</p>
+<p>En esta primera fase es muy importante comprender para qué operaciones estamos modelando, para ello hemos medir los datos a almacenar, cuantificar y calificar las operaciones de lectura y escritura, así como listar las operaciones más importantes, con métricas tipo operaciones por segundo, latencia requerida o atributos utilizados en las consultas.</p>
 <p>Para ello, partiremos de diferentes escenarios de uso de la aplicación, los logs y estadísticas que tengamos disponibles o el conocimiento de los analistas de negocio.</p>
 <p>Dependiendo de la carga, puede provocar diferentes soluciones de modelado, ya que en unas pueden ser más importantes las lecturas y en otras las escrituras.</p>
 <div class="admonition note">
@@ -1165,10 +1165,10 @@
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="nx">libro_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"></span>
 <span class="linenos" data-linenos="5 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Este enfoque se desaconseja porque necesita tres consultas para obtener toda la información.</p>
+<p>Este enfoque se desaconseja porque necesita acceder a tres colecciones para obtener toda la información.</p>
 </li>
 <li>
-<p>Mediante 2 documentos, cada uno con un array que contenga los ids del otro documento (<em>2 Way Embedding</em>). Hay que tener cuidado porque podemos tener problemas de inconsistencia de datos si no actualizamos correctamente.</p>
+<p>Mediante 2 documentos, cada uno con un array que contenga los identificadores del otro documento (<em>2 Way Embedding</em>). Hay que tener cuidado porque podemos tener problemas de inconsistencia de datos si no actualizamos correctamente.</p>
 <div class="highlight"><span class="filename">libro-con-autores.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nx">_id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">titulo</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;La historia interminable&quot;</span><span class="p">,</span><span class="w"></span>
@@ -1267,9 +1267,9 @@ Arrays con una alta cardinalidad son una clara pista para no embeber.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="err">produc</span><span class="kc">t</span><span class="err">o</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ps5&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="err">precios</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;es&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">549.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da=</span><span class="s2">&quot;eur&quot;</span><span class="p">},</span><span class="w"></span>
-<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uk&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">479.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da=</span><span class="s2">&quot;pound&quot;</span><span class="p">},</span><span class="w"></span>
-<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">499.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da=</span><span class="s2">&quot;dollar&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;es&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">549.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da</span><span class="p">:</span><span class="s2">&quot;eur&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uk&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">479.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da</span><span class="p">:</span><span class="s2">&quot;pound&quot;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="err">pais</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;us&quot;</span><span class="p">,</span><span class="w"> </span><span class="err">precio</span><span class="p">:</span><span class="w"> </span><span class="mf">499.99</span><span class="p">,</span><span class="w"> </span><span class="err">mo</span><span class="kc">ne</span><span class="err">da</span><span class="p">:</span><span class="s2">&quot;dollar&quot;</span><span class="p">},</span><span class="w"></span>
 <span class="linenos" data-linenos="7 "></span><span class="w">  </span><span class="p">]</span><span class="w"></span>
 <span class="linenos" data-linenos="8 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
@@ -1593,7 +1593,7 @@ Probablemente, con una pequeña sinopsis, el director y los tres o cuatro actore
 
 <ol>
 <li>
-<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 3p) Define el modelo de datos necesario para modelar al aplicación de captura de datos del PIA Lara:</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos">RA5075.1</abbr> / <abbr title="Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos.">CE5.1a</abbr> / 3p) Define el modelo de datos necesario para modelar al aplicación de captura de datos del PIA Lara:</p>
 <ul>
 <li>Debes tener en cuenta la gestión de los usuarios, los cuales pueden ser los usuarios finales (pacientes), los sanitarios encargados de su tutela (terapeutas), así como los usuarios administradores de la aplicación.</li>
 <li>De los pacientes, además del sexo y la fecha de nacimiento, registraremos su enfermedad (puede que con subcategorías), así como una descripción de su disfonía, y otros datos que consideres oportunos.</li>
@@ -1608,10 +1608,10 @@ Probablemente, con una pequeña sinopsis, el director y los tres o cuatro actore
 </ul>
 </li>
 </ul>
-<p>Para ello, crea diferentes colecciones/documentos JSON con datos de muestra así como validadores para cada una de las colecciones que necesites.</p>
+<p>Para ello, primero define la carga del modelo y a continuación, crea diferentes colecciones/documentos JSON con datos de muestra así como validadores para cada una de las colecciones que necesites.</p>
 </li>
 <li>
-<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Nuestro ayuntamiento está diseñando un plan energético para fomentar la instalación de placas solares. Aquellos viviendas que se sitúen en barrios que generan más energía de la que consumen recibirán un bono económico por el exceso de energía.</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos">RA5075.1</abbr> / <abbr title="Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos.">CE5.1a</abbr> / 1p) Nuestro ayuntamiento está diseñando un plan energético para fomentar la instalación de placas solares. Aquellos viviendas que se sitúen en barrios que generan más energía de la que consumen recibirán un bono económico por el exceso de energía.</p>
 <p>Nuestra base de datos almacena, para cada vivienda, cuanta energía produce por hora (en kW), cuanta consume, y cuanta necesita consumir de la red eléctrica. Un dato de una muestra de energía sería:</p>
 <div class="highlight"><span class="filename">energia.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;6316fc1597eb703de2add36e&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"></span>
