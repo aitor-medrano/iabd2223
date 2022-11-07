@@ -1593,21 +1593,38 @@ Probablemente, con una pequeña sinopsis, el director y los tres o cuatro actore
 <li><a href="https://www.mongodb.com/blog/post/performance-best-practices-mongodb-data-modeling-and-memory-sizing">Performance Best Practices: MongoDB Data Modeling and Memory Sizing</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<!--
+1. (RA5074.1 / CE4.1d / 1p) Define el modelo de datos necesario para la siguiente aplicación de e-commerce:
+
+    * Tenemos una aplicación que vende productos. Estos productos se almacenan en diferentes almacenes, de los cuales conocemos su nombre y dirección (calle, número, ciudad y país). Los productos que vendemos pueden localizarse hasta un máximo de 200 almacenes.
+    * De cada producto, necesitamos almacenar su nombre y descripción, sí como un máximo de 1000 análisis realizados por los usuarios. De cada análisis, almacenaremos la fecha, el propio cuerpo del análisis y el usuario que lo ha realizado.
+    * Finalmente, de los usuarios, además de su nombre, almacenaremos los datos de sus tarjetas de crédito (un máximo de 10), como son el tipo, número, fecha de expedición y código de seguridad. También guardaremos la dirección de envío donde va a recibir los productos.
+    * Las operaciones prioritarias para la aplicación son:
+        * listado de productos con información de sus almacenes
+        * listado de análisis de un determinado producto
+        * creación de usuario y su/s tarjeta/s de crédito en una única operación
+
+    Para ello, crea diferentes colecciones/documentos json con datos de muestra así como validadores para cada una de las colecciones que necesites.
+-->
+
 <ol>
 <li>
-<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Define el modelo de datos necesario para la siguiente aplicación de e-commerce:</p>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 3p) Define el modelo de datos necesario para modelar al aplicación de captura de datos del PIA Lara:</p>
 <ul>
-<li>Tenemos una aplicación que vende productos. Estos productos se almacenan en diferentes almacenes, de los cuales conocemos su nombre y dirección (calle, número, ciudad y país). Los productos que vendemos pueden localizarse hasta un máximo de 200 almacenes.</li>
-<li>De cada producto, necesitamos almacenar su nombre y descripción, sí como un máximo de 1000 análisis realizados por los usuarios. De cada análisis, almacenaremos la fecha, el propio cuerpo del análisis y el usuario que lo ha realizado.</li>
-<li>Finalmente, de los usuarios, además de su nombre, almacenaremos los datos de sus tarjetas de crédito (un máximo de 10), como son el tipo, número, fecha de expedición y código de seguridad. También guardaremos la dirección de envío donde va a recibir los productos.</li>
-<li>Las operaciones prioritarias para la aplicación son:<ul>
-<li>listado de productos con información de sus almacenes</li>
-<li>listado de análisis de un determinado producto</li>
-<li>creación de usuario y su/s tarjeta/s de crédito en una única operación</li>
+<li>Debes tener en cuenta la gestión de los usuarios, los cuales pueden ser los usuarios finales (pacientes), los sanitarios encargados de su tutela (terapeutas), así como los usuarios administradores de la aplicación.</li>
+<li>De los pacientes, además del sexo y la fecha de nacimiento, registraremos su enfermedad (puede que con subcategorías), así como una descripción de su disfonía, y otros datos que consideres oportunos.</li>
+<li>Un paciente va a grabar muchas muestras de audios, y además del audio (el cual almacenaremos en un sistema externo y del cual en nuestra base de datos NoSQL almacenaremos su ruta/id), guardaremos la fecha de la grabación, usuario, texto, ¿estado de ánimo del paciente?, ¿velocidad de grabación? ... (aquí deberéis pensar en todos los datos que necesitemos para un mejor etiquetado de los datos).</li>
+<li>Los textos de grabación (<em>sylabus</em>) pueden estar predefinidos, de manera que desde el administrador o el terapeuta se dén de alta, o que cada paciente/terapeuta los inserte en el momento de grabar el audio. Todos los textos se agruparán por categoría, y cada texto/frase, puede tener un número de orden, así como un estado de ánimo.</li>
+<li>Los listado que luego necesitaremos para recuperar los datos son:<ul>
+<li>Pacientes de una determinada enfermedad, pudiendo segmentar por rangos de edad y sexo.</li>
+<li>Audios y datos de las muestras de una determinada persona</li>
+<li>Audios y datos de las muestras de una determinada enfermedad.</li>
+<li>Audios y datos de las muestras de una determinada disfonía.</li>
+<li>Textos predefinidos de una categoría asignados a un paciente.</li>
 </ul>
 </li>
 </ul>
-<p>Para ello, crea diferentes colecciones/documentos json con datos de muestra así como validadores para cada una de las colecciones que necesites.</p>
+<p>Para ello, crea diferentes colecciones/documentos JSON con datos de muestra así como validadores para cada una de las colecciones que necesites.</p>
 </li>
 <li>
 <p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Nuestro ayuntamiento está diseñando un plan energético para fomentar la instalación de placas solares. Aquellos viviendas que se sitúen en barrios que generan más energía de la que consumen recibirán un bono económico por el exceso de energía.</p>

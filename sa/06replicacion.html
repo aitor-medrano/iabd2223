@@ -508,13 +508,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#niveles-de-consistencia" class="md-nav__link">
-    Niveles de consistencia
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -706,13 +699,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#niveles-de-consistencia" class="md-nav__link">
-    Niveles de consistencia
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -805,7 +791,7 @@
   <h1>S26.- Replicación y Particionado</h1>
 
 <h2 id="replicacion">Replicación<a class="headerlink" href="#replicacion" title="Permanent link">&para;</a></h2>
-<p>Un aspecto muy importante de MongoDB es que soporta la replicación de los datos de forma nativa mediante el uso de conjuntos de réplicas.</p>
+<p>Un aspecto muy importante de <em>MongoDB</em> es que soporta la replicación de los datos de forma nativa mediante el uso de conjuntos de réplicas.</p>
 <h3 id="conjunto-de-replicas">Conjunto de réplicas<a class="headerlink" href="#conjunto-de-replicas" title="Permanent link">&para;</a></h3>
 <p>En MongoDB se replican los datos mediante un conjunto de réplicas  (<em>Replica Set</em>), el cual es un grupo de servidores (nodos <em>mongod</em>) donde uno de ellos ejerce la función de primario y por tanto recibe las peticiones de los clientes, y el resto de servidores hace de secundarios, manteniendo copias de los datos del primario.</p>
 <figure style="align: center;">
@@ -818,10 +804,10 @@
 <h4 id="elementos-de-un-conjunto-de-replicas">Elementos de un conjunto de réplicas<a class="headerlink" href="#elementos-de-un-conjunto-de-replicas" title="Permanent link">&para;</a></h4>
 <p>Los tipos de nodos que podemos encontrar en un conjunto de réplica son:</p>
 <ul>
-<li>Regular: Es el tipo de nodo más común.</li>
-<li>Primario: Acepta todas las operaciones de escritura de los clientes. Cada conjunto de réplicas tendrá sólo un primario, y como sólo un miembro acepta operaciones de escritura, ofrece consistencia estricta para todas las lecturas realizadas desde él.</li>
+<li><strong>Regular</strong>: Es el tipo de nodo más común.</li>
+<li><strong>Primario</strong>: Acepta todas las operaciones de escritura de los clientes. Cada conjunto de réplicas tendrá sólo un primario, y como sólo un miembro acepta operaciones de escritura, ofrece consistencia estricta para todas las lecturas realizadas desde él.</li>
 <li>
-<p>Secundario: Los secundarios replican el <em>oplog</em> primario y aplican las operaciones a sus conjuntos de datos. De este modo, los nodos secundarios son un espejo del primario. Si el primario deja de estar disponible, el conjunto de réplica elegirá a un secundario para que sea el nuevo primario, mediante un proceso de votación.</p>
+<p><strong>Secundario</strong>: Los secundarios replican el <em>oplog</em> primario y aplican las operaciones a sus conjuntos de datos. De este modo, los nodos secundarios son un espejo del primario. Si el primario deja de estar disponible, el conjunto de réplica elegirá a un secundario para que sea el nuevo primario, mediante un proceso de votación.</p>
 <p>Por defecto, los clientes realizan las lecturas desde el nodo primario. Sin embargo, los clientes pueden indicar que quieren realizar lecturas desde los nodos secundarios.</p>
 <div class="admonition danger">
 <p class="admonition-title">Consistencia eventual</p>
@@ -1182,6 +1168,7 @@
 <p>Para indicar la preferencia de lectura, ya hemos visto que lo haremos con la función <a href="https://www.mongodb.com/docs/manual/reference/method/Mongo.setReadPref/">Mongo.setReadPref()</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabdrs <span class="o">[</span>direct: secondary<span class="o">]</span> test&gt; db.getMongo<span class="o">()</span>.setReadPref<span class="o">(</span><span class="s1">&#39;nearest&#39;</span><span class="o">)</span>
 </code></pre></div>
+<p>FIXME: Read concern: https://www.ramoncarrasco.es/es/content/es/kb/140/que-es-un-write-concern-cometido-de-escritura-en-mongodb-que-es-un-read-concern</p>
 <h3 id="tolerancia-a-fallos">Tolerancia a fallos<a class="headerlink" href="#tolerancia-a-fallos" title="Permanent link">&para;</a></h3>
 <p>Cuando un nodo primario no se comunica con otros miembros del conjunto durante más de 10 segundos, el conjunto de réplicas intentará, de entre los secundarios, que un miembro se convierta en el nuevo primario.</p>
 <p>Para ello se realiza un proceso de votación, de modo que el nodo que obtenga el mayor número de votos se erigirá en primario. Este proceso de votación se realiza bastante rápido (menos de 3 segundos), durante el cual no existe ningún nodo primario y por tanto la réplica no acepta escrituras y todos los miembros se convierten en nodos de sólo-lectura.</p>
@@ -1262,7 +1249,7 @@ Hay que destacar que la mayoría no se basa en los elementos que queden en pie o
 <li><code>j</code>: indica si las escrituras se tienen que trasladar a un diario de bitácora (<em>journal</em>)</li>
 <li><code>wtimeout</code>: indica el límite de tiempo a esperar como máximo, para prevenir que una escritura se bloquee indefinidamente.</li>
 </ul>
-<h3 id="niveles-de-consistencia">Niveles de consistencia<a class="headerlink" href="#niveles-de-consistencia" title="Permanent link">&para;</a></h3>
+<h4 id="niveles-de-consistencia">Niveles de consistencia<a class="headerlink" href="#niveles-de-consistencia" title="Permanent link">&para;</a></h4>
 <p>Con estas opciones, podemos configurar diferentes niveles de consistencia son:</p>
 <ul>
 <li>Sin confirmación: <code>w:0</code>, también conocido como <em>fire-and-forget</em>.</li>
@@ -1781,6 +1768,8 @@ Por ejemplo, mediante <code>sh.help()</code> obtendremos la ayuda de los método
 </ol>
 <!--
 https://www.mongodb.com/developer/products/mongodb/cheat-sheet/#sharded-cluster
+
+FIXME: revisar métodos splitAt, splitFind... rangos con tag, zonas, etc..
 -->
 
 <div class="footnote">
