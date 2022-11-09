@@ -599,6 +599,12 @@ Para las relaciones uno a muchos:
 <span class="linenos" data-linenos="3 "></span>en la fase de $group hacemos $sum
 <span class="linenos" data-linenos="4 "></span>una fase para $gorup y otra para $sum
 </code></pre></div>
+<p>db.productos.aggregate([
+  { $group: {
+      _id: "$fabricante",
+      total: { $sum:1 }
+    }
+  }])</p>
 <p>var pipeline = [
         { $match: {
             genres: {$in: ["Romance"]}, // Romance movies only.
