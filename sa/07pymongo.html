@@ -596,6 +596,26 @@
     Transacciones
   </a>
   
+    <nav class="md-nav" aria-label="Transacciones">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tipos-de-api" class="md-nav__link">
+    Tipos de API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hola-mundo-callback-api" class="md-nav__link">
+    Hola Mundo Callback API
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -713,7 +733,7 @@
 <p>Al crear una conexión, conviene especificar el tamaño del <em>pool</em> y el <em>timeout</em> de las conexiones:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">db</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">URI</span><span class="p">,</span> <span class="n">maxPoolSize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">wtimeout</span><span class="o">=</span><span class="mi">2500</span><span class="p">)[</span><span class="n">nombreBD</span><span class="p">]</span>
 </code></pre></div>
-<p>Se recomienda siempre especificar un <code>wtimemout</code>, ya que cuando se realiza una escritura con mayoría de escrituras, si fallase algún nodo no se quedaría colgado esperando.</p>
+<p>Se recomienda siempre especificar un <code>wtimeout</code>, ya que cuando se realiza una escritura con mayoría de escrituras, si fallase algún nodo no se quedaría colgado esperando.</p>
 <p>Si no encontrase el servidor, lanzará un <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/errors.html#pymongo.errors.ServerSelectionTimeoutError"><code>ServerSelectionTimeoutError</code></a> el cual deberíamos capturar.</p>
 </div>
 <h2 id="primeras-consultas">Primeras consultas<a class="headerlink" href="#primeras-consultas" title="Permanent link">&para;</a></h2>
@@ -1198,7 +1218,7 @@
 </div>
 </div>
 <h2 id="crud">CRUD<a class="headerlink" href="#crud" title="Permanent link">&para;</a></h2>
-<p>FIXME: https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-92</p>
+<p>FIXME: <a href="https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-92">https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-92</a></p>
 <p>Para estas operaciones, vamos a utilizar la colección <code>iabd.people</code> que utilizamos en la <a href="02mongo.html#hola-mongodb">primera sesión de <em>MongoDB</em></a>.</p>
 <h3 id="insercion">Inserción<a class="headerlink" href="#insercion" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
@@ -1268,7 +1288,7 @@
 <p>Para ello, <em>PyMongo</em> ofrece un conjunto de clases para indicar las <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/read_preferences.html">preferencias de lectura</a>, las cuales podemos configurar a nivel de cliente:</p>
 <div class="admonition tip inline end">
 <p class="admonition-title">Niveles de lectura</p>
-<p>Los diferentes niveles vienen definidos en el objeto <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/read_preferences.html#pymongo.read_preferences.ReadPreference"><code>ReadPreference</code></a> el cual ofrece los valores estudiados en la sesión anterior: <code>PRIMARY</code>, <code>PRIMARY_PREFERRED</code>, <code>SECONDARY</code>, <code>SECONDARY_PREFERRED</code> y <code>NEAREST</code>. </p>
+<p>Los diferentes niveles vienen definidos en el objeto <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/read_preferences.html#pymongo.read_preferences.ReadPreference"><code>ReadPreference</code></a> el cual ofrece los valores estudiados en la sesión anterior: <code>PRIMARY</code>, <code>PRIMARY_PREFERRED</code>, <code>SECONDARY</code>, <code>SECONDARY_PREFERRED</code> y <code>NEAREST</code>.</p>
 </div>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span>
 <span class="linenos" data-linenos="2 "></span>    <span class="s1">&#39;localhost:27017&#39;</span><span class="p">,</span>
@@ -1303,16 +1323,67 @@
 <h3 id="escrituras-a-granel">Escrituras a granel<a class="headerlink" href="#escrituras-a-granel" title="Permanent link">&para;</a></h3>
 <p>Bulk writes</p>
 <h2 id="transacciones">Transacciones<a class="headerlink" href="#transacciones" title="Permanent link">&para;</a></h2>
-<p>https://www.mongodb.com/docs/manual/core/transactions/</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-transactions-in-mongodb">https://www.digitalocean.com/community/tutorials/how-to-use-transactions-in-mongodb</a>
+<a href="https://www.mongodb.com/developer/languages/python/python-acid-transactions/">https://www.mongodb.com/developer/languages/python/python-acid-transactions/</a></p>
+<p><a href="https://learning.oreilly.com/library/view/mongodb-the-definitive/9781491954454/ch08.html#idm45882358635912">https://learning.oreilly.com/library/view/mongodb-the-definitive/9781491954454/ch08.html#idm45882358635912</a></p>
+<p>Ya hemos comentado en numerosas ocasiones toda operación en un único documento es atómica, de ahí embeber documentos y arrays para modelar las relaciones de datos en un sólo documento cubre la mayoría de los casos de usos transaccionales.</p>
+<p>Cuando necesitamos atomicidad de lecturas y escrituras entre varios documentos (en una o más colecciones), <a href="https://www.mongodb.com/docs/manual/core/transactions/"><em>MongoDB</em> soporta transacciones</a> multidocumento. Mediante las transacciones distribuidas, las transacciones puede operar entre varias operaciones, colecciones, bases de datos, documentos y particiones (<em>shards</em>).</p>
+<h3 id="tipos-de-api">Tipos de API<a class="headerlink" href="#tipos-de-api" title="Permanent link">&para;</a></h3>
+<p><em>MongoDB</em> ofrece dos API para utilizar transacciones. La primera, conocida como <a href="https://www.mongodb.com/docs/manual/core/transactions-in-applications/#core-api"><em>Core API</em></a>, disponible desde la versión 4.0 de <em>MongoDB</em>, tiene una sintaxis similar a las bases de datos relacionales (por ejemplo, con operaciones como <code>start_transaction</code> y <code>commit_transaction</code>), y la segunda se conoce como <a href="https://www.mongodb.com/docs/manual/core/transactions-in-applications/#callback-api"><em>Callback API</em></a>, desde la versión 4.2, el cual es el enfoque actualmente recomendado.</p>
+<p>El <em>Core API</em> no ofrece lógica de reintentos para la mayoría de errores y necesita que el desarrollador programe la lógica de las operaciones, la función transaccional que realiza <em>commit</em> y la lógica de errores y reintentos necesaria.</p>
+<p>En cambio, el <em>Callback API</em> ofrece una única función que engloba un alto grado de funcionalidad comparadas con el <em>Core API</em>, incluyendo el inicio de una transacción asociada a una sesión lógica, ejecutar la función definida como <em>callback</em> y realizando el <em>commit</em> de la transacción (o abortándola en caso de error). Esta función también incluye la lógica de reintentos para manejar los errores al hacer <em>commit</em>.</p>
+<p>En ambas APIs, el desarrollador se responsabiliza de iniciar la sesión lógica que se utilizará en la transacción. Ambas APIs requieren que las operaciones transaccionales se asocien a ésta sesión lógica (pasándola como parámetro a cada operación). Cada sesión lógica en <em>MongoDB</em> registra el tiempo y la secuencia de las operaciones en el contexto completo del despliegue de <em>MongoDB</em>.</p>
+<h3 id="hola-mundo-callback-api">Hola Mundo Callback API<a class="headerlink" href="#hola-mundo-callback-api" title="Permanent link">&para;</a></h3>
+<p>Vamos a simular que tenemos una aplicación de gestión de un almacén, en la cual tenemos que realizar las siguientes operaciones dentro de una transacción:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">pedidos</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span><span class="s2">&quot;producto&quot;</span><span class="p">:</span> <span class="s2">&quot;ps5&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span> <span class="n">session</span><span class="o">=</span><span class="n">miSesion</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">inventario</span><span class="o">.</span><span class="n">update_one</span><span class="p">({</span><span class="s2">&quot;producto&quot;</span><span class="p">:</span> <span class="s2">&quot;ps5&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$gte&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}},</span>
+<span class="linenos" data-linenos="3 "></span>                      <span class="p">{</span><span class="s2">&quot;$inc&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">}},</span> <span class="n">session</span><span class="o">=</span><span class="n">miSesion</span><span class="p">)</span>
+</code></pre></div>
+<p>Veamos mediante un ejemplo el flujo del código transaccional haciendo uso del <em>Callback API</em>.</p>
+<div class="highlight"><span class="filename">almacenTransaccional.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span><span class="p">,</span> <span class="n">ReadPreference</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">pymongo.write_concern</span> <span class="kn">import</span> <span class="n">WriteConcern</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">pymongo.read_concern</span> <span class="kn">import</span> <span class="n">ReadConcern</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">uriString</span> <span class="o">=</span> <span class="s1">&#39;mongodb+srv://iabd:iabdiabd@cluster0.4hm7u8y.mongodb.net/?retryWrites=true&amp;w=majority&#39;</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">cliente</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uriString</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">miWCMajority</span> <span class="o">=</span> <span class="n">WriteConcern</span><span class="p">(</span><span class="s1">&#39;majority&#39;</span><span class="p">,</span> <span class="n">wtimeout</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># Paso 0: Creamos dos colecciones e insertamos un documento en cada una</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">bd</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_database</span><span class="p">(</span> <span class="s2">&quot;iabd&quot;</span><span class="p">,</span> <span class="n">write_concern</span><span class="o">=</span><span class="n">miWCMajority</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span><span class="n">bd</span><span class="o">.</span><span class="n">pedidos</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span><span class="s2">&quot;producto&quot;</span><span class="p">:</span> <span class="s2">&quot;ps5&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">})</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">bd</span><span class="o">.</span><span class="n">inventario</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span><span class="s2">&quot;producto&quot;</span><span class="p">:</span> <span class="s2">&quot;ps5&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># Paso 1: Definir el callback que indica la secuencia de las operaciones a realizar dentro de la transacción</span>
+<span class="linenos" data-linenos="15 "></span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">miSesion</span><span class="p">):</span>
+<span class="linenos" data-linenos="16 "></span>    <span class="n">pedidos</span> <span class="o">=</span> <span class="n">miSesion</span><span class="o">.</span><span class="n">cliente</span><span class="o">.</span><span class="n">iabd</span><span class="o">.</span><span class="n">pedidos</span>
+<span class="linenos" data-linenos="17 "></span>    <span class="n">inventario</span> <span class="o">=</span> <span class="n">miSesion</span><span class="o">.</span><span class="n">cliente</span><span class="o">.</span><span class="n">iabd</span><span class="o">.</span><span class="n">inventario</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span>    <span class="c1"># Importante: Debemos pasarle la sesión a cada operación</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="n">pedidos</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span><span class="s2">&quot;producto&quot;</span><span class="p">:</span> <span class="s2">&quot;ps5&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span> <span class="n">session</span><span class="o">=</span><span class="n">miSesion</span><span class="p">)</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="n">inventario</span><span class="o">.</span><span class="n">update_one</span><span class="p">({</span><span class="s2">&quot;producto&quot;</span><span class="p">:</span> <span class="s2">&quot;ps5&quot;</span><span class="p">,</span> <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$gte&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">}},</span>
+<span class="linenos" data-linenos="22 "></span>                          <span class="p">{</span><span class="s2">&quot;$inc&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;cantidad&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">100</span><span class="p">}},</span> <span class="n">session</span><span class="o">=</span><span class="n">miSesion</span><span class="p">)</span>
+<span class="linenos" data-linenos="23 "></span>
+<span class="linenos" data-linenos="24 "></span><span class="c1"># Paso 2: Iniciar una sesión de cliente.</span>
+<span class="linenos" data-linenos="25 "></span><span class="k">with</span> <span class="n">cliente</span><span class="o">.</span><span class="n">start_session</span><span class="p">()</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="c1"># Paso 3: Empleamos with_transaction para iniciar la transacción, ejecutar el callback y realizar el commit (o abortar en caso de error).</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="n">session</span><span class="o">.</span><span class="n">with_transaction</span><span class="p">(</span>
+<span class="linenos" data-linenos="28 "></span>        <span class="n">callback</span><span class="p">,</span>
+<span class="linenos" data-linenos="29 "></span>        <span class="n">read_concern</span><span class="o">=</span><span class="n">ReadConcern</span><span class="p">(</span><span class="s2">&quot;local&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos="30 "></span>        <span class="n">write_concern</span><span class="o">=</span><span class="n">miWCMajority</span><span class="p">,</span>
+<span class="linenos" data-linenos="31 "></span>        <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
+<span class="linenos" data-linenos="32 "></span>    <span class="p">)</span>
+</code></pre></div>
 <h2 id="pia-login">PIA: Login<a class="headerlink" href="#pia-login" title="Permanent link">&para;</a></h2>
-<p>https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login</p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login">https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login</a></p>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-mongodb-in-a-flask-application">https://www.digitalocean.com/community/tutorials/how-to-use-mongodb-in-a-flask-application</a></p>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <p><a href="https://www.askpython.com/python-modules/python-mongodb">https://www.askpython.com/python-modules/python-mongodb</a></p>
 <ul>
 <li><a href="https://pymongo.readthedocs.io/en/stable/tutorial.html">Tutorial oficial de PyMongo</a></li>
+<li><a href="https://www.mongodb.com/developer/languages/python/python-acid-transactions/">Introduction to Multi-Document ACID Transactions in Python</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
-<p>https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_06.xhtml#_idParaDest-111</p>
+<p><a href="https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_06.xhtml#_idParaDest-111">https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_06.xhtml#_idParaDest-111</a></p>
 
 
   

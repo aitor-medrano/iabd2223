@@ -472,22 +472,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tolerancia-a-fallos" class="md-nav__link">
-    Tolerancia a fallos
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#recuperacion-del-sistema" class="md-nav__link">
-    Recuperación del sistema
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#consistencia-en-la-escritura" class="md-nav__link">
     Consistencia en la escritura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistencia-en-la-lectura" class="md-nav__link">
+    Consistencia en la lectura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tolerancia-a-fallos" class="md-nav__link">
+    Tolerancia a fallos
   </a>
   
 </li>
@@ -663,22 +663,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tolerancia-a-fallos" class="md-nav__link">
-    Tolerancia a fallos
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#recuperacion-del-sistema" class="md-nav__link">
-    Recuperación del sistema
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#consistencia-en-la-escritura" class="md-nav__link">
     Consistencia en la escritura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistencia-en-la-lectura" class="md-nav__link">
+    Consistencia en la lectura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tolerancia-a-fallos" class="md-nav__link">
+    Tolerancia a fallos
   </a>
   
 </li>
@@ -1071,7 +1071,7 @@
 <p>Ya hemos visto cómo al conectarnos al clúster, nos aparece como símbolo del <em>shell</em> el nombre del conjunto de la réplica seguido de dos puntos y <code>primary</code> si nos hemos conectado al nodo principal, o <code>secondary</code> en caso contrario.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabdrs <span class="o">[</span>direct: primary<span class="o">]</span> test&gt; 
 </code></pre></div>
-<p>Para saber si nos hemos conectado al nodo correcto, mediante <code>[db.hello()</code>](https://www.mongodb.com/docs/upcoming/reference/command/hello/#hello) obtendremos el tipo del nodo (propiedad <code>isWritablePrimary</code>) e información sobre el resto de nodos (antes se utilizaba el método <code>isMaster</code> el cual se ha marcado como <em>deprecated</em>):</p>
+<p>Para saber si nos hemos conectado al nodo correcto, mediante <a href="https://www.mongodb.com/docs/upcoming/reference/command/hello/#hello"><code>db.hello()</code></a> obtendremos el tipo del nodo (propiedad <code>isWritablePrimary</code>) e información sobre el resto de nodos (antes se utilizaba el método <code>isMaster</code> el cual se ha marcado como <em>deprecated</em>):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nx">iabdrs</span><span class="w"> </span><span class="p">[</span><span class="nx">direct</span><span class="o">:</span><span class="w"> </span><span class="nx">primary</span><span class="p">]</span><span class="w"> </span><span class="nx">test</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">hello</span><span class="p">()</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">topologyVersion</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -1136,7 +1136,7 @@
 <span class="linenos" data-linenos="2 "></span>MongoServerError: not primary
 </code></pre></div>
 <h3 id="preferencias-de-lectura">Preferencias de lectura<a class="headerlink" href="#preferencias-de-lectura" title="Permanent link">&para;</a></h3>
-<p>Las <a href="https://www.mongodb.com/docs/upcoming/core/read-preference/">preferencias de lectura</a> definen como MongoDB enruta las lecturas realizadas a los miembros del conjunto de réplicas.</p>
+<p>En el ejemplo anterior hemos visto como hemos cambiado las preferencias de lectura para permitir hacerlo desde los nodos secundarios. Así pues, las <a href="https://www.mongodb.com/docs/upcoming/core/read-preference/">preferencias de lectura</a> definen como MongoDB enruta las lecturas realizadas a los miembros del conjunto de réplicas.</p>
 <figure style="align: center;">
     <img src="images/06replica-set-read-preference.svg">
     <figcaption>Preferencias de lectura</figcaption>
@@ -1152,7 +1152,44 @@
 <p>Para indicar la preferencia de lectura, ya hemos visto que lo haremos con la función <a href="https://www.mongodb.com/docs/manual/reference/method/Mongo.setReadPref/">Mongo.setReadPref()</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabdrs <span class="o">[</span>direct: secondary<span class="o">]</span> test&gt; db.getMongo<span class="o">()</span>.setReadPref<span class="o">(</span><span class="s1">&#39;nearest&#39;</span><span class="o">)</span>
 </code></pre></div>
-<p>FIXME: Read concern: https://www.ramoncarrasco.es/es/content/es/kb/140/que-es-un-write-concern-cometido-de-escritura-en-mongodb-que-es-un-read-concern</p>
+<h3 id="consistencia-en-la-escritura">Consistencia en la escritura<a class="headerlink" href="#consistencia-en-la-escritura" title="Permanent link">&para;</a></h3>
+<p>Ya hemos visto que tanto las lecturas como las escrituras se realizan de manera predeterminada en el nodo principal.</p>
+<p>Las aplicaciones pueden decidir que las escrituras vayan al nodo primario pero las lecturas al secundario. Esto puede provocar que haya lecturas caducas, con datos obsoletos, pero como beneficio podemos escalar el sistema.</p>
+<p>La replicación es un proceso asíncrono. En el período de tiempo en el que el sistema de votación sucede, no se completa ninguna escritura.</p>
+<p><em>MongoDB</em> garantiza la <a href="https://docs.mongodb.com/manual/reference/write-concern/">consistencia en la escritura (Write Concern)</a>, lo que implica que sea un sistema consistente. Para ello, ofrece un mecanismo que garantiza que una escritura ha sido exitosa. Dependiendo del nivel de configuración de la consistencia, las inserciones, modificaciones y borrados pueden tardar más o menos. Si reducimos el nivel de consistencia, el rendimiento será mejor, a costa de poder obtener datos obsoletos u perder datos que no se han terminado de serializar en disco. Con un nivel de consistencia más alto, los clientes esperan tras enviar una operación de escritura a que MongoDB les confirme la operación.</p>
+<p>Los valores que podemos configurar se realizan mediante las siguientes opciones:</p>
+<ul>
+<li><code>w</code>: indica el número de servidores que se han de replicar para que la inserción devuelva un ACK.</li>
+<li><code>j</code>: indica si las escrituras se tienen que trasladar a un diario de bitácora (<em>journal</em>)</li>
+<li><code>wtimeout</code>: indica el límite de tiempo a esperar como máximo, para prevenir que una escritura se bloquee indefinidamente.</li>
+</ul>
+<h4 id="niveles-de-consistencia-de-escritura">Niveles de consistencia de escritura<a class="headerlink" href="#niveles-de-consistencia-de-escritura" title="Permanent link">&para;</a></h4>
+<p>Con estas opciones, podemos configurar diferentes niveles de consistencia son:</p>
+<ul>
+<li>Sin confirmación: <code>w:0</code>, también conocido como <em>fire-and-forget</em>, ya que no se espera ningún tipo de confirmación.</li>
+<li>Con confirmación: <code>w:1</code>, el cual es el modo por defecto, y sólo espera confirmación del nodo principal.</li>
+<li>Con diario: <code>w:1</code>, <code>j:true</code>. Cada inserción primero se escribe en el diario y posteriormente en el directorio de datos.</li>
+<li>Con confirmación de la mayoría: <code>w: "majority"</code>, es decir, confirman la mitad + 1 de los nodos de la réplica.</li>
+</ul>
+<p>Estas opciones se indican como parámetro final en las operaciones de inserción y modificación de datos. Por ejemplo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">pruebas</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">(</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="p">{</span><span class="nx">num</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">1002</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="p">{</span><span class="nx">writeConcern</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">w</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;majority&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">wtimeout</span><span class="o">:</span><span class="w"> </span><span class="mf">5000</span><span class="p">}}</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+<p>En resumen, a mayor cantidad de nodos, mayor es la tolerancia a fallos pero cada operación necesita más tiempo y recursos para realizar la persistencia de los datos.</p>
+<h3 id="consistencia-en-la-lectura">Consistencia en la lectura<a class="headerlink" href="#consistencia-en-la-lectura" title="Permanent link">&para;</a></h3>
+<p>De igual manera que podemos decidir en cuantos nodos se deben propagar las escrituras, podemos indicar cuantos nodos debemos leer para dar un dato como válido. Para ello, <em>MongoDB</em> da soporte a diferentes niveles de <a href="https://www.mongodb.com/docs/manual/reference/read-concern/">consistencia en la lectura (Read Concern)</a>:</p>
+<ul>
+<li><code>local</code>: devuelve el dato más reciente en el cluster. Cualquier dato que haya sido escrito en el nodo primario puede ser elegido para devolverse. Sin embargo, no se garantiza que este dato sea replicado a los miembros del conjunto en caso de fallo. Este es el nivel por defecto en las operaciones de lectura contra el nodo primario.</li>
+<li><code>available</code>: equivalente de <code>local</code> cuando las operaciones de lectura se efectúan contra un nodo secundario.</li>
+<li><code>majority</code>: únicamente devuelve datos que hayan sido confirmados en una mayoría de nodos dentro del conjunto.</li>
+<li><code>linearizable</code>: devuelve datos que hayan sido confirmados por una mayoría de nodos, pero permite al desarrollador establecer su propia funcionalidad.</li>
+<li><code>snapshot</code>: sólo disponible para transacciones multi-documento, realiza una "foto" de los datos al inicio de la transacción.</li>
+</ul>
+<p>Imaginemos un escenario en el que recibimos la confirmación de escritura por el nodo primario. Inmediatamente efectuamos una operación de lectura, el nodo devuelve el dato, pero éste falla antes de replicar la operación de escritura a los nodos secundarios. Sobre esta operación se efectuará un proceso de <em>rollback</em> en el momento que el nodo primario vuelva a estar disponible, por lo que ese dato realmente no existirá en el conjunto replicado. Es decir, la aplicación actualmente tiene un dato que no existe en el conjunto.</p>
+<p>Mediante la consistencia en la lectura, podemos obtener unas mínimas garantías de que el dato que estamos leyendo es correcto y durable. Cuando se utiliza, únicamente devolverá datos cuya grabación haya sido confirmada por el número de nodos especificados en sus opciones. Se puede escoger entre devolver el dato más reciente que exista en el cluster, o el dato recibido por una mayoría de miembros en el cluster.</p>
+<p>El hecho de que un documento no se considere correcto, no quiere decir necesariamente que se haya perdido, sino que en el momento de su lectura, no ha cumplido las condiciones necesarias de durabilidad para ser devuelto. Puede ser que la lectura se esté produciendo antes de que el dato haya sido propagado al número mínimo de miembros necesario, y por eso no se obtenga, pero en lecturas sucesivas sí puede aparecer.</p>
 <h3 id="tolerancia-a-fallos">Tolerancia a fallos<a class="headerlink" href="#tolerancia-a-fallos" title="Permanent link">&para;</a></h3>
 <p>Cuando un nodo primario no se comunica con otros miembros del conjunto durante más de 10 segundos, el conjunto de réplicas intentará, de entre los secundarios, que un miembro se convierta en el nuevo primario.</p>
 <p>Para ello se realiza un proceso de votación, de modo que el nodo que obtenga el mayor número de votos se erigirá en primario. Este proceso de votación se realiza bastante rápido (menos de 3 segundos), durante el cual no existe ningún nodo primario y por tanto la réplica no acepta escrituras y todos los miembros se convierten en nodos de sólo-lectura.</p>
@@ -1219,35 +1256,9 @@ Hay que destacar que la mayoría no se basa en los elementos que queden en pie o
 </span><span class="linenos" data-linenos="13 "></span><span class="w">  </span><span class="err">me</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;mo</span><span class="kc">n</span><span class="err">go</span><span class="mi">2</span><span class="p">:</span><span class="mi">27017</span><span class="err">&#39;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="14 "></span><span class="w">  </span><span class="err">...</span><span class="w"></span>
 </code></pre></div>
-<h3 id="recuperacion-del-sistema">Recuperación del sistema<a class="headerlink" href="#recuperacion-del-sistema" title="Permanent link">&para;</a></h3>
+<h4 id="recuperacion-del-sistema">Recuperación del sistema<a class="headerlink" href="#recuperacion-del-sistema" title="Permanent link">&para;</a></h4>
 <p>Si en un conjunto de réplicas se cae el primario y hay escrituras que se han pasado al <code>oplog</code> y tenemos que otros nodos no las han replicado, cuando el nodo primario vuelva en sí como secundario y se sincronice con el nuevo primario, se dará cuenta que hay operaciones de escritura pendientes y las pasará a <em>rollback</em>, para que si se desean se apliquen manualmente.</p>
 <p>Para evitar este escenario, se necesita emplear consistencia en la escritura, de manera que hasta que la escritura no se haya replicado en la mayoría de los nodos no se considere como una escritura exitosa.</p>
-<h3 id="consistencia-en-la-escritura">Consistencia en la escritura<a class="headerlink" href="#consistencia-en-la-escritura" title="Permanent link">&para;</a></h3>
-<p>Ya hemos visto que tanto las lecturas como las escrituras se realizan de manera predeterminada en el nodo principal.</p>
-<p>Las aplicaciones pueden decidir que las escrituras vayan al nodo primario pero las lecturas al secundario. Esto puede provocar que haya lecturas caducas, con datos obsoletos, pero como beneficio podemos escalar el sistema.</p>
-<p>La replicación es un proceso asíncrono. En el período de tiempo en el que el sistema de votación sucede, no se completa ninguna escritura.</p>
-<p><em>MongoDB</em> garantiza la <a href="https://docs.mongodb.com/manual/reference/write-concern/">consistencia en la escritura</a>, lo que implica que sea un sistema consistente. Para ello, ofrece un sistema que garantiza que una escritura ha sido exitosa. Dependiendo del nivel de configuración de la consistencia, las inserciones, modificaciones y borrados pueden tardar más o menos. Si reducimos el nivel de consistencia, el rendimiento será mejor, a costa de poder obtener datos obsoletos u perder datos que no se han terminado de serializar en disco. Con un nivel de consistencia más alto, los clientes esperan tras enviar una operación de escritura a que MongoDB les confirme la operación.</p>
-<p>Los valores que podemos configurar se realizan mediante las siguientes opciones:</p>
-<ul>
-<li><code>w</code>: indica el número de servidores que se han de replicar para que la inserción devuelva un ACK.</li>
-<li><code>j</code>: indica si las escrituras se tienen que trasladar a un diario de bitácora (<em>journal</em>)</li>
-<li><code>wtimeout</code>: indica el límite de tiempo a esperar como máximo, para prevenir que una escritura se bloquee indefinidamente.</li>
-</ul>
-<h4 id="niveles-de-consistencia">Niveles de consistencia<a class="headerlink" href="#niveles-de-consistencia" title="Permanent link">&para;</a></h4>
-<p>Con estas opciones, podemos configurar diferentes niveles de consistencia son:</p>
-<ul>
-<li>Sin confirmación: <code>w:0</code>, también conocido como <em>fire-and-forget</em>.</li>
-<li>Con confirmación: <code>w:1</code>, el cual es el modo por defecto.</li>
-<li>Con diario: <code>w:1</code>, <code>j:true</code>. Cada inserción primero se escribe en el diario y posteriormente en el directorio de datos.</li>
-<li>Con confirmación de la mayoría: <code>w: "majority"</code>, es decir, confirman la mitad + 1 de los nodos de la réplica.</li>
-</ul>
-<p>Estas opciones se indican como parámetro final en las operaciones de inserción y modificación de datos. Por ejemplo:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">pruebas</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">(</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="p">{</span><span class="nx">num</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">1002</span><span class="p">},</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="p">{</span><span class="nx">writeConcern</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">w</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;majority&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">wtimeout</span><span class="o">:</span><span class="w"> </span><span class="mf">5000</span><span class="p">}}</span><span class="w"></span>
-<span class="linenos" data-linenos="4 "></span><span class="p">)</span><span class="w"></span>
-</code></pre></div>
-<p>En resumen, a mayor cantidad de nodos, mayor es la tolerancia a fallos pero cada operación necesita más tiempo y recursos para realizar la persistencia de los datos.</p>
 <h2 id="particionado">Particionado<a class="headerlink" href="#particionado" title="Permanent link">&para;</a></h2>
 <p>Ya vimos en la primera sesión que dentro del entorno de las bases de datos, particionar consiste en dividir los datos entre múltiples máquinas. Al poner un subconjunto de los datos en cada máquina, vamos a poder almacenar más información y soportar más carga sin necesidad de máquinas más potentes, sino una mayor cantidad de máquinas más modestas (y mucho más baratas).</p>
 <p>El <em>Sharding</em> es una técnica que fragmenta los datos de la base de datos horizontalmente agrupándolos de algún modo que tenga sentido y que permita un direccionamiento más rápido.</p>
