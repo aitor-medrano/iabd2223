@@ -587,8 +587,18 @@ Para las relaciones uno a muchos:
     Sólo podemos comprobar la existencia y el tipo de los datos
     Siempre indicaremos el esquema a validar cuando creamos las colecciones
     Podemos definir expresiones de validación entre campos</p>
-<p>Para validar un docume</p>
+<p>Si tenemos un documento que provoca tener que realizar joins para recuperar unos pocos atributos, usaremos el patron:
+    Atributo
+    Referencia extendida
+    Cubo
+    Atípico</p>
 <h2 id="framework-de-agregacion-1h">Framework de agregación (1h)<a class="headerlink" href="#framework-de-agregacion-1h" title="Permanent link">&para;</a></h2>
+<p>Sobre la colección de productos trabajada en clase, trabajando con el framework de agreagación, si queremos obtener la cantidad de productos que tenemos de cada tipo, realizaremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>una fase para $group y otra para $count
+<span class="linenos" data-linenos="2 "></span>en la fase de $group hacemos $count
+<span class="linenos" data-linenos="3 "></span>en la fase de $group hacemos $sum
+<span class="linenos" data-linenos="4 "></span>una fase para $gorup y otra para $sum
+</code></pre></div>
 <p>var pipeline = [
         { $match: {
             genres: {$in: ["Romance"]}, // Romance movies only.
