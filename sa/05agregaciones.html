@@ -897,7 +897,7 @@
 </li>
 <li>
 <p>Mediante el uso del <strong>Aggregation Framework</strong>, basado en el uso de <em>pipelines</em>, el cual permite realizar diversas operaciones sobre los datos. Este framework es el mecanismo más eficiente y usable para la realización de agregaciones, y por tanto, en el que nos vamos a centrar en esta sesión.</p>
-<p>Para ello, a partir de una colección, mediante el método <code>aggregate</code> le pasaremos un array con las fases a realizar:</p>
+<p>Para ello, a partir de una colección, mediante el método <a href="https://www.mongodb.com/docs/manual/reference/method/db.collection.aggregate/"><code>aggregate</code></a> le pasaremos un array con las fases a realizar:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">productos</span><span class="p">.</span><span class="nx">aggregate</span><span class="p">([</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="p">{</span><span class="nx">$group</span><span class="o">:</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="p">{</span><span class="nx">_id</span><span class="o">:</span><span class="s2">&quot;$fabricante&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">numProductos</span><span class="o">:</span><span class="p">{</span><span class="nx">$sum</span><span class="o">:</span><span class="mf">1</span><span class="p">}}</span><span class="w"></span>
@@ -908,7 +908,7 @@
 </li>
 </ol>
 <h2 id="pipeline-de-agregacion">Pipeline de agregación<a class="headerlink" href="#pipeline-de-agregacion" title="Permanent link">&para;</a></h2>
-<p>Las agregaciones usan un pipeline, conocido como <strong><em>Aggregation Pipeline</em></strong>, de ahí el uso de un array con <code>[ ]</code> donde cada elemento es una fase del <em>pipeline</em>, de modo que la salida de una fase es la entrada de la siguiente:</p>
+<p>Las agregaciones usan un <em>pipeline</em>, conocido como <strong><em>Aggregation Pipeline</em></strong>, de ahí el uso de un array con <code>[ ]</code> donde cada elemento es una fase del <em>pipeline</em>, de modo que la salida de una fase es la entrada de la siguiente:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">coleccion</span><span class="p">.</span><span class="nx">aggregate</span><span class="p">([</span><span class="nx">op1</span><span class="p">,</span><span class="w"> </span><span class="nx">op2</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="nx">opN</span><span class="p">])</span><span class="w"></span>
 </code></pre></div>
 <div class="admonition caution">
@@ -921,7 +921,7 @@
     <figcaption>Ejemplo de pipeline con $match y $group</figcaption>
 </figure>
 
-<p>Al realizar un pipeline dividimos las consultas en fases, donde cada fase utiliza un operador para realizar una transformación. Aunque no hay límite en el número de fases en una consulta, es importante destacar que el orden importa, y que hay optimizaciones que ayudar a que el <em>pipeline</em> tenga un mejor rendimiento (por ejemplo, hacer un <code>$match</code> al principio para reducir la cantidad de datos)</p>
+<p>Al realizar un <em>pipeline</em> dividimos las consultas en fases, donde cada fase utiliza un operador para realizar una transformación. Aunque no hay límite en el número de fases en una consulta, es importante destacar que <strong>el orden importa</strong>, y que hay optimizaciones para ayudar a que el <em>pipeline</em> tenga un mejor rendimiento (por ejemplo, hacer un <code>$match</code> al principio para reducir la cantidad de datos)</p>
 <h3 id="operadores-del-pipeline">Operadores del pipeline<a class="headerlink" href="#operadores-del-pipeline" title="Permanent link">&para;</a></h3>
 <p>Antes de nada destacar que las fases se pueden repetir, por lo que una consulta puede repetir <a href="https://www.mongodb.com/docs/manual/reference/operator/aggregation/">operadores</a>.</p>
 <p>A continuación vamos a estudiar todos estos operadores:</p>
