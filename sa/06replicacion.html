@@ -1747,7 +1747,7 @@ Por ejemplo, mediante <code>sh.help()</code> obtendremos la ayuda de los método
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
-<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 1p) Se pide crear una conjunto de 4 réplicas de nombre <code>iabdrs4</code> en la cual insertaremos los datos de <a href="resources/1000cities.json">1000 ciudades</a>, los cuales deberás <a href="02mongo.html#mongodb-database-tools">importar a una base de datos</a>.</p>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 2p) Se pide crear una conjunto de 4 réplicas de nombre <code>iabdrs4</code> en la cual insertaremos los datos de <a href="resources/1000cities.json">1000 ciudades</a>, los cuales deberás <a href="02mongo.html#mongodb-database-tools">importar a una base de datos</a>.</p>
 <p>Una vez creado, se pide:</p>
 <ol>
 <li>Obtener el estado del conjunto de réplicas</li>
@@ -1758,7 +1758,18 @@ Por ejemplo, mediante <code>sh.help()</code> obtendremos la ayuda de los método
 <li>Degradar el nodo primario</li>
 <li>Averiguar cual es el nuevo nodo primario.</li>
 </ol>
-<p>Adjunta un documento con los comandos empleados y las salidas generadas.</p>
+<p>Adjunta un documento con los scripts de creación, comandos empleados y las salidas generadas.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 2p) Se pide crear un clúster de MongoDB con tres nodos y tres particiones y volver a importar las <a href="resources/1000cities.json">1000 ciudades</a>.</p>
+<p>Una vez creado, se pide:</p>
+<ol>
+<li>Particionar los datos por el nombre de la ciudad.</li>
+<li>Una vez cargado los datos, obtener el estado del <em>sharding</em>.</li>
+<li>Si los datos no están particionados, forzar el <em>split</em> de los mismos.</li>
+<li>Tras ello, vaciar la colección y volver a importar los datos. Una vez importados, obtener de nuevo el estado del sharding.</li>
+</ol>
+<p>Adjunta un documento con los scripts de creación, los comandos empleados y las salidas generadas.</p>
 </li>
 </ol>
 <!--
