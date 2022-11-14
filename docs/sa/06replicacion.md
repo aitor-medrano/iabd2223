@@ -1,6 +1,6 @@
 ---
 title: Replicación y particionado (sharding) en MongoDB.
-description: Replicación y particionado (sharding) en MongoDB.
+description: Replicación y particionado (sharding) en MongoDB. Trabajando con conjuntos de réplicas, preferencias de lectura, consistencia en la lectura y en la escritura. Particionado de los datos (sharded cluster) y elección de la shard key/clave de particionado.
 ---
 
 ## Replicación
@@ -660,7 +660,7 @@ Además, vamos a añadir un único router y un servidor de configuración (aunqu
 
 Así pues, crearemos:
 
-* un contenedor para el router (`router1`) el cual ejectua el servicio `mongos` y que va a conectar con el servidor de configuración.
+* un contenedor para el router (`router1`) el cual ejecuta el servicio `mongos` y que va a conectar con el servidor de configuración.
 * un contenedor para el servidor de configuración (`configsvr1`) indicándole mediante el parámetro `--configsvr` su propósito, así como la réplica a la que pertenece (todo servidor de configuración debe pertenecer a una réplica, aunque en nuestro caso sólo hemos creado uno)
 * dos nodos (`mongo-shard1a` y `mongo-shard1b`) para el primer shard (parámetro `--shardsvr`) que pertenecen al conjunto de réplicas `iabdshard1`.
 * dos nodos más (`mongo-shard2a` y `mongo-shard2b`) para el segundo shard (parámetro `--shardsvr`) que pertenecen al conjunto de réplicas `iabdshard2`.
