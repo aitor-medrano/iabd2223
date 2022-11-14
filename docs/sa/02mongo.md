@@ -1,6 +1,6 @@
 ---
 title: MongoDB
-description: Características de MongoDB. Instalación mediante Docker, uso de MongoAtlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos.
+description: Características de MongoDB. Instalación mediante Docker, uso de Mongo Atlas y MongoDB Compass. Consultas sencillas, con condiciones compuestas y acceso a arrays. Operaciones de modificación y borrado de documentos.
 ---
 
 *MongoDB* (<http://www.mongodb.com>) es una de las bases de datos NoSQL más conocidas. Sigue un modelo de datos documental, donde los documentos se basan en JSON.
@@ -296,7 +296,7 @@ bsondump file.bson > file.json
 !!! info
     Más información sobre copias de seguridad en <https://www.mongodb.com/docs/manual/core/backups/>.
 
-Para poder trabajar con MongoDB desde cualquier aplicación necesitamos un driver. MongoDB ofrece [drivers](https://www.mongodb.com/docs/drivers/) oficiales para casi todos los lenguajes de programación actuales. En la sesión 30 de 'MongoDB y Python' trabajaremos con [PyMongo](https://pymongo.readthedocs.io/en/stable/).
+Para poder trabajar con MongoDB desde cualquier aplicación necesitamos un driver. MongoDB ofrece [drivers](https://www.mongodb.com/docs/drivers/) oficiales para casi todos los lenguajes de programación actuales. En la sesión 28 de 'MongoDB y Python' trabajaremos con [PyMongo](https://pymongo.readthedocs.io/en/stable/).
 
 !!! tip "Monitorización"
     Tanto [`mongostat`](https://www.mongodb.com/docs/database-tools/mongostat/) como [`mongotop`](https://www.mongodb.com/docs/database-tools/mongotop/) permiten visualizar el estado del servidor MongoDB, así como algunas estadísticas sobre su rendimiento. Si trabajamos con MongoAtlas estas herramientas están integradas en las diferentes herramientas de monitorización de la plataforma.
@@ -473,7 +473,7 @@ Con este ejemplo, hemos podido observar como los documentos de una misma colecci
 
 ### Empleando JavaScript
 
-Ya hemos comentado que el *shell* utiliza *JavaScript* como lenguaje de interacción, por lo que podemos almacenar los comandos en un script externo y ejecutarlo mediante `load()`:
+Ya hemos comentado que el *shell* utiliza *JavaScript* como lenguaje de interacción, por lo que podemos almacenar los comandos en un script externo y ejecutarlo mediante [`load()`](https://www.mongodb.com/docs/mongodb-shell/reference/methods/#std-label-mongosh-native-method-load):
 
 ``` js
 load("scripts/misDatos.js");
@@ -888,7 +888,7 @@ Si queremos acceder a campos de subdocumentos, siguiendo la sintaxis de JSON, se
 
 Para acceder al autor de los comentarios de un mensaje usaríamos la propiedad `comments.author`.
 
-Por ejemplo, para averiguar los mensajes titulados 'Bill of Rights' y que tienen algún comentario creado por `Santiago Dollins` haríamos:
+Por ejemplo, para averiguar los mensajes titulados `Bill of Rights` y que tienen algún comentario creado por `Santiago Dollins` haríamos:
 
 ``` js
 db.posts.find({title: 'Bill of Rights', "comments.author":'Santiago Dollins'})
@@ -924,10 +924,12 @@ db.posts.find( {comments: {$elemMatch: { author: "Santiago Dollins", email: "xnZ
 !!! tip "Criterio con notación punto"
     En el ejemplo anterior, si sólo hubiéramos tenido un campo para el filtrado, podríamos haber utilizado la notación punto `comments.author`.
 
-Si sólo queremos los comentarios escritos por un determinado autor, en vez de en el filtrado, hemos de indicarlo en la proyección:
+Si sólo queremos los comentarios escritos por un determinado autor, además de en el filtrado, hemos de indicarlo en la proyección:
 
 ``` js
-db.posts.find( {}, {comments: {$elemMatch: { author: "Santiago Dollins", email: "xnZKyvWD@jHfVKtUh.com"}}} )
+db.posts.find(
+  {comments: {$elemMatch: { author: "Santiago Dollins", email: "xnZKyvWD@jHfVKtUh.com"}}},
+  {comments: {$elemMatch: { author: "Santiago Dollins", email: "xnZKyvWD@jHfVKtUh.com"}}} )
 ```
 
 Si lo que nos interesa es la cantidad de elementos que contiene un array, emplearemos el operador [`$size`](https://www.mongodb.com/docs/manual/reference/operator/query/size/). Por ejemplo, para obtener los mensajes que tienen 10 etiquetas haríamos:
@@ -936,7 +938,7 @@ Si lo que nos interesa es la cantidad de elementos que contiene un array, emplea
 db.posts.find( {tags : {$size : 10}} )
 ```
 
-Finalmente, a la hora de proyectar los datos, si no estamos interesados en todos los valores de un campo que es un array, podemos restringir el resultado mediante el operador [`$slice`](https://www.mongodb.com/docs/manual/reference/operator/projection/slice/). Así pues, si quisiéramos obtener las mensajes titulados `US Constitution` y que de esos mensajes, mostrar sólo tres etiquetas y dos comentarios, haríamos:
+Finalmente, a la hora de proyectar los datos, si no estamos interesados en todos los valores de un campo que es un array, podemos restringir el resultado mediante el operador [`$slice`](https://www.mongodb.com/docs/manual/reference/operator/projection/slice/). Así pues, si quisiéramos obtener los mensajes titulados `US Constitution` y que de esos mensajes, mostrara sólo tres etiquetas y dos comentarios, haríamos:
 
 ``` js hl_lines="1"
 > db.posts.find( {title : "US Constitution"}, {comments: {$slice:2}, tags: {$slice:3}} )
@@ -958,7 +960,7 @@ Finalmente, a la hora de proyectar los datos, si no estamos interesados en todos
 
 ### Conjunto de valores
 
-Igual que en SQL, a partir de un colección, si queremos obtener todos los diferentes valores que existen en un campo, utilizaremos el método distinct
+Igual que en SQL, a partir de un colección, si queremos obtener todos los diferentes valores que existen en un campo, utilizaremos el método [`distinct`](https://www.mongodb.com/docs/manual/reference/method/db.collection.distinct/):
 
 ``` js hl_lines="1"
 > db.trips.distinct('usertype')
@@ -974,7 +976,7 @@ Si queremos filtrar los datos sobre los que se obtienen los valores, le pasaremo
 
 ### Cursores
 
-Al hacer una consulta en el *shell*, se devuelve un cursor. Este cursor lo podemos guardar en un variable, y partir de ahí trabajar con él como haríamos mediante cualquier lenguaje de programación. Si `cur` es la variable que referencia al cursor, podremos utilizar los siguientes métodos:
+Al hacer una consulta en el *shell* se devuelve un cursor. Este cursor lo podemos guardar en un variable, y partir de ahí trabajar con él como haríamos mediante cualquier lenguaje de programación. Si `cur` es la variable que referencia al cursor, podremos utilizar los siguientes métodos:
 
 | Método                    | Uso                                       | Lugar de ejecución
 | -----                     | -------                                   | ------
@@ -1000,7 +1002,7 @@ También podemos filtrar previamente a ordenar y limitar:
 db.trips.find({usertype:"Customer"}).sort({"tripduration":-1}).limit(3)
 ```
 
-Finalmente, podemos paginar utilizando el método [`skip`](https://www.mongodb.com/docs/manual/reference/method/cursor.skip/), para mostrar viajes de 10 en 10 y a partir de la tercera página, podríamos hacer algo así:
+Finalmente, podemos paginar utilizando el método [`skip`](https://www.mongodb.com/docs/manual/reference/method/cursor.skip/), para mostrar viajes de 10 en 10 a partir de la tercera página, podríamos hacer algo así:
 
 ``` js
 db.trips.find({usertype:"Customer"}).sort({"tripduration":-1}).limit(10).skip(20)
@@ -1073,17 +1075,17 @@ Si quisiéramos que en el caso de no encontrar nada insertase un nuevo documento
 
 ``` js
 db.people.updateOne({nombre:"Andreu Medrano"},
-                    {name:"Andreu Medrano", twitter: "@andreumedrano"},
+                    {$set:{name:"Andreu Medrano", twitter: "@andreumedrano"}},
                     {upsert: true})
 ```
 
 ### Operadores de actualización
 
-MongoDB ofrece un conjunto de operadores para simplificar la modificación de campos.
+*MongoDB* ofrece un conjunto de operadores para simplificar la modificación de campos.
 
-El operador más utiilzar es el operador [`$set`](https://www.mongodb.com/docs/manual/reference/operator/update/set/), el cual admite los campos que se van a modificar. Si el campo no existe, lo creará.
+El operador más utilizado es el operador [`$set`](https://www.mongodb.com/docs/manual/reference/operator/update/set/), el cual admite los campos que se van a modificar. Si el campo no existe, lo creará.
 
-Por ejemplo, para modificar el salario haríamos:
+Por ejemplo, para modificar el `salario` haríamos:
 
 ``` json
 db.people.updateOne({nombre:"Aitor Medrano"}, {$set:{salario: 1000000}})
@@ -1117,7 +1119,7 @@ Otros operadores que podemos utilizar son [`$mul`](https://www.mongodb.com/docs/
 Finalmente, un caso particular de las actualizaciones es la posibilidad de renombrar un campo mediante el operador [`$rename`](https://www.mongodb.com/docs/manual/reference/operator/update/rename):
 
 ``` js
-db.people.update( {_id:1}, {$rename:{'nickname':'alias', 'cell':'movil'}})
+db.people.updateMany( {_id:1}, {$rename:{'nickname':'alias', 'cell':'movil'}})
 ```
 
 Podemos consultar todas las opciones de configuración de una actualización en <https://www.mongodb.com/docs/manual/reference/method/db.collection.update/>.
@@ -1172,9 +1174,9 @@ Los operadores que podemos emplear para trabajar con arrays son:
 Si queremos añadir uno o varios elementos, usaremos el operador [`$push`](https://www.mongodb.com/docs/manual/reference/operator/update/push/). Cuando queremos añadir varios elementos a la vez, mediante el operador [`$each`](https://www.mongodb.com/docs/manual/reference/operator/update/each/) le pasamos un array con los datos:
 
 ``` js
-db.enlaces.updateOne({titulo:"www.google.es"},
+db.enlaces.updateMany({titulo:"www.google.es"},
                      {$push: {tags:"blog"}} )
-db.enlaces.updateOne({titulo:"www.google.es"},
+db.enlaces.updateMany({titulo:"www.google.es"},
                      {$push: {tags:{$each:["calendario", "email", "mapas"]}}})
 ```
 
@@ -1189,35 +1191,35 @@ Al hacer estar modificación, el resultado del documento sería:
 Al utilizar `$push` no se tiene en cuenta lo que contiene el array, por tanto, si un elemento ya existe, se repetirá y tendremos duplicados. Si queremos evitar los duplicados, usaremos [`$addToSet`](https://www.mongodb.com/docs/manual/reference/operator/update/addToSet/):
 
 ``` js
-db.enlaces.update({titulo:"www.google.es"},
+db.enlaces.updateMany({titulo:"www.google.es"},
                   {$addToSet:{tags:"buscador"}})
 ```
 
 Si queremos añadir más de un campo a la vez sin duplicados, debemos anidar el operador `$each` igual que hemos hecho antes:
 
 ``` js
-db.enlaces.update({titulo:"www.google.es"},
+db.enlaces.updateMany({titulo:"www.google.es"},
                   {$addToSet:{tags:{$each:["drive", "traductor"]}}})
 ```
 
 En cambio, si queremos eliminar elementos de un array, usaremos el operador [`$pull`](https://www.mongodb.com/docs/manual/reference/operator/update/pull/):
 
 ``` js
-db.enlaces.update({titulo:"www.google.es"},
+db.enlaces.updateMany({titulo:"www.google.es"},
                   {$pull:{tags:"traductor"}})
 ```
 
 Similar al caso anterior, con [`$pullAll`](https://www.mongodb.com/docs/manual/reference/operator/update/pullAll/), eliminaremos varios elementos de una sola vez:
 
 ``` js
-db.enlaces.update({titulo:"www.google.es"},
+db.enlaces.updateMany({titulo:"www.google.es"},
                   {$pullAll:{tags:["calendario", "email"]}})
 ```
 
 Otra manera de eliminar elementos del array es mediante [`$pop`](https://www.mongodb.com/docs/manual/reference/operator/update/pop/), el cual elimina el primero (`-1`) o el último (`1`) elemento del array:
 
 ``` js
-db.enlaces.update({titulo:"www.google.es"}, {$pop:{tags:-1}})
+db.enlaces.updateMany({titulo:"www.google.es"}, {$pop:{tags:-1}})
 ```
 
 #### Operador posicional
@@ -1233,7 +1235,7 @@ Supongamos que tenemos las calificaciones de los estudiantes (colección `studen
 y queremos cambiar la calificación de 80 por 82. Mediante el operador posicional haremos:
 
 ``` js
-db.students.update( { _id: 1, notas: 80 }, { $set: { "notas.$" : 82 } } )
+db.students.updateOne( { _id: 1, notas: 80 }, { $set: { "notas.$" : 82 } } )
 ```
 
 De manera similar, si queremos modificar parte de un documento el cual forma parte de un array, debemos usar la notación punto tras el `$`.
@@ -1250,7 +1252,7 @@ Por ejemplo, supongamos que tenemos estas calificaciones de un determinado alumn
 Podemos observar como tenemos cada calificación como parte de un objeto dentro de un array. Si queremos cambiar el valor de `media` a `89` de la calificación cuya `nota` es `85`, haremos:
 
 ``` js
-db.students.update( { _id: 4, "notas.nota": 85 }, { $set: { "notas.$.media" : 89 } } )
+db.students.updateOne( { _id: 4, "notas.nota": 85 }, { $set: { "notas.$.media" : 89 } } )
 ```
 
 Es decir, el `$` referencia al documento que ha cumplido el filtro de búsqueda.

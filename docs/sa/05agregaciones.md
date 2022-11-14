@@ -13,7 +13,7 @@ Para poder agrupar datos y realizar cálculos sobre éstos, *MongoDB* ofrece dif
 
 4. Mediante el uso del **Aggregation Framework**, basado en el uso de *pipelines*, el cual permite realizar diversas operaciones sobre los datos. Este framework es el mecanismo más eficiente y usable para la realización de agregaciones, y por tanto, en el que nos vamos a centrar en esta sesión.
 
-    Para ello, a partir de una colección, mediante el método `aggregate` le pasaremos un array con las fases a realizar:
+    Para ello, a partir de una colección, mediante el método [`aggregate`](https://www.mongodb.com/docs/manual/reference/method/db.collection.aggregate/) le pasaremos un array con las fases a realizar:
 
     ``` js
     db.productos.aggregate([
@@ -26,7 +26,7 @@ Para poder agrupar datos y realizar cálculos sobre éstos, *MongoDB* ofrece dif
 
 ## Pipeline de agregación
 
-Las agregaciones usan un pipeline, conocido como ***Aggregation Pipeline***, de ahí el uso de un array con `[ ]` donde cada elemento es una fase del *pipeline*, de modo que la salida de una fase es la entrada de la siguiente:
+Las agregaciones usan un *pipeline*, conocido como ***Aggregation Pipeline***, de ahí el uso de un array con `[ ]` donde cada elemento es una fase del *pipeline*, de modo que la salida de una fase es la entrada de la siguiente:
 
 ``` js
 db.coleccion.aggregate([op1, op2, ... opN])
@@ -42,7 +42,7 @@ En la siguiente imagen se resumen los pasos de una agrupación donde primero se 
     <figcaption>Ejemplo de pipeline con $match y $group</figcaption>
 </figure>
 
-Al realizar un pipeline dividimos las consultas en fases, donde cada fase utiliza un operador para realizar una transformación. Aunque no hay límite en el número de fases en una consulta, es importante destacar que el orden importa, y que hay optimizaciones que ayudar a que el *pipeline* tenga un mejor rendimiento (por ejemplo, hacer un `$match` al principio para reducir la cantidad de datos)
+Al realizar un *pipeline* dividimos las consultas en fases, donde cada fase utiliza un operador para realizar una transformación. Aunque no hay límite en el número de fases en una consulta, es importante destacar que **el orden importa**, y que hay optimizaciones para ayudar a que el *pipeline* tenga un mejor rendimiento (por ejemplo, hacer un `$match` al principio para reducir la cantidad de datos)
 
 ### Operadores del pipeline
 
@@ -345,13 +345,13 @@ Por ejemplo, para obtener para cada empresa, cual es el tipo de producto que má
 
 ## $project
 
-Si queremos realizar una proyección sobre el conjunto de resultados y quedarnos con un subconjunto de los campos usaremos el operador `[`$project`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/project/). Como resultado obtendremos el mismo número de documentos, y en el orden indicado en la proyección.
+Si queremos realizar una proyección sobre el conjunto de resultados y quedarnos con un subconjunto de los campos usaremos el operador [`$project`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/project/). Como resultado obtendremos el mismo número de documentos, y en el orden indicado en la proyección.
 
 La proyección dentro del framework de agregación es mucho más potente que dentro de las consultas normales. Se emplea para:
 
 * renombrar campos.
 * introducir campos calculados en el documento resultante mediante [`$add`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/add/), [`$substract`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/subtract/), [`$multiply`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/multiply/), [`$divide`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/divide/) o [`$mod`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/mod/)
-* transformar campos a mayúsculas `$toUpper` o minúsculas `$toLower`, concatenar campos mediante `$concat` u obtener subcadenas con `$substr`.
+* transformar campos a mayúsculas [`$toUpper`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/toUpper/) o minúsculas [`$toLower`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/toLower/), concatenar campos mediante [`$concat`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/concat/) u obtener subcadenas con [`$substr`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/substr/).
 * transformar campos en base a valores obtenidos a partir de una condición mediante expresiones lógicas con los operadores de comparación vistos en las consultas.
 
 ``` js
@@ -395,7 +395,7 @@ db.productos.aggregate([{$match:{categoria:"Tablets"}}])
 
 Aparte de igualar un valor a un campo, podemos emplear los operadores usuales de consulta, como `$gt`, `$lt`, `$in`, etc…​
 
-Se recomienda poner el operador `match` al principio del pipeline para limitar los documentos a procesar en siguientes fases. Si usamos este operador como primera fase podremos hacer uso de los indices de la colección de una manera eficiente.
+Se recomienda poner el operador `$match` al principio del *pipeline* para limitar los documentos a procesar en siguientes fases. Si usamos este operador como primera fase podremos hacer uso de los indices de la colección de una manera eficiente.
 
 Así pues, para obtener la cantidad de Tablets de menos de 500 euros haríamos:
 
@@ -417,7 +417,7 @@ Así pues, para obtener la cantidad de Tablets de menos de 500 euros haríamos:
 
 ## $sort
 
-El operador [`$sort`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sort/) ordena los documentos recibidos por el campo, y el orden indicado por la expresión indicada al pipeline.
+El operador [`$sort`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sort/) ordena los documentos recibidos por el campo, y el orden indicado por la expresión indicada al *pipeline*.
 
 Por ejemplo, para ordenar los productos por precio descendentemente haríamos:
 
@@ -425,7 +425,7 @@ Por ejemplo, para ordenar los productos por precio descendentemente haríamos:
 db.productos.aggregate({$sort:{precio:-1}})
 ```
 
-El operador `$sort` ordena los datos en memoria, por lo que hay que tener cuidado con el tamaño de los datos. Por ello, se emplea en las últimas fases del pipeline, cuando el conjunto de resultados es el menor posible.
+El operador `$sort` ordena los datos en memoria, por lo que hay que tener cuidado con el tamaño de los datos. Por ello, se emplea en las últimas fases del *pipeline*, cuando el conjunto de resultados es el menor posible.
 
 Si retomamos el ejemplo anterior, y ordenamos los datos por el precio total tenemos:
 
@@ -446,7 +446,43 @@ Si retomamos el ejemplo anterior, y ordenamos los datos por el precio total tene
 
 1. Al ordenar los datos, referenciamos al campo que hemos creado en la fase de $group
 
-FIXME: sortByCount
+Un operador muy relacionado es [`$sortByCount`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sortByCount/). Este operador es similar a realizar las siguientes operaciones:
+
+``` json
+{ $group: { _id: <expresion>, cantidad: { $sum: 1 } } },
+{ $sort: { cantidad: -1 } }
+```
+
+Así pues, podemos reescribir la consulta que hemos hecho en el operador `$group`:
+
+``` js
+db.productos.aggregate([
+  { $group: {
+      _id: "$fabricante",
+      total: { $sum:1 }
+    }
+  },
+  {$sort: {"total": -1}}
+])
+```
+
+Y hacerla con:
+
+=== "Consulta"
+
+    ``` js
+    db.productos.aggregate([{ $sortByCount: "$fabricante"}])
+    ```
+
+=== "Resultado"
+
+    ``` json
+    { _id: 'Apple', count: 4 }
+    { _id: 'Samsung', count: 2 }
+    { _id: 'Amazon', count: 2 }
+    { _id: 'Sony', count: 1 }
+    { _id: 'Google', count: 1 }
+    ```
 
 ## $skip y $limit
 
@@ -499,7 +535,7 @@ En cambio, si primero limitamos y luego saltamos, la cantidad de elementos se ob
 ```
 
 !!! info "$sample"
-    Si tenemos un dataset muy grande, y queremos probar las consultas con un número reducido de documentos, podemos emplear el operador [`$sample`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sample/) y reducir la cantidad de documentos de manera aleatoria:
+    Si tenemos un *dataset* muy grande, y queremos probar las consultas con un número reducido de documentos, podemos emplear el operador [`$sample`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/sample/) y reducir la cantidad de documentos de manera aleatoria:
 
     ``` js
     db.productos.aggregate([ { $sample: { size: 3 } } ])
@@ -507,9 +543,9 @@ En cambio, si primero limitamos y luego saltamos, la cantidad de elementos se ob
 
 ## $unwind
 
-El operador [`$unwind`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/unwind/) es muy interesante y se utiliza solo con operadores array. Al usarlo con un campo array de tamaño N en un documento, lo transforma en N documentos con el campo tomando el valor individual de cada uno de los elementos del array.
+El operador [`$unwind`](https://www.mongodb.com/docs/manual/reference/operator/aggregation/unwind/) es muy interesante y se utiliza sólo con operadores array. Al usarlo con un campo array de tamaño N en un documento, lo transforma en N documentos con el campo tomando el valor individual de cada uno de los elementos del array.
 
-Si retomamos el ejemplo de la sesión donde actualizábamos una colección de enlaces, teníamos un enlace con la siguiente información:
+Si retomamos el ejemplo de la sesión anterior donde actualizábamos una colección de enlaces, teníamos un enlace con la siguiente información:
 
 ``` js
 > db.enlaces.findOne()
@@ -561,7 +597,7 @@ De este modo, podemos realizar consultas que sumen/cuenten los elementos del arr
 
 ### Doble $unwind
 
-Si trabajamos con documentos que tienen varios arrays, podemos necesitar desenrollar los dos array. Al hacer un doble unwind se crea un producto cartesiano entre los elementos de los 2 arrays.
+Si trabajamos con documentos que tienen varios arrays, podemos necesitar desenrollar los dos arrays. Al hacer un doble *unwind* se crea un producto cartesiano entre los elementos de los 2 arrays.
 
 Supongamos que tenemos los datos del siguiente inventario de ropa:
 
@@ -914,54 +950,52 @@ Una vez tenemos nuestra agregación, podemos obtener una versión del *pipeline*
 
 Para las siguientes actividades, vamos a utilizar la base de datos `sample_mflix`, y en concreto, las colecciones `movies` . Un documento de ejemplo sería similar a:
 
-=== "movies"
+``` json title="movies.json"
+{ _id: ObjectId("573a1390f29313caabcd548c"),
+plot: 'The Civil War divides ...',
+genres: [ 'Drama', 'History', 'Romance' ],
+runtime: 165,
+rated: 'NOT RATED',
+cast: 
+[ 'Lillian Gish',
+  'Mae Marsh',
+  'Henry B. Walthall',
+  'Miriam Cooper' ],
+poster: 'https://m.media-amazon.com/images/M/MV5BYTM4ZDhiYTQtYzExNC00YjVlLTg2YWYtYTk3NTAzMzcwNTExXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SY1000_SX677_AL_.jpg',
+title: 'The Birth of a Nation',
+fullplot: 'Two brothers...',
+countries: [ 'USA' ],
+released: 1915-03-03T00:00:00.000Z,
+directors: [ 'D.W. Griffith' ],
+writers: 
+[ 'Thomas Dixon Jr. (adapted from ...")',
+  'Thomas Dixon Jr. (play)',
+  'Thomas Dixon Jr. (novel)',
+  'D.W. Griffith',
+  'Frank E. Woods' ],
+awards: { wins: 2, nominations: 0, text: '2 wins.' },
+lastupdated: '2015-09-11 00:32:27.763000000',
+year: 1915,
+imdb: { rating: 6.8, votes: 15715, id: 4972 },
+type: 'movie',
+tomatoes: 
+{ viewer: { rating: 3.2, numReviews: 4358, meter: 57 },
+  dvd: 2004-06-29T00:00:00.000Z,
+  critic: { rating: 8, numReviews: 38, meter: 100 },
+  lastUpdated: 2015-09-10T18:30:23.000Z,
+  consensus: 'Racial depictions aside...',
+  rotten: 0,
+  production: 'Gravitas',
+  fresh: 38 },
+num_mflix_comments: 0 }
+```
 
-    ``` json
-    { _id: ObjectId("573a1390f29313caabcd548c"),
-      plot: 'The Civil War divides ...',
-      genres: [ 'Drama', 'History', 'Romance' ],
-      runtime: 165,
-      rated: 'NOT RATED',
-      cast: 
-      [ 'Lillian Gish',
-        'Mae Marsh',
-        'Henry B. Walthall',
-        'Miriam Cooper' ],
-      poster: 'https://m.media-amazon.com/images/M/MV5BYTM4ZDhiYTQtYzExNC00YjVlLTg2YWYtYTk3NTAzMzcwNTExXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SY1000_SX677_AL_.jpg',
-      title: 'The Birth of a Nation',
-      fullplot: 'Two brothers...',
-      countries: [ 'USA' ],
-      released: 1915-03-03T00:00:00.000Z,
-      directors: [ 'D.W. Griffith' ],
-      writers: 
-      [ 'Thomas Dixon Jr. (adapted from ...")',
-        'Thomas Dixon Jr. (play)',
-        'Thomas Dixon Jr. (novel)',
-        'D.W. Griffith',
-        'Frank E. Woods' ],
-      awards: { wins: 2, nominations: 0, text: '2 wins.' },
-      lastupdated: '2015-09-11 00:32:27.763000000',
-      year: 1915,
-      imdb: { rating: 6.8, votes: 15715, id: 4972 },
-      type: 'movie',
-      tomatoes: 
-      { viewer: { rating: 3.2, numReviews: 4358, meter: 57 },
-        dvd: 2004-06-29T00:00:00.000Z,
-        critic: { rating: 8, numReviews: 38, meter: 100 },
-        lastUpdated: 2015-09-10T18:30:23.000Z,
-        consensus: 'Racial depictions aside...',
-        rotten: 0,
-        production: 'Gravitas',
-        fresh: 38 },
-      num_mflix_comments: 0 }
-    ```
+1. (RA5075.1 / CE5.1d / 3p) Haciendo uso del framework de agregación y el shell de MongoDB, resuelve las siguientes consultas:
 
-1. (RA5075.1 / CE5.1d / 2p) Haciendo uso del framework de agregación y el shell de MongoDB, resuelve las siguientes consultas:
-
-    1. (0.25) Encuentra todas las películas que entre sus géneros (`genres`) se encuentre el `Drama`. Sólo queremos recuperar el título y la calificación (`rating`) de IMDB.
-    2. (0.25) Recupera los títulos de las tres películas románticas (`Romance`) con mayor calificación en IMDB que se lanzaron (`released`) antes del 2001.
-    3. (0.25) Averigua la cantidad de películas que hay de cada categoría de calificación (`rated`).
-    4. (0.25) Teniendo en cuenta las películas anteriores al año 2001, para cada género, recupera la media y la máxima calificación en IMDB así como el tiempo ajustado (con *trailers*, los cuales duran 12 minutos) de la película más larga, ordenando los géneros por popularidad.
+    1. (0.5) Encuentra todas las películas que entre sus géneros (`genres`) se encuentre el `Drama`. Sólo queremos recuperar el título y la calificación (`rating`) de IMDB.
+    2. (0.5) Recupera los títulos de las tres películas románticas (`Romance`) con mayor calificación en IMDB que se lanzaron (`released`) antes del 2001.
+    3. (0.5) Averigua la cantidad de películas que hay de cada categoría de calificación (`rated`).
+    4. (0.5) Teniendo en cuenta las películas anteriores al año 2001, para cada género, recupera la media y la máxima calificación en IMDB así como el tiempo ajustado (con *trailers*, los cuales duran 12 minutos) de la película más larga, ordenando los géneros por popularidad.
 
         El resultado será similar a:
 
@@ -1012,7 +1046,7 @@ Para las siguientes actividades, vamos a utilizar la base de datos `sample_mflix
             movie: { imdb: { rating: 6.4 }, title: 'The Taking of Pelham 1 2 3' } }
         ```
 
-2. (RA5075.1 / CE5.1d / 0.5p) Haciendo uso de MongoDBCompass, mejora la siguiente consulta que obtiene los tres documentales más premiados, siempre y cuando hayan ganado algún premio:
+2. (RA5075.1 / CE5.1d / 1p) Haciendo uso de *MongoDBCompass*, mejora la siguiente consulta que obtiene los tres documentales más premiados, siempre y cuando hayan ganado algún premio:
 
     ``` js
     var pipeline = [

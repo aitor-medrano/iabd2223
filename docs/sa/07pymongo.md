@@ -3,8 +3,6 @@ title: PyMongo
 description: Acceso a MongoDB desde Python mediante la librería PyMongo
 ---
 
-# PyMongo
-
 Para acceder a MongoDB desde Python nos vamos a centrar en la librería [PyMongo](https://pypi.org/project/pymongo/).
 
 Para instalar la librería mediante `pip` usaremos el comando (recuerda hacerlo dentro de un entorno virtual):
@@ -16,114 +14,43 @@ pip install pymongo
 Se recomienda consultar la [documentación](https://pymongo.readthedocs.io/en/stable/) o el [API](https://pymongo.readthedocs.io/en/stable/api/index.html) para cualquier duda o aclaración.
 
 !!! info "Versión"
-    En el momento de escribir los apuntes, estamos utilizando la versión 4.2.0 de PyMongo.
+    En el momento de escribir los apuntes, estamos utilizando la versión 4.3.2 de PyMongo.
 
-
-FIXME: Preferencia de lectura y escritura
-
-## MFlix
-
-<https://s3.amazonaws.com/edu-downloads.10gen.com/M220P/2022/July/static/handouts/m220/mflix-python.zip>
-
-### Estructura del proyecto
-
-verything you will implement is located in the mflix/db.py file, which contains all database interfacing methods. The API will make calls to db.py to interact with MongoDB.
-
-The unit tests in tests will test these database access methods directly, without going through the API. The UI will run these methods in integration tests, and therefore requires the full application to be running.
-
-The API layer is fully implemented, as is the UI. If you need to run on a port other than 5000, you can edit the index.html file in the build directory to modify the value of window.host.
-
-Please do not modify the API layer in any way, movies.py and user.py under the mflix/api directory. Doing so will most likely result in the frontend application failing to validate some of the labs.
-
-### Preparando el entorno
-
-Descargamos y descomprimimos el archivo
-Dentro de la carpeta, vamos a crear un entorno virtual con venv:
-
-``` bash
-virtualenv mflix_venv
-```
-
-A continuación, lo activamos:
-
-``` bash
-source mflix_venv/bin/activate
-```
-
-E instalamos los requisitos:
-
-``` bash
-pip install -r requirements.txt
-```
-
-Running the Application
-
-In the mflix-python directory you can find a file called dotini.
-
-Open this file and enter your Atlas SRV connection string as directed in the comment. This is the information the driver will use to connect. Make sure not to wrap your Atlas SRV connection between quotes:
-
-COPY
-MFLIX_DB_URI = mongodb+srv://...
-Rename this file to .ini with the following command:
-
-COPY
-mv dotini_unix .ini  # on Unix
-ren dotini_win .ini # on Windows
-Note: Once you rename this file to .ini, it will no longer be visible in Finder or File Explorer. However, it will be visible from Command Prompt or Terminal, so if you need to edit it again, you can open it from there:
-
-COPY
-vi .ini       # on Unix
-notepad .ini  # on Windows
-
-### Arrancando y Probando
-
-Para arrancar la aplicación ejecutaremos el script `run.py`:
-
-``` bash
-python run.py
-```
-
-Al ejecutar el script, arrancará la aplicación y podremos acceder a ella a través de <http://127.0.0.1:5000/>.
-
-PANTALLAZO
-
-Si queremos ejecutar los test:
-
-Running the Unit Tests
-
-To run the unit tests for this course, you will use pytest and needs to be run from mflix-python directory. Each course lab contains a module of unit tests that you can call individually with a command like the following:
-
-COPY
-pytest -m LAB_UNIT_TEST_NAME
-Each ticket will contain the command to run that ticket's specific unit tests. For example to run the Connection Ticket test your shell command will be:
-
-COPY
-pytest -m connection
+## Hola PyMongo
 
 Un ejemplo básico podría ser similar a:
 
 ``` python
-client = MongoClient('mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false')
-filter = {
-    'age': {
-        '$lt': 30
-    }
-}
-test_db = client.test
-people_coll = test_db.people
-result = people_coll.find(
-  filter = filter
-)
-````
+from pymongo import MongoClient
+
+cliente = MongoClient('mongodb://localhost:27017')
+iabd_db = cliente.iabd
+
+# Recuperamos las colecciones
+print(iabd_db.list_collection_names())
+
+people_coll = iabd_db.people
+
+# Recuperamos una persona
+persona = people_coll.find_one()
+print(persona)
+```
 
 ## MongoClient
 
-A partir de la URI de conexión a MongoDB, hemos de instanciar la clase [`MongoClient`](https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient):
+A partir de la URI de conexión a MongoDB, hemos de instanciar la clase [`MongoClient`](https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html), ya sea pasándole una URI con la cadena de conexión, o mediante parámetros:
 
 ```  python
 uri = "mongodb+srv://usuario:contrasenya@host"
 cliente = MongoCliente(uri)
 ```
+
+!!! info "Parámetros adicionales"
+    A la hora de crear el cliente, también podemos indicarle opciones de configuración:
+
+    ``` python
+    cliente200Retry = MongoClient(uri, connectTimeoutMS=200, retryWrites=True)
+    ```
 
 Podemos obtener información de la conexión mediante la propiedad `state`:
 
@@ -131,20 +58,24 @@ Podemos obtener información de la conexión mediante la propiedad `state`:
 print(cliente.state)
 ```
 
-Por ejemplo, en nuestro caso, nos hemos conectado a MongoAtlas y de la salida del estado podemos ver los diferentes *hosts* que forman parte del conjunto de réplicas:
+Por ejemplo, en nuestro caso, nos hemos conectado a *MongoAtlas* y de la salida del estado podemos ver los diferentes *hosts* que forman parte del conjunto de réplicas:
 
 ``` js
-Database(MongoClient(host=['ac-hrdpnx0-shard-00-02.4hm7u8y.mongodb.net:27017', 'ac-hrdpnx0-shard-00-01.4hm7u8y.mongodb.net:27017', 'ac-hrdpnx0-shard-00-00.4hm7u8y.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, authsource='admin', replicaset='atlas-pxc2m9-shard-0', ssl=True, connecttimeoutms=200, retrywrites=True), 'stats')
+cliente = MongoClient('mongodb+srv://iabd:iabdiabd@cluster0.dfaz5er.mongodb.net/')
+print(cliente.state)
+
+Database(MongoClient(host=['ac-opunia9-shard-00-01.dfaz5er.mongodb.net:27017', 'ac-opunia9-shard-00-02.dfaz5er.mongodb.net:27017', 'ac-opunia9-shard-00-00.dfaz5er.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, authsource='admin', replicaset='atlas-4wikkb-shard-0', tls=True), 'state')
+Database(MongoClient(host=['localhost:27017'], document_class=dict, tz_aware=False, connect=True), 'state')
 ```
 
-!!! info "Parámetros adicionales"
-    A la hora de crear el cliente, también podemos indicarle opciones de configuración:
+!!! tip "Conexión a un réplica"
+    Si nos queremos conectar a un conjunto de réplicas e indicar los nodos a los que nos podemos conectar, podemos separar los *hosts* con comas e indicar finalmente con un parámetro el nombre del conjunto de réplicas:
 
-    ``` 
-    cliente200Retry = MongoClient(uri, connectTimeoutMS=200, retryWrites=True)
+    ``` python
+    client = MongoClient('mongodb://usuario1:contra1@host1:puerto1,host2:puerto2/?replicaSet=nombreReplica')
     ```
 
-También podemos obtener un listado de las bases de datos mediante [`list_database_names()`](https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.list_database_names):
+A partir del cliente, podemos obtener información diversa. Por ejemplo, podemos recuperar un listado de las bases de datos mediante [`list_database_names()`](https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.list_database_names):
 
 ``` python
 print(cliente.list_database_names())
@@ -168,12 +99,24 @@ coleccion = bd.movies
 coleccion = bd["movies'] 
 ```
 
-Si queremos obtener el nombre de todas las colecciones usaremos el método `list_collection_names()`:
+Si queremos obtener el nombre de todas las colecciones usaremos el método [`list_collection_names()`](https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.list_collection_names):
 
 ``` python
 print(bd.list_collection_names())
-# ['sessions', 'theaters', 'movies', 'comments', 'users']
+['users', 'movies', 'sessions', 'theaters', 'comments']
 ```
+
+!!! caution "Tolerancia a fallos!"
+
+    Al crear una conexión, conviene especificar el tamaño del *pool* y el *timeout* de las conexiones:
+
+    ``` python
+    db = MongoClient(URI, maxPoolSize=50, wtimeout=2500)[nombreBD]
+    ```
+
+    Se recomienda siempre especificar un `wtimeout`, ya que cuando se realiza una escritura con mayoría de escrituras, si fallase algún nodo no se quedaría colgado esperando.
+
+    Si no encontrase el servidor, lanzará un [`ServerSelectionTimeoutError`](https://pymongo.readthedocs.io/en/stable/api/pymongo/errors.html#pymongo.errors.ServerSelectionTimeoutError) el cual deberíamos capturar.
 
 ## Primeras consultas
 
@@ -184,44 +127,264 @@ movies = bd.movies
 movies.count_documents({})
 # 23530
 movies.find_one()
+# {'_id': ObjectId('573a1390f29313caabcd4135'), 'plot': 'Three men hammer on an anvil and pass a bottle of beer around.', 'genres': ['Short'], 'runtime': 1, 'cast': ['Charles Kayser', 'John Ott'], 'num_mflix_comments': 1, 'title': 'Blacksmith Scene', 'fullplot': 'A stationary ...', 'countries': ['USA'], 'released': datetime.datetime(1893, 5, 9, 0, 0), 'directors': ['William K.L. Dickson'], 'rated': 'UNRATED', 'awards': {'wins': 1, 'nominations': 0, 'text': '1 win.'}, 'lastupdated': '2015-08-26 00:03:50.133000000', 'year': 1893, 'imdb': {'rating': 6.2, 'votes': 1189, 'id': 5}, 'type': 'movie', 'tomatoes': {'viewer': {'rating': 3.0, 'numReviews': 184, 'meter': 32}, 'lastUpdated': datetime.datetime(2015, 6, 28, 18, 34, 9)}}
 ```
 
-Por ejemplo, podemos filtrar las películas de Salma Hayek:
+Por ejemplo, podemos filtrar las películas cuya actriz sea `Salma Hayek`. Al realizar la consulta, [`find`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.find) devuelve un [`cursor`](https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html#pymongo.cursor.Cursor), el cual podemos recorrer:
+
+=== "Consulta"
+
+    ``` python
+    cursor = movies.find( { "cast": "Salma Hayek" } )
+    for zip in cursor:
+        print(zip)
+    ```
+
+=== "Resultado"
+
+    ``` json
+    {
+        '_id': ObjectId('573a1399f29313caabceea6d'),
+        'awards': {'nominations': 1, 'text': '1 nomination.', 'wins': 0},
+        'cast': ['David Arquette', 'John Hawkes', 'Salma Hayek', 'Jason Wiles'],
+        'countries': ['USA'],
+        ...
+        'writers': ['Robert Rodriguez', 'Tommy Nix'],
+        'year': 1994
+    }
+    {'_id': ObjectId('573a139af29313caabcef0b6'),
+        'awards': {'nominations': 14, 'text': '27 wins & 14 nominations.', 'wins': 27},
+        'cast': ['Ernesto Gèmez Cruz', 'Marèa Rojo', 'Salma Hayek', 'Bruno Bichir'],
+        'countries': ['Mexico'],
+        ...
+    }
+    ```
+
+Si queremos contar los documentos que cumplen un criterio, en vez de `find`, usaremos [`count_documents`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.count_documents) pasándole el criterio de filtrado:
 
 ``` python
-movies.find( { "cast": "Salma Hayek" } )
+cantidad = movies.count_documents( { "cast": "Salma Hayek" } )
 ```
 
-``` python
-# return the count of movies with "Salma Hayek" in the "cast"
-movies.find( { "cast": "Salma Hayek" } ).count()
-```
+Para seleccionar los campos que queremos recuperar, necesitamos pasar un segundo parámetro con la proyección:
 
-Para mostrar los documentos BSON, vamos a utilizar la función `dumps` que transforma el documento a JSON:
+=== "Consulta"
 
-``` python
-# find all movies with Salma Hayek
-# then pretty print
-cursor = movies.find( { "cast": "Salma Hayek" } )
-from bson.json_util import dumps
-print(dumps(cursor, indent=2))
-```
+    ``` python
+    cursor = movies.find( { "cast": "Salma Hayek" }, { "title": 1, "cast": 1} )
+    for zip in cursor:
+        print(zip)
+    ```
 
-``` python
-# find all movies with Salma Hayek, but only project the "_id" and "title" fields
-cursor = movies.find( { "cast": "Salma Hayek" }, { "title": 1 } )
-print(dumps(cursor, indent=2))
-```
+=== "Resultado"
 
-``` python
-# find all movies with Salma Hayek, but only project the "title" field
-cursor = movies.find( { "cast": "Salma Hayek" }, { "title": 1, "_id": 0 } )
-print(dumps(cursor, indent=2))
-```
+    ``` js
+    {'_id': ObjectId('573a1399f29313caabceea6d'), 'cast': ['David Arquette', 'John Hawkes', 'Salma Hayek', 'Jason Wiles'], 'title': 'Roadracers'}
+    {'_id': ObjectId('573a139af29313caabcef0b6'), 'cast': ['Ernesto Gèmez Cruz', 'Marèa Rojo', 'Salma Hayek', 'Bruno Bichir'], 'title': 'Midaq Alley'}
+    ...
+    ```
+
+Como ya vimos al hacer consultas en sesiones anterior, si no queremos el campo `_id`, tenemos que indicarlo:
+
+=== "Consulta"
+
+    ``` python
+    cursor = movies.find( { "cast": "Salma Hayek" }, { "title": 1, "cast": 1, "_id": 0} )
+    for zip in cursor:
+        print(zip)
+    ```
+
+=== "Resultado"
+
+    ``` js
+    {'cast': ['David Arquette', 'John Hawkes', 'Salma Hayek', 'Jason Wiles'], 'title': 'Roadracers'}
+    {'cast': ['Ernesto Gèmez Cruz', 'Marèa Rojo', 'Salma Hayek', 'Bruno Bichir'], 'title': 'Midaq Alley'}
+    {'title': 'Desperado', 'cast': ['Antonio Banderas', 'Salma Hayek', 'Joaquim de Almeida', 'Cheech Marin']}
+    ...
+    ```
+
+!!! tip "BSON"
+
+    Cuando necesitemos pasar los documentos BSON a JSON, utilizaremos la función `dumps` que transforma el documento a JSON:
+
+    ``` python
+    cursor = movies.find( { "cast": "Salma Hayek" } )
+
+    from bson.json_util import dumps
+
+    print(dumps(cursor, indent=2))
+    """
+    [
+        {
+            "_id": {
+            "$oid": "573a1399f29313caabceea6d"
+        },
+        "plot": "Cynical look at a 50's rebellious Rocker who has to confront his future, thugs with knives, and the crooked town sheriff.",
+        "genres": [
+            "Action",
+            "Drama"
+        ],
+        "runtime": 95,
+        "rated": "R",
+        "cast": [
+            "David Arquette",
+            "John Hawkes",
+            "Salma Hayek",
+            "Jason Wiles"
+            ],
+        ...
+    """
+    ```
+
+## Agregaciones
+
+Para realizar consultas mediante el *framework* de agregación, usaremos el método [`aggregate`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.aggregate),  el cual recibe un array con el pipeline:
+
+Por ejemplo, vamos a recuperar el título y el casting de las películas dirigidas por `Sam Raimi`:
+
+=== "Consulta"
+
+    ``` python hl_lines="9"
+    match_stage = { "$match": { "directors": "Sam Raimi" } }
+    project_stage = { "$project": { "_id": 0, "title": 1, "cast": 1 } }
+
+    pipeline = [
+        match_stage,
+        project_stage
+    ]
+
+    sam_raimi_aggregation = movies.aggregate(pipeline)
+    for movie in sam_raimi_aggregation:
+        pprint.pprint(movie)
+    ```
+
+=== "Resultados"
+
+    ``` json
+    {'cast': ['Bruce Campbell',
+            'Ellen Sandweiss',
+            'Richard DeManincor',
+            'Betsy Baker'],
+    'title': 'The Evil Dead'}
+    {'cast': ['Bruce Campbell',
+            'Sarah Berry',
+            'Dan Hicks',
+            'Kassie Wesley DePaiva'],
+    'title': 'Evil Dead II'}
+    {'cast': ['Liam Neeson', 'Frances McDormand', 'Colin Friels', 'Larry Drake'],
+    'title': 'Darkman'}
+    ```
+
+Otro ejemplo, donde recuperamos los directores y la valoración media de sus películas, ordenadas de mejor a peor:
+
+=== "Consulta"
+
+    ``` python hl_lines="21"
+    unwind_stage = { "$unwind": "$directors" }
+    group_stage = {
+        "$group": {
+            "_id": {
+                "director": "$directors"
+            },
+            "average_rating": { "$avg": "$imdb.rating" }
+        }
+    }
+    sort_stage = {
+        "$sort": { "average_rating": -1 }
+    }
+
+    # Creamos un pipeline con las tres fases
+    pipeline = [
+        unwind_stage,
+        group_stage,
+        sort_stage
+    ]
+
+    director_ratings = movies.aggregate(pipeline)
+
+    for director in director_ratings:
+        pprint.pprint(director)
+    ```
+
+=== "Resultado"
+
+    ``` json
+    {'_id': {'director': 'Sara Hirsh Bordo'}, 'average_rating': 9.4}
+    {'_id': {'director': 'Kevin Derek'}, 'average_rating': 9.3}
+    {'_id': {'director': 'Michael Benson'}, 'average_rating': 9.0}
+    {'_id': {'director': 'Slobodan Sijan'}, 'average_rating': 8.95}
+    {'_id': {'director': "Bozidar 'Bota' Nikolic"}, 'average_rating': 8.9}
+    ...
+    ```
+
+O realizamos un *join* entre las películas y sus comentarios para recuperar una película por su identificador:
+
+=== "Consulta"
+
+    ``` python
+    from bson.objectid import ObjectId
+
+    peliculaId = "573a13aef29313caabd2c349"
+
+    pipeline = [
+        {
+            "$match": {
+                "_id": ObjectId(peliculaId)
+            }
+        }, {
+            "$lookup": {
+                "from": "comments",
+                "localField": "_id",
+                "foreignField": "movie_id",
+                "as": 'comentarios'
+            }
+        }
+    ]
+
+    peliculaConComentarios = movies.aggregate(pipeline).next()
+    pprint.pprint(peliculaConComentarios)
+    ```
+
+=== "Resultado"
+
+    ``` json hl_lines="6"
+    {'_id': ObjectId('573a13aef29313caabd2c349'),
+    'awards': {'nominations': 48,
+                'text': 'Nominated for 1 Oscar. Another 21 wins & 48 nominations.',
+                'wins': 22},
+    'cast': ['Christian Bale', 'Michael Caine', 'Liam Neeson', 'Katie Holmes'],
+    'comentarios': [{'_id': ObjectId('5a9427658b0beebeb696f672'),
+                    'date': datetime.datetime(1972, 3, 2, 15, 58, 41),
+                    'email': 'donald_sumpter@gameofthron.es',
+                    'movie_id': ObjectId('573a13aef29313caabd2c349'),
+                    'name': 'Maester Luwin',
+                    'text': 'Atque ...'}],
+    'countries': ['USA', 'UK'],
+    'directors': ['Christopher Nolan'],
+    'fullplot': 'When ...",
+    'genres': ['Action', 'Adventure'],
+    'imdb': {'id': 372784, 'rating': 8.3, 'votes': 860733},
+    'languages': ['English', 'Urdu', 'Mandarin'],
+    'lastupdated': datetime.datetime(2015, 8, 31, 0, 1, 54, 590000),
+    'metacritic': 70,
+    'num_mflix_comments': 1,
+    'plot': 'After training ....',
+    'poster': 'https://m.media-amazon.com/images/M/MV5BZmUwNGU2ZmItMmRiNC00MjhlLTg5YWUtODMyNzkxODYzMmZlXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_SY1000_SX677_AL_.jpg',
+    'rated': 'PG-13',
+    'released': datetime.datetime(2005, 6, 15, 0, 0),
+    'runtime': 140,
+    'title': 'Batman Begins',
+    'type': 'movie',
+    'writers': ['Bob Kane (characters)',
+                'David S. Goyer (story)',
+                'Christopher Nolan (screenplay)',
+                'David S. Goyer (screenplay)'],
+    'year': 2005}
+    ```
 
 ## Trabajando con cursores
 
-A continuación vamos a realizar algunas operaciones sobre los [cursores](https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html) con PyMongo y a comparar a cómo podemos realizar la misma operación mediante el motor de agregaciones.
+A continuación vamos a realizar algunas operaciones sobre los [cursores](https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html) con *PyMongo* y a comparar a cómo podemos realizar la misma operación mediante el motor de agregaciones.
 
 ### Limitando
 
@@ -235,7 +398,8 @@ Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante 
         { "_id": 0, "title": 1, "cast": 1 }
     ).limit(2)
 
-    print(dumps(limited_cursor, indent=2))
+    for movie in limited_cursor:
+        print(movie)
     ```
 
 === "Agregación"
@@ -249,7 +413,8 @@ Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante 
 
     limited_aggregation = movies.aggregate( pipeline )
 
-    print(dumps(limited_aggregation, indent=2))
+    for movie in limited_aggregation:
+        print(movie)
     ```
 
 === "Salida"
@@ -291,7 +456,8 @@ Para ordenar usaremos el método `.sort()` que además de los campos de ordenaci
         { "_id": 0, "year": 1, "title": 1, "cast": 1 }
     ).sort("year", ASCENDING)
 
-    print(dumps(sorted_cursor, indent=2))
+    for movie in sorted_cursor:
+        print(movie)
     ```
 
 === "Agregación"
@@ -305,7 +471,8 @@ Para ordenar usaremos el método `.sort()` que además de los campos de ordenaci
 
     sorted_aggregation = movies.aggregate( pipeline )
 
-    print(dumps(sorted_aggregation, indent=2))
+    for movie in sorted_aggregation:
+        print(movie)
     ```
 
 === "Salida"
@@ -349,7 +516,8 @@ En el caso de tener una clave compuesta de ordenación, le pasaremos como parám
         { "_id": 0, "year": 1, "title": 1, "cast": 1 }
     ).sort([("year", ASCENDING), ("title", ASCENDING)])
 
-    print(dumps(sorted_cursor, indent=2))
+    for movie in sorted_cursor:
+        print(movie)
     ```
 
 === "Agregación"
@@ -363,7 +531,8 @@ En el caso de tener una clave compuesta de ordenación, le pasaremos como parám
 
     sorted_aggregation = movies.aggregate( pipeline )
 
-    print(dumps(sorted_aggregation, indent=2))
+    for movie in sorted_aggregation:
+        print(movie)
     ```
 
 === "Salida"
@@ -427,6 +596,9 @@ Por ejemplo, la siguiente consulta devuelve 13 documentos, de manera que al salt
         { "directors": "Sam Raimi" },
         { "_id": 0, "title": 1, "year": 1, "cast": 1 } 
     ).sort("year", ASCENDING).skip(12)
+
+    for movie in skipped_sorted_cursor:
+        print(movie)
     ```
 
 === "Agregación"
@@ -441,7 +613,8 @@ Por ejemplo, la siguiente consulta devuelve 13 documentos, de manera que al salt
 
     sorted_skipped_aggregation = movies.aggregate( pipeline )
 
-    print(dumps(sorted_skipped_aggregation, indent=2))
+    for movie in sorted_skipped_aggregation:
+        print(movie)
     ```
 
 === "Salida"
@@ -461,58 +634,143 @@ Por ejemplo, la siguiente consulta devuelve 13 documentos, de manera que al salt
     ]
     ```
 
-## Agregaciones básicas
+## CRUD
+
+FIXME: <https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-92>
+
+Para estas operaciones, vamos a utilizar la colección `iabd.people` que utilizamos en la [primera sesión de *MongoDB*](02mongo.md#hola-mongodb).
+
+### Inserción
 
 ``` python
-match_stage = { "$match": { "directors": "Sam Raimi" } }
-project_stage = { "$project": { "_id": 0, "title": 1, "cast": 1 } }
+from pymongo import MongoClient
 
-pipeline = [
-    match_stage,
-    project_stage
-]
+cliente = MongoClient("mongodb+srv://iabd:iabdiabd@cluster0.4hm7u8y.mongodb.net/?retryWrites=true&w=majority", server_api=ServerApi('1'))
 
-sam_raimi_aggregation = movies.aggregate( pipeline )
+bd = cliente.iabd
+people = bd.people
 
-print(dumps(sam_raimi_aggregation, indent=2))
+yo = { "nombre": "Aitor Medrano", "edad": 45, "profesion": "Profesor" }
+resultado = people.insert_one(yo)
+
+print(resultado.acknowledged)   # True
+print(resultado.inserted_id)    # 6366b5c85afaf1b75dc90a20
 ```
+
+Tras realizar una operación de inserción con [`insert_one`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.insert_one), obtenemos un objeto [`InsertOneResult`](https://pymongo.readthedocs.io/en/stable/api/pymongo/results.html#pymongo.results.InsertOneResult) del cual cabe destacar dos campos:
+
+* `acknowledged`: un campo booleano que nos indica si la operación ha sido exitosa, o `False` cuando indicamos un `WriteConcern(w=0)`, es decir, es escritura *fire-and-forget*.
+* `inserted_id`: valor del `ObjectId`.
+
+Si queremos insertar más de una documento a la vez, usaremos [`insert_many`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.insert_many), el cual devuelve un objeto [`InsertManyResult`](https://pymongo.readthedocs.io/en/stable/api/pymongo/results.html#pymongo.results.InsertManyResult).
+
+!!! caution "_id duplicado"
+    Al insertar un documento con un `_id` asignado por nosotros puede saltar un [`DuplicateKeyError`](https://pymongo.readthedocs.io/en/stable/api/pymongo/errors.html#pymongo.errors.DuplicateKeyError). O si creamos un índice *unique* también puede suceder en cualquier otro tipo de campos.
+
+#### Join
+
+Al insertar un documento que está relacionado con otro, necesitamos que los campos contengan el mismo valor (normalmente, el `ObjectId`)
+
+Por ejemplo, si queremos añadir un comentario a una película, hemos de unir el identificador de la película en cada comentario haciendo uso de objeto [`ObjectId`](https://pymongo.readthedocs.io/en/stable/api/bson/objectid.html#bson.objectid.ObjectId):
 
 ``` python
-unwind_stage = { "$unwind": "$directors" }
+from bson.objectid import ObjectId
 
-group_stage = {
-    "$group": {
-        "_id": {
-            "director": "$directors"
-        },
-        "average_rating": { "$avg": "$imdb.rating" }
-    }
-}
-
-sort_stage = {
-    "$sort": { "average_rating": -1 }
-}
-
-# create pipeline from four different stages
-pipeline = [
-    unwind_stage,
-    group_stage,
-    sort_stage
-]
-
-# aggregate using pipeline
-director_ratings = movies.aggregate(pipeline)
-
-# iterate through the resulting cursor
-list(director_ratings)
+comments = db.comments
+comment_doc = {"name": usuario.nombre, "email": usuario.email,
+                "movie_id": ObjectId(movie_id), "text": comentario, "date": fecha}
+comments.insert_one(comment_doc))
 ```
 
-* First Write
-    insert_one
-    update_one -> upsert
-        Si ya existía , al obtener raw_result, la propiedad nModified = 0 y updatedExisting sería True
+### Borrado
 
-* Write Concern
+El borrado de documento es similar a la creación, pudiendo utilizar [`delete_one`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_one)para borrar el primer documento encontrado, o [`delete_many`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_many) para borrar todos los documentos encontrados:
+
+``` python
+resultado = people.delete_many({ "edad" : 45})
+print(resultado.deleted_count)
+```
+
+En ambas operaciones, obtenemos un objeto [`DeleteResult`](https://pymongo.readthedocs.io/en/stable/api/pymongo/results.html#pymongo.results.DeleteResult) del cual destacamos la propiedad `deleted_count` para averiguar cuantos documentos han sido eliminados.
+
+!!! tip "Borrado de colecciones"
+
+    Para vaciar una colección, podemos borrar todos los documentos:
+
+    ``` python
+    people.delete_many({})
+    ```
+
+    Aunque es mejor borrar la colección entera:
+
+    ``` python
+    people.drop()
+    ```
+
+### Modificación
+
+De forma similar a como lo hemos realizado mediante *mongosh*, para modificar documentos emplearemos los métodos [`update_one`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.update_one) y [`update_many`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.update_many), los cuales devuelve un objeto [`UpdateResult`](https://pymongo.readthedocs.io/en/stable/api/pymongo/results.html#pymongo.results.UpdateResult):
+
+``` python
+resultado = people.update_one({"nombre":"Aitor Medrano"}, {"$set":{"nombre":"Marina Medrano", "salario": 123456}})
+print(resultado.matched_count)  # (1)!
+print(resultado.modified_count) # (2)!
+```
+
+1. `matched_count` nos devuelve la cantidad de documentos encontrados
+2. `modified_count` nos devuelve la cantidad de documentos modificados
+
+Tal como vimos, en las operaciones *update*, le podemos pasar un tercer parámetro (opcional) con `upsert=False` (valor por defecto) op `True`, cuando queramos que se inserte un nuevo documento si no encuentra ninguno. En este caso, `modified_count` y `matched_count` serán 0.
+
+Otro argumento opcional que conviene conocer es `bypass_document_validation=False` (valor por defecto), el cual, si lo ponemos a `True` ignorará las validaciones (si hay alguna) para los documentos que modifiquemos.
+
+FIXME: revisar - If we don’t use an update operator as the second argument, the contents of the matched document will be entirely replaced by the new document.
+
+## Operaciones consistentes
+
+### Preferencias de lectura
+
+Para realizar lecturas consistentes podemos configurar la preferencias de lectura, tal como vimos en la [sesión anterior](06replicacion.md#preferencias-de-lectura).
+
+Para ello, *PyMongo* ofrece un conjunto de clases para indicar las [preferencias de lectura](https://pymongo.readthedocs.io/en/stable/api/pymongo/read_preferences.html), las cuales podemos configurar a nivel de cliente:
+
+!!! tip inline end "Niveles de lectura"
+    Los diferentes niveles vienen definidos en el objeto [`ReadPreference`](https://pymongo.readthedocs.io/en/stable/api/pymongo/read_preferences.html#pymongo.read_preferences.ReadPreference) el cual ofrece los valores estudiados en la sesión anterior: `PRIMARY`, `PRIMARY_PREFERRED`, `SECONDARY`, `SECONDARY_PREFERRED` y `NEAREST`.
+
+``` python
+client = MongoClient(
+    'localhost:27017',
+    replicaSet='iabd',
+    readPreference='secondaryPreferred')
+```
+
+Si en vez de indicar la preferencia a nivel de cliente, lo queremos realizar a nivel de base de datos o de colección, hemos de emplear los métodos [get_database](https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html#pymongo.mongo_client.MongoClient.get_database) y [get_collection](https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.get_collection) pasándole un segundo parámetro con la opción deseada:
+
+``` python
+from pymongo import ReadPreference
+
+print(client.read_preference)   # SecondaryPreferred(tag_sets=None)
+
+db = client.get_database('iabd', read_preference=ReadPreference.SECONDARY)
+print(db.read_preference)       # Secondary(tag_sets=None)
+
+coll = db.get_collection('people', read_preference=ReadPreference.PRIMARY)
+print(coll.read_preference)     # Primary()
+```
+
+Finalmente, si en cualquier momento queremos cambiar las preferencias a nivel de colección, podemos emplear el método [with_options](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.with_options):
+
+``` python
+coll2 = coll.with_options(read_preference=ReadPreference.NEAREST)
+print(coll.read_preference)     # Primary()
+print(coll.read_preference)     # Nearest(tag_sets=None)
+```
+
+FIXME: Revisar notebook curso MongoDB_PYTHON
+
+<https://docs.mongodb.com/manual/reference/read-concern/>
+
+### Escrituras consistentes
 
 ``` python
 db.users.with_options(write_concern=WriteConcern(w="majority")).insert_one({
@@ -522,536 +780,91 @@ db.users.with_options(write_concern=WriteConcern(w="majority")).insert_one({
 })
 ```
 
-* Update operations
+### Escrituras a granel
 
-    update_one
-    update_many
+Bulk writes
 
-    Las operaciones de modificación devuelven un UpdateResult que contiene las propiedades `aknowledge`, `matched_count`, `modified_count` y `upserted_id`.
-    `modified_count` y `matched_count` serán 0 en caso de un upsert.
+## Transacciones
 
-* Join entre movies y comments
-$lookup -> from, let, pipeline, as // from, localField, foreignField, as
+<https://www.digitalocean.com/community/tutorials/how-to-use-transactions-in-mongodb>
+<https://www.mongodb.com/developer/languages/python/python-acid-transactions/>
 
-``` python
-pipeline = [
-    {
-        "$match": {
-            "_id": ObjectId(id)
-        }
-    },
-    {
-        "$lookup": {
-            "from": 'comments',
-            "let": {'id': '$_id'},
-            "pipeline": [
-                {'$match':
-                    {'$expr': {'$eq': ['$movie_id', '$$id']}}
-                    }, {"$sort":
-                        {"date": -1}}
-            ],
-            "as": 'comments'
-        }
-    }
-]
+<https://learning.oreilly.com/library/view/mongodb-the-definitive/9781491954454/ch08.html#idm45882358635912>
 
-movie = db.movies.aggregate(pipeline).next()
-```
+Ya hemos comentado en numerosas ocasiones toda operación en un único documento es atómica, de ahí embeber documentos y arrays para modelar las relaciones de datos en un sólo documento cubre la mayoría de los casos de usos transaccionales.
 
-Al hacer join, los comentarios tienen que unirse a las películas con campos de tipo ObjectId:
+Cuando necesitamos atomicidad de lecturas y escrituras entre varios documentos (en una o más colecciones), [*MongoDB* soporta transacciones](https://www.mongodb.com/docs/manual/core/transactions/) multidocumento. Mediante las transacciones distribuidas, las transacciones puede operar entre varias operaciones, colecciones, bases de datos, documentos y particiones (*shards*).
+
+### Tipos de API
+
+*MongoDB* ofrece dos API para utilizar transacciones. La primera, conocida como [*Core API*](https://www.mongodb.com/docs/manual/core/transactions-in-applications/#core-api), disponible desde la versión 4.0 de *MongoDB*, tiene una sintaxis similar a las bases de datos relacionales (por ejemplo, con operaciones como `start_transaction` y `commit_transaction`), y la segunda se conoce como [*Callback API*](https://www.mongodb.com/docs/manual/core/transactions-in-applications/#callback-api), desde la versión 4.2, el cual es el enfoque actualmente recomendado.
+
+El *Core API* no ofrece lógica de reintentos para la mayoría de errores y necesita que el desarrollador programe la lógica de las operaciones, la función transaccional que realiza *commit* y la lógica de errores y reintentos necesaria.
+
+En cambio, el *Callback API* ofrece una única función que engloba un alto grado de funcionalidad comparadas con el *Core API*, incluyendo el inicio de una transacción asociada a una sesión lógica, ejecutar la función definida como *callback* y realizando el *commit* de la transacción (o abortándola en caso de error). Esta función también incluye la lógica de reintentos para manejar los errores al hacer *commit*.
+
+En ambas APIs, el desarrollador se responsabiliza de iniciar la sesión lógica que se utilizará en la transacción. Ambas APIs requieren que las operaciones transaccionales se asocien a ésta sesión lógica (pasándola como parámetro a cada operación). Cada sesión lógica en *MongoDB* registra el tiempo y la secuencia de las operaciones en el contexto completo del despliegue de *MongoDB*.
+
+### Hola Mundo Callback API
+
+Vamos a simular que tenemos una aplicación de gestión de un almacén, en la cual tenemos que realizar las siguientes operaciones dentro de una transacción:
 
 ``` python
-comment_doc = {"name": user.name, "email": user.email,
-                "movie_id": ObjectId(movie_id), "text": comment, "date": date}
-db.comments.insert_one(comment_doc)
-
-db.comments.update_one(
-    {"_id": ObjectId(comment_id), "email": user_email},
-    {"$set": {"text": text, "date": date}}
-)
+pedidos.insert_one({"producto": "ps5", "cantidad": 100}, session=miSesion)
+inventario.update_one({"producto": "ps5", "cantidad": {"$gte": 100}},
+                      {"$inc": {"cantidad": -100}}, session=miSesion)
 ```
 
-Al crear un pool de conexiones, especificar tamaño del pool y timeout:
+Veamos mediante un ejemplo el flujo del código transaccional haciendo uso del *Callback API*.
 
-``` python
-db = getattr(g, "_database", None)
-    DB_URI = current_app.config["DB_URI"]
-    DB_NAME = current_app.config["DB_NAME"]
-    if db is None:
-        db = g._database = MongoClient(
-            DB_URI,
-            maxPoolSize=50,
-            wtimeout=2500
-        )[DB_NAME]
-    return db
+``` python title="almacenTransaccional.py"
+from pymongo import MongoClient, ReadPreference
+from pymongo.write_concern import WriteConcern
+from pymongo.read_concern import ReadConcern
+
+uriString = 'mongodb+srv://iabd:iabdiabd@cluster0.4hm7u8y.mongodb.net/?retryWrites=true&w=majority'
+cliente = MongoClient(uriString)
+miWCMajority = WriteConcern('majority', wtimeout=1000)
+
+# Paso 0: Creamos dos colecciones e insertamos un documento en cada una
+bd = client.get_database( "iabd", write_concern=miWCMajority)
+bd.pedidos.insert_one({"producto": "ps5", "cantidad":0})
+bd.inventario.insert_one({"producto": "ps5", "cantidad": 1000})
+
+# Paso 1: Definir el callback que indica la secuencia de las operaciones a realizar dentro de la transacción
+def callback(miSesion):
+    pedidos = miSesion.cliente.iabd.pedidos
+    inventario = miSesion.cliente.iabd.inventario
+
+    # Importante: Debemos pasarle la sesión a cada operación
+    pedidos.insert_one({"producto": "ps5", "cantidad": 100}, session=miSesion)
+    inventario.update_one({"producto": "ps5", "cantidad": {"$gte": 100}},
+                          {"$inc": {"cantidad": -100}}, session=miSesion)
+
+# Paso 2: Iniciar una sesión de cliente.
+with cliente.start_session() as session:
+    # Paso 3: Empleamos with_transaction para iniciar la transacción, ejecutar el callback y realizar el commit (o abortar en caso de error).
+    session.with_transaction(
+        callback,
+        read_concern=ReadConcern("local"),
+        write_concern=miWCMajority,
+        read_preference=ReadPreference.PRIMARY,
+    )
 ```
 
-Siempre especificar un `wtimemout` con se realiza una escritura con un una mayoría de escrituras, por si fallase algún nodo, no se quedase colgado esperando.
+## PIA: Login
 
-db.users.with_options(write_concern=WriteConcern(w="majority"), wtimeout=5000).insert_one({
-    "name": name,
-    "email": email,
-    "password": hashedpw
-})
+<https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login>
 
-Siempre configurar y capturar los errores de tipo `serverSelectionTimeout`.
-
-DuplicateKeyError puede saltar en _id y en otros campos si creamos un índice *unique*.
-
-Principio de "menos privilegios".
-
-
-## Mastering MongodB
-
-https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_02.xhtml#_idParaDest-53
-
-Connecting using Python
-A strong contender to Ruby and Rails is Python and Django. Similar to Mongoid, there is MongoEngine and an official MongoDB low-level driver, PyMongo.
-
-Installing PyMongo can be done using pip or easy_install, as shown in the following code:
-
-python -m pip install pymongo
-
-python -m easy_install pymongo
-
-Then, in our class, we can connect to a database, as shown in the following example:
-
->>> from pymongo import MongoClient
-
->>> client = MongoClient()
-
-Connecting to a replica set requires a set of seed servers for the client to find out what the primary, secondary, or arbiter nodes in the set are, as indicated in the following example:
-
-client = pymongo.MongoClient('mongodb://user:passwd@node1:p1,node2:p2/?replicaSet=rsname')
-
-Using the connection string URL, we can pass a username and password and the replicaSet name all in a single string. Some of the most interesting options for the connection string URL are presented in the next section.
-
-Connecting to a shard requires the server host and IP for the MongoDB router, which is the MongoDB process.
-
-PyMODM ODM
-Similar to Ruby’s Mongoid, PyMODM is an ODM for Python that follows Django’s built-in ORM closely. Installing pymodm can be done via pip, as shown in the following code:
-
-pip install pymodm
-
-Then, we need to edit settings.py and replace the ENGINE database with a dummy database, as shown in the following code:
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.dummy'
-    }
-}
-Then we add our connection string anywhere in settings.py, as shown in the following code:
-
-from pymodm import connect
-connect("mongodb://localhost:27017/myDatabase", alias="MyApplication")
-Here, we have to use a connection string that has the following structure:
-
-mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
-Options have to be pairs of name=value with an & between each pair. Some interesting pairs are shown in the following table:
-
-Table 2.3 – PyMODM configuration options
-Table 2.3 – PyMODM configuration options
-
-Model classes need to inherit from MongoModel. The following code shows what a sample class will look like:
-
-from pymodm import MongoModel, fields
-class User(MongoModel):
-    email = fields.EmailField(primary_key=True)
-    first_name = fields.CharField()
-    last_name = fields.CharField()
-This has a User class with first_name, last_name, and email fields, where email is the primary field.
-
-Inheritance with PyMODM models
-Handling one-to-one and one-to-many relationships in MongoDB can be done using references or embedding. The following example shows both ways, which are references for the model user and embedding for the comment model:
-
-from pymodm import EmbeddedMongoModel, MongoModel, fields
- 
-class Comment(EmbeddedMongoModel):
-    author = fields.ReferenceField(User)
-    content = fields.CharField()
- 
-class Post(MongoModel):
-    title = fields.CharField()
-    author = fields.ReferenceField(User)
-    revised_on = fields.DateTimeField()
-    content = fields.CharField()
-    comments = fields.EmbeddedDocumentListField(Comment)
-Similar to Mongoid for Ruby, we can define relationships as being embedded or referenced depending on our design decision.
-
-
-## CRUD
-
-https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-92
-
-CRUD using the Python driver
-PyMongo is the officially supported driver for Python by MongoDB. In this section, we will use PyMongo to create, read, update, and delete documents in MongoDB.
-
-Creating and deleting data
-The Python driver provides methods for CRUD just like Ruby and PHP. Following on from Chapter 2, Schema Design and Data Modeling, and the books variable that points to our books collection, we will write the following code block:
-
-from pymongo import MongoClient
-from pprint import pprint
->>> book = {
- 'isbn': '301',
- 'name': 'Python and MongoDB',
- 'price': 60
-}
->>> insert_result = books.insert_one(book)
->>> pprint(insert_result)
-<pymongo.results.InsertOneResult object at 0x104bf3370>
->>> result = list(books.find())
->>> pprint(result)
-[{u'_id': ObjectId('592149c4aabac953a3a1e31e'),
- u'isbn': u'101',
- u'name': u'Mastering MongoDB',
- u'price': 30.0,
- u'published': datetime.datetime(2017, 6, 25, 0, 0)},
-{u'_id': ObjectId('59214bc1aabac954263b24e0'),
- u'isbn': u'102',
- u'name': u'MongoDB in 7 years',
- u'price': 50.0,
- u'published': datetime.datetime(2017, 6, 26, 0, 0)},
-{u'_id': ObjectId('593c24443c8ca55b969c4c54'),
- u'isbn': u'201',
- u'meta': {u'authors': u'alex giamas'},
- u'name': u'Mastering MongoDB, 3rd Edition'},
-{u'_id': ObjectId('594061a9aabac94b7c858d3d'),
- u'isbn': u'301',
- u'name': u'Python and MongoDB',
- u'price': 60}]
-In the previous example, we used insert_one() to insert a single document, which we can define using the Python dictionary notation; we can then query it for all the documents in the collection.
-
-The resulting object for insert_one and insert_many has two fields of interest:
-
-Acknowledged: A Boolean that is true if the insert has succeeded and false if it hasn’t, or if the write concern is 0 (a fire and forget write).
-inserted_id for insert_one: The ObjectId property of the written document and the inserted_id properties for insert_many. This is the array of ObjectIds of the written documents.
-We used the pprint library to pretty-print the find() results. The built-in way to iterate through the result set is by using the following code:
-
-for document in results:
-   print(document)
-Deleting documents works in a similar way to creating them. We can use delete_one to delete the first instance or delete_many to delete all instances of the matched query:
-
->>> result = books.delete_many({ "isbn": "101" })
->>> print(result.deleted_count)
-1
-The deleted_count instance tells us how many documents were deleted; in our case, it is 1, even though we used the delete_many method.
-
-To delete all documents from a collection, we can pass in the empty document, {}.
-
-To drop a collection, we can use drop():
-
->>> books.delete_many({})
->>> books.drop()
-Finding documents
-To find documents based on top-level attributes, we can simply use a dictionary:
-
->>> books.find({"name": "Mastering MongoDB"})
-[{u'_id': ObjectId('592149c4aabac953a3a1e31e'),
- u'isbn': u'101',
- u'name': u'Mastering MongoDB',
- u'price': 30.0,
- u'published': datetime.datetime(2017, 6, 25, 0, 0)}]
-To find documents in an embedded document, we can use dot notation. In the following example, we are using meta.authors to access the authors embedded document inside the meta document:
-
->>> result = list(books.find({"meta.authors": {"$regex": "aLEx", "$options": "i"}}))
->>> pprint(result)
-[{u'_id': ObjectId('593c24443c8ca55b969c4c54'),
- u'isbn': u'201',
- u'meta': {u'authors': u'alex giamas'},
- u'name': u'Mastering MongoDB, 3rd Edition'}]
-In this example, we used a regular expression to match aLEx, which is case insensitive, in every document where the string is mentioned in the meta.authors embedded document. PyMongo uses this notation for regular expression queries, called the $regex notation in MongoDB documentation. The second parameter is the options parameter for $regex, which we will explain in detail in the Using regular expressions section later in this chapter.
-
-Comparison operators are also supported, and a full list of these is given in the Comparison operators section, later in this chapter:
-
->>> result = list(books.find({ "price": {  "$gt":40 } }))
->>> pprint(result)
-[{u'_id': ObjectId('594061a9aabac94b7c858d3d'),
- u'isbn': u'301',
- u'name': u'Python and MongoDB',
- u'price': 60}]
-Let’s add multiple dictionaries to our query results in a logical AND query:
-
->>> result = list(books.find({"name": "Mastering MongoDB", "isbn": "101"}))
->>> pprint(result)
-[{u'_id': ObjectId('592149c4aabac953a3a1e31e'),
- u'isbn': u'101',
- u'name': u'Mastering MongoDB',
- u'price': 30.0,
- u'published': datetime.datetime(2017, 6, 25, 0, 0)}]
-For books that have both isbn=101 and name=Mastering MongoDB, to use logical operators such as $or and $and, we must use the following syntax:
-
->>> result = list(books.find({"$or": [{"isbn": "101"}, {"isbn": "102"}]}))
->>> pprint(result)
-[{u'_id': ObjectId('592149c4aabac953a3a1e31e'),
- u'isbn': u'101',
- u'name': u'Mastering MongoDB',
- u'price': 30.0,
- u'published': datetime.datetime(2017, 6, 25, 0, 0)},
-{u'_id': ObjectId('59214bc1aabac954263b24e0'),
- u'isbn': u'102',
- u'name': u'MongoDB in 7 years',
- u'price': 50.0,
- u'published': datetime.datetime(2017, 6, 26, 0, 0)}]
-For books that have an isbn value of 101 or 102, if we want to combine the AND and OR operators, we must use the $and operator, as follows:
-
->>> result = list(books.find({"$or": [{"$and": [{"name": "Mastering MongoDB", "isbn": "101"}]}, {"$and": [{"name": "MongoDB in 7 years", "isbn": "102"}]}]}))
->>> pprint(result)
-[{u'_id': ObjectId('592149c4aabac953a3a1e31e'),
- u'isbn': u'101',
- u'name': u'Mastering MongoDB',
- u'price': 30.0,
- u'published': datetime.datetime(2017, 6, 25, 0, 0)},
-{u'_id': ObjectId('59214bc1aabac954263b24e0'),
- u'isbn': u'102',
- u'name': u'MongoDB in 7 years',
- u'price': 50.0,
- u'published': datetime.datetime(2017, 6, 26, 0, 0)}]
-For a result of OR between two queries, consider the following:
-
-The first query is asking for documents that have isbn=101 AND name=Mastering MongoDB
-The second query is asking for documents that have isbn=102 AND name=MongoDB in 7 years
-The result is the union of these two datasets
-Updating documents
-In the following code block, you can see an example of updating a single document using the update_one helper method.
-
-This operation matches one document in the search phase and modifies one document based on the operation to be applied to the matched documents:
-
->>> result = books.update_one({"isbn": "101"}, {"$set": {"price": 100}})
->>> print(result.matched_count)
-1
->>> print(result.modified_count)
-1
-In a similar way to inserting documents, when updating documents, we can use update_one or update_many:
-
-The first argument here is the filter document for matching the documents that will be updated
-The second argument is the operation to be applied to the matched documents
-The third (optional) argument is to use upsert=false (the default) or true, which is used to create a new document if it’s not found
-Another interesting argument is bypass_document_validation=false (the default) or true, which is optional. This will ignore validations (if there are any) for the documents in the collection.
-
-The resulting object will have matched_count for the number of documents that matched the filter query, and modified_count for the number of documents that were affected by the update part of the query.
-
-In our example, we are setting price=100 for the first book with isbn=101 through the $set update operator. A list of all update operators can be found in the Update operators section later in this chapter.
-
-NOTE
-
-If we don’t use an update operator as the second argument, the contents of the matched document will be entirely replaced by the new document.
-
-CRUD using PyMODM
-PyMODM is a core ODM that provides simple and extensible functionality. It is developed and maintained by MongoDB’s engineers who get fast updates and support for the latest stable version of MongoDB available.
-
-In Chapter 2, Schema Design and Data Modeling, we explored how to define different models and connect to MongoDB. CRUD, when using PyMODM, as with every ODM, is simpler than when using low-level drivers.
-
-Creating documents
-A new user object, as defined in Chapter 2, Schema Design and Data Modeling, can be created with a single line:
-
->>> user = User('alexgiamas@packt.com', 'Alex', 'Giamas').save()
-In this example, we used positional arguments in the same order that they were defined in the user model to assign values to the user model attributes.
-
-We can also use keyword arguments or a mix of both, as follows:
-
->>> user = User(email='alexgiamas@packt.com', 'Alex', last_name='Giamas').save()
-Bulk saving can be done by passing in an array of users to bulk_create():
-
->>> users = [ user1, user2,...,userN]
->>>  User.bulk_create(users)
-Updating documents
-We can modify a document by directly accessing the attributes and calling save() again:
-
->>> user.first_name = 'Alexandros'
->>> user.save()
-If we want to update one or more documents, we must use raw() to filter out the documents that will be affected and chain update() to set the new values:
-
->>> User.objects.raw({'first_name': {'$exists': True}})
-              .update({'$set': {'updated_at': datetime.datetime.now()}})
-In the preceding example, we search for all User documents that have a first name and set a new field, updated_at, to the current timestamp. The result of the raw() method is QuerySet, a class used in PyMODM to handle queries and work with documents in bulk.
-
-Deleting documents
-Deleting an API is similar to updating it – by using QuerySet to find the affected documents and then chaining on a .delete() method to delete them:
-
->>> User.objects.raw({'first_name': {'$exists': True}}).delete()
-Querying documents
-Querying is done using QuerySet, as described previously.
-
-Some of the convenience methods that are available include the following:
-
-all()
-count()
-first()
-exclude(*fields): To exclude some fields from the result
-only(*fields): To include only some fields in the result (this can be chained for a union of fields)
-limit(limit)
-order_by(ordering)
-reverse(): If we want to reverse the order_by() order
-skip(number)
-values(): To return Python dict instances instead of model instances
-By using raw(), we can use the same queries that we described in the previous PyMongo section for querying and still exploit the flexibility and convenience methods provided by the ODM layer.
-
-## Change Streams
-
-https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-98
-
-Change streams
-The change streams functionality was introduced in version 3.6 and updated in versions 4.0 and 5.1, making it a safe and efficient way to listen for database changes.
-
-Introduction
-The fundamental problem that change streams solve is the need for applications to react immediately to changes in the underlying data. Modern web applications need to be reactive to data changes and refresh the page view without reloading the entire page. This is one of the problems that frontend frameworks (such as Angular, React, and Vue.js) are solving. When a user performs an action, the frontend framework will submit the request to the server asynchronously and refresh the relevant fragment of the page based on the response from the server.
-
-Thinking of a multiuser web application, there are cases where a database change may have occurred as a result of another user’s action. For example, in a project management Kanban board, user A may be viewing the Kanban board, while another user, B, may be changing the status of a ticket from “To do” to “In progress.”
-
-User A’s view needs to be updated with the change that user B has performed in real time, without refreshing the page. There are already three approaches to this problem, as follows:
-
-The most simple approach is to poll the database every X number of seconds and determine if there has been a change. Usually, this code will need to use some kind of status, timestamp, or version number to avoid fetching the same change multiple times. This is simple, yet inefficient, as it cannot scale with a great number of users. Having thousands of users polling the database at the same time will result in a high database-locking rate.
-To overcome the problems imposed by the first approach, database-and application-level triggers have been implemented. A database trigger relies on the underlying database executing some code in response to a database change. However, the main downside is, again, similar to the first approach in that the more triggers that we add to a database, the slower our database will become. It is also coupled to the database, instead of being a part of the application code base.
-Finally, we can use the database transaction or replication log to query for the latest changes and react to them. This is the most efficient and scalable approach of the three as it doesn’t put a strain on the database. The database writes to this log anyway; it is usually appended only and our background task serially reads entries as they come into the log. The downside of this method is that it is the most complicated one to implement and one that can lead to nasty bugs if it’s not implemented properly.
-Change streams provide a way to solve this problem that is developer-friendly and easy to implement and maintain. Change streams are based on the oplog, which is MongoDB’s operations log and contains every operation happening server-wide across all databases on the server. This way, the developer does not have to deal with the server-wide oplog or tailable cursors, which are often not exposed or as easy to develop from the MongoDB language-specific drivers. Also, the developer does not have to decipher and understand any of the internal oplog data structures that are designed and built for MongoDB’s benefit, and not for an application developer.
-
-Change streams also have other advantages around security:
-
-Users can only create change streams on collections, databases, or deployments that they have read access to.
-Change streams are also idempotent by design. Even in the case that the application cannot fetch the absolute latest change stream event notification ID, it can resume applying from an earlier known one and it will eventually reach the same state.
-Finally, change streams are resumable. Every change stream response document includes a resume token. If the application gets out of sync with the database, it can send the latest resume token back to the database and continue processing from there. This token needs to be persisted in the application, as the MongoDB driver won’t keep application failures and restarts. It will only keep state and retry in case of transient network failures and MongoDB replica set elections.
-Setup 
-A change stream can be opened against a collection, a database, or an entire deployment (such as a replica set or sharded cluster). A change stream will not react to changes in any system collection or any collection in the admin, config, and local databases.
-
-A change stream requires a WiredTiger storage engine and replica set protocol version 1 (pv1). pv1 is the only supported version starting from MongoDB 4.0. Change streams are compatible with deployments that use encryption-at-rest.
-
-Using change streams
-To use a change stream, we need to connect to our replica set. A replica set is a prerequisite to using change streams. As change streams internally use the oplog, it’s not possible to work without it. Change streams will also output documents that won’t be rolled back in a replica set setting, so they need to follow a majority read concern. Either way, it’s a good practice to develop and test locally using a replica set, as this is the recommended deployment for production. As an example, we are going to use a signals collection within our database named streams.
-
-We will use the following sample Python code:
-
-from pymongo import MongoClient
-class MongoExamples:
-   def __init__(self):
-       self.client = MongoClient('localhost', 27017)
-       db = self.client.streams
-       self.signals = db.signals
-   # a basic watch on signals collection
-   def change_books(self):
-       with self.client.watch() as stream:
-           for change in stream:
-               print(change)
-def main():
-   MongoExamples().change_books()
-if __name__ == '__main__':
-   main()
-We can open one Terminal and run it using python change_streams.py.
-
-Then, in another Terminal, we connect to our MongoDB replica set using the following code:
-
-> mongo
-
-> use streams
-
-> db.signals.insert({value: 114.3, signal:1})
-
-Going back to our first Terminal window, we can now observe that the output is similar to the following code block:
-
-{'_id': {'_data': '825BB7A25E0000000129295A1004A34408FB07864F8F960BF14453DFB98546645F696400645BB7A25EE10ED33145BCF7A70004'}, 'operationType': 'insert', 'clusterTime': Timestamp(1538761310, 1), 'fullDocument': {'_id': ObjectId('5bb7a25ee10ed33145bcf7a7'), 'value': 114.3, 'signal': 1.0}, 'ns': {'db': 'streams', 'coll': 'signals'}, 'documentKey': {'_id': ObjectId('5bb7a25ee10ed33145bcf7a7')}}
-
-Here, we have opened a cursor that’s watching the entire streams database for changes. Every data update in our database will be logged and outputted in the console.
-
-For example, if we go back to the mongo shell, we can issue the following code:
-
-> db.a_random_collection.insert({test: 'bar'})
-
-The Python code output should be similar to the following code:
-
-{'_id': {'_data': '825BB7A3770000000229295A10044AB37F707D104634B646CC5810A40EF246645F696400645BB7A377E10ED33145BCF7A80004'}, 'operationType': 'insert', 'clusterTime': Timestamp(1538761591, 2), 'fullDocument': {'_id': ObjectId('5bb7a377e10ed33145bcf7a8'), 'test': 'bar'}, 'ns': {'db': 'streams', 'coll': 'a_random_collection'}, 'documentKey': {'_id': ObjectId('5bb7a377e10ed33145bcf7a8')}}
-
-This means that we are getting notifications for every data update across all the collections in our database.
-
-Now, we can change line 11 of our code to the following:
-
-> with self.signals.watch() as stream:
-
-This will result in only watching the signals collection, as should be the most common use case.
-
-PyMongo’s watch command can take several parameters, as follows:
-
-watch(pipeline=None, full_document='default', resume_after=None, max_await_time_ms=None, batch_size=None, collation=None, start_at_operation_time=None, session=None)
-
-The most important parameters are as follows:
-
-Pipeline: This is an optional parameter that we can use to define an aggregation pipeline to be executed on each document that matches watch(). Because the change stream itself uses the aggregation pipeline, we can attach events to it. The aggregation pipeline events we can use are as follows:
-$match
-
-$project
-
-$addFields
-
-$replaceRoot
-
-$redact
-
-$replaceWith
-
-$set
-
-$unset
-
-Full_document: This is an optional parameter that we can use by setting it to 'updateLookup' to force the change stream to return a copy of the document as it has been modified in the fullDocument field, along with the document’s delta in the updateDescription field. The default None value will only return the document’s delta.
-start_at_operation_time: This is an optional parameter that we can use to only watch for changes that occurred at, or after, the specified timestamp.
-session: This is an optional parameter in case our driver supports passing a ClientSession object to watch for updates.
-Change streams response documents have to be under 16 MB in size. This is a global limit in MongoDB for BSON documents and the change stream has to follow this rule.
-
-Specification
-The following document shows all of the possible fields that a change event response may or may not include, depending on the actual change that happened:
-
-{  _id : { <BSON Object> },
-  "operationType" : "<operation>",
-  "fullDocument" : { <document> },
-  "ns" : {
-     "db" : "<database>",
-     "coll" : "<collection"
-  },
-  "documentKey" : { "_id" : <ObjectId> },
-  "updateDescription" : {
-     "updatedFields" : { <document> },
-     "removedFields" : [ "<field>", ... ]
-  }
-  "clusterTime" : <Timestamp>,
-  "txnNumber" : <NumberLong>,
-  "lsid" : {
-     "id" : <UUID>,
-     "uid" : <BinData>
-  }
-}
-The most important fields are as follows:
-
-Table 5.6 – Change streams – the most common events
-Table 5.6 – Change streams – the most common events
-
-Important notes
-When using a sharded database, change streams need to be opened against a MongoDB server. When using replica sets, a change stream can only be opened against any data-bearing instance. Each change stream will open a new connection, as of 4.0.2. If we want to have lots of change streams in parallel, we need to increase the connection pool (as per the SERVER-32946 JIRA MongoDB ticket) to avoid severe performance degradation.
-
-Production recommendations
-Let’s look at some of the best recommendations by MongoDB and expert architects at the time of writing.
-
-Replica sets
-Starting from MongoDB 4.2, a change stream can still be available even if the Read Concern of the majority is not satisfied. The way to enable this behavior is by setting { majority : false }.
-
-Invalidating events, such as dropping or renaming a collection, will close the change stream. We cannot resume a change stream after an invalidating event closes it.
-
-As the change stream relies on the oplog size, we need to make sure that the oplog size is large enough to hold events until they are processed by the application.
-
-We can open a change stream operation against any data-bearing member in a replica set.
-
-Sharded clusters
-On top of the considerations for replica sets, there are a few more to keep in mind for sharded clusters. They are as follows:
-
-The change stream is executed against every shard in a cluster and will be as fast as the slowest shard
-To avoid creating change stream events for orphaned documents, we need to use the new feature of ACID-compliant transactions if we have multi-document updates under sharding
-We can only open a change stream operation against the mongos member in a sharded cluster.
-
-While sharding an unsharded collection (that is, migrating from a replica set to sharding), the documentKey property of the change stream notification document will include _id until the change stream catches up to the first chunk migration.
+<https://www.digitalocean.com/community/tutorials/how-to-use-mongodb-in-a-flask-application>
 
 ## Referencias
 
 <https://www.askpython.com/python-modules/python-mongodb>
 
 * [Tutorial oficial de PyMongo](https://pymongo.readthedocs.io/en/stable/tutorial.html)
+* [Introduction to Multi-Document ACID Transactions in Python](https://www.mongodb.com/developer/languages/python/python-acid-transactions/)
 
 ## Actividades
 
-https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_06.xhtml#_idParaDest-111
+<https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_06.xhtml#_idParaDest-111>

@@ -10,9 +10,10 @@ nav:
           - "S18.- Almacenamiento de datos. NoSQL": "sa/01nosql.md"
           - "S19.- MongoDB": "sa/02mongo.md"
           - "S21.- Modelado de datos NoSQL": "sa/03modelado.md"
-          - "S21.- Formatos de datos": "sa/04formatos.md"
-      #     - "S26.- Agregaciones, Replicación y Particionado": "sa/05mongo-avanzado.md"
-      #     - "S28.- MongoDB y Python": "sa/06pymongo.md"
+#          - "S21.- Formatos de datos": "sa/04formatos.md"
+          - "S25.- Agregaciones": "sa/05agregaciones.md"
+          - "S28.- Replicación y Particionado": "sa/06replicacion.md"
+      #     - "S28.- MongoDB y Python": "sa/07pymongo.md"
       # - "UT5.- Ecosistema Hadoop":
       #     - "hadoop/index.md"
       #     - "S1.- Hadoop": "hadoop/01hadoop.md"
@@ -26,8 +27,18 @@ theme:
   name: "material"
   favicon: "images/favicon.png"
   palette:
-    primary: indigo
-    accent: "light blue"
+    - scheme: default
+      primary: indigo
+      accent: "light blue"
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Cambiar a modo noche
+    - scheme: slate 
+      primary: indigo
+      accent: "light blue"
+      toggle:
+        icon: material/toggle-switch
+        name: Cambiar a modo día
   font:
     text: Roboto
     code: Roboto Mono

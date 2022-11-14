@@ -137,6 +137,8 @@ La nube facilita de manera considerable este escalado, mediante proveedores como
 
 Los desarrolladores ya no necesitamos construir plataformas complejas para nuestras aplicaciones, de modo que nos podemos centrar en escribir código de aplicación. Una granja de servidores con *commodity hardware* puede ofrecer el mismo procesamiento y capacidad de almacenamiento que un único servidor de alto rendimiento por mucho menos coste.
 
+<!-- FIXME: Añadir ventajas https://www.mongodb.com/basics/sharding -->
+
 ### Replicación
 
 La replicación mantiene copias idénticas de los datos en múltiples servidores, lo que facilita que las aplicaciones siempre funcionen y los datos se mantengan seguros, incluso si alguno de los servidores sufre algún problema.
@@ -431,7 +433,29 @@ Un ejemplo de columna podría ser:
 }
 ```
 
-Una fila es una colección de columnas agrupadas a una clave. Si agrupamos filas similares tendremos una **familia de columnas**:
+Una fila es una colección de columnas agrupadas a una clave.
+
+``` json
+{
+    {
+        name: "nombre",
+        value: "Bruce",
+        timestamp: 12345667890
+    },
+    {
+        name: "nombre",
+        value: "Clark",
+        timestamp: 12345667891
+    },
+    {
+        name: "nombre",
+        value: "Barbara",
+        timestamp: 12345667892
+    }
+}
+```
+
+Si agrupamos filas similares tendremos una **familia de columnas**:
 
 ``` json
 // familia de columnas

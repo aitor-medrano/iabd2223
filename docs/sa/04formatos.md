@@ -567,7 +567,6 @@ df.to_parquet('sales.parquet')
     df.to_parquet('hdfs://iabd-virtualbox:9000/sales.parquet')
     ```
 
-
 ## ORC
 
 <figure style="float: right;">
@@ -657,7 +656,5 @@ Si comparamos los tamaños de los archivos respecto al formato de datos empleado
 
     Adjunta una captura del cuaderno, anota los tamaños de los ficheros creados y el tiempo necesario para su creación, y finalmente, comparte el *notebook* con el usuario *Aitor Medrano* de Kaggle.
 
-
-*[RA5075.1]: Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos. 
+*[RA5075.1]: Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.
 *[CE5.1c]: Se ha determinado el formato de datos adecuado para el almacenamiento.
-

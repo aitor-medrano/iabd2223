@@ -3,14 +3,14 @@ title: Modelado de datos NoSQL
 description: Modelado de datos NoSQL, analizando al carga de trabajo, las relaciones 1:1, 1:N, 1:S (squillions), N:M, ya sea mediante documentos embebidos o referencias. Patrones de diseño sobre modelos NoSQL y validación de esquemas.
 ---
 
-Antes de estudiar como modelar de forma adecuada nuestros datos en un modelo de datos documental, en concreto dentro de *MongoDB*, es conveniente recordar que:
+Antes de estudiar cómo modelar de forma adecuada nuestros datos en un modelo de datos documental, en concreto dentro de *MongoDB*, es conveniente recordar que:
 
 * Mediante un documento podemos mantener toda la información que se utiliza junta en un único documento, sin necesidad de separar los datos en diferentes colecciones.
 * Las propiedades transaccionales [ACID](02mongo.md#acid) se cumplen a nivel de documento. Si tenemos la información separada en varios documentos, tenemos que utilizar el [modelo transaccional](https://www.mongodb.com/docs/manual/core/transactions/) de *MongoDB* de forma programativa.
 
 Dependiendo del tipo de relación entre dos documentos, normalizaremos los datos para minimizar la redundancia pero manteniendo en la medida de lo posible que mediante operaciones atómicas se mantenga la integridad de los datos. Para ello, bien crearemos referencias entre dos documentos o embeberemos un documento dentro de otro, pero intentando que la información más utilizada quepa en un único documento.
 
-MongoDB es una base de datos documental, no relacional, donde el esquema no se debe basar en el uso de claves ajenas/*joins*, ya que realmente no existen. A la hora de diseñar un esquema, si nos encontramos que el esquema esta en 3FN o si cuando hacemos consultas estamos teniendo que realizar varias consultas de manera programativa (primero acceder a una tabla, con ese `_id` ir a otra tabla, etc… o hacemos un uso extensivo del operador `$lookup` mediante el *framework* de agregación.) es que no estamos siguiendo el enfoque adecuado.
+*MongoDB* es una base de datos documental, no relacional, donde el esquema no se debe basar en el uso de claves ajenas/*joins*, ya que realmente no existen. A la hora de diseñar un esquema, si nos encontramos que el esquema está en 3FN o si cuando hacemos consultas estamos teniendo que realizar varias consultas de manera programativa (primero acceder a una tabla, con ese `_id` ir a otra tabla, etc… o hacemos un uso extensivo del operador `$lookup` mediante el *framework* de agregación.) es que no estamos siguiendo el enfoque adecuado.
 
 En resumen, diseñar un buen modelo de datos puede suponer que nuestro código sea más legible y mantenible, así como un mayor rendimiento de nuestras aplicaciones.
 
@@ -52,7 +52,7 @@ A continuación veremos cada una de estas fases en detalle.
 
 ## Definir la carga
 
-En esta primera fase es muy importante comprender para qué operaciones estamos modelando, para ello hemos medir los datos a almacenar, cuantificar y calificar las operaciones de lectura y escritura, así como listar las operaciones más importantes, con métricas como operaciones por segundo, latencia requerida o atributos utilizados en las consultas.
+En esta primera fase es muy importante comprender para qué operaciones estamos modelando, para ello hemos medir los datos a almacenar, cuantificar y calificar las operaciones de lectura y escritura, así como listar las operaciones más importantes, con métricas tipo operaciones por segundo, latencia requerida o atributos utilizados en las consultas.
 
 Para ello, partiremos de diferentes escenarios de uso de la aplicación, los logs y estadísticas que tengamos disponibles o el conocimiento de los analistas de negocio.
 
@@ -381,9 +381,9 @@ Podemos resolver esta relación de tres maneras:
     }
     ```
 
-    Este enfoque se desaconseja porque necesita tres consultas para obtener toda la información.
+    Este enfoque se desaconseja porque necesita acceder a tres colecciones para obtener toda la información.
 
-2. Mediante 2 documentos, cada uno con un array que contenga los ids del otro documento (*2 Way Embedding*). Hay que tener cuidado porque podemos tener problemas de inconsistencia de datos si no actualizamos correctamente.
+2. Mediante 2 documentos, cada uno con un array que contenga los identificadores del otro documento (*2 Way Embedding*). Hay que tener cuidado porque podemos tener problemas de inconsistencia de datos si no actualizamos correctamente.
 
     ``` js title="libro-con-autores.json"
     {
@@ -504,9 +504,9 @@ Además, con este patrón podríamos añadir más información, como puede ser l
 {
   producto: "ps5",
   precios: [
-    { pais: "es", precio: 549.99, moneda="eur"},
-    { pais: "uk", precio: 479.99, moneda="pound"},
-    { pais: "us", precio: 499.99, moneda="dollar"},
+    { pais: "es", precio: 549.99, moneda:"eur"},
+    { pais: "uk", precio: 479.99, moneda:"pound"},
+    { pais: "us", precio: 499.99, moneda:"dollar"},
   ]
 }
 ```
@@ -534,7 +534,7 @@ Supongamos que partimos del siguiente esquema para nuestros clientes:
     telefono: "612 34 56 78"
 ```
 
-Y conforme evoluciona nuestra aplicación vemos que vamos añadiendo más y más métodos de contacto, por lo que decidimos crear un documento embebido para agrupar funcionalmente dichos datos. Esta acción puede provocar accesos errores al teléfono o al email, por que creamos el atributo `schema_version` para saber cuál es la estructura que nuestra aplicación espera leer:
+Y conforme evoluciona nuestra aplicación vemos que vamos añadiendo más y más métodos de contacto, por lo que decidimos crear un documento embebido para agrupar funcionalmente dichos datos. Esta acción puede provocar accesos erróneos al teléfono o al email, por lo que creamos el atributo `schema_version` para saber cuál es la estructura que nuestra aplicación espera leer:
 
 ``` json title="cliente-esquema-v2.json"
     _id: ObjectId("12345"),
@@ -888,6 +888,7 @@ Más información sobre la validación de esquemas en <https://www.mongodb.com/d
 
 ## Actividades
 
+<!--
 1. (RA5074.1 / CE4.1d / 1p) Define el modelo de datos necesario para la siguiente aplicación de e-commerce:
 
     * Tenemos una aplicación que vende productos. Estos productos se almacenan en diferentes almacenes, de los cuales conocemos su nombre y dirección (calle, número, ciudad y país). Los productos que vendemos pueden localizarse hasta un máximo de 200 almacenes.
@@ -899,8 +900,27 @@ Más información sobre la validación de esquemas en <https://www.mongodb.com/d
         * creación de usuario y su/s tarjeta/s de crédito en una única operación
 
     Para ello, crea diferentes colecciones/documentos json con datos de muestra así como validadores para cada una de las colecciones que necesites.
+-->
 
-2. (RA5074.1 / CE4.1d / 1p) Nuestro ayuntamiento está diseñando un plan energético para fomentar la instalación de placas solares. Aquellos viviendas que se sitúen en barrios que generan más energía de la que consumen recibirán un bono económico por el exceso de energía.
+1. (RA5075.1 / CE5.1a / 3p) Define el modelo de datos necesario para modelar al aplicación de captura de datos del PIA Lara:
+
+    * Debes tener en cuenta la gestión de los usuarios, los cuales pueden ser los usuarios finales (clientes), los técnicos de asistencia (técnicos), así como los usuarios administradores de la aplicación.
+    * De los clientes, además del nombre completo, sexo y la fecha de nacimiento, registraremos su enfermedad (puede que con subcategorías), así como su patología/disfonía (¿con una descripción?), y otros datos que consideres oportunos.
+    * Un cliente va a grabar muchas muestras de audios, y además del audio (el cual almacenaremos en un sistema externo y del cual en nuestra base de datos NoSQL almacenaremos su ruta/id), guardaremos la fecha de la grabación, usuario, texto, ¿estado de ánimo del cliente?, ¿velocidad de grabación? ... (aquí deberéis pensar en todos los datos que necesitemos para un mejor etiquetado de los datos).
+    * Los textos de grabación (*sylabus*) pueden estar predefinidos, de manera que desde el administrador o el técnico se dén de alta, o que cada cliente/técnico los inserte en el momento de grabar el audio. Todos los textos se agruparán por categoría, y cada texto/frase, puede tener un número de orden, así como un estado de ánimo.
+    * Los listados que luego necesitaremos para recuperar los datos son:
+        * Cliente de una determinada enfermedad/patología, pudiendo segmentar por rangos de edad y sexo.
+        * Audios y datos de las muestras de un determinado cliente.
+        * Audios y datos de las muestras de una determinada enfermedad.
+        * Audios y datos de las muestras de una determinada patología.
+        * Textos predefinidos de una categoría asignados a un cliente.
+
+    !!! tip "Recuerda"
+        Para luego realizar un buen modelo de IA, los datos en su mayoría deberían ser numéricos. Los datos categóricos sirven para matizar y/o filtrar los datos, y si son un conjunto cerrado, luego se pueden codificar como números, por ejemplo mediante el patrón *One Hot Encoding*.
+
+    Para ello, primero define la carga del modelo y a continuación, crea diferentes colecciones/documentos JSON con datos de muestra así como validadores para cada una de las colecciones que necesites.
+
+2. (RA5075.1 / CE5.1a / 1p) Nuestro ayuntamiento está diseñando un plan energético para fomentar la instalación de placas solares. Aquellos viviendas que se sitúen en barrios que generan más energía de la que consumen recibirán un bono económico por el exceso de energía.
 
     Nuestra base de datos almacena, para cada vivienda, cuanta energía produce por hora (en kW), cuanta consume, y cuanta necesita consumir de la red eléctrica. Un dato de una muestra de energía sería:
 
@@ -946,5 +966,11 @@ https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B1
 https://www.mongodb.com/docs/manual/core/schema-validation/view-existing-validation-rules/#std-label-schema-view-validation-rules
 -->
 
-*[RA5074.1]: Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.
-*[CE4.1d]: Se ha construido un conjunto de datos complejos y se han relacionado entre sí.
+*[RA5074.3]: Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.
+*[RA5075.1]: Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos
+*[CE4.3d]: Se han desarrollado sistemas de gestión, almacenamiento y procesamiento de grandes volúmenes de datos de manera eficiente y segura, teniendo en cuenta la normativa existente.
+*[CE5.1a]: Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos.
+
+<!--
+FIXME: revisar relaciones N:M ... explicar mejor, diferenciar entre 1:F y 1:N o 1:M bidireccional
+-->

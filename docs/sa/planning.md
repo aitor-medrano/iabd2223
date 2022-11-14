@@ -61,10 +61,30 @@ Respecto a la validación de los documentos respecto a un esquema:
     Siempre indicaremos el esquema a validar cuando creamos las colecciones
     Podemos definir expresiones de validación entre campos
 
-Para validar un docume
+Si tenemos un documento que provoca tener que realizar joins para recuperar unos pocos atributos, usaremos el patron:
+    Atributo
+    Referencia extendida
+    Cubo
+    Atípico
+
 
 ## Framework de agregación (1h)
 
+Sobre la colección de productos trabajada en clase, trabajando con el framework de agreagación, si queremos obtener la cantidad de productos que tenemos de cada tipo, realizaremos:
+
+    una fase para $group y otra para $count
+    en la fase de $group hacemos $count
+    en la fase de $group hacemos $sum
+    una fase para $gorup y otra para $sum
+
+
+ db.productos.aggregate([
+  { $group: {
+      _id: "$fabricante",
+      total: { $sum:1 }
+    }
+  }])
+  
 var pipeline = [
         { $match: {
             genres: {$in: ["Romance"]}, // Romance movies only.
