@@ -1,3 +1,9 @@
 /.DS_Store
 /site/
+/.cache/
 *planning.md*
+docs/sa/planning.md
+docs/sa/09pymodm.md
+docs/sa/10changeStreams.md
+docs/sa/08indices.md
+docs/sa/mflix.md
