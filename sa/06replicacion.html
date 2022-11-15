@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/sa/06replicacion.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -153,7 +153,6 @@
         
           
           
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -161,7 +160,6 @@
             </label>
           
         
-          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -801,7 +799,7 @@
 </div>
 </li>
 <li>
-<p>Árbitro: se emplea sólo para votar. No contiene copia de los datos y no se puede convertir en primario. Los conjuntos de réplica pueden tener árbitros para añadir votos en las elecciones de un nuevo primario. Siempre tienen un voto, y permiten que los conjuntos de réplica tengan un número impar de nodos, sin la necesidad de tener un miembro que replique los datos. Además, no requieren hardware dedicado.</p>
+<p><strong>Árbitro</strong>: se emplea sólo para votar. No contiene copia de los datos y no se puede convertir en primario. Los conjuntos de réplica pueden tener árbitros para añadir votos en las elecciones de un nuevo primario. Siempre tienen un voto, y permiten que los conjuntos de réplica tengan un número impar de nodos, sin la necesidad de tener un miembro que replique los datos. Además, no requieren hardware dedicado.</p>
 <div class="admonition important">
 <p class="admonition-title">A tener en cuenta</p>
 <ul>
@@ -812,10 +810,10 @@
 </div>
 </li>
 <li>
-<p>Retrasado (delayed): nodo que se emplea para la recuperación del sistema ante un fallo. Para ello, hay que asignar la propiedad <code>priority:0</code>. Este nodo nunca será un nodo primario.</p>
+<p><strong>Retrasado</strong> (<em>delayed</em>): nodo que se emplea para la recuperación del sistema ante un fallo. Para ello, hay que asignar la propiedad <code>priority:0</code>. Este nodo nunca será un nodo primario.</p>
 </li>
 <li>
-<p>Oculto: empleado para analíticas del sistema.</p>
+<p><strong>Oculto</strong>: empleado para analíticas del sistema.</p>
 </li>
 </ul>
 <h5 id="oplog">oplog<a class="headerlink" href="#oplog" title="Permanent link">&para;</a></h5>
@@ -914,14 +912,14 @@
 <span class="linenos" data-linenos="34 "></span>mongosh &lt; /scripts/init.js
 </code></pre></div>
 <p>Finalmente, mediante el archivo <a href="resources/init.js"><code>init.js</code></a> comprobamos el estado de la réplica y creamos el usuario administrador:</p>
-<div class="highlight"><span class="filename">rs-init.sh</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">();</span><span class="w"></span>
+<div class="highlight"><span class="filename">init.js</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">rs</span><span class="p">.</span><span class="nx">status</span><span class="p">();</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">createUser</span><span class="p">({</span><span class="nx">user</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">pwd</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">roles</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">role</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;root&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">db</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;admin&#39;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">]});</span><span class="w"></span>
 </code></pre></div>
 <p>Así pues, una vez tenemos los tres archivos en la misma carpeta, ya podemos lanzar <em>Docker Compose</em> para crear los contenedores:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker-compose --file docker-compose-replicaset.yml --project-name iabd-mongodb-replica up -d
 </code></pre></div>
 <p>Ya sólo nos queda ejecutar el <em>script</em> de inicialización sobre el nodo principal:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker <span class="nb">exec</span> mongo1 /scripts/rs-init.sh
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker <span class="nb">exec</span> mongo1 sh /scripts/rs-init.sh
 </code></pre></div>
 <p>Al ejecutarse el script, se inicializa el conjunto de réplicas y se obtiene su estado (mediante <code>rs.status()</code>) el cual se muestra por consola y podemos observar como ha creado los tres nodos, diferenciando el nodo principal de los secundarios:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="  1 "></span><span class="err">iabdrs</span><span class="w"> </span><span class="p">[</span><span class="err">direc</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">primary</span><span class="p">]</span><span class="w"> </span><span class="kc">test</span><span class="err">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -1041,8 +1039,8 @@
 </code></pre></div>
 <p>Una vez que ya hemos arrancando todo, podemos conectarnos a nuestro conjunto de réplica mediante <code>mongosh</code> (si no le pasamos ningún parámetro, se conecta automáticamente a <code>localhost</code> y al puerto 27017). Dentro del shell, los comandos que trabajan con réplicas comienzan por el prefijo <strong><code>rs</code></strong>. Por ejemplo, mediante <code>rs.help()</code> obtendremos la ayuda de los métodos disponibles:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>&gt; mongosh
-<span class="linenos" data-linenos=" 2 "></span>iabdrs <span class="o">[</span>direct: primary<span class="o">]</span> test&gt; rs.help<span class="o">()</span>
-<span class="linenos" data-linenos=" 3 "></span>
+<span class="hll"><span class="linenos" data-linenos=" 2 "></span>iabdrs <span class="o">[</span>direct: primary<span class="o">]</span> test&gt; rs.help<span class="o">()</span>
+</span><span class="linenos" data-linenos=" 3 "></span>
 <span class="linenos" data-linenos=" 4 "></span>  Replica Set Class:
 <span class="linenos" data-linenos=" 5 "></span>
 <span class="linenos" data-linenos=" 6 "></span>    initiate                                   Initiates the replica set.
@@ -1070,7 +1068,7 @@
 <p>La próxima vez que lancemos las réplicas ya no deberemos configurarlas. Así pues, el proceso de enlazar e iniciar las réplicas sólo se realiza una vez.</p>
 <h3 id="trabajando-con-las-replicas">Trabajando con las réplicas<a class="headerlink" href="#trabajando-con-las-replicas" title="Permanent link">&para;</a></h3>
 <p>Una vez que hemos visto que las tres réplicas están funcionando, vamos a comprobar cómo podemos trabajar con ellas.</p>
-<p>Ya hemos visto cómo al conectarnos al clúster, nos aparece como símbolo del <em>shell</em> el nombre del conjunto de la réplica seguido de dos puntos y <code>primary</code> si nos hemos conectado al nodo principal, o <code>secondary</code> en caso contrario.</p>
+<p>Ya hemos comprobado cómo al conectarnos al clúster, nos aparece como símbolo del <em>shell</em> el nombre del conjunto de la réplica seguido de dos puntos y <code>primary</code> si nos hemos conectado al nodo principal, o <code>secondary</code> en caso contrario.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabdrs <span class="o">[</span>direct: primary<span class="o">]</span> test&gt; 
 </code></pre></div>
 <p>Para saber si nos hemos conectado al nodo correcto, mediante <a href="https://www.mongodb.com/docs/upcoming/reference/command/hello/#hello"><code>db.hello()</code></a> obtendremos el tipo del nodo (propiedad <code>isWritablePrimary</code>) e información sobre el resto de nodos (antes se utilizaba el método <code>isMaster</code> el cual se ha marcado como <em>deprecated</em>):</p>
@@ -1114,8 +1112,8 @@
 <span class="linenos" data-linenos="38 "></span><span class="w">  </span><span class="nx">operationTime</span><span class="o">:</span><span class="w"> </span><span class="nx">Timestamp</span><span class="p">({</span><span class="w"> </span><span class="nx">t</span><span class="o">:</span><span class="w"> </span><span class="mf">1666883479</span><span class="p">,</span><span class="w"> </span><span class="nx">i</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">})</span><span class="w"></span>
 <span class="linenos" data-linenos="39 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Ahora que sabemos que estamos en el nodo principal, vamos a insertar datos.</p>
-<p>Para ello, vamos a insertar 1.000 documentos:</p>
+<p>Ahora que sabemos que estamos en el nodo principal, vamos a añadir datos.</p>
+<p>Para ello, vamos a insertar 1.000 documentos en la colección <code>pruebas</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">&lt;</span><span class="mf">1000</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="nx">db</span><span class="p">.</span><span class="nx">pruebas</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">({</span><span class="nx">num</span><span class="o">:</span><span class="w"> </span><span class="nx">i</span><span class="p">})</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="p">}</span><span class="w"></span>
@@ -1138,7 +1136,7 @@
 <span class="linenos" data-linenos="2 "></span>MongoServerError: not primary
 </code></pre></div>
 <h3 id="preferencias-de-lectura">Preferencias de lectura<a class="headerlink" href="#preferencias-de-lectura" title="Permanent link">&para;</a></h3>
-<p>En el ejemplo anterior hemos visto como hemos cambiado las preferencias de lectura para permitir hacerlo desde los nodos secundarios. Así pues, las <a href="https://www.mongodb.com/docs/upcoming/core/read-preference/">preferencias de lectura</a> definen como MongoDB enruta las lecturas realizadas a los miembros del conjunto de réplicas.</p>
+<p>En el ejemplo anterior hemos visto cómo hemos cambiado las preferencias de lectura para permitir hacerlo desde los nodos secundarios. Así pues, las <a href="https://www.mongodb.com/docs/upcoming/core/read-preference/">preferencias de lectura</a> definen el modo en el que MongoDB enruta las lecturas realizadas a los miembros del conjunto de réplicas.</p>
 <figure style="align: center;">
     <img src="images/06replica-set-read-preference.svg">
     <figcaption>Preferencias de lectura</figcaption>
@@ -1155,10 +1153,10 @@
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabdrs <span class="o">[</span>direct: secondary<span class="o">]</span> test&gt; db.getMongo<span class="o">()</span>.setReadPref<span class="o">(</span><span class="s1">&#39;nearest&#39;</span><span class="o">)</span>
 </code></pre></div>
 <h3 id="consistencia-en-la-escritura">Consistencia en la escritura<a class="headerlink" href="#consistencia-en-la-escritura" title="Permanent link">&para;</a></h3>
-<p>Ya hemos visto que tanto las lecturas como las escrituras se realizan de manera predeterminada en el nodo principal.</p>
-<p>Las aplicaciones pueden decidir que las escrituras vayan al nodo primario pero las lecturas al secundario. Esto puede provocar que haya lecturas caducas, con datos obsoletos, pero como beneficio podemos escalar el sistema.</p>
+<p>Por defecto, tanto las lecturas como las escrituras se realizan de manera predeterminada en el nodo principal.</p>
+<p>Las aplicaciones pueden decidir que las escrituras vayan al nodo primario pero las lecturas al secundario. Esto puede provocar que haya lecturas caducadas, con datos obsoletos. Este hecho, que en sistemas relacionales es inadmisible, en sistemas NoSQL ofrece como beneficio que podamos escalar el sistema.</p>
 <p>La replicación es un proceso asíncrono. En el período de tiempo en el que el sistema de votación sucede, no se completa ninguna escritura.</p>
-<p><em>MongoDB</em> garantiza la <a href="https://docs.mongodb.com/manual/reference/write-concern/">consistencia en la escritura (Write Concern)</a>, lo que implica que sea un sistema consistente. Para ello, ofrece un mecanismo que garantiza que una escritura ha sido exitosa. Dependiendo del nivel de configuración de la consistencia, las inserciones, modificaciones y borrados pueden tardar más o menos. Si reducimos el nivel de consistencia, el rendimiento será mejor, a costa de poder obtener datos obsoletos u perder datos que no se han terminado de serializar en disco. Con un nivel de consistencia más alto, los clientes esperan tras enviar una operación de escritura a que MongoDB les confirme la operación.</p>
+<p><em>MongoDB</em> garantiza la <a href="https://docs.mongodb.com/manual/reference/write-concern/">consistencia en la escritura (Write Concern)</a>, lo que implica que sea un sistema consistente. Para ello, ofrece un mecanismo que garantiza que una escritura ha sido exitosa. Dependiendo del nivel de configuración de la consistencia, las inserciones, modificaciones y borrados pueden tardar más o menos. Si reducimos el nivel de consistencia, el rendimiento será mejor, a costa de poder obtener datos obsoletos u perder datos que no se han terminado de serializar en disco. Con un nivel de consistencia más alto, los clientes esperan tras enviar una operación de escritura a que <em>MongoDB</em> les confirme la operación.</p>
 <p>Los valores que podemos configurar se realizan mediante las siguientes opciones:</p>
 <ul>
 <li><code>w</code>: indica el número de servidores que se han de replicar para que la inserción devuelva un ACK.</li>
@@ -1171,8 +1169,13 @@
 <li>Sin confirmación: <code>w:0</code>, también conocido como <em>fire-and-forget</em>, ya que no se espera ningún tipo de confirmación.</li>
 <li>Con confirmación: <code>w:1</code>, el cual es el modo por defecto, y sólo espera confirmación del nodo principal.</li>
 <li>Con diario: <code>w:1</code>, <code>j:true</code>. Cada inserción primero se escribe en el diario y posteriormente en el directorio de datos.</li>
-<li>Con confirmación de la mayoría: <code>w: "majority"</code>, es decir, confirman la mitad + 1 de los nodos de la réplica.</li>
+<li>Con confirmación de la mayoría: <code>w: "majority"</code>, es decir, confirman la mitad + 1 de los nodos de la réplica. Hasta que no han confirmado todos los nodos secundarios necesarios, el principal no envía el ACK a la aplicación cliente.</li>
 </ul>
+<figure style="align: center;">
+    <img src="images/06write-majority.png" width="600px">
+    <figcaption>Consistencia en la escritura con confirmación de la mayoría</figcaption>
+</figure>
+
 <p>Estas opciones se indican como parámetro final en las operaciones de inserción y modificación de datos. Por ejemplo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">pruebas</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">(</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="p">{</span><span class="nx">num</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="mf">1002</span><span class="p">},</span><span class="w"></span>
@@ -1189,11 +1192,11 @@
 <li><code>linearizable</code>: devuelve datos que hayan sido confirmados por una mayoría de nodos, pero permite al desarrollador establecer su propia funcionalidad.</li>
 <li><code>snapshot</code>: sólo disponible para transacciones multi-documento, realiza una "foto" de los datos al inicio de la transacción.</li>
 </ul>
-<p>Imaginemos un escenario en el que recibimos la confirmación de escritura por el nodo primario. Inmediatamente efectuamos una operación de lectura, el nodo devuelve el dato, pero éste falla antes de replicar la operación de escritura a los nodos secundarios. Sobre esta operación se efectuará un proceso de <em>rollback</em> en el momento que el nodo primario vuelva a estar disponible, por lo que ese dato realmente no existirá en el conjunto replicado. Es decir, la aplicación actualmente tiene un dato que no existe en el conjunto.</p>
-<p>Mediante la consistencia en la lectura, podemos obtener unas mínimas garantías de que el dato que estamos leyendo es correcto y durable. Cuando se utiliza, únicamente devolverá datos cuya grabación haya sido confirmada por el número de nodos especificados en sus opciones. Se puede escoger entre devolver el dato más reciente que exista en el cluster, o el dato recibido por una mayoría de miembros en el cluster.</p>
-<p>El hecho de que un documento no se considere correcto, no quiere decir necesariamente que se haya perdido, sino que en el momento de su lectura, no ha cumplido las condiciones necesarias de durabilidad para ser devuelto. Puede ser que la lectura se esté produciendo antes de que el dato haya sido propagado al número mínimo de miembros necesario, y por eso no se obtenga, pero en lecturas sucesivas sí puede aparecer.</p>
+<p>Imaginemos un escenario en el cual recibimos la confirmación de escritura desde el nodo primario. Inmediatamente efectuamos una operación de lectura, el nodo devuelve el dato, pero éste nodo falla antes de replicar la operación de escritura a los nodos secundarios. Sobre esta operación se efectuará un proceso de <em>rollback</em> en el momento que el nodo primario vuelva a estar disponible, por lo que ese dato realmente no existirá en el conjunto replicado. Es decir, la aplicación actualmente tiene un dato que no existe en el conjunto de réplicas.</p>
+<p>Mediante la consistencia en la lectura, podemos obtener unas mínimas garantías de que el dato que estamos leyendo es correcto y durable. Cuando se utiliza, únicamente devolverá datos cuya grabación haya sido confirmada por el número de nodos especificados en sus opciones. Se puede escoger entre devolver el dato más reciente que exista en el clúster, o el dato recibido por una mayoría de miembros en el cluster.</p>
+<p>El hecho de que un documento no se considere correcto, no quiere decir necesariamente que se haya perdido, sino que en el momento de su lectura, no ha cumplido las condiciones necesarias de durabilidad para ser devuelto. Puede ser que la lectura se esté produciendo antes de que el dato haya sido propagado al número mínimo de nodos necesario, y por eso no se obtenga, pero en lecturas sucesivas sí pueda aparecer.</p>
 <h3 id="tolerancia-a-fallos">Tolerancia a fallos<a class="headerlink" href="#tolerancia-a-fallos" title="Permanent link">&para;</a></h3>
-<p>Cuando un nodo primario no se comunica con otros miembros del conjunto durante más de 10 segundos, el conjunto de réplicas intentará, de entre los secundarios, que un miembro se convierta en el nuevo primario.</p>
+<p>Cuando un nodo primario no se comunica con otros miembros del conjunto durante más de 10 segundos, el conjunto de réplicas intentará, de entre los secundarios, que otro miembro se convierta en el nuevo primario.</p>
 <p>Para ello se realiza un proceso de votación, de modo que el nodo que obtenga el mayor número de votos se erigirá en primario. Este proceso de votación se realiza bastante rápido (menos de 3 segundos), durante el cual no existe ningún nodo primario y por tanto la réplica no acepta escrituras y todos los miembros se convierten en nodos de sólo-lectura.</p>
 <figure style="align: center;">
     <img src="images/06replica-set-election.png">
@@ -1205,7 +1208,7 @@
 <p>Antes de dar su voto, el resto de nodos comprobarán:</p>
 <ul>
 <li>si ellos tienen conectividad con el primario</li>
-<li>si el nodo que solicita ser primario tienen una réplica actualizada de los datos. Todas las operaciones replicadas están ordenadas por el <em>timestamp</em> ascendentemente, de modo los candidatos deben tener operaciones posteriores o iguales a cualquier miembro con el que tengan conectividad.</li>
+<li>si el nodo que solicita ser primario tienen una réplica actualizada de los datos. Todas las operaciones replicadas están ordenadas por el <em>timestamp</em> ascendentemente, de modo que los candidatos deben tener operaciones posteriores o iguales a cualquier miembro con el que tengan conectividad.</li>
 <li>si existe algún nodo con una prioridad mayor que debería ser elegido.</li>
 </ul>
 <p>Si algún miembro que quiere ser primario recibe una mayoría de "sís" se convertirá en el nuevo primario, siempre y cuando no haya un servidor que vete la votación. Si un miembro la veta es porque conoce alguna razón por la que el nodo que quiere ser primario no debería serlo, es decir, ha conseguido contactar con el antiguo primario.</p>
@@ -1242,7 +1245,7 @@ Hay que destacar que la mayoría no se basa en los elementos que queden en pie o
 <span class="linenos" data-linenos="12 "></span><span class="o">}</span>
 <span class="linenos" data-linenos="13 "></span>iabdrs <span class="o">[</span>direct: secondary<span class="o">]</span> test&gt;
 </code></pre></div>
-<p>Si pasamos al shell del antiguo nodo secundario, y le preguntamos si es el principal, veremos que ahora indica que la propiedad <code>isWritablePrimary</code> es <code>true</code> que ahora el primary es <code>mongo2:27017</code>:</p>
+<p>Si pasamos al <em>shell</em> del antiguo nodo secundario, y le preguntamos si es el principal, veremos que ahora indica que la propiedad <code>isWritablePrimary</code> es <code>true</code> y que ahora el <em>primary</em> es <code>mongo2:27017</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="err">iabdrs</span><span class="w"> </span><span class="p">[</span><span class="err">direc</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">primary</span><span class="p">]</span><span class="w"> </span><span class="kc">test</span><span class="err">&gt;</span><span class="w"> </span><span class="err">rs.hello()</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="kc">t</span><span class="err">opologyVersio</span><span class="kc">n</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
@@ -1530,7 +1533,7 @@ Por ejemplo, mediante <code>sh.help()</code> obtendremos la ayuda de los método
 </code></pre></div>
 <p>Como podemos observar, interactuar con <code>mongos</code> es igual a hacerlo con <code>mongosh</code>.</p>
 <p>Ahora mismo no sabemos en cuál de los dos <em>shards</em> se han almacenado los datos. Además, estos datos no están particionados, es decir residen en sólo uno de los shards.</p>
-<p>Para habilitar el sharding a nivel de base de datos y que los datos se repartan entre los fragmentos disponibles, ejecutaremos el comando <a href="https://www.mongodb.com/docs/manual/reference/method/sh.enableSharding/"><code>sh.enableSharding(&lt;nombreDB&gt;)</code></a>:</p>
+<p>Para habilitar el <em>sharding</em> a nivel de base de datos y que los datos se repartan entre los fragmentos disponibles, ejecutaremos el comando <a href="https://www.mongodb.com/docs/manual/reference/method/sh.enableSharding/"><code>sh.enableSharding(&lt;nombreDB&gt;)</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">[</span><span class="nx">direct</span><span class="o">:</span><span class="w"> </span><span class="nx">mongos</span><span class="p">]</span><span class="w"> </span><span class="nx">iabd</span><span class="o">&gt;</span><span class="w"> </span><span class="nx">sh</span><span class="p">.</span><span class="nx">enableSharding</span><span class="p">(</span><span class="s2">&quot;iabd&quot;</span><span class="p">)</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nx">ok</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"></span>
@@ -1749,7 +1752,7 @@ Por ejemplo, mediante <code>sh.help()</code> obtendremos la ayuda de los método
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
-<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 2p) Se pide crear una conjunto de 4 réplicas de nombre <code>iabdrs4</code> en la cual insertaremos los datos de <a href="resources/1000cities.json">1000 ciudades</a>, los cuales deberás <a href="02mongo.html#mongodb-database-tools">importar a una base de datos</a>.</p>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr>, <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 2p) Se pide crear una conjunto de 4 réplicas de nombre <code>iabdrs4</code> en la cual insertaremos los datos de <a href="resources/1000cities.json">1000 ciudades</a>, los cuales deberás <a href="02mongo.html#mongodb-database-tools">importar a una base de datos</a>.</p>
 <p>Una vez creado, se pide:</p>
 <ol>
 <li>Obtener el estado del conjunto de réplicas</li>
@@ -1763,7 +1766,7 @@ Por ejemplo, mediante <code>sh.help()</code> obtendremos la ayuda de los método
 <p>Adjunta un documento con los scripts de creación, comandos empleados y las salidas generadas.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 2p) Se pide crear un clúster de MongoDB con tres nodos y tres particiones y volver a importar las <a href="resources/1000cities.json">1000 ciudades</a>.</p>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 2p) Se pide crear un clúster de MongoDB con tres nodos y tres particiones y volver a importar las <a href="resources/1000cities.json">1000 ciudades</a>.</p>
 <p>Una vez creado, se pide:</p>
 <ol>
 <li>Particionar los datos por el nombre de la ciudad.</li>
@@ -1935,14 +1938,12 @@ FIXME: revisar métodos splitAt, splitFind... rangos con tag, zonas, etc..
 
   
 
-
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input class="md-toggle" type="checkbox" id="__settings" >
+<input type="checkbox" class="md-toggle" id="__settings">
 <div class="md-consent__settings">
   <ul class="task-list">
     
-      
       
         
         
@@ -1977,10 +1978,10 @@ FIXME: revisar métodos splitAt, splitFind... rangos con tag, zonas, etc..
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
     
   </body>
