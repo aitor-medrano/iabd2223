@@ -994,23 +994,18 @@
 <h2 id="mongoclient">MongoClient<a class="headerlink" href="#mongoclient" title="Permanent link">&para;</a></h2>
 <p>A partir de la URI de conexión a MongoDB, hemos de instanciar la clase <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/mongo_client.html"><code>MongoClient</code></a>, ya sea pasándole una URI con la cadena de conexión, o mediante parámetros:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">uri</span> <span class="o">=</span> <span class="s2">&quot;mongodb+srv://usuario:contrasenya@host&quot;</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">cliente</span> <span class="o">=</span> <span class="n">MongoCliente</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">cliente</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Parámetros adicionales</p>
-<p>A la hora de crear el cliente, también podemos indicarle opciones de configuración:</p>
+<p>A la hora de crear el cliente, también podemos indicarle diferentes opciones de configuración:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">cliente200Retry</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">connectTimeoutMS</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">retryWrites</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
-<p>Podemos obtener información de la conexión mediante la propiedad <code>state</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">print</span><span class="p">(</span><span class="n">cliente</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
-</code></pre></div>
-<p>Por ejemplo, en nuestro caso, nos hemos conectado a <em>MongoAtlas</em> y de la salida del estado podemos ver los diferentes <em>hosts</em> que forman parte del conjunto de réplicas:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">cliente</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">MongoClient</span><span class="p">(</span><span class="s1">&#39;mongodb+srv://iabd:iabdiabd@cluster0.dfaz5er.mongodb.net/&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="nx">print</span><span class="p">(</span><span class="nx">cliente</span><span class="p">.</span><span class="nx">state</span><span class="p">)</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span>
-<span class="linenos" data-linenos="4 "></span><span class="nx">Database</span><span class="p">(</span><span class="nx">MongoClient</span><span class="p">(</span><span class="nx">host</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ac-opunia9-shard-00-01.dfaz5er.mongodb.net:27017&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ac-opunia9-shard-00-02.dfaz5er.mongodb.net:27017&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ac-opunia9-shard-00-00.dfaz5er.mongodb.net:27017&#39;</span><span class="p">],</span><span class="w"> </span><span class="nx">document_class</span><span class="o">=</span><span class="nx">dict</span><span class="p">,</span><span class="w"> </span><span class="nx">tz_aware</span><span class="o">=</span><span class="nx">False</span><span class="p">,</span><span class="w"> </span><span class="nx">connect</span><span class="o">=</span><span class="nx">True</span><span class="p">,</span><span class="w"> </span><span class="nx">authsource</span><span class="o">=</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">replicaset</span><span class="o">=</span><span class="s1">&#39;atlas-4wikkb-shard-0&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">tls</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;state&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="linenos" data-linenos="5 "></span><span class="nx">Database</span><span class="p">(</span><span class="nx">MongoClient</span><span class="p">(</span><span class="nx">host</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;localhost:27017&#39;</span><span class="p">],</span><span class="w"> </span><span class="nx">document_class</span><span class="o">=</span><span class="nx">dict</span><span class="p">,</span><span class="w"> </span><span class="nx">tz_aware</span><span class="o">=</span><span class="nx">False</span><span class="p">,</span><span class="w"> </span><span class="nx">connect</span><span class="o">=</span><span class="nx">True</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;state&#39;</span><span class="p">)</span><span class="w"></span>
+<p>Podemos obtener información de la conexión mediante la propiedad <code>state</code>. Por ejemplo, en nuestro caso, nos hemos conectado a <em>MongoAtlas</em> y de la salida del estado podemos ver los diferentes <em>hosts</em> que forman parte del conjunto de réplicas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">cliente</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;mongodb+srv://iabd:iabdiabd@cluster0.dfaz5er.mongodb.net/&#39;</span><span class="p">)</span>
+<span class="hll"><span class="linenos" data-linenos="2 "></span><span class="nb">print</span><span class="p">(</span><span class="n">cliente</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+</span><span class="linenos" data-linenos="3 "></span><span class="c1"># Database(MongoClient(host=[&#39;ac-opunia9-shard-00-01.dfaz5er.mongodb.net:27017&#39;, &#39;ac-opunia9-shard-00-02.dfaz5er.mongodb.net:27017&#39;, &#39;ac-opunia9-shard-00-00.dfaz5er.mongodb.net:27017&#39;], document_class=dict, tz_aware=False, connect=True, authsource=&#39;admin&#39;, replicaset=&#39;atlas-4wikkb-shard-0&#39;, tls=True), &#39;state&#39;)</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Conexión a un réplica</p>
@@ -1133,27 +1128,27 @@
 <span class="linenos" data-linenos=" 7 "></span><span class="sd">[</span>
 <span class="linenos" data-linenos=" 8 "></span><span class="sd">    {</span>
 <span class="linenos" data-linenos=" 9 "></span><span class="sd">        &quot;_id&quot;: {</span>
-<span class="linenos" data-linenos="10 "></span><span class="sd">        &quot;$oid&quot;: &quot;573a1399f29313caabceea6d&quot;</span>
-<span class="linenos" data-linenos="11 "></span><span class="sd">    },</span>
-<span class="linenos" data-linenos="12 "></span><span class="sd">    &quot;plot&quot;: &quot;Cynical look at a 50&#39;s rebellious Rocker who has to confront his future, thugs with knives, and the crooked town sheriff.&quot;,</span>
-<span class="linenos" data-linenos="13 "></span><span class="sd">    &quot;genres&quot;: [</span>
-<span class="linenos" data-linenos="14 "></span><span class="sd">        &quot;Action&quot;,</span>
-<span class="linenos" data-linenos="15 "></span><span class="sd">        &quot;Drama&quot;</span>
-<span class="linenos" data-linenos="16 "></span><span class="sd">    ],</span>
-<span class="linenos" data-linenos="17 "></span><span class="sd">    &quot;runtime&quot;: 95,</span>
-<span class="linenos" data-linenos="18 "></span><span class="sd">    &quot;rated&quot;: &quot;R&quot;,</span>
-<span class="linenos" data-linenos="19 "></span><span class="sd">    &quot;cast&quot;: [</span>
-<span class="linenos" data-linenos="20 "></span><span class="sd">        &quot;David Arquette&quot;,</span>
-<span class="linenos" data-linenos="21 "></span><span class="sd">        &quot;John Hawkes&quot;,</span>
-<span class="linenos" data-linenos="22 "></span><span class="sd">        &quot;Salma Hayek&quot;,</span>
-<span class="linenos" data-linenos="23 "></span><span class="sd">        &quot;Jason Wiles&quot;</span>
-<span class="linenos" data-linenos="24 "></span><span class="sd">        ],</span>
-<span class="linenos" data-linenos="25 "></span><span class="sd">    ...</span>
+<span class="linenos" data-linenos="10 "></span><span class="sd">            &quot;$oid&quot;: &quot;573a1399f29313caabceea6d&quot;</span>
+<span class="linenos" data-linenos="11 "></span><span class="sd">        },</span>
+<span class="linenos" data-linenos="12 "></span><span class="sd">        &quot;plot&quot;: &quot;Cynical look at a 50&#39;s rebellious Rocker who has to confront his future, thugs with knives, and the crooked town sheriff.&quot;,</span>
+<span class="linenos" data-linenos="13 "></span><span class="sd">        &quot;genres&quot;: [</span>
+<span class="linenos" data-linenos="14 "></span><span class="sd">            &quot;Action&quot;,</span>
+<span class="linenos" data-linenos="15 "></span><span class="sd">            &quot;Drama&quot;</span>
+<span class="linenos" data-linenos="16 "></span><span class="sd">        ],</span>
+<span class="linenos" data-linenos="17 "></span><span class="sd">        &quot;runtime&quot;: 95,</span>
+<span class="linenos" data-linenos="18 "></span><span class="sd">        &quot;rated&quot;: &quot;R&quot;,</span>
+<span class="linenos" data-linenos="19 "></span><span class="sd">        &quot;cast&quot;: [</span>
+<span class="linenos" data-linenos="20 "></span><span class="sd">            &quot;David Arquette&quot;,</span>
+<span class="linenos" data-linenos="21 "></span><span class="sd">            &quot;John Hawkes&quot;,</span>
+<span class="linenos" data-linenos="22 "></span><span class="sd">            &quot;Salma Hayek&quot;,</span>
+<span class="linenos" data-linenos="23 "></span><span class="sd">            &quot;Jason Wiles&quot;</span>
+<span class="linenos" data-linenos="24 "></span><span class="sd">            ],</span>
+<span class="linenos" data-linenos="25 "></span><span class="sd">        ...</span>
 <span class="linenos" data-linenos="26 "></span><span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
 </div>
 <h2 id="agregaciones">Agregaciones<a class="headerlink" href="#agregaciones" title="Permanent link">&para;</a></h2>
-<p>Para realizar consultas mediante el <em>framework</em> de agregación, usaremos el método <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.aggregate"><code>aggregate</code></a>,  el cual recibe un array con el pipeline:</p>
+<p>Para realizar consultas mediante el <em>framework</em> de agregación, usaremos el método <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.aggregate"><code>aggregate</code></a>, el cual recibe un array con el pipeline:</p>
 <p>Por ejemplo, vamos a recuperar el título y el casting de las películas dirigidas por <code>Sam Raimi</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Consulta</label><label for="__tabbed_4_2">Resultados</label></div>
 <div class="tabbed-content">
@@ -1168,7 +1163,7 @@
 <span class="linenos" data-linenos=" 8 "></span>
 <span class="hll"><span class="linenos" data-linenos=" 9 "></span><span class="n">sam_raimi_aggregation</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 </span><span class="linenos" data-linenos="10 "></span><span class="k">for</span> <span class="n">movie</span> <span class="ow">in</span> <span class="n">sam_raimi_aggregation</span><span class="p">:</span>
-<span class="linenos" data-linenos="11 "></span>    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">movie</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">movie</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1215,7 +1210,7 @@
 <span class="hll"><span class="linenos" data-linenos="21 "></span><span class="n">director_ratings</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 </span><span class="linenos" data-linenos="22 "></span>
 <span class="linenos" data-linenos="23 "></span><span class="k">for</span> <span class="n">director</span> <span class="ow">in</span> <span class="n">director_ratings</span><span class="p">:</span>
-<span class="linenos" data-linenos="24 "></span>    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">director</span><span class="p">)</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">director</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1253,7 +1248,7 @@
 <span class="linenos" data-linenos="18 "></span><span class="p">]</span>
 <span class="linenos" data-linenos="19 "></span>
 <span class="linenos" data-linenos="20 "></span><span class="n">peliculaConComentarios</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
-<span class="linenos" data-linenos="21 "></span><span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">peliculaConComentarios</span><span class="p">)</span>
+<span class="linenos" data-linenos="21 "></span><span class="nb">print</span><span class="p">(</span><span class="n">peliculaConComentarios</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1296,7 +1291,7 @@
 <h2 id="trabajando-con-cursores">Trabajando con cursores<a class="headerlink" href="#trabajando-con-cursores" title="Permanent link">&para;</a></h2>
 <p>A continuación vamos a realizar algunas operaciones sobre los <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html">cursores</a> con <em>PyMongo</em> y a comparar a cómo podemos realizar la misma operación mediante el motor de agregaciones.</p>
 <h3 id="limitando">Limitando<a class="headerlink" href="#limitando" title="Permanent link">&para;</a></h3>
-<p>Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante el método <code>.limit()</code> equivalente a la agregación <code>$limit</code>:</p>
+<p>Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante el método <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html#pymongo.cursor.Cursor.limit"><code>.limit()</code></a> equivalente a la agregación <code>$limit</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="7:3"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">PyMongo</label><label for="__tabbed_7_2">Agregación</label><label for="__tabbed_7_3">Salida</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1348,7 +1343,7 @@
 </div>
 </div>
 <h3 id="ordenando">Ordenando<a class="headerlink" href="#ordenando" title="Permanent link">&para;</a></h3>
-<p>Para ordenar usaremos el método <code>.sort()</code> que además de los campos de ordenación, indicaremos si el criterio será ascendente o descendente, de forma similar a como lo hacemos con la operación de agregación <code>$sort</code>:</p>
+<p>Para ordenar usaremos el método <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html#pymongo.cursor.Cursor.sort"><code>.sort()</code></a> que además de los campos de ordenación, indicaremos si el criterio será ascendente (<code>ASCENDING</code>) o descendente (<code>DESCENDING</code>), de forma similar a como lo hacemos con la operación de agregación <code>$sort</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">PyMongo</label><label for="__tabbed_8_2">Agregación</label><label for="__tabbed_8_3">Salida</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
@@ -1482,7 +1477,7 @@
 </div>
 </div>
 <h3 id="saltando">Saltando<a class="headerlink" href="#saltando" title="Permanent link">&para;</a></h3>
-<p>Cuando paginamos los resultados, para saltar los documentos, haremos uso del método <code>.skip()</code>, el cual es similar a la operación <code>$skip</code>.</p>
+<p>Cuando paginamos los resultados, para saltar los documentos, haremos uso del método <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html#pymongo.cursor.Cursor.skip"><code>.skip()</code></a>, el cual es similar a la operación <code>$skip</code>.</p>
 <p>Por ejemplo, la siguiente consulta devuelve 13 documentos, de manera que al saltarnos 12, sólo nos devolverá uno:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="10:3"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="__tabbed_10_1">PyMongo</label><label for="__tabbed_10_2">Agregación</label><label for="__tabbed_10_3">Salida</label></div>
 <div class="tabbed-content">
@@ -1558,7 +1553,7 @@ FIXME: <https://learning.oreilly.com/library/view/mastering-mongodb-6-x/97818032
 <p>Al insertar un documento con un <code>_id</code> asignado por nosotros puede saltar un <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/errors.html#pymongo.errors.DuplicateKeyError"><code>DuplicateKeyError</code></a>. O si creamos un índice <em>unique</em> también puede suceder en cualquier otro tipo de campos.</p>
 </div>
 <h4 id="join">Join<a class="headerlink" href="#join" title="Permanent link">&para;</a></h4>
-<p>Al insertar un documento que está relacionado con otro, necesitamos que los campos contengan el mismo valor (normalmente, el <code>ObjectId</code>)</p>
+<p>Ya hemos estudiado que al insertar un documento que está relacionado con otro, necesitamos que los campos contengan el mismo valor (normalmente, el <code>ObjectId</code>)</p>
 <p>Por ejemplo, si queremos añadir un comentario a una película, hemos de unir el identificador de la película en cada comentario haciendo uso de objeto <a href="https://pymongo.readthedocs.io/en/stable/api/bson/objectid.html#bson.objectid.ObjectId"><code>ObjectId</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">bson.objectid</span> <span class="kn">import</span> <span class="n">ObjectId</span>
 <span class="linenos" data-linenos="2 "></span>
@@ -1568,7 +1563,7 @@ FIXME: <https://learning.oreilly.com/library/view/mastering-mongodb-6-x/97818032
 <span class="linenos" data-linenos="6 "></span><span class="n">comments</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">comment_doc</span><span class="p">))</span>
 </code></pre></div>
 <h3 id="borrado">Borrado<a class="headerlink" href="#borrado" title="Permanent link">&para;</a></h3>
-<p>El borrado de documento es similar a la creación, pudiendo utilizar <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_one"><code>delete_one</code></a>para borrar el primer documento encontrado, o <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_many"><code>delete_many</code></a> para borrar todos los documentos encontrados:</p>
+<p>El borrado de documento es similar a la creación, pudiendo utilizar <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_one"><code>delete_one</code></a> para borrar el primer documento encontrado, o <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_many"><code>delete_many</code></a> para borrar todos los documentos encontrados:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">resultado</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">delete_many</span><span class="p">({</span> <span class="s2">&quot;edad&quot;</span> <span class="p">:</span> <span class="mi">45</span><span class="p">})</span>
 <span class="linenos" data-linenos="2 "></span><span class="nb">print</span><span class="p">(</span><span class="n">resultado</span><span class="o">.</span><span class="n">deleted_count</span><span class="p">)</span>
 </code></pre></div>
@@ -1701,6 +1696,20 @@ Bulk writes
 <span class="linenos" data-linenos="31 "></span>        <span class="n">read_preference</span><span class="o">=</span><span class="n">ReadPreference</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
 <span class="linenos" data-linenos="32 "></span>    <span class="p">)</span>
 </code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">PyMODM</p>
+<p><a href="https://github.com/mongodb/pymodm">PyMODM</a> es una librería ODM que abstrae el acceso a <em>MongoDB</em> mediante un mapeo objeto-documento. De forma similar a los frameworks ORM en los entornos relacionales, como son <em>Hibernate</em> (<em>Java</em>), <em>Doctrine</em>/<em>Eloquent</em> (<em>PHP</em>) o el ORM de <em>Django</em>, abstrae y simplifica el acceso a la base de datos.</p>
+<p>Un ejemplo de definición de un objeto y su persistencia sería:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">MongoModel</span><span class="p">):</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="c1"># Utiliza el &#39;email&#39;como campo &#39;_id&#39;</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="n">email</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">EmailField</span><span class="p">(</span><span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="n">nombre</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="n">apellido</span> <span class="o">=</span> <span class="n">fields</span><span class="o">.</span><span class="n">CharField</span><span class="p">()</span>
+<span class="linenos" data-linenos="6 "></span>
+<span class="linenos" data-linenos="7 "></span><span class="n">usuario</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="s1">&#39;a.medrano@edu.gva.es&#39;</span><span class="p">,</span> <span class="s1">&#39;Aitor&#39;</span><span class="p">,</span> <span class="s1">&#39;Medrano&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div>
+<p>Hemos decidido no profundizar en su conocimiento ya que el equipo de <em>MongoDB</em> ha pausado su mantenimiento desde hace ya dos años.    </p>
+</div>
 <h2 id="caso-de-uso-pia-login">Caso de uso - PIA: Login<a class="headerlink" href="#caso-de-uso-pia-login" title="Permanent link">&para;</a></h2>
 <p>El siguiente proyecto se basa inicialmente en el artículo <a href="https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login"><em>How To Add Authentication to Your App with Flask-Login</em></a>.</p>
 <p>A partir de él, vamos a crear una aplicación en <em>Flask</em> que ataca a una base de datos de <em>MongoDB</em> para almacenar la información del proyecto PIA Lara.</p>
