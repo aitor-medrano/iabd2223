@@ -1716,7 +1716,27 @@ Bulk writes
 <p>El presente caso de uso se ha organizado para intentar simplificar al máximo el código y preparar un esqueleto que facilite el crecimiento de la aplicación. Aún así, una solución basada en <em>Django</em> o el uso de herramientas de mapeo entre los datos y los objetos del dominio serían un punto de partida para siguientes fases del proyecto.</p>
 </div>
 <h3 id="estructura">Estructura<a class="headerlink" href="#estructura" title="Permanent link">&para;</a></h3>
-<p>Una vez descargado el proyecto, tras descomprimirlo, veremos que tiene la siguiente estructura:</p>
+<p>Una vez <a href="resources/piafplogin.zip">descargado el proyecto</a>, tras descomprimirlo, veremos que tiene la siguiente estructura:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>PIAFPLOGIN/
+<span class="linenos" data-linenos=" 2 "></span>├── migrations/
+<span class="linenos" data-linenos=" 3 "></span>│   └── user_migration.py
+<span class="linenos" data-linenos=" 4 "></span>├── project/
+<span class="linenos" data-linenos=" 5 "></span>│   ├── static/
+<span class="linenos" data-linenos=" 6 "></span>│   │   ├── pialara.js
+<span class="linenos" data-linenos=" 7 "></span>│   │   └── pialara.png
+<span class="linenos" data-linenos=" 8 "></span>│   ├── templates/
+<span class="linenos" data-linenos=" 9 "></span>│   │   ├── base.html
+<span class="linenos" data-linenos="10 "></span>│   │   ├── index.html
+<span class="linenos" data-linenos="11 "></span>│   │   ├── login.html
+<span class="linenos" data-linenos="12 "></span>│   │   └── profile.html
+<span class="linenos" data-linenos="13 "></span>│   ├── __init__.py
+<span class="linenos" data-linenos="14 "></span>│   ├── auth.py
+<span class="linenos" data-linenos="15 "></span>│   ├── db.py
+<span class="linenos" data-linenos="16 "></span>│   ├── main.py
+<span class="linenos" data-linenos="17 "></span>│   └── models.py
+<span class="linenos" data-linenos="18 "></span>├── .ini
+<span class="linenos" data-linenos="19 "></span>└── requirements.txt
+</code></pre></div>
 <p>El primer paso es crear un entorno virtual:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>python3 -m venv app-env
 </code></pre></div>
@@ -1725,29 +1745,6 @@ Bulk writes
 </code></pre></div>
 <p>A continuación instalaremos las dependencias mediante:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip3 install -r requirements.txt
-</code></pre></div>
-<p>Quedándonos una estructura de carpetas similar a:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>PIAFPLOGIN/
-<span class="linenos" data-linenos=" 2 "></span>├── app-venv
-<span class="linenos" data-linenos=" 3 "></span>├── migrations/
-<span class="linenos" data-linenos=" 4 "></span>│   └── user_migration.py
-<span class="linenos" data-linenos=" 5 "></span>├── project/
-<span class="linenos" data-linenos=" 6 "></span>│   ├── static/
-<span class="linenos" data-linenos=" 7 "></span>│   │   ├── pialara.js
-<span class="linenos" data-linenos=" 8 "></span>│   │   └── pialara.png
-<span class="linenos" data-linenos=" 9 "></span>│   ├── templates/
-<span class="linenos" data-linenos="10 "></span>│   │   ├── base.html
-<span class="linenos" data-linenos="11 "></span>│   │   ├── index.html
-<span class="linenos" data-linenos="12 "></span>│   │   ├── login.html
-<span class="linenos" data-linenos="13 "></span>│   │   └── profile.html
-<span class="linenos" data-linenos="14 "></span>│   ├── __init__.py
-<span class="linenos" data-linenos="15 "></span>│   ├── auth.py
-<span class="linenos" data-linenos="16 "></span>│   ├── db.py
-<span class="linenos" data-linenos="17 "></span>│   ├── main.py
-<span class="linenos" data-linenos="18 "></span>│   └── models.py
-<span class="linenos" data-linenos="19 "></span>├── .ini
-<span class="linenos" data-linenos="20 "></span>├── README.md
-<span class="linenos" data-linenos="21 "></span>└── requirements.txt
 </code></pre></div>
 <h3 id="configuracion">Configuración<a class="headerlink" href="#configuracion" title="Permanent link">&para;</a></h3>
 <p>Para configurar el proyecto, partimos del fichero <code>.ini</code> que reside en la raíz del mismo y contiene los datos de configuración a <em>MongoDB</em> y la clave secreta que utiliza <em>Flask</em> para encriptar la sesión:</p>
