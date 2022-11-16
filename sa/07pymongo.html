@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/sa/07pymongo.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
         
       
       
@@ -153,6 +153,7 @@
         
           
           
+          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -160,6 +161,7 @@
             </label>
           
         
+          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -1002,6 +1004,12 @@
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">cliente200Retry</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">connectTimeoutMS</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">retryWrites</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
+<p>Realmente, al crear la conexión se inicializa un pool de conexiones, de manera que se crean 100 conexiones, y en vez de crear y destruir una conexión por cada petición, se reutilizan, de manera que cada petición asigna y libera una conexión conforme necesidad. Por defecto, el tamaño del pool es de 100 conexiones.</p>
+<figure style="align: center;">
+    <img src="images/07connection-pool.png" width="500px">
+    <figcaption>Pool de conexiones</figcaption>
+</figure>
+
 <p>Podemos obtener información de la conexión mediante la propiedad <code>state</code>. Por ejemplo, en nuestro caso, nos hemos conectado a <em>MongoAtlas</em> y de la salida del estado podemos ver los diferentes <em>hosts</em> que forman parte del conjunto de réplicas:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">cliente</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;mongodb+srv://iabd:iabdiabd@cluster0.dfaz5er.mongodb.net/&#39;</span><span class="p">)</span>
 <span class="hll"><span class="linenos" data-linenos="2 "></span><span class="nb">print</span><span class="p">(</span><span class="n">cliente</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
@@ -1523,10 +1531,6 @@
 </div>
 </div>
 <h2 id="crud">CRUD<a class="headerlink" href="#crud" title="Permanent link">&para;</a></h2>
-<!--
-FIXME: <https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-92>
--->
-
 <p>Para estas operaciones, vamos a trabajar con la colección <code>iabd.people</code> que utilizamos en la <a href="02mongo.html#hola-mongodb">primera sesión de <em>MongoDB</em></a>.</p>
 <h3 id="insercion">Inserción<a class="headerlink" href="#insercion" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
@@ -1561,6 +1565,21 @@ FIXME: <https://learning.oreilly.com/library/view/mastering-mongodb-6-x/97818032
 <span class="linenos" data-linenos="4 "></span><span class="n">comment_doc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">usuario</span><span class="o">.</span><span class="n">nombre</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">usuario</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
 <span class="linenos" data-linenos="5 "></span>                <span class="s2">&quot;movie_id&quot;</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="n">movie_id</span><span class="p">),</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">comentario</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">fecha</span><span class="p">}</span>
 <span class="linenos" data-linenos="6 "></span><span class="n">comments</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">comment_doc</span><span class="p">))</span>
+</code></pre></div>
+<h4 id="gestion-de-errores">Gestión de errores<a class="headerlink" href="#gestion-de-errores" title="Permanent link">&para;</a></h4>
+<p>A la hora de insertar un documento se puede dar el caso de lanzar un <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/errors.html#pymongo.errors.DuplicateKeyError"><code>DuplicateKeyError</code></a>, ya sea por el atributo identificador o por un índice de tipo único. En dicho caso, podemos capturar la excepción y ajustar el comportamiento o informar al usuario, dependiendo de la gravedad del error.</p>
+<p>Por ejemplo, si insertamos una persona con un <code>_id</code> que ya existe:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">doc</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 2 "></span>    <span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 3 "></span>    <span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;Aitor Medrano&quot;</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="p">}</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="k">try</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="n">result</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">inserted_id</span><span class="p">)</span>
+<span class="hll"><span class="linenos" data-linenos=" 9 "></span><span class="k">except</span> <span class="n">errors</span><span class="o">.</span><span class="n">DuplicateKeyError</span><span class="p">:</span>
+</span><span class="linenos" data-linenos="10 "></span>    <span class="n">usuario_id</span> <span class="o">=</span> <span class="n">doc</span><span class="p">[</span><span class="s2">&quot;_id&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El usuario #</span><span class="si">{</span><span class="n">usuario_id</span><span class="si">}</span><span class="s2"> ya existe en el sistema.&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="borrado">Borrado<a class="headerlink" href="#borrado" title="Permanent link">&para;</a></h3>
 <p>El borrado de documento es similar a la creación, pudiendo utilizar <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_one"><code>delete_one</code></a> para borrar el primer documento encontrado, o <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_many"><code>delete_many</code></a> para borrar todos los documentos encontrados:</p>
@@ -1622,12 +1641,6 @@ FIXME: <https://learning.oreilly.com/library/view/mastering-mongodb-6-x/97818032
 <span class="linenos" data-linenos="2 "></span><span class="nb">print</span><span class="p">(</span><span class="n">coll</span><span class="o">.</span><span class="n">read_preference</span><span class="p">)</span>     <span class="c1"># Primary()</span>
 <span class="linenos" data-linenos="3 "></span><span class="nb">print</span><span class="p">(</span><span class="n">coll</span><span class="o">.</span><span class="n">read_preference</span><span class="p">)</span>     <span class="c1"># Nearest(tag_sets=None)</span>
 </code></pre></div>
-<!--
-FIXME: Revisar notebook curso MongoDB_PYTHON
-
-<https://docs.mongodb.com/manual/reference/read-concern/>
--->
-
 <h3 id="escrituras-consistentes">Escrituras consistentes<a class="headerlink" href="#escrituras-consistentes" title="Permanent link">&para;</a></h3>
 <p>Tal como vimos en la sesión anterior, para indicar la consistencia en la escritura, haremos uso de la propiedad <code>write_concern</code>. Para ello, de la misma forma que hemos indicado la preferencia de lectura, hacemos uso del método <code>with_options</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">coll</span><span class="o">.</span><span class="n">with_options</span><span class="p">(</span><span class="n">write_concern</span><span class="o">=</span><span class="n">WriteConcern</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="s2">&quot;majority&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span>
@@ -1636,12 +1649,21 @@ FIXME: Revisar notebook curso MongoDB_PYTHON
 <span class="linenos" data-linenos="4 "></span>    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">hashed_pw</span>
 <span class="linenos" data-linenos="5 "></span><span class="p">})</span>
 </code></pre></div>
-<!--
-### Escrituras a granel
-
-Bulk writes
--->
-
+<p>Si tenemos una aplicación crítica, no nos podemos permitir perder los datos. Por ello, necesitamos que las escritura se propaguen a la mayoría de los nodos con la opción <code>w: majority</code> para asegurarnos que las escrituras se propagan a la mayoría de nodos del conjunto de nodos.</p>
+<p>Si sucede un problema en los nodos secundarios, puede ser que el primario no reciba los ACK necesarios. Si llegan más escrituras que lecturas, puede llegar el momento en que se produzca un atasco.</p>
+<p>Para evitar esto, para cada escritura que realicemos con la mayoría de los nodos, siempre hay que indicar un <em>timeout</em>. La longitud del <em>timeout</em> vendrá determinada por la red y el hardware que dispongamos, pero siempre hemos de indicarlo.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">coll</span><span class="o">.</span><span class="n">with_options</span><span class="p">(</span><span class="n">write_concern</span><span class="o">=</span><span class="n">WriteConcern</span><span class="p">(</span><span class="n">w</span><span class="o">=</span><span class="s2">&quot;majority&quot;</span><span class="p">,</span> <span class="n">wtimeout</span><span class="o">=</span><span class="s2">&quot;2500&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">insert_one</span><span class="p">({</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="n">nombre</span><span class="p">,</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="n">hashed_pw</span>
+<span class="linenos" data-linenos="5 "></span><span class="p">})</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Bulk writes</p>
+<p>En ocasiones necesitamos ejecutar una bateria de operaciones a granel (<em>bulk</em>) las cuales se ejecutan como un proceso <em>batch</em>. Para ello se emplea el método <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.bulk_write"><code>bulk_write</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">result</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">bulk_write</span><span class="p">(</span><span class="n">array_operaciones</span><span class="p">)</span>
+</code></pre></div>
+</div>
 <h2 id="transacciones">Transacciones<a class="headerlink" href="#transacciones" title="Permanent link">&para;</a></h2>
 <!--
 <https://learning.oreilly.com/library/view/mongodb-the-definitive/9781491954454/ch08.html#idm45882358635912>
@@ -1725,7 +1747,7 @@ Bulk writes
 <p>El presente caso de uso se ha organizado para intentar simplificar al máximo el código y preparar un esqueleto que facilite el crecimiento de la aplicación. Aún así, una solución basada en <em>Django</em> o el uso de herramientas de mapeo entre los datos y los objetos del dominio serían un punto de partida para siguientes fases del proyecto.</p>
 </div>
 <h3 id="estructura">Estructura<a class="headerlink" href="#estructura" title="Permanent link">&para;</a></h3>
-<p>Una vez <a href="resources/piafplogin.zip">descargado el proyecto</a>, tras descomprimirlo, veremos que tiene la siguiente estructura:</p>
+<p>Una vez <a href="resources/piafplogin.zip">descargado el proyecto</a> y tras descomprimirlo, o clonado desde <a href="https://github.com/aitor-medrano/piafplogin">https://github.com/aitor-medrano/piafplogin</a>, veremos que tiene la siguiente estructura:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>PIAFPLOGIN/
 <span class="linenos" data-linenos=" 2 "></span>├── migrations/
 <span class="linenos" data-linenos=" 3 "></span>│   └── user_migration.py
@@ -2206,12 +2228,14 @@ Bulk writes
 
   
 
+
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input type="checkbox" class="md-toggle" id="__settings">
+<input class="md-toggle" type="checkbox" id="__settings" >
 <div class="md-consent__settings">
   <ul class="task-list">
     
+      
       
         
         
@@ -2246,10 +2270,10 @@ Bulk writes
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>
