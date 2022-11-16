@@ -1027,7 +1027,7 @@
 </code></pre></div>
 <p>Para conectarnos a una base de datos en concreto, únicamente accederemos a ella como una propiedad del cliente:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">bd</span> <span class="o">=</span> <span class="n">cliente</span><span class="o">.</span><span class="n">sample_mflix</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">bd</span> <span class="o">=</span> <span class="n">cliente</span><span class="p">[</span><span class="s2">&quot;sample_mflix&#39;] # tb podemos acceder como si fuera un diccionario</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">bd</span> <span class="o">=</span> <span class="n">cliente</span><span class="p">[</span><span class="s2">&quot;sample_mflix&quot;</span><span class="p">]</span> <span class="c1"># tb podemos acceder como si fuera un diccionario</span>
 </code></pre></div>
 <div class="admonition tip inline end">
 <p class="admonition-title">Bases de datos y colecciones Lazy</p>
@@ -1035,7 +1035,7 @@
 </div>
 <p>Una vez tenemos la base de datos, el siguiente paso es obtener una colección:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">coleccion</span> <span class="o">=</span> <span class="n">bd</span><span class="o">.</span><span class="n">movies</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">coleccion</span> <span class="o">=</span> <span class="n">bd</span><span class="p">[</span><span class="s2">&quot;movies&#39;] </span>
+<span class="linenos" data-linenos="2 "></span><span class="n">coleccion</span> <span class="o">=</span> <span class="n">bd</span><span class="p">[</span><span class="s2">&quot;movies&quot;</span><span class="p">]</span> 
 </code></pre></div>
 <p>Si queremos obtener el nombre de todas las colecciones usaremos el método <a href="https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.list_collection_names"><code>list_collection_names()</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">print</span><span class="p">(</span><span class="n">bd</span><span class="o">.</span><span class="n">list_collection_names</span><span class="p">())</span>
@@ -1062,8 +1062,8 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Salma Hayek&quot;</span> <span class="p">}</span> <span class="p">)</span>
-<span class="linenos" data-linenos="2 "></span><span class="k">for</span> <span class="nb">zip</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
-<span class="linenos" data-linenos="3 "></span>    <span class="nb">print</span><span class="p">(</span><span class="nb">zip</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="k">for</span> <span class="n">movie</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">movie</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1094,8 +1094,8 @@
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">cursor</span> <span class="o">=</span> <span class="n">movies</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;Salma Hayek&quot;</span> <span class="p">},</span> <span class="p">{</span> <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span> <span class="p">)</span>
-<span class="linenos" data-linenos="2 "></span><span class="k">for</span> <span class="nb">zip</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
-<span class="linenos" data-linenos="3 "></span>    <span class="nb">print</span><span class="p">(</span><span class="nb">zip</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="k">for</span> <span class="n">movie</span> <span class="ow">in</span> <span class="n">cursor</span><span class="p">:</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">movie</span><span class="p">)</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
