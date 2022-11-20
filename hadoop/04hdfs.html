@@ -1,0 +1,1223 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Funcionamiento de HDFS, estudiando los procesos de lectura y escritura, los comandos de administración y el uso de Snapshots. Almacenamiento de datos en formatos Avro y Parquet mediante Python.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/04hdfs.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>HDFS, acceso y gestión. HDFS y Python. Formatos de datos Avro y Parquet. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="HDFS, acceso y gestión. HDFS y Python. Formatos de datos Avro y Parquet. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Funcionamiento de HDFS, estudiando los procesos de lectura y escritura, los comandos de administración y el uso de Snapshots. Almacenamiento de datos en formatos Avro y Parquet mediante Python." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/04hdfs.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/hadoop/04hdfs.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="HDFS, acceso y gestión. HDFS y Python. Formatos de datos Avro y Parquet. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Funcionamiento de HDFS, estudiando los procesos de lectura y escritura, los comandos de administración y el uso de Snapshots. Almacenamiento de datos en formatos Avro y Parquet mediante Python." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/04hdfs.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hdfs" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              HDFS, acceso y gestión. HDFS y Python. Formatos de datos Avro y Parquet.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT5.- Ecosistema Hadoop</a>
+          
+            <label for="__nav_2_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          UT5.- Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">UT6.- Datos en el cloud</a>
+          
+            <label for="__nav_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT6.- Datos en el cloud" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          UT6.- Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#funcionamiento-de-hdfs" class="md-nav__link">
+    Funcionamiento de HDFS
+  </a>
+  
+    <nav class="md-nav" aria-label="Funcionamiento de HDFS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procesos-de-lectura" class="md-nav__link">
+    Procesos de lectura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proceso-de-escritura" class="md-nav__link">
+    Proceso de escritura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdfs-por-dentro" class="md-nav__link">
+    HDFS por dentro
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trabajando-con-hdfs" class="md-nav__link">
+    Trabajando con HDFS
+  </a>
+  
+    <nav class="md-nav" aria-label="Trabajando con HDFS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloques" class="md-nav__link">
+    Bloques
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#administracion" class="md-nav__link">
+    Administración
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snapshots" class="md-nav__link">
+    Snapshots
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdfs-ui" class="md-nav__link">
+    HDFS UI
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hdfs-y-python" class="md-nav__link">
+    HDFS y Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hue" class="md-nav__link">
+    Hue
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="hdfs">HDFS<a class="headerlink" href="#hdfs" title="Permanent link">&para;</a></h1>
+<h2 id="funcionamiento-de-hdfs">Funcionamiento de HDFS<a class="headerlink" href="#funcionamiento-de-hdfs" title="Permanent link">&para;</a></h2>
+<p>En la sesión anterior hemos estudiado los diferentes componentes que forman parte de HDFS: <em>namenode</em> y <em>datanodes</em>. En esta sesión veremos los procesos de lectura y escritura, aprenderemos a interactuar con HDFS mediante comandos, el uso de instantáneas y practicaremos con los formatos de datos más empleados en <em>Hadoop</em>, como son <em>Avro</em> y <em>Parquet</em>.</p>
+<h3 id="procesos-de-lectura">Procesos de lectura<a class="headerlink" href="#procesos-de-lectura" title="Permanent link">&para;</a></h3>
+<p>Vamos a entender como fluyen los datos en un proceso de lectura entre el cliente y HDFS a partir de la siguiente imagen:</p>
+<figure style="align: center;">
+    <img src="images/04hdfs-read.png">
+    <figcaption>Proceso de lectura</figcaption>
+</figure>
+
+<ol>
+<li>El cliente abre el fichero que quiere leer mediante el método <code>open()</code> del sistema de archivos distribuido.</li>
+<li>Éste llama al <em>namenode</em> mediante una RPC (llamada a procedimiento remoto) el cual le indica la localización del primer bloque del fichero. Para cada bloque, el <em>namenode</em> devuelve la dirección de los <em>datanodes</em> que tienen una copia de ese bloque. Además, los <em>datanodes</em> se ordenan respecto a su proximidad con el cliente (depende de la topología de la red y despliegue en <em>datacenter/rack/nodo</em>). Si el cliente en sí es un <em>datanode</em>, la lectura la realizará desde su propio sistema local.</li>
+<li>El sistema de ficheros distribuido devuelve al cliente un <em>FSDataInputStream</em> (un flujo de entrada que soporta la búsqueda de ficheros), sobre el cual se invoca la lectura mediante el método <code>read()</code>. Este flujo, que contiene las direcciones de los <em>datanodes</em> para los primeros bloques del fichero, conecta con el <em>datanode</em> más cercano para la lectura del primer bloque.</li>
+<li>Los datos se leen desde el <em>datanode</em> con llamadas al método <code>read()</code>. Cuando se haya leído el bloque completo, el flujo de entrada cerrará la conexión con el <em>datanode</em> actual y buscará el mejor <em>datanode</em> para el siguiente bloque.</li>
+<li>Se repite el paso anterior (siempre de manera transparente para el cliente, el cual solo está leyendo datos desde un flujo de datos continuo).</li>
+<li>Cuando el cliente finaliza la lectura, cierra la conexión con el flujo de datos.</li>
+</ol>
+<p>Durante la lectura, si el flujo encuentra un error al comunicarse con un <em>datanode</em> (o un error de <em>checksum</em>), intentará el proceso con el siguiente nodo más cercano (además, recordará los nodos que han fallado para no realizar reintentos en futuros bloques y/o informará de los bloque corruptos al <em>namenode</em>)</p>
+<div class="admonition importante">
+<p class="admonition-title">Namenode sin datos</p>
+<p>Recordad que los datos nunca pasan por el <em>namenode</em>. El cliente que realiza la conexión con HDFS es el que hace las operaciones de lectura/escritura directamente con los <em>datanodes</em>.
+Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de los clientes se esparce por todos los <em>datanodes</em> de nuestro clúster.</p>
+</div>
+<h3 id="proceso-de-escritura">Proceso de escritura<a class="headerlink" href="#proceso-de-escritura" title="Permanent link">&para;</a></h3>
+<p>El proceso de escritura en HDFS sigue un planteamiento similar. Vamos a analizar la creación, escritura y cierre de un archivo con la siguiente imagen:</p>
+<figure style="align: center;">
+    <img src="images/04hdfs-write.png">
+    <figcaption>Proceso de escritura</figcaption>
+</figure>
+
+<ol>
+<li>El cliente crea el fichero mediante la llamada al método <code>create()</code> del <em>DistributedFileSystem</em>.</li>
+<li>Este realiza una llamada RPC al <em>namenode</em> para crear el fichero en el sistema de ficheros del <em>namenode</em>, sin ningún bloque asociado a él. El <em>namenode</em> realiza varias comprobaciones para asegurar que el fichero no existe previamente y que el usuario tiene los permisos necesarios para su creación. Tras ello, el <em>namenode</em> determina la forma en que va a dividir los datos en bloques y qué <em>datanodes</em> utilizará para almacenar los bloques.</li>
+<li>El <em>DistributedFileSystem</em> devuelve un <em>FSDataOutputStream</em>  el cual gestiona la comunicación con los datanodes y el <em>namenode</em> para que el cliente comience a escribir los datos de cada bloque en el <em>namenode</em> apropiado.</li>
+<li>Conforme el cliente escribe los datos, el flujo obtiene del <em>namenode</em> una lista de datanodes candidatos para almacenar las réplicas. La lista de nodos forman un <em>pipeline</em>, de manera que si el factor de replicación es 3, habrá 3 nodos en el <em>pipeline</em>. El flujo envía los paquete al primer datanode del pipeline, el cual almacena cada paquete y los reenvía al segundo datanode del <em>pipeline</em>. Y así sucesivamente con el resto de nodos del pipeline.</li>
+<li>Cuando todos los nodos han confirmado la recepción y almacenamiento de los paquetes, envía un paquete de confirmación al flujo.</li>
+<li>Cuando el cliente finaliza con la escritura de los datos, cierra el flujo mediante el método <code>close()</code> el cual libera los paquetes restantes al pipeline de datanodes y queda a la espera de recibir las confirmaciones. Una vez confirmado, le indica al <em>namenode</em> que la escritura se ha completado, informando de los bloques finales que conforman el fichero (puede que hayan cambiado respecto al paso 2 si ha habido algún error de escritura).</li>
+</ol>
+<h3 id="hdfs-por-dentro">HDFS por dentro<a class="headerlink" href="#hdfs-por-dentro" title="Permanent link">&para;</a></h3>
+<p>HDFS utiliza de un conjunto de ficheros que gestionan los cambios que se producen en el clúster.</p>
+<p>Primero entramos en <code>$HADOOP_HOME/etc/hadoop</code> y averiguamos la carpeta de datos que tenemos configurada en <code>hdfs-site.xml</code> para el <em>namenode</em>:</p>
+<div class="highlight"><span class="filename">hdfs-site.xml</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;name&gt;</span>dfs.name.dir<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nt">&lt;value&gt;</span>file:///opt/hadoop-data/hdfs/namenode<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="4 "></span><span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<p>Desde nuestro sistema de archivos, accedemos a dicha carpeta y vemos que existe una carpeta <code>current</code> que contendrá un conjunto de ficheros cuyos prefijos son:</p>
+<ul>
+<li><code>edits_000NNN</code>: histórico de cambios que se van produciendo.</li>
+<li><code>edits_inprogress_NNN</code>: cambios actuales en memoria que no se han persistido.</li>
+<li><code>fsimagen_000NNN</code>: <em>snapshot</em> en el tiempo del sistema de ficheros.</li>
+</ul>
+<figure align="center">
+    <img src="images/04hdfsPorDentro.png">
+    <figcaption>HDFS por dentro</figcaption>
+</figure>
+
+<p>Al arrancar HDFS se carga en memoria el último fichero <code>fsimage</code> disponible junto con los <code>edits</code> que no han sido procesados. Mediante el <em>secondary namenode</em>, cuando se llena un bloque, se irán sincronizando los cambios que se producen en <code>edits_inprogress</code> creando un nuevo <code>fsimage</code> y un nuevo <code>edits</code>.</p>
+<p>Así pues, cada vez que se reinicie el <em>namenode</em>, se realizará el <em>merge</em> de los archivos <code>fsimage</code> y <code>edits log</code>.</p>
+<h2 id="trabajando-con-hdfs">Trabajando con HDFS<a class="headerlink" href="#trabajando-con-hdfs" title="Permanent link">&para;</a></h2>
+<p>Para interactuar con el almacenamiento desde un terminal, se utiliza el comando <code>hdfs</code>. Este comando admite un segundo parámetro con diferentes opciones.</p>
+<p>Antes la duda, es recomendable consultar la <a href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HDFSCommands.html">documentación oficial</a></p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs comando
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">hadoop fs</p>
+<p><figure style="float: left; padding-right: 20px">
+    <img src="images/04hdfsdfs.png" width="250">
+    <figcaption>HDFS DFS</figcaption>
+</figure></p>
+<p><code>hadoop fs</code> se relaciona con un sistema de archivos genérico que puede apuntar a cualquier sistema de archivos como local, HDFS, FTP, S3, etc. En versiones anteriores se utilizaba el comando <code>hadoop dfs</code> para acceder a HDFS, pero ya quedado obsoleto en favor de <code>hdfs dfs</code>.</p>
+</div>
+<p>En el caso concreto de interactuar con el sistema de ficheros de Hadoop se utiliza el comando <code>dfs</code>, el cual requiere de otro argumento (empezando con un guión) el cual será uno de los comandos Linux para interactuar con el shell. Podéis consultar la lista de comandos en la <a href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html">documentación oficial</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -comandosLinux
+</code></pre></div>
+<p>Por ejemplo, para mostrar todos los archivos que tenemos en el raíz haríamos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -ls
+</code></pre></div>
+<p>Los comandos más utilizados son:</p>
+<ul>
+<li><code>put</code>: Coloca un archivo dentro de HDFS</li>
+<li><code>get</code>: Recupera un archivo de HDFS y lo lleva a nuestro sistema <em>host</em>.</li>
+<li><code>cat</code> / <code>text</code> / <code>head</code> / <code>tail</code>: Visualiza el contenido de un archivo.</li>
+<li><code>mkdir</code> / <code>rmdir</code>: Crea / borra una carpeta.</li>
+<li><code>count</code>: Cuenta el número de elementos (número de carpetas, ficheros, tamaño y ruta).</li>
+<li><code>cp</code> / <code>mv</code> / <code>rm</code>: Copia / mueve-renombra / elimina un archivo.</li>
+</ul>
+<div class="admonition question">
+<p class="admonition-title">Autoevaluación</p>
+<p>¿Sabes qué realiza cada uno de los siguientes comandos?</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -mkdir /user/iabd/datos
+<span class="linenos" data-linenos="2 "></span>hdfs dfs -put ejemplo.txt /user/iabd/datos/
+<span class="linenos" data-linenos="3 "></span>hdfs dfs -put ejemplo.txt /user/iabd/datos/ejemploRenombrado.txt
+<span class="linenos" data-linenos="4 "></span>hdfs dfs -ls datos
+<span class="linenos" data-linenos="5 "></span>hdfs dfs -count datos
+<span class="linenos" data-linenos="6 "></span>hdfs dfs -mv datos/ejemploRenombrado.txt /user/iabd/datos/otroNombre.json
+<span class="linenos" data-linenos="7 "></span>hdfs dfs -get /datos/otroNombre.json /tmp
+</code></pre></div>
+</div>
+<h3 id="bloques">Bloques<a class="headerlink" href="#bloques" title="Permanent link">&para;</a></h3>
+<p>A continuación vamos a ver cómo trabaja internamente HDFS con los bloques. Para el siguiente ejemplo, vamos a trabajar con un archivo que ocupe más de un bloque, como puede ser <a href="https://s3.amazonaws.com/nyc-tlc/trip+data/yellow_tripdata_2020-01.csv">El registro de taxis amarillos de Nueva York - Enero 2020</a>.</p>
+<p>Comenzaremos creando un directorio dentro de HDFS llamado <code>prueba-hdfs</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -mkdir /user/iabd/prueba-hdfs
+</code></pre></div>
+<p>Una vez creado subimos el archivo con los taxis:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -put yellow_tripdata_2020-01.csv  /user/iabd/prueba-hdfs
+</code></pre></div>
+<p>Con el fichero subido nos vamos al interfaz gráfico de Hadoop (<a href="http://iabd-virtualbox:9870/explorer.html#/">http://iabd-virtualbox:9870/explorer.html#/</a>), localizamos el archivo y obtenemos el <em>Block Pool ID</em> del <em>block information</em>:</p>
+<figure style="align: center;">
+    <img src="images/04hdfs-blockid.png">
+    <figcaption>Identificador de bloque</figcaption>
+</figure>
+
+<p>Si desplegamos el combo de <em>block information</em>, podremos ver cómo ha partido el archivo CSV en 5 bloques (566 MB que ocupa el fichero CSV / 128 del tamaño del bloque).</p>
+<p>Así pues, con el código del <em>Block Pool Id</em>, podemos confirmar que debe existir el directorio <code>current</code> del <em>datanode</em> donde almacena la información nuestro servidor (en `/opt/hadoop-data/):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current
+</code></pre></div>
+<p>Dentro de este subdirectorio existe otro <code>finalized</code>, donde <em>Hadoop</em> irá creando una estructura de subdirectorios <code>subdir</code> donde albergará los bloques de datos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
+</code></pre></div>
+<p>Una vez en este nivel, vamos a buscar el archivo que coincide con el <em>block id</em> poniéndole como prefijo <code>blk_</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>find -name blk_1073743451
+</code></pre></div>
+<p>En mi caso devuelve <code>./subdir6/blk_1073743451</code>. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>head /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir6/blk_1073743451
+</code></pre></div>
+<h3 id="administracion">Administración<a class="headerlink" href="#administracion" title="Permanent link">&para;</a></h3>
+<p>Algunas de las opciones más útiles para administrar HDFS son:</p>
+<ul>
+<li><code>hdfs dfsadmin -report</code>: Realiza un resumen del sistema HDFS, similar al que aparece en el interfaz web, donde podemos comprobar el estado de los diferentes nodos.</li>
+<li><code>hdfs fsck</code>: Comprueba el estado del sistema de ficheros. Si queremos comprobar el estado de un determinado directorio, lo indicamos mediante un segundo parámetro: <code>hdfs fsck /datos/prueba</code></li>
+<li><code>hdfs dfsadmin -printTopology</code>: Muestra la topología, identificando los nodos que tenemos y al rack al que pertenece cada nodo.</li>
+<li><code>hdfs dfsadmin -listOpenFiles</code>: Comprueba si hay algún fichero abierto.</li>
+<li><code>hdfs dfsadmin -safemode enter</code>: Pone el sistema en modo seguro el cual evita la modificación de los recursos del sistema de archivos.</li>
+</ul>
+<h3 id="snapshots"><em>Snapshots</em><a class="headerlink" href="#snapshots" title="Permanent link">&para;</a></h3>
+<p>Mediante las <em>snapshots</em> podemos crear una instantánea que almacena cómo está en un determinado momento nuestro sistema de ficheros, a modo de copia de seguridad de los datos, para en un futuro poder realizar una recuperación.</p>
+<p>El primer paso es activar el uso de <em>snapshots</em>, mediante el comando de administración indicando sobre qué carpeta vamos a habilitar su uso:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfsadmin -allowSnapshot /user/iabd/datos
+</code></pre></div>
+<p>El siguiente paso es crear una <em>snapshot</em>, para ello se indica tanto la carpeta como un nombre para la captura (es un comando que se realiza sobre el sistema de archivos):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -createSnapshot /user/iabd/datos snapshot1
+</code></pre></div>
+<p>Esta captura se creará dentro de una carpeta oculta dentro de la ruta indicada (en nuestro caso creará la carpeta  <code>/user/iabd/datos/.snapshot/snapshot1/</code> la cual contendrá la información de la instantánea).</p>
+<p>A continuación, vamos a borrar uno de los archivo creados anteriormente y comprobar que ya no existe:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -rm /user/iabd/datos/ejemplo.txt
+<span class="linenos" data-linenos="2 "></span>hdfs dfs -ls /user/iabd/datos
+</code></pre></div>
+<p>Para comprobar el funcionamiento de los <em>snapshots</em>, vamos a recuperar el archivo desde la captura creada anteriormente.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -cp <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    /user/iabd/datos/.snapshot/snapshot1/ejemplo.txt <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    /user/iabd/datos
+</code></pre></div>
+<p>Si queremos saber que carpetas soportan las instantáneas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs lsSnapshottableDir
+</code></pre></div>
+<p>Finalmente, si queremos deshabilitar las <em>snapshots</em> de una determinada carpeta, primero hemos de eliminarlas y luego deshabilitarlas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -deleteSnapshot /user/iabd/datos snapshot1
+<span class="linenos" data-linenos="2 "></span>hdfs dfsadmin -disallowSnapshot /user/iabd/datos
+</code></pre></div>
+<h3 id="hdfs-ui">HDFS UI<a class="headerlink" href="#hdfs-ui" title="Permanent link">&para;</a></h3>
+<p>En la sesión anterior ya vimos que podíamos acceder al interfaz gráfico de Hadoop (<a href="http://iabd-virtualbox:9870/explorer.html#/">http://iabd-virtualbox:9870/explorer.html#/</a>) y navegar por las carpetas de HDFS.</p>
+<p>Si intentamos crear una carpeta o eliminar algún archivo recibimos un mensaje del tipo <em>Permission denied: user=dr.who, access=WRITE, inode="/":iabd:supergroup:drwxr-xr-x</em>. Por defecto, los recursos via web los crea el usuario <em>dr.who</em>.</p>
+<figure style="align: center;">
+    <img src="images/04hdfs-ui-error.png">
+    <figcaption>Error al crear un directorio mediante Hadoop UI</figcaption>
+</figure>
+
+<p>Si queremos habilitar los permisos para que desde este IU podamos crear/modificar/eliminar recursos, podemos cambiar permisos a la carpeta:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -mkdir /user/iabd/pruebas
+<span class="linenos" data-linenos="2 "></span>hdfs dfs -chmod <span class="m">777</span> /user/iabd/pruebas 
+</code></pre></div>
+<p>Si ahora accedemos al interfaz, sí que podremos trabajar con la carpeta <code>pruebas</code> via web, teniendo en cuenta que las operaciones las realiza el usuario <code>dr.who</code> que pertenece al grupo <code>supergroup</code>.</p>
+<p>Otra posibilidad es modificar el archivo de configuración <code>core-site.xml</code> y añadir una propiedad para modificar el usuario estático:</p>
+<div class="highlight"><span class="filename">core-site.xml</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;name&gt;</span>hadoop.http.staticuser.user<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nt">&lt;value&gt;</span>iabd<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="4 "></span><span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<p>Tras reiniciar <em>Hadoop</em>, ya podremos crear los recursos como el usuario <code>iabd</code>.</p>
+<h2 id="hdfs-y-python">HDFS y Python<a class="headerlink" href="#hdfs-y-python" title="Permanent link">&para;</a></h2>
+<p>Para el acceso mediante Python a HDFS podemos utilizar la librería HdfsCLI (<a href="https://hdfscli.readthedocs.io/en/latest/">https://hdfscli.readthedocs.io/en/latest/</a>).</p>
+<p>Primero hemos de instalarla mediante <code>pip</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install hdfs
+</code></pre></div>
+<p>Vamos a ver un sencillo ejemplo de lectura y escritura en HDFS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">hdfs</span> <span class="kn">import</span> <span class="n">InsecureClient</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># Datos de conexión</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">HDFS_HOSTNAME</span> <span class="o">=</span> <span class="s1">&#39;iabd-virtualbox&#39;</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">HDFSCLI_PORT</span> <span class="o">=</span> <span class="mi">9870</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">HDFSCLI_CONNECTION_STRING</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;http://</span><span class="si">{</span><span class="n">HDFS_HOSTNAME</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">HDFSCLI_PORT</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># En nuestro caso, al no usar Kerberos, creamos una conexión no segura</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">hdfs_client</span> <span class="o">=</span> <span class="n">InsecureClient</span><span class="p">(</span><span class="n">HDFSCLI_CONNECTION_STRING</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># Leemos el fichero de &#39;El quijote&#39; que tenemos en HDFS</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">fichero</span> <span class="o">=</span> <span class="s1">&#39;/user/iabd/el_quijote.txt&#39;</span>
+<span class="linenos" data-linenos="13 "></span><span class="k">with</span> <span class="n">hdfs_client</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fichero</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="n">texto</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="nb">print</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># Creamos una cadena con formato CSV y la almacenamos en HDFS</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">datos</span><span class="o">=</span><span class="s2">&quot;nombre,apellidos</span><span class="se">\n</span><span class="s2">Aitor,Medrano</span><span class="se">\n</span><span class="s2">Pedro,Casas&quot;</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">hdfs_client</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;/user/iabd/datos.csv&quot;</span><span class="p">,</span> <span class="n">datos</span><span class="p">)</span>
+</code></pre></div>
+<p>En el mundo real, los formatos de los archivos normalmente serán <em>Avro</em> y/o <em>Parquet</em>, y el acceso lo realizaremos en gran medida mediante la librería de <em>Pandas</em>.</p>
+<h2 id="hue">Hue<a class="headerlink" href="#hue" title="Permanent link">&para;</a></h2>
+<p><a href="https://gethue.com">Hue</a> (<em>Hadoop User Experience</em>) es una interfaz gráfica de código abierto basada en web para su uso con <em>Apache Hadoop</em>. <em>Hue</em> actúa como front-end para las aplicaciones que se ejecutan en el clúster, lo que permite interactuar con las aplicaciones mediante una interfaz más amigable que el interfaz de comandos.</p>
+<p>En nuestra máquina virtual ya lo tenemos instalado y configurado para que funcione con HDFS y Hive.</p>
+<p>La ruta de instalación es <code>/opt/hue-4.10.0</code> y desde allí, arrancaremos Hue:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./build/env/bin/hue runserver
+</code></pre></div>
+<p>Tras arrancarlo, nos dirigimos a <code>http://127.0.0.1:8000/</code>y visualizaremos el formulario de entrada, el cual entraremos con el usuario <code>iabd</code> y la contraseña <code>iabd</code>:</p>
+<figure style="align: center;">
+    <img src="images/04hue-login.png">
+    <figcaption>Login en Hue</figcaption>
+</figure>
+
+<p>Una vez dentro, por ejemplo, podemos visualizar e interactuar con HDFS:</p>
+<figure style="align: center;">
+    <img src="images/04hue-hdfs.png">
+    <figcaption>HDFS en Hue</figcaption>
+</figure>
+
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Documentación de <a href="https://hadoop.apache.org/docs/stable/">Apache Hadoop</a>.</li>
+<li><a href="https://www.oreilly.com/library/view/hadoop-the-definitive/9780596521974/">Hadoop: The definitive Guide, 4th Ed - de Tom White - O'Reilly</a></li>
+<li><a href="https://www.informit.com/articles/article.aspx?p=2755708">HDFS Commands, HDFS Permissions and HDFS Storage</a></li>
+<li><a href="https://www.xenonstack.com/blog/data-serialization-hadoop">Introduction to Data Serialization in Apache Hadoop</a></li>
+<li><a href="https://www.perfectlyrandom.org/2019/11/29/handling-avro-files-in-python/">Handling Avro files in Python</a></li>
+<li><a href="https://wesmckinney.com/blog/python-hdfs-interfaces/">Native Hadoop file system (HDFS) connectivity in Python</a></li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla donde se muestre el resultado de cada acción.</p>
+<ol>
+<li>
+<p>Explica paso a paso  el proceso de lectura (indicando qué bloques y los datanodes empleados) que realiza HDFS si queremos leer el archivo <code>/logs/101213.log</code>:</p>
+<p><figure style="align: center;">
+    <img src="images/04hdfs-lectura-ejercicio.png">
+    <figcaption>Proceso de lectura HDFS</figcaption>
+</figure></p>
+</li>
+<li>
+<p>En este ejercicio vamos a practicar los comandos básicos de HDFS. Una vez arrancado <em>Hadoop</em>:</p>
+<ol>
+<li>Crea la carpeta <code>/user/iabd/ejercicios</code>.</li>
+<li>Sube el archivo <code>el_quijote.txt</code> a la carpeta creada.</li>
+<li>Crea una copia en HDFS y llámala <code>el_quijote2.txt</code>.</li>
+<li>Recupera el principio del fichero <code>el_quijote2.txt</code>.</li>
+<li>Renombra <code>el_quijote2.txt</code> a <code>el_quijote_copia.txt</code>.</li>
+<li>Adjunta una captura desde el interfaz web donde se vean ambos archivos.</li>
+<li>Vuelve al terminal y elimina la carpeta con los archivos contenidos mediante un único comando.</li>
+</ol>
+</li>
+<li>
+<p>(opcional) Vamos a practicar los comandos de gestión de instantáneas y administración de HDFS. Para ello:</p>
+<ol>
+<li>Crea la carpeta <code>/user/iabd/instantaneas</code>.</li>
+<li>Habilita las <em>snapshots</em> sobre la carpeta creada.</li>
+<li>Sube el archivo <code>el_quijote.txt</code> a la carpeta creada.</li>
+<li>Crea una copia en HDFS y llámala <code>el_quijote_snapshot.txt</code>.</li>
+<li>Crea una instantánea de la carpeta llamada <code>ss1</code>.</li>
+<li>Elimina ambos ficheros del quijote.</li>
+<li>Comprueba que la carpeta está vacía.</li>
+<li>Recupera desde <code>ss</code> el archivo <code>el_quijote.txt</code>.</li>
+<li>Crea una nueva instantánea de la carpeta llamada <code>ss2</code>.</li>
+<li>Muestra el contenido de la carpeta <code>/user/iabd/instantaneas</code> así como de sus <em>snapshots</em>.</li>
+</ol>
+</li>
+<li>
+<p>(opcional) HDFS por dentro</p>
+<ol>
+<li>Accede al archivo de configuración <code>hdfs-site.xml</code> y averigua la carpeta donde se almacena el <em>namenode</em>.</li>
+<li>Muestra los archivos que contiene la carpeta <code>current</code> dentro del <em>namenode</em></li>
+<li>Comprueba el id del archivo <code>VERSION</code>.</li>
+<li>En los siguientes pasos vamos a realizar un checkpoint manual para sincronizar el sistema de ficheros. Para ello entramos en modo <em>safe</em> con el comando <code>hdfs dfsadmin -safemode enter</code>, de manera que impedamos que se trabaje con el sistema de ficheros mientras lanzamos el <em>checkpoint</em>.</li>
+<li>Comprueba mediante el interfaz gráfico que el modo seguro está activo (<em>Safe mode is ON</em>).</li>
+<li>Ahora realiza el checkpoint con el comando <code>hdfs dfsadmin -saveNamespace</code></li>
+<li>Vuelve a entrar al modo normal (saliendo del modo seguro mediante <code>hdfs dfsadmin -safemode leave</code>)</li>
+<li>Accede a la carpeta del <em>namenode</em> y comprueba que los <em>fsimage</em> del <em>namenode</em> son iguales.</li>
+</ol>
+</li>
+</ol>
+<p>FIXME: completar HDFS con documento 2 del MEC de SBD sobre teoría de discos RAID</p>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>

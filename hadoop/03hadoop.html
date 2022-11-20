@@ -1,0 +1,1573 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/03hadoop.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>Hadoop - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Hadoop - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/03hadoop.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/hadoop/03hadoop.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Hadoop - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/03hadoop.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#hadoop" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Hadoop
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT5.- Ecosistema Hadoop</a>
+          
+            <label for="__nav_2_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          UT5.- Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">UT6.- Datos en el cloud</a>
+          
+            <label for="__nav_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT6.- Datos en el cloud" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          UT6.- Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#componentes-y-ecosistema" class="md-nav__link">
+    Componentes y Ecosistema
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hdfs" class="md-nav__link">
+    HDFS
+  </a>
+  
+    <nav class="md-nav" aria-label="HDFS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloques" class="md-nav__link">
+    Bloques
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namenode" class="md-nav__link">
+    Namenode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datanode" class="md-nav__link">
+    Datanode
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mapreduce" class="md-nav__link">
+    MapReduce
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yarn" class="md-nav__link">
+    YARN
+  </a>
+  
+    <nav class="md-nav" aria-label="YARN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-manager" class="md-nav__link">
+    Resource Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#node-manager" class="md-nav__link">
+    Node Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#application-master" class="md-nav__link">
+    Application Master
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#instalacion" class="md-nav__link">
+    Instalación
+  </a>
+  
+    <nav class="md-nav" aria-label="Instalación">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuracion" class="md-nav__link">
+    Configuración
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#puesta-en-marcha" class="md-nav__link">
+    Puesta en marcha
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hola-mundo" class="md-nav__link">
+    Hola Mundo
+  </a>
+  
+    <nav class="md-nav" aria-label="Hola Mundo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mapreduce-en-python" class="md-nav__link">
+    MapReduce en Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hadoop-streaming" class="md-nav__link">
+    Hadoop Streaming
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="hadoop">Hadoop<a class="headerlink" href="#hadoop" title="Permanent link">&para;</a></h1>
+<figure style="float: right;">
+    <img src="images/03hadoop-logo.jpg" width="150">
+    <figcaption>Logo de Apache Hadoop</figcaption>
+</figure>
+
+<p>Si <em>Big Data</em> es la filosofía de trabajo para grandes volúmenes de datos, <em>Apache Hadoop</em> (<a href="http://hadoop.apache.org/">http://hadoop.apache.org/</a>) es la tecnología catalizadora. <em>Hadoop</em> puede escalar hasta miles de ordenadores creando un clúster con un almacenamiento del orden de <em>petabytes</em> de información.</p>
+<p>Más que un producto, es un proyecto <em>open source</em> que aglutina una serie de herramientas para el procesamiento distribuido de grandes conjuntos de datos a través de clústers de ordenadores utilizando modelos de programación sencillos.</p>
+<p>Sus características son:</p>
+<ul>
+<li>Confiable: crea múltiples copias de los datos de manera automática y, en caso de fallo, vuelve a desplegar la lógica de procesamiento.</li>
+<li>Tolerante a fallos: tras detectar un fallo aplica una recuperación automática. Cuando un componente se recupera, vuelve a formar parte del clúster. En <em>Hadoop</em> los fallos de hardware se tratan como una regla, no como una excepción.</li>
+<li>Escalable: los datos y su procesamiento se distribuyen sobre un clúster de ordenadores (escalado horizontal), desde un único servidor a miles de máquinas, cada uno ofreciendo computación y almacenamiento local.</li>
+<li>Portable: se puede instalar en todo tipos de <em>hardware</em> y sistemas operativos.</li>
+</ul>
+<p>Hadoop está diseñado para ejecutar sistemas de procesamiento en el mismo clúster que almacena los datos (<em>data local computing</em>). La filosofía de Hadoop es almacenar todos los datos en un lugar y procesar los datos en el mismo lugar, esto es, mover el procesamiento al almacén de datos y no mover los datos al sistema de procesamiento.</p>
+<p>Esto lo logra mediante un entorno distribuido de datos y procesos. El procesamiento se realiza en paralelo a través de nodos de datos en un sistema de ficheros distribuidos (HDFS), donde se distingue entre:</p>
+<ul>
+<li>Nodos maestros: encargados de los procesos de gestión global. Normalmente se necesitan 3. Su hardware tiene mayores requisitos.</li>
+<li>Nodos esclavos/<em>workers</em>: tratan con los datos locales y los procesos de aplicación. Su número dependerá de las necesidad de nuestros sistemas, pero pueden estar comprendido entre 4 y 10.000. Su hardware es relativamente barato (<em>commodity hardware</em>) mediante servidores X86.</li>
+</ul>
+<p>Cada vez que añadimos un nuevo nodo esclavo, aumentamos tanto la capacidad como el rendimiento de nuestro sistema.</p>
+<p>En la actualidad se ha impuesto Hadoop v3 (la última versión a día de hoy es la 3.3.1), aunque todavía existe mucho código para Hadoop v2.</p>
+<h2 id="componentes-y-ecosistema">Componentes y Ecosistema<a class="headerlink" href="#componentes-y-ecosistema" title="Permanent link">&para;</a></h2>
+<p>El núcleo se compone de:</p>
+<ul>
+<li>un conjunto de utilidades comunes (<em>Hadoop Common</em>)</li>
+<li>un sistema de ficheros distribuidos (<em>Hadoop Distributed File System</em> ↔ <em>HDFS</em>).</li>
+<li>un gestor de recursos para el manejo del clúster y la planificación de procesos (<em>YARN</em>)</li>
+<li>un sistema para procesamiento paralelo de grandes conjuntos de datos (<em>MapReduce</em>)</li>
+</ul>
+<p>Estos elementos permiten trabajar casi de la misma forma que si tuviéramos un sistema de fichero locales en nuestro ordenador personal, pero realmente los datos están repartidos entre miles de servidores.</p>
+<p>Las aplicaciones se desarrollan a alto nivel, sin tener constancia de las características de la red. De esta manera, los científicos de datos se centran en la analítica y no en la programación distribuida.</p>
+<p>Sobre este conjunto de herramientas existe un ecosistema "infinito" con tecnologías que facilitan el acceso, gestión y extensión del propio Hadoop.</p>
+<p><img alt="Ecosistema Hadoop" src="images/03hadoop-ecosystem01.jpg" /></p>
+<p>Las más utilizadas son:</p>
+<ul>
+<li><a href="http://hive.apache.org/index.html">Hive</a>: Permite acceder a HDFS como si fuera una Base de datos, ejecutando comandos muy parecido a SQL para recuperar valores (<em>HiveSQL</em>). Simplifica enormemente el desarrollo y la gestión con <em>Hadoop</em>.</li>
+<li><a href="http://hbase.apache.org/">HBase</a>: Es el sistema de almacenamiento <em>NoSQL</em> basado en columnas para <em>Hadoop</em>.<ul>
+<li>Es una base de datos de código abierto, distribuida y escalable para el almacenamiento de Big Data.</li>
+<li>Escrita en Java, implementa y proporciona capacidades similares sobre Hadoop y HDFS.</li>
+<li>El objetivo de este proyecto es el de trabajar con grandes tablas, de miles de millones de filas de millones de columnas, sobre un clúster <em>Hadoop</em>.</li>
+</ul>
+</li>
+<li><a href="https://pig.apache.org/">Pig</a>: Lenguaje de alto de nivel para analizar grandes volúmenes de datos. Trabaja en paralelo, lo que permite gestionar gran cantidad de información. Realmente es un compilador que genera comandos MapReduce, mediante el lenguaje textual denominado <em>Pig Latin</em>.</li>
+<li><a href="http://sqoop.apache.org/">Sqoop</a>: Permite transferir un gran volumen de datos de manera eficiente entre Hadoop y gestores de datos estructurados.</li>
+<li><a href="https://flume.apache.org/">Flume</a>: Servicio distribuido y altamente eficiente para distribuir, agregar y recolectar grandes cantidades de información. Es útil para cargar y mover información en Hadoop, como ficheros de logs, bloques de Twitter/Reddit, etc. Utiliza una arquitectura de tipo streaming con un flujo de datos muy potente y personalizables</li>
+<li><a href="https://zookeeper.apache.org/">ZooKeeper</a>: Servicio para mantener la configuración, coordinación y aprovisionamiento de aplicaciones distribuidas. No sólo se utiliza en Hadoop, pero es muy útil en esa arquitectura, eliminando la complejidad de la gestión distribuida de la plataforma.</li>
+<li><a href="http://spark.apache.org/">Spark</a>: Es un motor muy eficiente de procesamiento de datos a gran escala. Implementa procesamiento en tiempo real al contrario que MapReduce, lo que provoca que sea más rápido. Para ello, en vez de almacenar los datos en disco, trabaja de forma masiva en memoria. Puede trabajar de forma autónoma, sin necesidad de Hadoop.</li>
+<li><a href="https://ambari.apache.org/">Ambari</a> es una herramienta para instalar, configurar, mantener y monitorizar Hadoop.</li>
+</ul>
+<p>Si queremos empezar a utilizar <em>Hadoop</em> y todo su ecosistema, disponemos de diversas distribuciones con toda la arquitectura, herramientas y configuración ya preparadas. Las más reseñables son:</p>
+<ul>
+<li><a href="https://aws.amazon.com/es/emr">Amazon Elastic MapReduce (EMR)</a> de AWS.</li>
+<li><a href="https://www.cloudera.com/products/open-source/apache-hadoop/key-cdh-components.html">CDH</a> de Cloudera</li>
+<li><a href="https://azure.microsoft.com/es-es/services/hdinsight/">Azure HDInsight</a> de Microsoft</li>
+</ul>
+<h2 id="hdfs">HDFS<a class="headerlink" href="#hdfs" title="Permanent link">&para;</a></h2>
+<p>Es la capa de almacenamiento de Hadoop, y como tal, es un sistema de ficheros distribuido y tolerante a fallos que puede almacenar gran cantidad de datos, escalar de forma incremental y sobrevivir a fallos de hardware sin perder datos. Se basa en el <a href="https://static.googleusercontent.com/media/research.google.com/es//archive/gfs-sosp2003.pdf"><em>paper</em></a> que publicó Google explicando su <em>Google File System</em> en 2003.</p>
+<p>En un sistema que reparte los datos entre todos los nodos del clúster de Hadoop, dividiendo los ficheros en bloques (cada bloque por defecto es de 128MB) y almacenando copias duplicadas a través de los nodos. Por defecto se replica en 3 nodos distintos (esto se conoce como el <strong>factor de replicación</strong>).</p>
+<p>HDFS asegura que se puedan añadir servidores para incrementar el tamaño de almacenamiento de forma lineal, de manera que al introducir un nuevo nodo, se incrementa tanto la redundancia como la capacidad de almacenamiento.</p>
+<p>Está planteado para escribir los datos una vez y leerlos muchos veces (<em>WORM / Write Once, Read Many</em>). Las escrituras se pueden realizar a mano, o desde herramientas como <em>Flume</em> y <em>Sqoop</em>, que estudiaremos más adelante.</p>
+<p>No ofrece buen rendimiento para:</p>
+<ul>
+<li>Accesos de baja latencia. Realmente se utiliza para almacenar datos de entrada necesarios para procesos de computación.</li>
+<li>Ficheros pequeños (a menos que se agrupen). Funciona mejor con grandes cantidades de ficheros grandes, es decir, mejor millones de ficheros de 100MB que billones de ficheros de 1MB.</li>
+<li>Múltiples escritores.</li>
+<li>Modificaciones arbitrarias de ficheros.</li>
+</ul>
+<p>Así pues, los datos, una vez escritos en HDFS son immutables. Cada fichero de HDFS solo permite añadir contenido (<em>append-only</em>). Una vez se ha creado y escrito en él, solo podemos añadir contenido o eliminarlo. Es decir, a priori, no podemos modificar los datos.</p>
+<div class="admonition tip">
+<p class="admonition-title">HBase / Hive</p>
+<p>Tanto HBase como Hive ofrecen una capa por encima de HDFS para dar soporte a la modificación de los datos, como en cualquier base de datos.</p>
+</div>
+<h3 id="bloques">Bloques<a class="headerlink" href="#bloques" title="Permanent link">&para;</a></h3>
+<p>Un bloque es la cantidad mínima de datos que puede ser leída o escrita. El tamaño predeterminado de HDFS son 128 MB, ya que como hemos comentado, Hadoop está pensado para trabajar con ficheros de gran tamaño.</p>
+<p>Todos los ficheros están divididos en bloques. Esto quiere decir que si subimos un fichero de 600MB, lo dividirá en 5 bloques de 128MB. Estos bloques se distribuyen por todos los nodos de datos del clúster de Hadoop.</p>
+<p>A partir del <em>factor de replicación</em>, cada bloque se almacena varias veces en máquinas distintas. El valor por defecto es 3. Por lo tanto, el archivo de 600MB que teníamos dividido en 5 bloques de 128MB, si lo replicamos tres veces, lo tendremos repartido en 15 bloques entre todos los nodos del clúster.</p>
+<figure style="align: center;">
+    <img src="images/03hdfsReplicacion.png" width="500">
+    <figcaption>Factor de replicación HDFS</figcaption>
+</figure>
+
+<p>Respecto a los permisos de lectura y escritura de los ficheros, sigue la misma filosofía de asignación de usuarios y grupos que se realiza en los sistemas <em>Posix</em>. Es una buena práctica crear una carpeta <code>/user/</code> en el raíz de HDFS, de forma similar al <code>/home/</code>de Linux.</p>
+<p>En HDFS se distinguen las siguientes máquinas:</p>
+<ul>
+<li><em>Namenode</em>: Actúa como máster y almacena todos los metadatos necesarios para construir el sistema de ficheros a partir de sus bloques. Tiene control sobre dónde están todos los bloques.</li>
+<li><em>Datanode</em>: Son los esclavos, se limitan a almacenar los bloques que compone cada fichero.</li>
+<li><em>Secondary Namenode</em>: Su función principal es tomar puntos de control de los metadatos del sistema de archivos presentes en namenode.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/03hdfsArquitectura.png" width="500">
+    <figcaption>Arquitectura HDFS</figcaption>
+</figure>
+
+<h3 id="namenode">Namenode<a class="headerlink" href="#namenode" title="Permanent link">&para;</a></h3>
+<p>Tal como hemos comentado, existen dos tipos de nodos. El principal se conoce como <strong>Namenode</strong>:</p>
+<ul>
+<li>Solo existe uno, y hace de servidor principal.</li>
+<li>Nodo al que se tienen que conectar los clientes para realizar las lecturas / escrituras.</li>
+<li>Mantiene el árbol del sistema de archivos (<em>espacio de nombre</em>) y los metadatos para todos los ficheros y directorios en el árbol, de manera que sabe en qué nodo del clúster está cada bloque de información (<em>mapa de bloques</em>)</li>
+<li>Los metadatos se almacenan tanto en memoria (para acelerar su uso) como en disco a la vez, por lo que es un nodo que requiere de mucha memoria RAM.</li>
+<li>Los bloques nunca pasan por el <em>NameNode</em>, se transfieren entre <em>DataNodes</em> y/o el cliente. Es decir, el <em>Namenode</em> no es responsable de almacenar o transferir los datos.</li>
+<li>Si se cae, no hay acceso a HDFS, por lo que es crítico el mantenimiento de copias de seguridad.</li>
+</ul>
+<p>El segundo tipo es el <strong>Secondary Namenode</strong>:</p>
+<ul>
+<li>Su función principal es guardar una copia de <em>FsImage</em> y <em>EditLog</em>:<ul>
+<li><em>FsImage</em>: instantánea de los metadatos del sistema de archivos.</li>
+<li><em>EditLog</em>: registro de transacciones que contiene los registros de cada cambio (<em>deltas</em>) que se produce en los metadatos del sistema de archivos.</li>
+</ul>
+</li>
+<li>No se trata de un nodo de respaldo</li>
+<li>Por lo general se ejecuta en una máquina distinta</li>
+</ul>
+<p>Además de distribuir los bloques entre distintos nodos de datos, también los replica (con un factor de replicación igual a tres, los replicaría en 3 nodos diferentes, 2 en el mismo rack y 1 en otro diferente) para evitar pérdidas de información si alguno de los nodos falla.</p>
+<p>Cuando una aplicación cliente necesita leer o modificar un bloque de datos, el <em>Namenode</em> le indica en qué nodo se localiza esa información. También se asegura de que los nodos no estén caídos y que la información esté replicada, para asegurar su disponibilidad aún en estos casos.</p>
+<p>Para hacernos una idea, independientemente del cloud, <em>Facebook</em> utiliza un clúster de 1100 máquinas, con 8800 nodos y cerca de 12 PB de almacenamiento.</p>
+<h3 id="datanode">Datanode<a class="headerlink" href="#datanode" title="Permanent link">&para;</a></h3>
+<ul>
+<li>De este tipo de nodo habrá más de uno en cada clúster. Por cada <em>Namenode</em> podemos tener miles de <em>Datanodes</em></li>
+<li>Almacena y lee bloques de datos.</li>
+<li>Recuperado por <em>Namenode</em> clientes.</li>
+<li>Reportan al <em>Namenode</em> la lista de bloques que están almacenando.</li>
+<li>Pueden ir en distintos discos.</li>
+<li>Guarda un <em>checksum</em> del bloque.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/03hdfsNodes.png">
+    <figcaption>Relación entre Namenodes y Datanodes HDFS</figcaption>
+</figure>
+
+<h2 id="mapreduce">MapReduce<a class="headerlink" href="#mapreduce" title="Permanent link">&para;</a></h2>
+<p>Se trata de un paradigma de programación funcional en dos fases, la de mapeo y la de reducción, y define el algoritmo que utiliza <em>Hadoop</em> para paralelizar las tareas. Un algoritmo MapReduce divide los datos, los procesa en paralelo, los reordena, combina y agrega de vuelta los resultados mediante un formato clave/valor.</p>
+<p>Sin embargo, este algoritmo no casa bien con el análisis interactivo o programas iterativos, ya que persiste los datos en disco entre cada uno de los pasos del mismo, lo que con grandes <em>datasets</em> conlleva una penalización en el rendimiento.</p>
+<p>Un <strong>job</strong> de <em>MapReduce</em> se compone de múltiples tareas <em>MapReduce</em>, donde la salida de una tarea es la entrada de la siguiente.</p>
+<p>El siguiente gráfico muestra un ejemplo de una empresa que fabrica juguetes de colores. Cuando un cliente compra un juguete desde la página web, el pedido se almacena como un fichero en <em>Hadoop</em> con los colores de los juguetes adquiridos. Para averiguar cuantas unidades de cada color debe preparar la fábrica, se emplea un algoritmo <em>MapReduce</em> para contar los colores:</p>
+<p><img alt="Ejemplo simplificado MapReduce" src="images/03map-reduce01.png" /></p>
+<p>Como sugiere el nombre, el proceso se divide principalmente en dos fases:</p>
+<ul>
+<li>Fase de mapeo (<em>Map</em>) — Los documentos se parten en pares de clave/valor. Hasta que no se reduzca, podemos tener muchos duplicados.</li>
+<li>Fase de reducción (<em>Reduce</em>) — Es en cierta medida similar a un <em>"group by"</em> de SQL. Las ocurrencias similares se agrupan, y dependiendo de la función de reducción, se puede crear un resultado diferente. En nuestro ejemplo queremos contar los colores, y eso es lo que devuelve nuestra función.</li>
+</ul>
+<p>Realmente, es un proceso más complicado:</p>
+<p><img alt="Ejemplo fase a fase de conteo de colores" src="images/03map-reduce02.png" /></p>
+<ol>
+<li>Lectura desde HDFS de los ficheros de entrada como pares clave/valor.</li>
+<li>Pasar cada línea de forma separada al mapeador, teniendo tantos mapeadores como bloques de datos tengamos.</li>
+<li>El mapeador parsea los colores (claves) de cada fichero y produce un nuevo fichero para cada color con el número de ocurrencias encontradas (valor), es decir, mapea una clave (color) con un valor (número de ocurrencias).</li>
+<li>Para facilitar la agregación, se ordenan y/o barajan los datos a partir de la clave.</li>
+<li>La fase de reducción suma las ocurrencias de cada color y genera un fichero por clave con el total de cada color.</li>
+<li>Las claves se unen en un único fichero de salida que se persiste en HDFS.</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">No es oro todo lo que reluce</p>
+<p>Hadoop facilita el trabajo con grandes volúmenes de datos, pero montar un clúster funcional no es una cosa trivial. Existen gestores de clústers que hacen las cosas un poco menos incómodas (como son <a href="https://ambari.apache.org/">Apache Ambari</a> o <a href="https://mesos.apache.org/">Apache Mesos</a>), aunque la tendencia es utilizar una solución cloud que nos evita toda la instalación y configuración.</p>
+</div>
+<p>Tal como comentamos al inicio, uno de los puntos débiles de <em>Hadoop</em> es el trabajo con algoritmos iterativos, los cuales son fundamentales en la parte de IA. La solución es el uso de <a href="https://spark.apache.org/">Spark</a> (que estudiaremos al final del curso), que mejora el rendimiento por una orden de magnitud.</p>
+<h2 id="yarn">YARN<a class="headerlink" href="#yarn" title="Permanent link">&para;</a></h2>
+<p><em>Yet Another Resource Negotiator</em> es un distribuidor de datos y gestor de recursos distribuidos. Forma parte de Hadoop desde la versión 2, y abstrae la gestión de recursos de los procesos <em>MapReduce</em> lo que implica una asignación de recursos más efectiva. YARN soporta varios frameworks de procesamiento distribuido, como <em>MapReduce v2</em>, <em>Tez</em>, <em>Impala</em>, <em>Spark</em>, etc..</p>
+<figure style="align: center;">
+    <img src="images/03yarnArquitectura.png">
+    <figcaption>YARN y Hadoop</figcaption>
+</figure>
+
+<p>El objetivo principal de YARN es separar en dos servicios las funcionalidades de gestión de recursos de la monitorización/planificación de tareas.</p>
+<p>Se divide en tres componentes principales: un <em>Resource Manager</em>, múltiples <em>Node Manager</em> y varios <em>ApplicationMaster</em>.</p>
+<p>La idea es tener un <em>Resource Manager</em> por clúster y un <em>Application Master</em> por aplicación, considerando una aplicación tanto un único <em>job</em> como un conjunto de jobs cíclicos.</p>
+<p>El <em>Resource Manager</em> y el <em>Node Manager</em> componen el framework de computación de datos. En concreto, el <em>ResourceManager</em> controla el arranque de la aplicación, siendo la autoridad que orquesta los recursos entre todas las aplicaciones del sistema. A su vez, tendremos tantos <em>NodeManager</em> como <em>datanodes</em> tenga nuestro clúster, siendo responsables de gestionar y monitorizar los recursos de cada nodo (CPU, memoria, disco y red) y reportar estos datos al <em>Resource Manager</em>.</p>
+<p>El <em>Application Master</em> es una librería específica encargada de negociar los recursos con el <em>ResourceManager</em> y de trabajar con los <em>Node Manager</em> para ejecutar y monitorizar las tareas.</p>
+<p>Finalmente, en nuestro clúster, tendremos corriendo un <em>Job History Server</em> encargado de archivar los fichero de log de los <em>jobs</em>. Aunque es un proceso opcional, se recomienda su uso para monitorizar los jobs ejecutados.</p>
+<figure style="align: center;">
+    <img src="images/03yarn-components.png">
+    <figcaption>Componentes en YARN</figcaption>
+</figure>
+
+<h3 id="resource-manager"><em>Resource Manager</em><a class="headerlink" href="#resource-manager" title="Permanent link">&para;</a></h3>
+<p>El gestor de recursos, a su vez, se divide en dos componentes:</p>
+<ul>
+<li>El <em>Scheduler</em> o planificador es el encargado de gestionar la distribución de los recursos del clúster de YARN. Además, las aplicaciones usan los recursos que el <em>Resource Manager</em> les ha proporcionado en función de sus criterios de planificación. Este planificador no monitoriza el estado de ninguna aplicación ni les ofrece garantías de ejecución, ni recuperación por fallos de la aplicación o el hardware, sólo planifica. Este componente realiza su planificación a partir de los requisitos de recursos necesarios por las aplicaciones (CPU, memoria, disco y red).</li>
+<li><em>Applications Manager</em>:  es el componente del <em>Resource Manager</em> responsable de aceptar las peticiones de trabajos, negociar el contenedor con los recursos necesarios en el que ejecutar la <em>Application Master</em> y proporcionar reinicios de los trabajos en caso de que fuera necesario debido a errores.</li>
+</ul>
+<p>El <em>Resource Manager</em> mantiene un listado de los <em>Node Manager</em> activos y de sus recursos disponibles.</p>
+<h3 id="node-manager"><em>Node Manager</em><a class="headerlink" href="#node-manager" title="Permanent link">&para;</a></h3>
+<figure style="float: right; width: 300px">
+    <img src="images/03yarn-nodemanager.png">
+    <figcaption>Contenedores en NodeManager</figcaption>
+</figure>
+
+<p>Arranca el <em>Application Masters</em> tras petición del <em>Resource Manager</em>, iniciando las tareas/jobs que le indique el <em>Application Master</em>.</p>
+<p>Gestiona los trabajos en contenedores proporcionado los recursos computacionales necesarios para las aplicaciones.</p>
+<p>Los contenedores YARN tienen una asignación de recursos (CPU, memoria, disco y red) fija de un host del clúster y el <em>Node Manager</em> es el encargado de monitorizar esta asignación. Si un proceso sobrepasase los recursos asignados, por ejemplo, sería el encargado de detenerlo. Además, mapean las variables de entorno necesarias, las dependencias y los servicios necesarios para crear los procesos.</p>
+<p>También implementa <em>heartbeats</em> para mantener informado del estado al <em>Resource Manager</em>. Finalmente, almacena los <em>logs</em> de aplicación en HDFS.</p>
+<h3 id="application-master"><em>Application Master</em><a class="headerlink" href="#application-master" title="Permanent link">&para;</a></h3>
+<p>El <em>Application Master</em> es el responsable de negociar los recursos apropiados con el <em>Resource Manager</em> y monitorizar su estado y su progreso. También coordina la ejecución de todas las tareas en las que puede dividirse su aplicación.</p>
+<p>Podemos ver la secuencia de trabajo y colaboración de estos componentes en el siguiente gráfico:</p>
+<figure style="align: center;">
+    <img src="images/03yarn_architecture.gif">
+    <figcaption>Secuencia de trabajo YARN</figcaption>
+</figure>
+
+<ol>
+<li>El cliente envía una aplicación YARN.</li>
+<li><em>Resource Manager</em> reserva los recursos en un contenedor para su ejecución.</li>
+<li>El <em>Application Manager</em> se registra con el <em>Resource Manager</em> y pide los recursos necesarios.</li>
+<li>El <em>Application Manager</em> notifica al <em>Node Manager</em> la ejecución de los contenedores. Se ejecuta la aplicación YARN en el/los contenedor/es correspondiente.</li>
+<li>El <em>Application Master</em> monitoriza la ejecución y reporta el estado al <em>Resource Manager</em> y al <em>Application Manager</em>.</li>
+<li>Al terminar la ejecución, el <em>Application Manager</em> lo notifica al <em>Resource Manager</em>.</li>
+</ol>
+<p>YARN soporta la reserva de recursos mediante el <a href="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/ReservationSystem.html"><em>Reservation System</em></a>, un componente que permite a los usuarios especificar un perfil de recurso y restricciones temporales (<em>deadlines</em>) y posteriormente reservar recursos para asegurar la ejecución predecibles de las tareas importantes. Este sistema registra los recursos a lo largo del tiempo, realiza control de admisión para las reservas, e informa dinámicamente al planificador para asegurarse que se produce la reserva.</p>
+<p>Para conseguir una alta escalabilidad (del orden de miles de nodos), YARN ofrece el concepto de <a href="https://hadoop.apache.org/docs/stable/hadoop-yarn/hadoop-yarn-site/Federation.html"><em>Federación</em></a>. Esta funcionalidad permite conectar varios clústeres YARN y hacerlos visibles como un clúster único. De esta forma puede ejecutar trabajos muy pesados y distribuidos.</p>
+<div class="admonition info">
+<p class="admonition-title">Hadoop v1</p>
+<p>MapReduce en hadoop-2.x mantiene la compatibilidad del API con versiones previas (hadoop-1.x). De esta manera, todo los <em>jobs</em> de <em>MapReduce</em> funcionan perfectamente con YARN sólo recompilando el código.</p>
+<p>En <em>Hadoop v1</em> los componentes encargados de realizar el procesamiento eran el <em>JobTracker</em> (situado en el <em>namenode</em>) y los <em>TaskTracker</em> (situados en los <em>datanodes</em>).</p>
+</div>
+<h2 id="instalacion">Instalación<a class="headerlink" href="#instalacion" title="Permanent link">&para;</a></h2>
+<p>Para trabajar en esta y las siguientes sesiones, vamos a utilizar la máquina virtual que tenemos compartida en <em>Aules</em>. A partir de la OVA de VirtualBox, podrás entrar con el usuario <em>iabd</em> y la contraseña <em>iabd</em>.</p>
+<p>Si quieres instalar el software del curso, se recomienda crear una máquina virtual con cualquier distribución Linux.
+En mi caso, yo lo he probado en la versión <em>Lubuntu 20.04 LTS</em> y la versión 3.3.1 de <em>Hadoop</em>. Puedes seguir las instrucciones del artículo <a href="https://noviello.it/es/como-instalar-y-configurar-hadoop-en-ubuntu-20-04-lts/">Cómo instalar y configurar Hadoop en Ubuntu 20.04 LTS</a>.</p>
+<p>Para trabajar en local tenemos montada una solución que se conoce como <em>pseudo-distribuida</em>, porque es al mismo tiempo maestro y esclavo. En el mundo real o si utilizamos una solución cloud tendremos un nodo maestro y múltiples nodos esclavos.</p>
+<h3 id="configuracion">Configuración<a class="headerlink" href="#configuracion" title="Permanent link">&para;</a></h3>
+<p>Los archivos que vamos a revisar a continuación se encuentran dentro de la carpeta <code>$HADOOP_HOME/etc/hadoop</code>.</p>
+<p>El archivo que contiene la configuración general del clúster es el archivo <code>core-site.xml</code>. En él se configura cual será el sistema de ficheros, que normalmente será <code>hdfs</code>, indicando el dominio del nodo que será el maestro de datos (<em>namenode</em>) de la arquitectura. Por ejemplo, su contenido será similar al siguiente:</p>
+<div class="highlight"><span class="filename">core-site.xml</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;configuration&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="3 "></span>        <span class="nt">&lt;name&gt;</span>fs.defaultFS<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="4 "></span>        <span class="nt">&lt;value&gt;</span>hdfs://iabd-virtualbox:9000<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="6 "></span><span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>El siguiente paso es configurar el archivo <code>hdfs-site.xml</code> donde se indica tanto el factor de replicación como la ruta donde se almacenan tanto los metadatos (<em>namenode</em>) como los datos en sí (<em>datanode</em>):</p>
+<div class="highlight"><span class="filename">hdfs-site.xml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nt">&lt;configuration&gt;</span>
+<span class="linenos" data-linenos=" 2 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos=" 3 "></span>        <span class="nt">&lt;name&gt;</span>dfs.replication<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos=" 4 "></span>        <span class="nt">&lt;value&gt;</span>1<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="nt">&lt;name&gt;</span>dfs.namenode.name.dir<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos=" 9 "></span>        <span class="nt">&lt;value&gt;</span>/opt/hadoop-data/hdfs/namenode<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="13 "></span>        <span class="nt">&lt;name&gt;</span>dfs.datanode.data.dir<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="14 "></span>        <span class="nt">&lt;value&gt;</span>/opt/hadoop-data/hdfs/datanode<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="16 "></span><span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<div class="admonition caution">
+<p class="admonition-title">Recuerda</p>
+<p>Si tuviésemos un clúster, en el nodo maestro sólo configuraríamos la ruta del <em>namenode</em> y en cada uno de los nodos esclavos, únicamente la ruta del <em>datanode</em>.</p>
+</div>
+<p>Para configurar YARN, primero editaremos el archivo <code>yarn-site.xml</code> para indicar quien va a ser el nodo maestro, así como el manejador y la gestión para hacer el <em>MapReduce</em>:</p>
+<div class="highlight"><span class="filename">yarn-site.xml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nt">&lt;configuration&gt;</span>
+<span class="linenos" data-linenos=" 2 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos=" 3 "></span>        <span class="nt">&lt;name&gt;</span>yarn.resourcemanager.hostname<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos=" 4 "></span>        <span class="nt">&lt;value&gt;</span>iabd-virtualbox<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos=" 6 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos=" 7 "></span>        <span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="nt">&lt;value&gt;</span>mapreduce_shuffle<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="11 "></span>        <span class="nt">&lt;name&gt;</span>yarn.nodemanager.aux-services.mapreduce_shuffle.class<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="12 "></span>        <span class="nt">&lt;value&gt;</span>org.apache.hadoop.mapred.ShuffleHandler<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="14 "></span><span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>Y finalmente el archivo <code>mapred-site.xml</code> para indicar que utilice YARN como framework <em>MapReduce</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;configuration&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="3 "></span>        <span class="nt">&lt;name&gt;</span>mapreduce.framework.name<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="4 "></span>        <span class="nt">&lt;value&gt;</span>yarn<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="6 "></span><span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<h2 id="puesta-en-marcha">Puesta en marcha<a class="headerlink" href="#puesta-en-marcha" title="Permanent link">&para;</a></h2>
+<figure style="float: right; width: 300px">
+    <img src="images/03start-dfs.png">
+    <figcaption>Arrancando HDFS</figcaption>
+</figure>
+
+<p>Para arrancar Hadoop/HDFS, hemos de ejecutar el comando <code>start-dfs.sh</code>. Al finalizar, veremos que ha arrancado el <em>namenode</em>, los <em>datanodes</em>, y el <em>secondary namenode</em>.</p>
+<p>Si en cualquier momento queremos comprobar el estado de los servicios y procesos en ejecución, tenemos el comando <code>jps</code>.</p>
+<p>Si accedemos a <code>http://iabd-virtualbox:9870/</code> podremos visualizar su interfaz web.</p>
+<figure style="align: center">
+    <img src="images/03hadoop-web.png">
+    <figcaption>Interfaz Web de Hadoop</figcaption>
+</figure>
+
+<figure style="float: right; width: 300px">
+    <img src="images/03start-yarn.png">
+    <figcaption>Arrancando YARN</figcaption>
+</figure>
+
+<p>Para arrancar YARN utilizaremos el comando <code>start-yarn.sh</code> para lanzar el <em>Resource Manager</em> y el <em>Node Manager</em>:</p>
+<p>Y a su vez, YARN también ofrece un interfaz web para obtener información relativa a los jobs ejecutados. Nos conectaremos con el nombre del nodo principal y el puerto <code>8088</code>. En nuestro caso lo hemos realizado a <code>http://hadoop-virtualbox:8088</code> obteniendo la siguiente página:</p>
+<figure style="align: center">
+    <img src="images/03yarn-web.png">
+    <figcaption>Interfaz Web de YARN</figcaption>
+</figure>
+
+<h2 id="hola-mundo">Hola Mundo<a class="headerlink" href="#hola-mundo" title="Permanent link">&para;</a></h2>
+<p>El primer ejemplo que se realiza como <em>Hola Mundo</em> en <em>Hadoop</em> suele ser una aplicación que cuente las ocurrencias de cada palabra que aparece en un documento de texto.</p>
+<p>En nuestro caso, vamos a contar las palabras del libro de <em>El Quijote</em>, el cual podemos descargar desde <a href="https://gist.github.com/jsdario/6d6c69398cb0c73111e49f1218960f79">https://gist.github.com/jsdario/6d6c69398cb0c73111e49f1218960f79</a>.</p>
+<p>Una vez arrancado <em>Hadoop</em> y <em>YARN</em>, vamos a colocar el libro dentro de HDFS (estos comandos los estudiaremos en profundidad en la siguiente sesión):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -put el_quijote.txt /user/iabd/
+</code></pre></div>
+<p>Hadoop tiene una serie de ejemplos ya implementados para demostrar el uso de MapReduce en la carpeta <code>$HADOOP_HOME/share/hadoop/mapreduce</code>. Así pues, podemos ejecutar el programa <code>wordcount</code> de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hadoop jar <span class="nv">$HADOOP_HOME</span>/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    wordcount /user/iabd/el_quijote.txt /user/iabd/salidaWC
+</code></pre></div>
+<p>Si nos fijamos en la salida del comando podremos ver una traza del proceso <em>MapReduce</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:49,015 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at iabd-virtualbox/127.0.1.1:8032
+<span class="linenos" data-linenos=" 2 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:49,844 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding <span class="k">for</span> path: /tmp/hadoop-yarn/staging/iabd/.staging/job_1642247847632_0001
+<span class="linenos" data-linenos=" 3 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:51,042 INFO input.FileInputFormat: Total input files to process : <span class="m">1</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:51,669 INFO mapreduce.JobSubmitter: number of splits:1
+<span class="linenos" data-linenos=" 5 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:51,968 INFO mapreduce.JobSubmitter: Submitting tokens <span class="k">for</span> job: job_1642247847632_0001
+<span class="linenos" data-linenos=" 6 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:51,968 INFO mapreduce.JobSubmitter: Executing with tokens: <span class="o">[]</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:52,351 INFO conf.Configuration: resource-types.xml not found
+<span class="linenos" data-linenos=" 8 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:52,355 INFO resource.ResourceUtils: Unable to find <span class="s1">&#39;resource-types.xml&#39;</span>.
+<span class="linenos" data-linenos=" 9 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:53,142 INFO impl.YarnClientImpl: Submitted application application_1642247847632_0001
+<span class="linenos" data-linenos="10 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:53,360 INFO mapreduce.Job: The url to track the job: http://iabd-virtualbox:8088/proxy/application_1642247847632_0001/
+<span class="linenos" data-linenos="11 "></span><span class="m">2022</span>-01-15 <span class="m">12</span>:59:53,360 INFO mapreduce.Job: Running job: job_1642247847632_0001
+<span class="linenos" data-linenos="12 "></span><span class="m">2022</span>-01-15 <span class="m">13</span>:00:08,894 INFO mapreduce.Job: Job job_1642247847632_0001 running <span class="k">in</span> uber mode : <span class="nb">false</span>
+<span class="linenos" data-linenos="13 "></span><span class="m">2022</span>-01-15 <span class="m">13</span>:00:08,932 INFO mapreduce.Job:  map <span class="m">0</span>% reduce <span class="m">0</span>%
+<span class="linenos" data-linenos="14 "></span><span class="m">2022</span>-01-15 <span class="m">13</span>:00:32,985 INFO mapreduce.Job:  map <span class="m">100</span>% reduce <span class="m">0</span>%
+<span class="linenos" data-linenos="15 "></span><span class="m">2022</span>-01-15 <span class="m">13</span>:00:47,344 INFO mapreduce.Job:  map <span class="m">100</span>% reduce <span class="m">100</span>%
+<span class="linenos" data-linenos="16 "></span><span class="m">2022</span>-01-15 <span class="m">13</span>:00:48,373 INFO mapreduce.Job: Job job_1642247847632_0001 completed successfully
+</code></pre></div>
+<p>Podemos observar como se crea un <em>job</em> que se envía a YARN, el cual ejecuta el proceso <em>MapReduce</em>, el cual tarda alrededor de 40 segundos. A continuación aparecen estadísticas del proceso:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="m">2022</span>-01-15 <span class="m">13</span>:00:48,679 INFO mapreduce.Job: Counters: <span class="m">54</span>
+<span class="linenos" data-linenos=" 2 "></span>        File System Counters
+<span class="linenos" data-linenos=" 3 "></span>                FILE: Number of bytes <span class="nv">read</span><span class="o">=</span><span class="m">347063</span>
+<span class="linenos" data-linenos=" 4 "></span>                FILE: Number of bytes <span class="nv">written</span><span class="o">=</span><span class="m">1241519</span>
+<span class="linenos" data-linenos=" 5 "></span>                FILE: Number of <span class="nb">read</span> <span class="nv">operations</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos=" 6 "></span>                FILE: Number of large <span class="nb">read</span> <span class="nv">operations</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos=" 7 "></span>                FILE: Number of write <span class="nv">operations</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos=" 8 "></span>                HDFS: Number of bytes <span class="nv">read</span><span class="o">=</span><span class="m">1060376</span>
+<span class="linenos" data-linenos=" 9 "></span>                HDFS: Number of bytes <span class="nv">written</span><span class="o">=</span><span class="m">257233</span>
+<span class="linenos" data-linenos="10 "></span>                HDFS: Number of <span class="nb">read</span> <span class="nv">operations</span><span class="o">=</span><span class="m">8</span>
+<span class="linenos" data-linenos="11 "></span>                HDFS: Number of large <span class="nb">read</span> <span class="nv">operations</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="12 "></span>                HDFS: Number of write <span class="nv">operations</span><span class="o">=</span><span class="m">2</span>
+<span class="linenos" data-linenos="13 "></span>                HDFS: Number of bytes <span class="nb">read</span> erasure-coded<span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="14 "></span>        Job Counters 
+<span class="linenos" data-linenos="15 "></span>                Launched map <span class="nv">tasks</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="16 "></span>                Launched reduce <span class="nv">tasks</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="17 "></span>                Data-local map <span class="nv">tasks</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="18 "></span>                Total <span class="nb">time</span> spent by all maps <span class="k">in</span> occupied slots <span class="o">(</span>ms<span class="o">)=</span><span class="m">20353</span>
+<span class="linenos" data-linenos="19 "></span>                Total <span class="nb">time</span> spent by all reduces <span class="k">in</span> occupied slots <span class="o">(</span>ms<span class="o">)=</span><span class="m">12093</span>
+<span class="linenos" data-linenos="20 "></span>                Total <span class="nb">time</span> spent by all map tasks <span class="o">(</span>ms<span class="o">)=</span><span class="m">20353</span>
+<span class="linenos" data-linenos="21 "></span>                Total <span class="nb">time</span> spent by all reduce tasks <span class="o">(</span>ms<span class="o">)=</span><span class="m">12093</span>
+<span class="linenos" data-linenos="22 "></span>                Total vcore-milliseconds taken by all map <span class="nv">tasks</span><span class="o">=</span><span class="m">20353</span>
+<span class="linenos" data-linenos="23 "></span>                Total vcore-milliseconds taken by all reduce <span class="nv">tasks</span><span class="o">=</span><span class="m">12093</span>
+<span class="linenos" data-linenos="24 "></span>                Total megabyte-milliseconds taken by all map <span class="nv">tasks</span><span class="o">=</span><span class="m">20841472</span>
+<span class="linenos" data-linenos="25 "></span>                Total megabyte-milliseconds taken by all reduce <span class="nv">tasks</span><span class="o">=</span><span class="m">12383232</span>
+<span class="linenos" data-linenos="26 "></span>        Map-Reduce Framework
+<span class="linenos" data-linenos="27 "></span>                Map input <span class="nv">records</span><span class="o">=</span><span class="m">2186</span>
+<span class="linenos" data-linenos="28 "></span>                Map output <span class="nv">records</span><span class="o">=</span><span class="m">187018</span>
+<span class="linenos" data-linenos="29 "></span>                Map output <span class="nv">bytes</span><span class="o">=</span><span class="m">1808330</span>
+<span class="linenos" data-linenos="30 "></span>                Map output materialized <span class="nv">bytes</span><span class="o">=</span><span class="m">347063</span>
+<span class="linenos" data-linenos="31 "></span>                Input split <span class="nv">bytes</span><span class="o">=</span><span class="m">117</span>
+<span class="linenos" data-linenos="32 "></span>                Combine input <span class="nv">records</span><span class="o">=</span><span class="m">187018</span>
+<span class="linenos" data-linenos="33 "></span>                Combine output <span class="nv">records</span><span class="o">=</span><span class="m">22938</span>
+<span class="linenos" data-linenos="34 "></span>                Reduce input <span class="nv">groups</span><span class="o">=</span><span class="m">22938</span>
+<span class="linenos" data-linenos="35 "></span>                Reduce shuffle <span class="nv">bytes</span><span class="o">=</span><span class="m">347063</span>
+<span class="linenos" data-linenos="36 "></span>                Reduce input <span class="nv">records</span><span class="o">=</span><span class="m">22938</span>
+<span class="linenos" data-linenos="37 "></span>                Reduce output <span class="nv">records</span><span class="o">=</span><span class="m">22938</span>
+<span class="linenos" data-linenos="38 "></span>                Spilled <span class="nv">Records</span><span class="o">=</span><span class="m">45876</span>
+<span class="linenos" data-linenos="39 "></span>                Shuffled <span class="nv">Maps</span> <span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="40 "></span>                Failed <span class="nv">Shuffles</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="41 "></span>                Merged Map <span class="nv">outputs</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="42 "></span>                GC <span class="nb">time</span> elapsed <span class="o">(</span>ms<span class="o">)=</span><span class="m">394</span>
+<span class="linenos" data-linenos="43 "></span>                CPU <span class="nb">time</span> spent <span class="o">(</span>ms<span class="o">)=</span><span class="m">7470</span>
+<span class="linenos" data-linenos="44 "></span>                Physical memory <span class="o">(</span>bytes<span class="o">)</span> <span class="nv">snapshot</span><span class="o">=</span><span class="m">384565248</span>
+<span class="linenos" data-linenos="45 "></span>                Virtual memory <span class="o">(</span>bytes<span class="o">)</span> <span class="nv">snapshot</span><span class="o">=</span><span class="m">5007564800</span>
+<span class="linenos" data-linenos="46 "></span>                Total committed heap usage <span class="o">(</span>bytes<span class="o">)=</span><span class="m">295571456</span>
+<span class="linenos" data-linenos="47 "></span>                Peak Map Physical memory <span class="o">(</span>bytes<span class="o">)=</span><span class="m">247332864</span>
+<span class="linenos" data-linenos="48 "></span>                Peak Map Virtual memory <span class="o">(</span>bytes<span class="o">)=</span><span class="m">2500415488</span>
+<span class="linenos" data-linenos="49 "></span>                Peak Reduce Physical memory <span class="o">(</span>bytes<span class="o">)=</span><span class="m">137232384</span>
+<span class="linenos" data-linenos="50 "></span>                Peak Reduce Virtual memory <span class="o">(</span>bytes<span class="o">)=</span><span class="m">2507149312</span>
+<span class="linenos" data-linenos="51 "></span>        Shuffle Errors
+<span class="linenos" data-linenos="52 "></span>                <span class="nv">BAD_ID</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="53 "></span>                <span class="nv">CONNECTION</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="54 "></span>                <span class="nv">IO_ERROR</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="55 "></span>                <span class="nv">WRONG_LENGTH</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="56 "></span>                <span class="nv">WRONG_MAP</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="57 "></span>                <span class="nv">WRONG_REDUCE</span><span class="o">=</span><span class="m">0</span>
+<span class="linenos" data-linenos="58 "></span>        File Input Format Counters 
+<span class="linenos" data-linenos="59 "></span>                Bytes <span class="nv">Read</span><span class="o">=</span><span class="m">1060259</span>
+<span class="linenos" data-linenos="60 "></span>        File Output Format Counters 
+<span class="linenos" data-linenos="61 "></span>                Bytes <span class="nv">Written</span><span class="o">=</span><span class="m">257233</span>
+</code></pre></div>
+<p>Para poder obtener toda la información de un <em>job</em> necesitamos arrancar el <strong><em>Job History Server</em></strong>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>mapred --daemon start historyserver
+</code></pre></div>
+<p>De manera que si accedemos a la URL que se visualiza en el log, podremos ver de forma gráfica la información obtenida:</p>
+<figure style="align: center;">
+    <img src="images/03hadoopHistoryServer.png">
+    <figcaption>Resultado del History Server</figcaption>
+</figure>
+
+<p>Si accedemos al interfaz gráfico de HDFS (<a href="http://iabd-virtualbox:9870/explorer.html#/user/iabd/quijote/salidaWC">http://iabd-virtualbox:9870/explorer.html#/user/iabd/quijote/salidaWC</a>), podremos ver cómo se ha creado la carpeta <code>salidaWC</code> y dentro contiene dos archivos:</p>
+<ul>
+<li><code>_SUCCESS</code>: indica que el j<em>ob de </em>MapReduce* se ha ejecutado correctamente</li>
+<li><code>part-r-00000</code>: bloque de datos con el resultado</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/03hadoop-salidaWC.png">
+    <figcaption>Contenido HDFS de salidaWC</figcaption>
+</figure>
+
+<h3 id="mapreduce-en-python">MapReduce en Python<a class="headerlink" href="#mapreduce-en-python" title="Permanent link">&para;</a></h3>
+<p>El API de <em>MapReduce</em> está escrito en <em>Java</em>, pero mediante <em>Hadoop Streaming</em> podemos utilizar <em>MapReduce</em> con cualquier lenguaje compatible con el sistema de tuberías Unix (<code>|</code>).</p>
+<p>Para entender cómo funciona, vamos a reproducir el ejemplo anterior mediante <em>Python</em>.</p>
+<h4 id="mapper">Mapper<a class="headerlink" href="#mapper" title="Permanent link">&para;</a></h4>
+<p>Primero creamos el <em>mapeador</em>, el cual se encarga de parsear línea a línea el fragmento de documento que reciba, y va a generar una nueva salida con todas las palabras de manera que cada nueva línea la compongan una tupla formada por la palabra, un tabulador y el número 1 (hay una ocurrencia de dicha palabra)</p>
+<div class="highlight"><span class="filename">mapper.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="ch">#!/usr/bin/python3</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">sys</span> 
+<span class="linenos" data-linenos=" 3 "></span><span class="k">for</span> <span class="n">linea</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span> 
+<span class="linenos" data-linenos=" 4 "></span>    <span class="c1"># eliminamos los espacios de delante y de detrás</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="n">linea</span> <span class="o">=</span> <span class="n">linea</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> 
+<span class="linenos" data-linenos=" 6 "></span>    <span class="c1"># dividimos la línea en palabras</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="n">palabras</span> <span class="o">=</span> <span class="n">linea</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> 
+<span class="linenos" data-linenos=" 8 "></span>    <span class="c1"># creamos tuplas de (palabra, 1)</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="k">for</span> <span class="n">palabra</span> <span class="ow">in</span> <span class="n">palabras</span><span class="p">:</span> 
+<span class="linenos" data-linenos="10 "></span>        <span class="nb">print</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">1&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Si queremos probar el mapper, podríamos ejecutar el siguiente comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>cat el_quijote.txt <span class="p">|</span> python3 mapper.py
+</code></pre></div>
+<p>Obteniendo un resultado similar a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>...
+<span class="linenos" data-linenos=" 2 "></span>gritos  1
+<span class="linenos" data-linenos=" 3 "></span>al      1
+<span class="linenos" data-linenos=" 4 "></span>cielo   1
+<span class="linenos" data-linenos=" 5 "></span>allí    1
+<span class="linenos" data-linenos=" 6 "></span>se      1
+<span class="linenos" data-linenos=" 7 "></span>renovaron       1
+<span class="linenos" data-linenos=" 8 "></span>las     1
+<span class="linenos" data-linenos=" 9 "></span>maldiciones     1
+<span class="linenos" data-linenos="10 "></span>...
+</code></pre></div>
+<h4 id="reducer">Reducer<a class="headerlink" href="#reducer" title="Permanent link">&para;</a></h4>
+<p>A continuación, en el <em>reducer</em>, vamos a recibir la salida del <em>mapper</em> y parseamos la cadena para separar la palabra del contador.</p>
+<p>Para llevar la cuenta de las palabras, vamos a meterlas dentro de un diccionario para incrementar las ocurrencias encontradas.</p>
+<div class="admonition warning">
+<p class="admonition-title">Cuidado con la memoria</p>
+<p>En un caso real, hemos de evitar almacenar todos los datos que recibimos en memoria, ya que es posible que al trabajar con <em>big data</em> no quepa en la RAM de cada <em>datanode</em>. Para ello, se recomienda el uso de la librería <em>itertools</em>, por ejemplo, utilizando la función <code>groupby()</code>.</p>
+</div>
+<p>Finalmente, volvemos a crear tuplas de palabra, tabulador y cantidad de ocurrencias.</p>
+<div class="highlight"><span class="filename">reducer.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="ch">#!/usr/bin/python3 </span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># inicializamos el diccionario</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">dictPalabras</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="k">for</span> <span class="n">linea</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="c1"># quitamos espacios de sobra</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="n">linea</span> <span class="o">=</span> <span class="n">linea</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="c1"># parseamos la entrada de mapper.py</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="n">palabra</span><span class="p">,</span> <span class="n">cuenta</span> <span class="o">=</span> <span class="n">linea</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span>    <span class="c1"># convertimos cuenta de string a int</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="k">try</span><span class="p">:</span>
+<span class="linenos" data-linenos="14 "></span>        <span class="n">cuenta</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cuenta</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+<span class="linenos" data-linenos="16 "></span>        <span class="c1"># cuenta no era un numero, descartamos la linea</span>
+<span class="linenos" data-linenos="17 "></span>        <span class="k">continue</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span>    <span class="k">try</span><span class="p">:</span>
+<span class="linenos" data-linenos="20 "></span>        <span class="n">dictPalabras</span><span class="p">[</span><span class="n">palabra</span><span class="p">]</span> <span class="o">+=</span> <span class="n">cuenta</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="k">except</span><span class="p">:</span>
+<span class="linenos" data-linenos="22 "></span>        <span class="n">dictPalabras</span><span class="p">[</span><span class="n">palabra</span><span class="p">]</span> <span class="o">=</span> <span class="n">cuenta</span>
+<span class="linenos" data-linenos="23 "></span>
+<span class="linenos" data-linenos="24 "></span><span class="k">for</span> <span class="n">palabra</span> <span class="ow">in</span> <span class="n">dictPalabras</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">palabra</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">dictPalabras</span><span class="p">[</span><span class="n">palabra</span><span class="p">])</span>
+</code></pre></div>
+<p>Para probar el  proceso completo, ejecutaremos el siguiente comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>cat el_quijote.txt <span class="p">|</span> python3 mapper.py <span class="p">|</span> python3 reducer.py &gt; salida.tsv
+</code></pre></div>
+<p>Si abrimos el fichero, podemos ver el resultado:</p>
+<div class="highlight"><span class="filename">salida.tsv</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span>don         1072
+<span class="linenos" data-linenos="2 "></span>quijote     812
+<span class="linenos" data-linenos="3 "></span>de          9035
+<span class="linenos" data-linenos="4 "></span>la          5014
+<span class="linenos" data-linenos="5 "></span>mancha      50
+<span class="linenos" data-linenos="6 "></span>miguel      3
+<span class="linenos" data-linenos="7 "></span>cervantes   3
+<span class="linenos" data-linenos="8 "></span>...
+</code></pre></div>
+<h3 id="hadoop-streaming">Hadoop Streaming<a class="headerlink" href="#hadoop-streaming" title="Permanent link">&para;</a></h3>
+<p>Una vez comprobados que los algoritmos de mapeo y reducción funcionan, vamos a procesarlos dentro de Hadoop para aprovechar la computación distribuida.</p>
+<p>Para ello, haremos uso de <a href="https://hadoop.apache.org/docs/r3.3.1/hadoop-streaming/HadoopStreaming.html"><em>Hadoop Streaming</em></a>, el cual permite ejecutar <em>jobs Map/Reduce</em> con cualquier script (y por ende, codificados en cualquier lenguaje de programación) que pueda leer de la entrada estándar (<em>stdin</em>) y escribir a la salida estándar (<em>stdout</em>). De este manera, <em>Hadoop Streaming</em> envia los datos en crudo al mapper vía <em>stdin</em> y tras procesarlos, se los pasa al reducer vía <em>stdout</em>.</p>
+<p>La sintaxis para ejecutar los <em>jobs</em> es:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>mapred streaming \
+<span class="linenos" data-linenos="2 "></span>    -input miCarpetaEntradaHDFS \
+<span class="linenos" data-linenos="3 "></span>    -output miCarpetaSalidaHDFS \
+<span class="linenos" data-linenos="4 "></span>    -mapper scriptMapper \
+<span class="linenos" data-linenos="5 "></span>    -reducer scriptReducer
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Versiones 1.x</p>
+<p>En versiones más antiguas de Hadoop, en vez de utilizar el comando <code>mapred</code>, se utiliza el comando <code>hadoop jar rutaDeHadoopStreaming.jar &lt;parámetros&gt;</code>, siendo normalmente la ruta del jar <code>$HADOOP_HOME/share/hadoop/tools/lib</code>.</p>
+</div>
+<p>Así pues, en nuestro caso ejecutaríamos el siguiente comando si tuviésemos los archivos (tanto los datos como los scripts) dentro de HDFS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>mapred streaming <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    -input el_quijote.txt <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -output salidaPy <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    -mapper mapper.py <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    -reducer reducer.py
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Permisos de ejecución</p>
+<p>Recuerda darle permisos de ejecución a ambos scripts (<code>chmod u+x mapper.py</code> y <code>chmod u+x reducer.py</code>) para que <em>Hadoop Streaming</em> los pueda ejecutar</p>
+</div>
+<p>Como queremos usar los archivos que tenemos en local, debemos indicar cada uno de los elementos mediante el parámetro <code>-file</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>mapred streaming <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    -input el_quijote.txt <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -output salidaPy <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    -mapper mapper.py -file mapper.py <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    -reducer reducer.py -file reducer.py 
+</code></pre></div>
+<p>Una vez finalizado el <em>job</em>, podemos comprobar cómo se han generado el resultado en HDFS mediante:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -head /user/iabd/salidaPy/part-r-00000
+</code></pre></div>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Documentación de <a href="https://hadoop.apache.org/docs/stable/">Apache Hadoop</a>.</li>
+<li><a href="https://www.oreilly.com/library/view/hadoop-the-definitive/9780596521974/">Hadoop: The definitive Guide, 4th Ed - de Tom White - O'Reilly</a></li>
+<li>Artículo de <a href="https://empresas.blogthinkbig.com/hadoop-por-dentro-ii-hdfs-y-mapreduce/">Hadoop por dentro</a>.</li>
+<li><a href="https://www.tutorialspoint.com/hadoop/index.htm">Tutorial de Hadoop</a> de <em>Tutorialspoint</em>.</li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla donde se muestre el resultado de cada acción.</p>
+<ol>
+<li>
+<p>Realizar el ejemplo de <em>MapReduce</em> con el fichero de <em>El Quijote</em> utilizando el proceso que ofrece <em>Hadoop</em>.</p>
+</li>
+<li>
+<p>Vuelve a contar las palabras que tiene <em>El Quijote</em>, pero haciendo usos de los scripts <em>Python</em>, teniendo en cuenta que el proceso de mapeo va a limpiar las palabras de signos ortográficos (quitar puntos, comas, paréntesis) y en el <em>reducer</em> vamos a considerar que las palabras en mayúsculas y minúsculas son la misma palabra.</p>
+<ul>
+<li><em>Tip</em>: para la limpieza, puedes utilizar el método de string <em>translate</em> de manera que elimine las <code>string.punctuation</code>.</li>
+</ul>
+</li>
+<li>
+<p>Entra en <em>Hadoop UI</em> y en <em>YARN</em>, y visualiza los procesos que se han ejecutado en las actividades 1 y 2.</p>
+</li>
+<li>
+<p>(opcional) Desarrolla el ejemplo del artículo <a href="http://exponentis.es/creacion-y-ejecucion-de-un-programa-python-para-hadoop-map-reduce-en-linux"><em>Creación y ejecución de un programa Python para Hadoop Map Reduce en Linux</em></a>. Adjunta los scripts, el fichero de datos, y el fichero de resultado.</p>
+<div class="admonition caution">
+<p class="admonition-title">Versión de Python</p>
+<p>En el artículo, en el encabezado del <em>mapper</em> y del <em>reducer</em>, utilizan como interprete de Python la ruta <code>#!/usr/bin/python</code> cuando en nuestra máquina virtual sería <code>#!/usr/bin/python3</code></p>
+</div>
+</li>
+</ol>
+<!--
+http://www.tsc.uc3m.es/~miguel/MLG/adjuntos/Hadoop.pdf
+-->
+
+<p>FIXME: corregir con info/apuntes del MEC, tema 1 BDA sobre especificaciones del hw de Hadoop</p>
+<!--
+4.6.- Principio SCV.
+Mientras que el teorema CAP tiene que ver con almacenamiento de datos distribuidos, el principio SCV está relacionado con el procesamiento distribuido de los datos. Es decir, no tiene que ver con la escritura y lectura (consistente o no) de los datos en entornos distribuidos sino con el procesamiento que se realiza sobre ellos dentro de los nodos de un sistema de procesamiento distribuido.
+De modo similar a lo que ocurría con el teorema CAP, el principio SCV establece que un sistema de procesamiento distribuido sólo puede soportar como máximo 2 de las siguientes 3 características.
+Velocidad (speed). Consistencia (consistency). Volumen (volume).
+Velocidad:
+Se refiere a cuánto tardan en procesarse los datos desde el momento en el que son recibidos en el sistema analítico. Por lo general se excluye el tiempo que se tarda en capturar los datos, considerando sólo lo que se tarda en generar la estadística o ejecutar el algoritmo en cuestión.
+Esta velocidad es más alta si estamos ante un sistema de analítica en tiempo real que si se trata de un sistema de analítica por lotes (del inglés batch).
+Consistencia:
+Se refiere en este caso a la precisión de los resultados de la analítica (no confundir, por lo tanto, con el significado de la C del teorema CAP).
+Tal precisión depende de si para la analítica se utilizan todos los datos disponibles (precisión alta) o de si por el contrario se emplean técnicas de muestreo para seleccionar sólo un subconjunto de los mismos con la intención de producir resultados (de menor precisión) en un menor tiempo.
+Volumen:
+Se refiere a la cantidad de datos que pueden ser procesados.
+Hay que tener en cuenta que en entornos de Big Data, el alto volumen de datos es una características siempre presente (una de las 5 Vs).
+De igual modo que hicimos al estudiar el teorema CAP, nos fijaremos en una serie de escenarios para mostrar que no podemos conseguir un sistema que cumpla a la vez las 3 características del principio SCV.
+
+ Si se requiere velocidad (S) y consistencia (C), no podemos procesar un alto volumen (V) de datos ya que eso aumenta el tiempo de respuesta.
+Si se requiere consistencia (C) y poder procesar grande volúmenes de datos (V), no es posible realizar tal procesado a una alta velocidad (S).
+Si necesitamos procesar un alto volumen de datos (V) a una alta velocidad (S), entonces necesitaremos emplear técnicas de muestreo para seleccionar sólo un subconjunto de esos datos, lo cual producirá un resultado no consistente (C).
+
+
+Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar analítica en tiempo real con todos ellos?
+Mostrar retroalimentación
+No, ya que para que sea en tiempo real debemos cumplir S, por lo que necesitaríamos realizar la analítica sobre un subconjunto de los datos, encontrándonos en el caso S+V, y produciendo por lo tanto un resultado no totalmente consistente (C).
+
+Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar procesamiento por lotes empleando todo ese conjunto de datos?
+Mostrar retroalimentación
+Sí, ya que al ser analítica por lotes en lugar de en tiempo real, la característica S ya no es necesaria, de modo que podemos encontrarnos en un caso C+V, utilizando todos los datos sin ningún tipo de muestreo para así producir un resultado consistente (C).
+
+Revisar gráficos de https://learning.oreilly.com/library/view/next-generation-databases/9781484213292/9781484213308_Ch02.xhtml#Sec11
+
+-->
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>

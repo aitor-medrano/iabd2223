@@ -1,0 +1,1223 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming. Además, estudiamos cómo AWS define el marco de buena arquitectura y la gestión que realiza para el escalado y la monitorización de recursos en la nube.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/01arq.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>Arquitecturas Big Data. Escalado y Monitorización en la nube. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Arquitecturas Big Data. Escalado y Monitorización en la nube. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming. Además, estudiamos cómo AWS define el marco de buena arquitectura y la gestión que realiza para el escalado y la monitorización de recursos en la nube." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/01arq.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/hadoop/01arq.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Arquitecturas Big Data. Escalado y Monitorización en la nube. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming. Además, estudiamos cómo AWS define el marco de buena arquitectura y la gestión que realiza para el escalado y la monitorización de recursos en la nube." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/01arq.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#arquitecturas-big-data" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Arquitecturas Big Data. Escalado y Monitorización en la nube.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT5.- Ecosistema Hadoop</a>
+          
+            <label for="__nav_2_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          UT5.- Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S36.- Arquitecturas Big Data
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="01arq.html" class="md-nav__link md-nav__link--active">
+        S36.- Arquitecturas Big Data
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#caracteristicas" class="md-nav__link">
+    Características
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tipos-de-arquitecturas" class="md-nav__link">
+    Tipos de arquitecturas
+  </a>
+  
+    <nav class="md-nav" aria-label="Tipos de arquitecturas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procesamiento-batch" class="md-nav__link">
+    Procesamiento Batch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#procesamiento-en-streaming" class="md-nav__link">
+    Procesamiento en Streaming
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-lambda" class="md-nav__link">
+    Arquitectura Lambda
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitectura Lambda">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-a-paso" class="md-nav__link">
+    Paso a paso
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-kappa" class="md-nav__link">
+    Arquitectura Kappa
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-por-capas" class="md-nav__link">
+    Arquitectura por capas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnologias" class="md-nav__link">
+    Tecnologías
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-uso" class="md-nav__link">
+    Casos de uso
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#buenas-practicas" class="md-nav__link">
+    Buenas prácticas
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">UT6.- Datos en el cloud</a>
+          
+            <label for="__nav_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT6.- Datos en el cloud" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          UT6.- Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#caracteristicas" class="md-nav__link">
+    Características
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tipos-de-arquitecturas" class="md-nav__link">
+    Tipos de arquitecturas
+  </a>
+  
+    <nav class="md-nav" aria-label="Tipos de arquitecturas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procesamiento-batch" class="md-nav__link">
+    Procesamiento Batch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#procesamiento-en-streaming" class="md-nav__link">
+    Procesamiento en Streaming
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-lambda" class="md-nav__link">
+    Arquitectura Lambda
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitectura Lambda">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-a-paso" class="md-nav__link">
+    Paso a paso
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-kappa" class="md-nav__link">
+    Arquitectura Kappa
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura-por-capas" class="md-nav__link">
+    Arquitectura por capas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tecnologias" class="md-nav__link">
+    Tecnologías
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-uso" class="md-nav__link">
+    Casos de uso
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#buenas-practicas" class="md-nav__link">
+    Buenas prácticas
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="arquitecturas-big-data">Arquitecturas Big Data<a class="headerlink" href="#arquitecturas-big-data" title="Permanent link">&para;</a></h1>
+<p>Ya sabemos en qué consiste Big Data, y que dentro de sus 5V, dos de las más importantes son el <em>volumen</em> y la <em>velocidad</em>. Para cumplir con estas necesidades, necesitamos una infraestructura que dote a nuestras aplicaciones de toda la potencia y robustez necesarias.</p>
+<p>Una arquitectura de big data se diseña para manejar la ingestión, el procesamiento y el análisis de los datos que son demasiado grandes o complejos para un sistema tradicional de base de datos.</p>
+<p>En esta sesión no vamos a profundizar en ninguna tecnología concreta, ya que el stack de herramientas es muy amplio y en constante crecimiento. A lo largo del curso iremos conociendo las distintas herramientas y aprenderemos cómo y cuándo utilizarlas.</p>
+<h2 id="caracteristicas">Características<a class="headerlink" href="#caracteristicas" title="Permanent link">&para;</a></h2>
+<p>Todas las arquitecturas que diseñemos / utilicemos deben cumplir las siguientes características:</p>
+<ul>
+<li><em>Escalabilidad</em>: permite aumentar fácilmente las capacidades de procesamiento y almacenamiento de datos.</li>
+<li><em>Tolerancia a fallos</em>: garantiza la disponibilidad del sistema, aunque se produzcan fallos en algunas de las máquinas, evitando la pérdida de datos.</li>
+<li><em>Datos distribuidos</em>: los datos deben estar almacenados entre diferentes máquinas evitando así el problema de almacenar grandes volúmenes de datos en un único nodo central (<em>SPOF</em>).</li>
+<li><em>Procesamiento distribuido</em>: el tratamiento de los datos se realiza entre diferentes máquinas para mejorar los tiempos de ejecución y dotar al sistema de escalabilidad.</li>
+<li><em>Localidad del dato</em>: los datos a trabajar y los procesos que los tratan deben estar cerca, para evitar las transmisiones por red que añaden latencias y aumentan los tiempos de ejecución.</li>
+</ul>
+<p>Antes de conocer las arquitecturas más empleados, es conveniente tener presente siempre cuál es el objetivo que debe cumplir nuestra solución. Es muy fácil caer en la sobreingeniería y montar una arquitectura con una amalgama de productos que luego son difíciles de configurar y mantener.</p>
+<h2 id="tipos-de-arquitecturas">Tipos de arquitecturas<a class="headerlink" href="#tipos-de-arquitecturas" title="Permanent link">&para;</a></h2>
+<p>Debido a que las empresas disponen de un volumen de datos cada vez mayor y la necesidad de analizarlos y obtener valor de ellos lo antes posible, surge la necesidad de definir nuevas arquitecturas para cubrir casos de uso distintos a los que había hasta el momento.</p>
+<p>Las arquitecturas más comunes en estos proyectos son principalmente dos: <em>Lambda</em> y <em>Kappa</em>. La principal diferencia entre ambas son los flujos de tratamiento de datos que intervienen.</p>
+<p>Un par de conceptos que tenemos que definir antes de ver las características de ambas, son el procesamiento batch y el procesamiento en streaming.</p>
+<h3 id="procesamiento-batch">Procesamiento Batch<a class="headerlink" href="#procesamiento-batch" title="Permanent link">&para;</a></h3>
+<p><em>Batch</em> hace referencia a un proceso en el que intervienen un conjunto de datos y que tiene un inicio y un fin en el tiempo. También se le conoce como procesamiento por lotes y se ejecuta sin control directo del usuario.</p>
+<p>Por ejemplo, si tenemos un conjunto de datos muy grande con múltiples relaciones, puede llevarnos del orden de horas ejecutar las consultas que necesita el cliente, y por tanto, no se pueden ejecutar en tiempo real y necesitan de algoritmos paralelos (como por ejemplo, <em>Map Reduce</em>). En estos casos, los resultados se almacenan en un lugar diferente al de origen para posteriores consultas.</p>
+<p>Otro ejemplo, si tenemos una aplicación que muestra el total de casos COVID que hay en cada ciudad, en vez de realizar el cálculo sobre el conjunto completo de los datos, podemos realizar una serie de operaciones que hagan esos cálculos y los almacenen en tablas temporales (por ejemplo, mediante <code>INSERT ... SELECT</code>), de manera que si queremos volver a realizar la consulta sobre todos los datos, accederíamos a los datos ya calculados de la tabla temporal. El problema es que este cálculo necesita actualizarse, por ejemplo, de manera diaria, y de ahí que haya que rehacer todas las tablas temporales.</p>
+<p>Es el procesamiento que se ha realizado desde los inicios del trabajo con datos, tanto a nivel de bases de datos como con <em>Data Warehouses</em>.</p>
+<p>De la mano del procesamiento <em>batch</em> se ha implantado el ecosistema <em>Hadoop</em> con todas las herramientas que abarcan un proceso ETL (extracción, transformación y carga de los datos). Estos conceptos los trabajaremos más adelante.</p>
+<h3 id="procesamiento-en-streaming">Procesamiento en Streaming<a class="headerlink" href="#procesamiento-en-streaming" title="Permanent link">&para;</a></h3>
+<p>Un procesamiento es de tipo <em>streaming</em> cuando está continuamente recibiendo y tratando nueva información según va llegando sin tener un fin en lo referente al apartado temporal.</p>
+<p>Este procesamiento se relaciona con el análisis en tiempo real. Para ello, se utilizan diferentes sistemas basados en el uso de colas de mensajes.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>No confundir tiempo real con inmediatez.
+En informática, un sistema de tiempo real es aquel que responde en un periodo de tiempo finito, normalmente muy pequeño, pero no tiene por qué ser instantáneo.</p>
+</div>
+<h2 id="arquitectura-lambda">Arquitectura Lambda<a class="headerlink" href="#arquitectura-lambda" title="Permanent link">&para;</a></h2>
+<p>Representada mediante la letra griega, apareció en el año 2012 y se atribuye a <em>Nathan Marz</em>.</p>
+<div class="admonition note">
+<p class="admonition-title">Nathan Marz</p>
+<p>La definió en base a su experiencia en sistemas de tratamiento de datos distribuidos durante su etapa como empleado en las empresas <em>Backtype</em> y <em>Twitter</em>, y está inspirada en su artículo <a href="http://nathanmarz.com/blog/how-to-beat-the-cap-theorem.html"><em>How to beat the CAP theorem</em></a>.</p>
+</div>
+<p>Su objetivo era tener un sistema robusto y tolerante a fallos, tanto humanos como de hardware, que fuera linealmente escalable y que permitiese realizar escrituras y lecturas con baja latencia.</p>
+<p>Todos los datos que llegan al sistema van a ir por dos caminos, uno el lento (capa <em>batch</em>) y otro el rápido (capa <em>streaming</em>), que finalmente confluyen en la capa de consultas. Así pues, se compone de tres capas:</p>
+<ul>
+<li>Capa <strong>batch</strong>: se encarga de gestionar los datos históricos y recalcular los resultados. De manera específica, la capa <em>batch</em> recibe todos los datos en crudo, los almacena de forma inmutable y los combina con el histórico existente (se añaden a los datos existente y los datos previos nunca se sobreescriben) y recalcula los resultados iterando sobre todo el conjunto de datos combinado. Cualquier cambio en un dato se almacena como un nuevo registro, no modifica nada, para así poder seguir el linaje de los datos.<br />
+Así pues, este capa opera sobre el conjunto completo y permite que el sistema produzca los resultados más precisos. Sin embargo, esto conlleva un coste de alta latencia debido a los requisitos de tiempo de computación.</li>
+<li>Capa de <strong>streaming</strong> / <em>speed</em>: sirve para ofrecer resultados con muy baja latencia, cercano al tiempo real. Este capa recibe los datos y realizar modificaciones incrementales sobre los resultados de la capa <em>batch</em>. Gracias a los algoritmos incrementales implementados en esta capa, se consigue reducir el coste computacional de manera considerable, a coste de perder algo de precisión.</li>
+<li>Capa de <strong>serving</strong>: permite la consulta de los resultados enviados desde las dos capas anteriores, en base a las vistas <em>batch</em> que rellenan las capas anteriores.</li>
+</ul>
+<p>Podemos ver un esquema de la arquitectura en el siguiente gráfico:</p>
+<figure style="align: center;">
+    <img src="images/01lambda-intro.png">
+    <figcaption>Arquitectura Lambda</figcaption>
+</figure>
+
+<p>Los datos que fluyen por la capa de velocidad/<em>streaming</em> tienen la restricción de latencia que impone la propia capa para poder procesar los datos todo lo rápido que sea posible. Normalmente, este requisito choca con la precisión de los datos. Por ejemplo, en un escenario IoT donde se leen un gran número de sensores de temperatura que envían datos de telemetría, la capa de velocidad se puede utilizar para procesar una ventana temporal de los datos que entran (por ejemplo, los diez primeros segundos de cada minuto).</p>
+<p>Los datos que fluyen por el camino lento, no están sujeto a los mismos requisitos de latencia, lo que permite una mayor precisión computacional sobre grandes conjuntos de datos, que pueden conllevar mucho tiempo de procesamiento.</p>
+<p>Finalmente, ambos caminos, el lento y el rápido, convergen en las aplicaciones analíticas del cliente. Si el cliente necesita información constante (cercana al tiempo real) aunque menos precisa, obtendrá los datos del camino rápido. Si no, lo hará a partir de los datos de la capa <em>batch</em>.</p>
+<p>Dicho de otro modo, el camino rápido tiene los datos de una pequeña ventana temporal, la cual se puede actualizar con datos más precisos provenientes de la capa <em>batch</em>.</p>
+<h3 id="paso-a-paso">Paso a paso<a class="headerlink" href="#paso-a-paso" title="Permanent link">&para;</a></h3>
+<figure style="align: center;">
+    <img src="images/01lambda.png">
+    <figcaption>Arquitectura Lambda</figcaption>
+</figure>
+
+<p>El flujo de trabajo es el siguiente:</p>
+<ol>
+<li>La nueva información recogida por el sistema se envía tanto a la capa <em>batch</em> como a la capa de <em>streaming</em> (<em>Speed Layer</em> en la imagen anterior).</li>
+<li>En la capa <em>batch</em> (<em>Batch Layer</em>) se gestiona la información en crudo, es decir, sin modificar. Los datos nuevos se añaden a los ya existentes. Seguidamente se hace un tratamiento mediante un proceso <em>batch</em> cuyo resultado serán las <em>Batch Views</em>, que se usarán en la capa que sirve los datos para ofrecer la información ya transformada al exterior.</li>
+<li>La capa que sirve los datos (<em>Serving Layer</em>) indexa las <em>Batch Views</em> generadas en el paso anterior de forma que puedan ser consultadas con tiempos de respuesta muy bajos.</li>
+<li>La capa de <em>streaming</em> compensa la alta latencia de las escrituras que ocurre en la <em>serving layer</em> y solo tiene en cuenta los datos nuevos (incrementos entre los procesos batch y el momento actual).</li>
+<li>Finalmente, combinando los resultados de las <em>Batch Views</em> y de las vistas en tiempo real (<em>Real-time Views</em>), se construye la respuesta a las consultas realizadas.</li>
+</ol>
+<h2 id="arquitectura-kappa">Arquitectura Kappa<a class="headerlink" href="#arquitectura-kappa" title="Permanent link">&para;</a></h2>
+<p>El término <ins>Arquitectura Kappa</ins> fue introducido en 2014 por <em>Jay Kreps</em> en su artículo <a href="https://www.oreilly.com/radar/questioning-the-lambda-architecture/">Questioning the Lambda Architecture</a>. En él señala los posibles puntos débiles de la Arquitectura Lambda y cómo solucionarlos mediante una evolución.</p>
+<p>Uno de los mayores inconveniente de la arquitectura Lambda es su complejidad. El procesamiento de los datos se realiza en dos caminos diferenciados, lo que conlleva a duplicar la lógica de computación y la gestión de la arquitectura de ambos caminos.</p>
+<p>Lo que señala <em>Jay Kreps</em> en su propuesta es que todos los datos fluyan por un único camino, eliminando la capa batch y dejando solamente la capa de streaming. Esta capa, a diferencia de la de tipo batch, no tiene un comienzo ni un fin desde un punto de vista temporal y está continuamente procesando nuevos datos a medida que van llegando.</p>
+<figure style="align: center;">
+    <img src="images/01kappa-intro.png">
+    <figcaption>Arquitectura Kappa</figcaption>
+</figure>
+
+<p>Podemos decir que sus cuatro pilares principales son los siguientes:</p>
+<ol>
+<li>Todo es un <em>stream</em>: las operaciones <em>batch</em> son un subconjunto de las operaciones de <em>streaming</em>, por lo que todo puede ser tratado como un <em>stream</em>.</li>
+<li>Los datos de partida no se modifican: los datos se almacenan sin ser transformados, por tanto son inmutables, y las vistas se derivan de ellos. Un estado concreto puede ser recalculado puesto que la información de origen no se modifica.</li>
+<li>Solo existe un flujo de procesamiento: puesto que mantenemos un solo flujo, el código, el mantenimiento y la actualización del sistema se ven reducidos considerablemente.</li>
+<li>Tenemos la posibilidad de volver a lanzar un procesamiento: se puede modificar un procesamiento concreto y su configuración para variar los resultados obtenidos partiendo de los mismos datos de entrada.</li>
+</ol>
+<figure style="align: center;">
+    <img src="images/01kappa.png">
+    <figcaption>Arquitectura Kappa</figcaption>
+</figure>
+
+<p>Como requisito previo a cumplir, se tiene que garantizar que los eventos se leen y almacenan en el orden en el que se han generado. De esta forma, podremos variar un procesamiento concreto partiendo de una misma versión de los datos.</p>
+<h2 id="arquitectura-por-capas">Arquitectura por capas<a class="headerlink" href="#arquitectura-por-capas" title="Permanent link">&para;</a></h2>
+<p>Además de las dos soluciones que acabamos de conocer, otra forma de diseñar las capas de una arquitectura big data consiste en separar las diferentes fases del dato en capa diferenciadas.</p>
+<p><a href="https://docs.microsoft.com/en-us/azure/architecture/data-guide/big-data/">La arquitectura por capas</a> da soporte tanto al procesamiento <em>batch</em> como por <em>streaming</em>. La arquitectura consiste en 6 capas que aseguran un flujo seguro de los datos:</p>
+<figure style="align: center;">
+    <img src="images/01arquitecturasCapas.png">
+    <figcaption>Arquitectura por capas (xenonstack.como)</figcaption>
+</figure>
+
+<ul>
+<li>Capa de ingestión: es la primera capa que recoge los datos que provienen de fuentes diversas. Los datos se categorizan y priorizan, facilitando el flujo de éstos en posteriores capas.</li>
+<li>Capa de colección: Centrada en el transporte de los datos desde la ingesta al resto del <em>pipeline</em> de datos. En esta capa los datos se deshacen para facilitar la analítica posterior.</li>
+<li>Capa de procesamiento: Esta es la capa principal. Se procesan los datos recogidos en las capas anteriores (ya sea mediante procesos <em>batch</em>, <em>streaming</em> o modelos híbridos), y se clasifican para decidir hacía qué capa se dirige.</li>
+<li>Capa de almacenamiento: Se centra en decidir donde almacenar de forma eficiente la enorme cantidad de datos. Normalmente en un almacén de archivos distribuido, que da pie al concepto de <em>data lake</em>.</li>
+<li>Capa de consulta: capa donde se realiza el procesado analítico, centrándose en obtener valor a partir de los datos.</li>
+<li>Capa de visualización: también conocida como capa de presentación, es con la que interactúan los usuarios.</li>
+</ul>
+<h2 id="tecnologias">Tecnologías<a class="headerlink" href="#tecnologias" title="Permanent link">&para;</a></h2>
+<p>Por ejemplo, la ingesta de datos hacia las arquitecturas Lambda y Kappa se pueden realizar mediante un sistema de mensajería de colas <em>publish/subscribe</em> como <a href="https://kafka.apache.org">Apache Kafka</a> y/o un servicio de flujo de datos como <a href="https://nifi.apache.org/">Apache Nifi</a>.</p>
+<p>El almacenamiento de los datos y modelos lo podemos realizar mediante HDFS o S3. Dentro de una arquitectura Lamba, en el sistema batch, mediante algoritmos MapReduce de Hadoop podemos entrenar modelos. Para la capa de <em>streaming</em> (tanto para Lambda como Kappa) se pueden utilizar otras tecnologías como <a href="http://storm.apache.org"><em>Apache Storm</em></a>, <a href="http://samza.apache.org"><em>Apache Samza</em></a> o <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html"><em>Spark Streaming</em></a> para modificar modelos de forma incremental.</p>
+<p>De forma alternativa, <a href="https://spark.apache.org">Apache Spark</a> se puede utilizar como plataforma común para desarrollar las capas <em>batch</em> y <em>streaming</em> de la arquitectura Lambda. De ahí su amplia aceptación y uso a día de hoy en la industria, se codifica una vez y se comparte en ambas capas</p>
+<p>La capa de <em>serving</em> se puede implementar mediante una base de datos NoSQL como pueda ser <a href="https://hbase.apache.org">Apache HBase</a>, <a href="https://www.mongodb.com">MongoDB</a>, <a href="https://redis.com">Redis</a> o <a href="https://aws.amazon.com/es/dynamodb/">AWS Dynamo DB</a>. También se pueden utilizar motores de consultas como <a href="https://drill.apache.org">Apache Drill</a>.</p>
+<h2 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h2>
+<p>¿Qué arquitectura se adapta mejor a los requerimientos que nos traslada el cliente? <em>¿Lambda</em> o <em>Kappa</em>? ¿Cuál encaja mejor en nuestro modelo de negocio?.</p>
+<p>Depende. La arquitectura <em>Lambda</em> es más versátil y es capaz de cubrir un mayor número de casos, muchos de ellos que requieren incluso procesamiento en tiempo real.</p>
+<p>Una pregunta que debemos plantearnos es, ¿el análisis y el procesamiento (sus algoritmos) que vamos a realizar en las capas <em>batch</em> y <em>streaming</em> es el mismo? En ese caso la opción más acertada sería la arquitectura <em>Kappa</em>.</p>
+<p>Sin embargo, en otras ocasiones necesitaremos acceder a todo el conjunto de datos sin penalizar el rendimiento por lo que la <em>Lambda</em> puede ser más apropiada e incluso más fácil de implementar.</p>
+<p>También nos inclinaremos hacia <em>Lambda</em> si nuestros algoritmos de <em>batch</em> y <em>streaming</em> generan resultados muy distintos, como puede suceder con operaciones de procesamiento pesado o en modelos de <em>Machine Learning</em>. En estos casos, los algoritmos <em>batch</em> se pueden optimizar ya que acceden al dataset histórico completo.</p>
+<p>El decidir entre Lamba y Kappa al final es una decisión entre favorecer el rendimiento de ejecución de un proceso <em>batch</em> sobre la simplicidad de compartir código para ambas capas.</p>
+<div class="admonition info">
+<p class="admonition-title">Casos reales</p>
+<p>Un ejemplo real de una arquitectura <em>Kappa</em> sería un sistema de geolocalización de usuarios por la cercanía a una antena de telefonía móvil. Cada vez que se aproximase a una antena que le diese cobertura se generaría un evento. Este evento se procesaría en la capa de <em>streaming</em> y serviría para pintar sobre un mapa su desplazamiento respecto a su posición anterior.</p>
+<p>Un caso de uso real para una arquitectura <em>Lambda</em> podría ser un sistema que recomiende películas en función de los gustos de los usuarios. Por un lado, tendría una capa batch encargada de entrenar el modelo e ir mejorando las predicciones; y por otro, una capa streaming capaz de encargarse de las valoraciones en tiempo real.</p>
+<p>Como lectura recomendable tenemos un par de casos desarrollados por <em>Ericsson</em> que podéis leer en <a href="https://www.ericsson.com/en/blog/2015/11/data-processing-architectures--lambda-and-kappa-examples">https://www.ericsson.com/en/blog/2015/11/data-processing-architectures--lambda-and-kappa-examples</a></p>
+</div>
+<p>Es muy importante siempre tener en mente lo rápido que evolucionan los casos de uso que queremos cubrir y el mercado del Big Data, lo que implica la necesidad de adaptarse a ellos lo antes posible, modificando la arquitectura sobre la marcha.</p>
+<h2 id="buenas-practicas">Buenas prácticas<a class="headerlink" href="#buenas-practicas" title="Permanent link">&para;</a></h2>
+<ul>
+<li>En la ingesta de datos: evaluar los tipos de fuentes de datos, no todas las herramientas sirven para cualquier fuente de datos, y en algún caso lo mejor es combinar varias herramientas para cubrir todo el abanico.</li>
+<li>En el procesamiento: analizar si el sistema debe ser streaming o batch. Algunos sistemas que no se definen como puramente streaming, es decir, utilizan lo que denominan micro-batch que suele dar respuesta a problemas que en el uso cotidiano del lenguaje se denomina como streaming.</li>
+<li>En la monitorización: al trabajar con multitud de herramientas es importante utilizar herramienta para controlar, monitorizar y gestionar la arquitectura.</li>
+<li>Algunas decisiones que debemos tomar a la hora de elegir la arquitectura son:<ul>
+<li>Enfocar los casos de uso. Cuando tengamos los objetivos claros sabremos qué parte debemos fortalecer en la arquitectura. ¿Volumen, variedad, velocidad?</li>
+<li>Definir la arquitectura: ¿batch o streaming? ¿Realmente es necesario que nuestra arquitectura soporte  streaming?</li>
+<li>Evaluar las fuentes de datos: ¿Cómo de heterogéneas son? ¿soportan las herramientas elegidas todos los tipos de fuentes de datos que se utilizan?</li>
+</ul>
+</li>
+</ul>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Unidad de Trabajo 5.- Ecosistema Hadoop" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              Unidad de Trabajo 5.- Ecosistema Hadoop
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="02etl.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S36.- Ingesta de datos" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              S36.- Ingesta de datos
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>

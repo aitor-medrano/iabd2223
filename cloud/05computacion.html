@@ -1,0 +1,1371 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Repaso a los servicios de computación que ofrece AWS, centrándonos en EC2 (creando instancias tanto desde la consola como mediante AWS CLI) y AWS Lambda.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/05computacion.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>Servicios de computación en la nube, EC2 y AWS Lambda. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Servicios de computación en la nube, EC2 y AWS Lambda. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Repaso a los servicios de computación que ofrece AWS, centrándonos en EC2 (creando instancias tanto desde la consola como mediante AWS CLI) y AWS Lambda." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/05computacion.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/cloud/05computacion.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Servicios de computación en la nube, EC2 y AWS Lambda. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Repaso a los servicios de computación que ofrece AWS, centrándonos en EC2 (creando instancias tanto desde la consola como mediante AWS CLI) y AWS Lambda." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/05computacion.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#computacion-en-la-nube" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Servicios de computación en la nube, EC2 y AWS Lambda.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../hadoop/index.html">UT5.- Ecosistema Hadoop</a>
+          
+            <label for="__nav_2_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          UT5.- Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT6.- Datos en el cloud</a>
+          
+            <label for="__nav_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT6.- Datos en el cloud" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          UT6.- Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    Introducción
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amazon-ec2" class="md-nav__link">
+    Amazon EC2
+  </a>
+  
+    <nav class="md-nav" aria-label="Amazon EC2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paso-1-ami" class="md-nav__link">
+    Paso 1: AMI
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-2-tipo-de-instancias" class="md-nav__link">
+    Paso 2: Tipo de instancias
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-3-configuracion-de-la-instancia-red" class="md-nav__link">
+    Paso 3: Configuración de la instancia / red
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-4-almacenamiento" class="md-nav__link">
+    Paso 4: Almacenamiento
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-5-etiquetas" class="md-nav__link">
+    Paso 5: Etiquetas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-6-grupo-de-seguridad" class="md-nav__link">
+    Paso 6: Grupo de seguridad
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paso-7-analisis-e-identificacion" class="md-nav__link">
+    Paso 7: Análisis e identificación
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-la-consola" class="md-nav__link">
+    Uso de la consola
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ciclo-de-vida-de-las-instancias" class="md-nav__link">
+    Ciclo de vida de las instancias
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitorizacion" class="md-nav__link">
+    Monitorización
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#costes-de-las-instancias" class="md-nav__link">
+    Costes de las instancias
+  </a>
+  
+    <nav class="md-nav" aria-label="Costes de las instancias">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optimizacion-de-costes" class="md-nav__link">
+    Optimización de costes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-lambda" class="md-nav__link">
+    AWS Lambda
+  </a>
+  
+    <nav class="md-nav" aria-label="AWS Lambda">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creando-una-funcion" class="md-nav__link">
+    Creando una función
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#restricciones" class="md-nav__link">
+    Restricciones
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-elastic-beanstalk" class="md-nav__link">
+    AWS Elastic Beanstalk
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="computacion-en-la-nube">Computación en la nube<a class="headerlink" href="#computacion-en-la-nube" title="Permanent link">&para;</a></h1>
+<h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
+<p>Los servicios de máquinas virtuales fueron los primeros servicios tanto de AWS como de Azure, los cuales proporcionan infraestructura como servicio (<em>IaaS</em>). Posteriormente se añadieron otros servicios como tecnología sin servidor (<em>serverless</em>), tecnología basada en contenedores y plataforma como servicio (<em>PaaS</em>).</p>
+<p>Ya hemos comentado el coste de ejecutar servidores in-house (compra, mantenimiento del centro de datos, personal, etc...) además de la posibilidad de que la capacidad del servidor podría permanecer sin uso e inactiva durante gran parte del tiempo de ejecución de los servidores, lo que implica un desperdicio.</p>
+<h2 id="amazon-ec2">Amazon EC2<a class="headerlink" href="#amazon-ec2" title="Permanent link">&para;</a></h2>
+<p><em>Amazon Elastic Compute Cloud</em> (<strong>Amazon EC2</strong> - <a href="https://docs.aws.amazon.com/ec2/">https://docs.aws.amazon.com/ec2/</a>) proporciona máquinas virtuales en las que podemos alojar el mismo tipo de aplicaciones que podríamos ejecutar en un servidor en nuestras oficinas.
+Además, ofrece capacidad de cómputo segura y de tamaño ajustable en la nube. Las instancias EC2 admiten distintas cargas de trabajo (servidores de aplicaciones, web, de base de datos, de correo, multimedia, de archivos, etc..)</p>
+<p>La computación elástica (<em>Elastic Compute</em>) se refiere a la capacidad para aumentar o reducir fácilmente la cantidad de servidores que ejecutan una aplicación de manera automática, así como para aumentar o reducir la capacidad de procesamiento (CPU), memoria RAM o almacenamiento de los servidores existentes.</p>
+<p>La primera vez que lancemos una instancia de Amazon EC2, utilizaremos  el asistente de lanzamiento de instancias de la consola de administración de AWS, el cual nos facilita paso a paso la configuración y creación de nuestra máquina virtual.</p>
+<h3 id="paso-1-ami">Paso 1: AMI<a class="headerlink" href="#paso-1-ami" title="Permanent link">&para;</a></h3>
+<p>Una <strong>imagen de Amazon Machine</strong> (<a href="https://docs.aws.amazon.com/es_es/AWSEC2/latest/UserGuide/AMIs.html">AMI</a>) proporciona la información necesaria para lanzar una instancia EC2. Así pues, el primer paso consiste en elegir cual será la AMI de nuestra instancia. Por ejemplo, una AMI que contenga un servidor de aplicaciones y otra que contenga un servidor de base de datos.</p>
+<p>Si vamos a montar un cluster, también podemos lanzar varias instancias a partir de una sola AMI.</p>
+<p><img alt="Paso 1 - Seleccionar AMI" src="images/051ami.png" /></p>
+<p>Las AMI incluyen los siguientes componentes:</p>
+<ul>
+<li>Una plantilla para el volumen raíz de la instancia, el cual contiene un sistema operativo y todo lo que se instaló en él (aplicaciones, librerías, etc.). Amazon EC2 copia la plantilla en el volumen raíz de una instancia EC2 nueva y, a continuación, la inicia.</li>
+<li>Permisos de lanzamiento que controlan qué cuentas de AWS pueden usar la AMI.</li>
+<li>La asignación de dispositivos de bloques que especifica los volúmenes que deben asociarse a la instancia en su lanzamiento, si corresponde.</li>
+</ul>
+<h4 id="tipos-de-ami">Tipos de AMI<a class="headerlink" href="#tipos-de-ami" title="Permanent link">&para;</a></h4>
+<p>Puede elegir entre los siguientes tipos de AMI:</p>
+<ul>
+<li><em>Quick Start</em>: AWS ofrece una serie de AMI prediseñadas, tanto Linux como Windows, para lanzar las instancias.</li>
+<li><em>Mis AMI</em>: estas son las AMI que hemos creado nosotros, ya sea a partir de máquinas locales que hayamos creado en VmWare, VirtualBox, o una previa que hemos creado en una instancia EC2, configurado y luego exportado.</li>
+<li><em>AWS Marketplace</em>: catálogo que incluye miles de soluciones de software creadas por empresas terceras (las cuales pueden cobrar por su uso). Estas AMI pueden ofrecer casos de uso específicos para que pueda ponerse en marcha rápidamente.</li>
+<li><em>AMI de la comunidad</em>: estas son AMI creadas por personas de todo el mundo.AWS no controla estas AMI, así que deben utilizarse bajo la propia responsabilidad, evitando su uso en entornos corporativos o de producción.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Las AMI dependen de la región</p>
+<p>Las AMI que creamos se hacen en la región en la que estamos conectados. Si la necesitamos en otra región, debemos realizar un proceso de copia.</p>
+</div>
+<h3 id="paso-2-tipo-de-instancias">Paso 2: Tipo de instancias<a class="headerlink" href="#paso-2-tipo-de-instancias" title="Permanent link">&para;</a></h3>
+<p>El segundo paso es seleccionar un tipo de instancia, según nuestro caso de uso.
+Los tipos de instancia incluyen diversas combinaciones de capacidad de CPU, memoria, almacenamiento y red.</p>
+<p><img alt="Paso 2 - Tipo de instancia" src="images/052tipoinstancia.png" /></p>
+<p>Cada tipo de instancia se ofrece en uno o más tamaños, lo cual permite escalar los recursos en función de los requisitos de la carga de trabajo de destino.</p>
+<h4 id="categorias">Categorías<a class="headerlink" href="#categorias" title="Permanent link">&para;</a></h4>
+<p>Las categorías de tipos de instancia incluyen instancias de uso general, optimizadas para informática, optimizadas para memoria, optimizadas para almacenamiento y de informática acelerada.</p>
+<table>
+<thead>
+<tr>
+<th>Categoría</th>
+<th>Tipo de instancia</th>
+<th>Caso de uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uso general</td>
+<td>a1, m4, m5, t2, <strong>t3</strong></td>
+<td>Amplio</td>
+</tr>
+<tr>
+<td>Computación</td>
+<td>c4, <strong>c5</strong></td>
+<td>Alto rendimiento</td>
+</tr>
+<tr>
+<td>Memoria</td>
+<td>r4, <strong>r5</strong>, x1, z1</td>
+<td><em>Big Data</em></td>
+</tr>
+<tr>
+<td>Informática acelerada</td>
+<td>f1, g3, g4, p2, p3</td>
+<td><em>Machine Learning</em></td>
+</tr>
+<tr>
+<td>Almacenamiento</td>
+<td>d2, h1, i3</td>
+<td>Sistemas de archivos distribuidos</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tipos-de-instancias">Tipos de instancias<a class="headerlink" href="#tipos-de-instancias" title="Permanent link">&para;</a></h4>
+<p>Los tipos de instancias (<a href="https://aws.amazon.com/es/ec2/instance-types/">https://aws.amazon.com/es/ec2/instance-types/</a>) ofrecen <ins>familias, generaciones y tamaños</ins>. Así pues, el tipo de instancia <code>t3.large</code> referencia a la familia <code>T</code>, de la tercera generación y con un tamaño <code>large</code>.</p>
+<p>En general, los tipos de instancia que son de una generación superior son más potentes y ofrecen una mejor relación calidad/precio.</p>
+<div class="admonition important">
+<p class="admonition-title">Comparando tipos de instancias</p>
+<p>Cuando se comparan los tamaños hay que examinar la parte del coeficiente en la categoría de tamaño. Por ejemplo, una instancia <code>t3.2xlarge</code> tiene el doble de CPU virtual y memoria que una <code>t3.xlarge</code>. A su vez, la instancia <code>t3.xlarge</code> tiene el doble de CPU virtual y memoria que una <code>t3.large</code>.</p>
+</div>
+<p>También se debe tener en cuenta que el ancho de banda de red también está vinculado al tamaño de la instancia de Amazon EC2. Si ejecutará trabajos que requieren un uso muy intensivo de la red, es posible que deba aumentar las especificaciones de la instancia para que satisfaga sus necesidades.</p>
+<p>A la hora de elegir un tipo de instancia, nos centraremos en la cantidad de núcleos, el tamaño de la memoria, el rendimiento de la red y las tecnologías de la propia CPU (si tiene habilitada GPU y FPGA)</p>
+<h3 id="paso-3-configuracion-de-la-instancia-red">Paso 3: Configuración de la instancia / red<a class="headerlink" href="#paso-3-configuracion-de-la-instancia-red" title="Permanent link">&para;</a></h3>
+<p>El siguiente paso es especificar la ubicación de red en la que se implementará la instancia EC2, teniendo en cuenta la región donde nos encontramos antes de lanzar la instancia. En este paso, elegiremos la <strong>VPC</strong> y la <strong>subred</strong> dentro de la misma, ya sea de las que tenemos creadas o pudiendo crear los recursos en este paso.</p>
+<p><img alt="Paso 3 - Configuración de la instancia" src="images/053configuracion.png" /></p>
+<p>Respecto a la asignación pública de ip sobre esta instancia, cuando se lanza una instancia en una VPC predeterminada, AWS le asigna una dirección IP pública de forma predeterminada. En caso contrario, si la VPC no es la predeterminada, AWS no asignará una dirección IP pública, a no ser que lo indiquemos de forma explícita.</p>
+<h4 id="asociar-un-rol-de-iam">Asociar un rol de IAM<a class="headerlink" href="#asociar-un-rol-de-iam" title="Permanent link">&para;</a></h4>
+<p>Si necesitamos que nuestras instancias EC2 ejecuten una aplicación que debe realizar llamadas seguras de la API a otros servicios de AWS, en vez de dejar anotadas las credenciales en el código de la aplicación (esto es una muy mala práctica que puede acarrear problemas de seguridad), debemos asociar un rol de IAM a una instancia EC2.</p>
+<p>El rol de IAM asociado a una instancia EC2 se almacena en un <strong>perfil de instancia</strong>. Si creamos el rol desde esta misma pantalla, AWS creará un perfil de instancia automáticamente y le otorgará el mismo nombre que al rol. En el desplegable la lista que se muestra es, en realidad, una lista de nombres de perfiles de instancia.</p>
+<p><img alt="Paso 3 - Rol IAM" src="images/053rol.png" /></p>
+<p>Cuando definimos un rol que una instancia EC2 puede utilizar, estamos configurando qué cuentas o servicios de AWS pueden asumir dicho rol, así como qué acciones y recursos de la API puede utilizar la aplicación después de asumir el rol. Si cambia un rol, el cambio se extiende a todas las instancias que tengan el rol asociado.</p>
+<p>La asociación del rol no está limitada al momento del lanzamiento de la instancia, también se puede asociar un rol a una instancia que ya exista.</p>
+<h4 id="script-de-datos-de-usuario">Script de datos de usuario<a class="headerlink" href="#script-de-datos-de-usuario" title="Permanent link">&para;</a></h4>
+<p>Al momento de crear las instancias EC2, de forma opcional, podemos especificar un script de datos de usuario durante el lanzamiento de la instancia. Los datos de usuario pueden automatizar la finalización de las instalaciones y las configuraciones durante el lanzamiento de la instancia. Por ejemplo, un script de datos de usuario podría colocar parches en el sistema operativo de la instancia y actualizarlo, recuperar e instalar claves de licencia de software, o instalar sistemas de software adicionales.</p>
+<p>Por ejemplo, si queremos instalar un servidor de Apache, de manera que arranque automáticamente y que muestre un <em>Hola Mundo</em> podríamos poner</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="ch">#!/bin/bash</span>
+<span class="linenos" data-linenos="2 "></span>yum update -y
+<span class="linenos" data-linenos="3 "></span>yum -y install httpd
+<span class="linenos" data-linenos="4 "></span>systemctl <span class="nb">enable</span> httpd
+<span class="linenos" data-linenos="5 "></span>systemctl start httpd
+<span class="linenos" data-linenos="6 "></span><span class="nb">echo</span> <span class="s1">&#39;&lt;html&gt;&lt;h1&gt;Hola Mundo desde el Severo!&lt;/h1&gt;&lt;/html&gt;&#39;</span> &gt; /var/www/html/index.html
+</code></pre></div>
+<p><img alt="Paso 3 - Datos de usuario" src="images/053datosUsuario.png" /></p>
+<div class="admonition info">
+<p class="admonition-title">Script en Windows</p>
+<p>Si nuestra instancia es de Windows, el script de datos de usuario debe escribirse en un formato que sea compatible con una ventana del símbolo del sistema (comandos por lotes) o con Windows PowerShell.</p>
+</div>
+<p>De forma predeterminada, los datos de usuario sólo se ejecutan la primera vez que se inicia la instancia.</p>
+<h3 id="paso-4-almacenamiento">Paso 4: Almacenamiento<a class="headerlink" href="#paso-4-almacenamiento" title="Permanent link">&para;</a></h3>
+<p>Al lanzar la instancia EC2 configuraremos las opciones de almacenamiento. Por ejemplo el tamaño del volumen raíz en el que está instalado el sistema operativo invitado o volúmenes de almacenamiento adicionales cuando lance la instancia.</p>
+<p>Algunas AMI están configuradas para lanzar más de un volumen de almacenamiento de forma predeterminada y, de esa manera, proporcionar almacenamiento independiente del volumen raíz. Para cada volumen que tenga la instancia, podemos indicar el tamaño de los discos, los tipos de volumen, si el almacenamiento se conservará en el caso de terminación de la instancia y si se debe utilizar el cifrado.</p>
+<p><img alt="Paso 4 - Almacenamiento" src="images/054datos.png" /></p>
+<p>En la sesión anterior ya comentamos algunos de los servicios de almacenamiento que estudiaremos en profundidad en la siguiente sesión, como pueden ser <em>Amazon EBS</em> (almacenamiento por bloques de alto rendimiento) o <em>Amazon EFS</em> (almacenamiento elástico compartido entre diferentes instancias).</p>
+<h3 id="paso-5-etiquetas">Paso 5: Etiquetas<a class="headerlink" href="#paso-5-etiquetas" title="Permanent link">&para;</a></h3>
+<p>Las etiquetas son marcas que se asignan a los recursos de AWS. Cada etiqueta está formada por una clave y un valor opcional, siendo ambos campos <em>case sensitive</em>.</p>
+<p><img alt="Paso 5 - Etiquetas" src="images/055etiquetas.png" /></p>
+<p>El etiquetado es la forma en que asocia metadatos a una instancia EC2. De esta manera podemos clasificar los recursos de AWS, como las instancias EC2, de diferentes maneras. Por ejemplo, en función de la finalidad, el propietario o el entorno.</p>
+<p>Los beneficios potenciales del etiquetado son la capacidad de filtrado, la automatización, la asignación de costes y el control de acceso.</p>
+<h3 id="paso-6-grupo-de-seguridad">Paso 6: Grupo de seguridad<a class="headerlink" href="#paso-6-grupo-de-seguridad" title="Permanent link">&para;</a></h3>
+<p>Un grupo de seguridad es un conjunto de reglas de firewall que controlan el tráfico de red de una o más instancias, por lo que se encuentra fuera del sistema operativo de la instancia, formando parte de la VPC.</p>
+<p><img alt="Paso 6 - Grupo de seguridad" src="images/056gruposeguridad.png" /></p>
+<p>Dentro del grupo, agregaremos reglas para habilitar el tráfico hacia o desde nuestras instancias asociadas. Para cada una de estas reglas especificaremos el puerto, el protocolo (TCP, UDP, ICMP), así como el origen (por ejemplo, una dirección IP u otro grupo de seguridad) que tiene permiso para utilizar la regla.</p>
+<p>De forma predeterminada, se incluye una regla de salida que permite todo el tráfico saliente. Es posible quitar esta regla y agregar reglas de salida que solo permitan tráfico saliente específico.</p>
+<div class="admonition info">
+<p class="admonition-title">Servidor Web</p>
+<p>Si hemos seguido el ejemplo anterior y hemos añadido en los datos de usuario el <em>script</em> para instalar Apache, debemos habilitar las peticiones entrantes en el puerto 80. Para ello crearemos una regla que permita el tráfico HTTP.</p>
+<p><img alt="Regla HTTP" src="images/05reglaHttp.png" /></p>
+</div>
+<p>AWS evalúa las reglas de todos los grupos de seguridad asociados a una instancia para decidir si permite que el tráfico llegue a ella. Si desea lanzar una instancia en una nube virtual privada (VPC), debe crear un grupo de seguridad nuevo o utilizar uno que ya exista en esa VPC.</p>
+<p>Las reglas de un grupo de seguridad se pueden modificar en cualquier momento, y las reglas nuevas se aplicarán automáticamente a todas las instancias que estén asociadas al grupo de seguridad.</p>
+<h3 id="paso-7-analisis-e-identificacion">Paso 7: Análisis e identificación<a class="headerlink" href="#paso-7-analisis-e-identificacion" title="Permanent link">&para;</a></h3>
+<p>El paso final es una página resumen con todos los datos introducidos. Cuando le damos a lanzar la nueva instancia configurada, nos aparecerá un cuadro de diálogo donde se solicita que elijamos un <strong>par de claves</strong> existente (formato X.509), continuar sin un par de claves o crear un par de claves nuevo antes de crear y lanzar la instancia EC2.</p>
+<p>Amazon EC2 utiliza la criptografía de clave pública para cifrar y descifrar la información de inicio de sesión. La clave pública la almacena AWS, mientras que la clave privada la almacenamos nosotros.</p>
+<div class="admonition importante">
+<p class="admonition-title">Guarda tus claves</p>
+<p>Si creamos una par de claves nuevas, hemos de descargarlas y guardarlas en un lugar seguro. Esta es la única oportunidad de guardar el archivo de clave privada. Si perdemos las claves, tendremos que destruir la instancia y volver a crearla.</p>
+</div>
+<p>Para conectarnos a la instancia desde nuestra máquina local, necesitamos hacerlo via un cliente SSH / Putty adjuntando el par de claves descargado. Si la AMI es de Windows, utilizaremos la clave privada para obtener la contraseña de administrador que necesita para iniciar sesión en la instancia. En cambio, si la AMI es de Linux, lo haremos mediante ssh:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ssh -i /path/miParClaves.pem miNombreUsuarioInstancia@miPublicDNSInstancia
+</code></pre></div>
+<p>Por ejemplo, si utilizamos la <em>Amazon Linux AMI</em> y descargamos las claves de <em>AWS Academy</em> (suponiendo que la ip pública de la máquina que hemos creado es <code>3.83.80.52</code>) nos conectaríamos mediante:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ssh -i labsuser.pem ec2-user@3.83.80.52
+</code></pre></div>
+<p>Más información en: <a href="https://docs.aws.amazon.com/es_es/AWSEC2/latest/UserGuide/AccessingInstances.html">https://docs.aws.amazon.com/es_es/AWSEC2/latest/UserGuide/AccessingInstances.html</a></p>
+<p>Por último, una vez lanzada la instancia, podemos observar la informacion disponible sobre la misma: dirección IP y la dirección DNS, el tipo de instancia, el ID de instancia único asignado a la instancia, el ID de la AMI que utilizó para lanzar la instancia, el ID de la VPC, el ID de la subred, etc...</p>
+<div class="admonition tip">
+<p class="admonition-title">IAM</p>
+<p>Recuerda que en el caso de otros recursos cloud, como el almacenamiento masivo, bases de datos, serverless, etc, lo normal será controlar el acceso mediante la estructura de permisos IAM, que permite establecer políticas definidas y el uso de roles.</p>
+</div>
+<p><img alt="Paso 7 - Resumen" src="images/057resumen.png" /></p>
+<p>En resumen, las instancias EC2 se lanzan desde una plantilla de AMI en una VPC de nuestra cuenta. Podemos elegir entre muchos tipos de instancias, con diferentes combinaciones de CPU, RAM, almacenamiento y redes. Además, podemos configurar grupos de seguridad para controlar el acceso a las instancias (especificar el origen y los puertos permitidos). Al crear una instancia, mediante los datos de usuario, podemos especificar un script que se ejecutará la primera vez que se lance una instancia.</p>
+<div class="admonition info">
+<p class="admonition-title">Claves en AWS Academy</p>
+<p>Nuestro usuario tiene creado por defecto un par de claves que se conocen como <em>vockey</em>. Esta claves se pueden descargar desde la opción <em>AWS Details</em> del laboratorio de <em>Learner Lab</em>. Más adelante, en esta misma sesión, veremos cómo utilizarlas.</p>
+</div>
+<h3 id="uso-de-la-consola">Uso de la consola<a class="headerlink" href="#uso-de-la-consola" title="Permanent link">&para;</a></h3>
+<p>En la sesión anterior ya utilizamos AWS CLI para conectarnos a AWS. En el caso concreto de EC2, es muy útil para crear, arrancar y detener instancias.</p>
+<p>Todos los comandos comenzarán por <code>aws ec2</code>, seguida de la opción deseada. Si usamos el comando <code>aws ec2 help</code> obtendremos un listado enorme con todas las posibilidades.</p>
+<p>Vamos a comentar un par de casos de uso. Por ejemplo, para ejecutar una instancia utilizaremos el comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 run-instances --image-id ami-04ad2567c9e3d7893 --count <span class="m">1</span> --instance-type c3.large --key-name MiParejaDeClaves --security-groups MiGrupoSeguridad --region us-east-1
+</code></pre></div>
+<p>Los parámetros que permiten configurar la instancia son:</p>
+<ul>
+<li><code>image-id</code>: este parámetro va seguido de un ID de AMI. Recordad que todas las AMI tienen un ID de único.</li>
+<li><code>count</code>: puede especificar más de una instancia.</li>
+<li><code>instance-type</code>:  tipo de instancia que se creará, como una instancia <code>t2.micro</code></li>
+<li><code>key-name</code>: supongamos que <code>MiParejaDeClaves</code> ya existe.</li>
+<li><code>security-groups</code> : supongamos que <code>MiGrupoSeguridad</code> ya existe.</li>
+<li><code>region</code>: las AMI se encuentran en una región de AWS, por lo que debe especificar la región donde la CLI de AWS encontrará la AMI y lanzará la instancia EC2.</li>
+</ul>
+<p>Para que cree la instancia EC2, se debe cumplir que el comando tiene el formato correcto, y que todos los recursos y permisos existen, así como saldo suficiente.</p>
+<p>Si queremos ver las instancias que tenemos creadas ejecutaremos el comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 describe-instances
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Comandos AWS CLI</p>
+<p>Es muy útil utilizar alguna de las <a href="https://www.bluematador.com/learn/aws-cli-cheatsheet#EC2"><em>cheatsheet</em></a> disponibles en la red con los comandos más útiles a la hora de trabajar con AWS CLI.</p>
+</div>
+<h4 id="caso-de-uso-mediante-aws-cli">Caso de uso mediante AWS CLI<a class="headerlink" href="#caso-de-uso-mediante-aws-cli" title="Permanent link">&para;</a></h4>
+<p>A continuación vamos a crear un grupo de seguridad que permita el acceso via HTTP al puerto 80 y HTTPS al puerto 443 y conexión mediante SSH al puerto 22.</p>
+<p>Para ello, primero creamos el grupo de seguridad utilizando el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/create-security-group.html">create-security-group</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 create-security-group --group-name iabd-front <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --description <span class="s2">&quot;Grupo de seguridad para frontend&quot;</span>
+</code></pre></div>
+<p>A continuación añadimos el acceso a <em>ssh</em> utilizando el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/authorize-security-group-ingress.html">authorize-security-group-ingress</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 authorize-security-group-ingress --group-name iabd-front <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --protocol tcp --port <span class="m">22</span> --cidr <span class="m">0</span>.0.0.0/0
+</code></pre></div>
+<p>A continuación habilitamos el acceso <em>http</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 authorize-security-group-ingress --group-name iabd-front <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --protocol tcp --port <span class="m">80</span> --cidr <span class="m">0</span>.0.0.0/0
+</code></pre></div>
+<p>A continuación habilitamos el acceso <em>https</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 authorize-security-group-ingress --group-name iabd-front <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --protocol tcp --port <span class="m">443</span> --cidr <span class="m">0</span>.0.0.0/0
+</code></pre></div>
+<p>Si queremos consultar el grupo de seguridad:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 describe-security-groups --group-name iabd-front
+</code></pre></div>
+<p>Una vez creado y configurado el grupo de seguridad, vamos a crear una instancia utilizando el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/run-instances.html">run-instances</a> a partir de la AMI <code>ami-03ae0589c3c7b8599</code> (es una imagen Ubuntu 20.04), y crearemos un instancia de tipo <code>t3.large</code> (su coste aproximado es de menos de 10 céntimos por hora) con el grupo de seguridad que acabamos de crear y 30GB de almacenamiento EBS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 run-instances --image-id ami-03ae0589c3c7b8599 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --count <span class="m">1</span> --instance-type t3.large <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --key-name vockey --security-groups iabd-front <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --tag-specifications <span class="s2">&quot;ResourceType=instance,Tags=[{Key=Name,Value=iabd}]&quot;</span> <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --ebs-optimized <span class="se">\</span>
+<span class="linenos" data-linenos="6 "></span>    --block-device-mapping <span class="s2">&quot;[ { \&quot;DeviceName\&quot;: \&quot;/dev/sda1\&quot;, \&quot;Ebs\&quot;: { \&quot;VolumeSize\&quot;: 30 } } ]&quot;</span>
+</code></pre></div>
+<p>El comando <em>describe-instances</em> también nos permite obtener información de nuestras instancias utilizando filtros. Asi pues, por ejemplo, si queremos obtener la ip pública de la instancia que acabamos de crear podemos hacer:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws ec2 describe-instances <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --filters <span class="s2">&quot;Name=tag:Name,Values=iabd&quot;</span> <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --query <span class="s2">&quot;Reservations[*].Instances[*].PublicIpAddress&quot;</span> <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --output text
+</code></pre></div>
+<p>El siguiente paso es conectarnos a nuestra instancia. Como hemos creado la instancia utilizando las credenciales <em>vockey</em>, vamos a descargar las claves desde la consola de <em>Learner Labs</em> donde antes habíamos consultado nuestras credenciales.</p>
+<figure style="align: center;">
+    <img src="images/05awsdetails.png">
+    <figcaption>Claves SSH en AWS Academy</figcaption>
+</figure>
+
+<p>Una vez descargada la clave, ya sea mediante <em>Download PEM</em> o <em>Download PPK</em>, nos conectaremos utilizando el usuario <code>ubuntu</code> mediante:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">SSH mediante Linux / Mac</label><label for="__tabbed_1_2">Putty mediante Windows</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Si nos situamos sobre la carpeta que contiene en el archivo descargado</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>chmod 400 labsuser.pem
+</code></pre></div>
+<p>Una vez que ya tenemos permisos de lectura sobre el archivo, nos conectamos mediante el comando <code>ssh</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ssh -i labsuser.pem ubuntu@&lt;ip-publica&gt;
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Descargamos el archivo <code>labuser.ppk</code>, y una vez configurada la ip pública, en <em>Connection -&gt; SSH -&gt; Auth</em>, en la parte inferior donde podemos cargarlo mediante el botón <em>Browse</em>:</p>
+<p><figure style="align: center;">
+    <img src="images/05putty.png">
+    <figcaption>Configuración de Putty</figcaption>
+</figure></p>
+</div>
+</div>
+</div>
+<!--
+https://josejuansanchez.org/iaw/practica-aws-cli/index.html
+-->
+
+<h3 id="ciclo-de-vida-de-las-instancias">Ciclo de vida de las instancias<a class="headerlink" href="#ciclo-de-vida-de-las-instancias" title="Permanent link">&para;</a></h3>
+<p>Las instancias en todo momento tienen un estado que se puede consultar:</p>
+<ul>
+<li><em>Pending (pendiente)</em>: nada más lanzarse o al arrancar una instancia detenida.</li>
+<li><em>Running (en ejecución)</em>: cuando arrancó la instancia por completo y está lista  para su uso. En este momento se empieza a facturar.</li>
+<li><em>Rebooting (reiniciada)</em>: AWS recomienda reiniciar las instancias con la consola de Amazon EC2, la CLI de AWS o los SDK de AWS, en lugar de utilizar el reinicio desde el sistema operativo invitado. Una instancia reiniciada permanece en el mismo host físico, mantiene el mismo DNS público y la misma IP pública y, si tiene volúmenes del almacén de instancias, conserva los datos en ellos.</li>
+<li><em>Shutting down (en proceso de terminación / apagándose)</em></li>
+<li><em>Terminated (terminada)</em>: las instancias terminadas permanecen visibles en la consola de Amazon EC2 durante un tiempo antes de que se destruya la máquina virtual. Sin embargo, no es posible conectarse a una instancia terminada ni recuperarla.</li>
+<li><em>Stopping (deteniéndose)</em>: las instancias que cuentan con volúmenes EBS se pueden detener.</li>
+<li><em>Stopped (detenida)</em>: no generará los mismos costes que una instancia en el estado <em>running</em>. Sólo se paga por el almacenamiento de datos. Solo se pueden detener las instancias que utilizan como almacenamiento EBS.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/05ciclovida.png">
+    <figcaption>Ciclo de vida de una instancia</figcaption>
+</figure>
+
+<div class="admonition note">
+<p class="admonition-title">IPs estáticas</p>
+<p>A cada instancia que recibe una  IP pública se le asigna también un DNS externo. Por ejemplo, si la dirección IP pública asignada a la instancia es <code>203.0.113.25</code>, el nombre de host DNS externo podría ser <code>ec2-203-0-113-25.compute-1.amazonaws.com</code>.<br />
+AWS libera la dirección IP pública de la instancia cuando la instancia se detiene o se termina. La instancia detenida recibe una dirección IP pública nueva cuando se reinicia.<br />
+Si necesitamos una IP pública fija, se recomienda utilizar una IP elástica, asociándola primero a la región donde vaya a residir la instancia EC2. Recuerda que las IP elásticas se pagan por cada hora que las tenemos reservadas y se deja de pagar por ellas si están asociadas a una instancia en ejecución.</p>
+</div>
+<h3 id="monitorizacion">Monitorización<a class="headerlink" href="#monitorizacion" title="Permanent link">&para;</a></h3>
+<p>Aunque ya lo veremos en una sesión más adelante, podemos monitorizar las instancias EC2 mediante la herramienta <em>Amazon CloudWatch</em> con los datos que recopila y procesa, los cuales convierte en métricas legibles en intervalos por defecto de 5 minutos (aunque se puede habilitar el monitoreo detallado y monitorizar cada minuto)</p>
+<p>Estas estadísticas se registran durante un periodo de 15 meses, lo que nos permite obtener información histórica y sobre el rendimiento de nuestras instancias.</p>
+<h2 id="costes-de-las-instancias">Costes de las instancias<a class="headerlink" href="#costes-de-las-instancias" title="Permanent link">&para;</a></h2>
+<p>Normalmente cuando iniciemos una instancia usaremos instancias <em>bajo demanda</em> (el crédito concedido por <em>AWS Academy</em> es en esa modalidad), pero conviene conocer el resto de formas que ofrecen diferentes facturaciones.</p>
+<p>AWS ofrece diferentes tipos pago de instancia:</p>
+<table>
+<thead>
+<tr>
+<th>Tipo</th>
+<th>Descripción</th>
+<th>Beneficios</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Bajo Demanda" src="images/05ec2bajodemanda.png" /> <strong>bajo demanda</strong></td>
+<td>se paga por hora, no tiene compromisos a largo plazo, y es apto para la capa gratuita de AWS.</td>
+<td>bajo coste y flexibilidad.</td>
+<td>Cargas de trabajo de corto plazo, con picos o impredecibles. También para desarrollo o prueba de aplicaciones.</td>
+</tr>
+<tr>
+<td><img alt="Spot" src="images/05ec2spot.png" /> <strong>spot</strong></td>
+<td>Se puja por ellas. Se ejecutan siempre que estén disponibles y que su oferta esté por encima del precio de la instancia de spot. AWS puede interrumpirlas con una notificación de 2 minutos. Los precios pueden ser considerablemente más económicos en comparación con las instancias bajo demanda.</td>
+<td>Carga de trabajo dinámica y a gran escala.</td>
+<td>Aplicaciones con horarios flexibles de inicio y finalización. Aplicaciones que solo son viables con precios de computación muy bajos. Usuarios con necesidades de computación urgentes de grandes cantidades de capacidad adicional.</td>
+</tr>
+<tr>
+<td><img alt="Instancia Reservada" src="images/05ec2reservada.png" /> <strong>instancia reservada</strong></td>
+<td>Pago inicial completo, parcial o nulo para las instancias que reserve. Descuento en el cargo por hora por el uso de la instancia  (hasta 72%). Plazo de 1 o 3 años.</td>
+<td>Asegura capacidad de cómputo disponible cuando se la necesita.</td>
+<td>Cargas de trabajo de uso predecible o estado estable. Aplicaciones que requieren capacidad reservada, incluida la recuperación de desastres. Usuarios capaces de afrontar pagos iniciales para reducir aún más los costes de computación.</td>
+</tr>
+<tr>
+<td><img alt="Host Reservado" src="images/05ec2host.png" /> <strong>host reservado / dedicado</strong></td>
+<td>Servidor físico con capacidad de instancias EC2 totalmente dedicado a su uso.</td>
+<td>Ahorro de dinero en costes de licencia. Asistencia para cumplir los requisitos normativos y de conformidad.</td>
+<td>Licencia <em>Bring your own</em> (BYOL). Conformidad y restricciones normativas. Seguimiento del uso y las licencias. Control de la ubicación de instancias.</td>
+</tr>
+</tbody>
+</table>
+<p>La facturación por segundo está disponible para las instancias bajo demanda, las instancias reservadas y las instancias de <em>spot</em> que solo utilizan Amazon Linux y Ubuntu.</p>
+<p>Las instancias reservadas supondrán un ahorro económico importante, si hay
+posibilidades económicas y previsión (de 12 a 36 meses), hasta de un 75% según las diferentes opciones:</p>
+<ul>
+<li><strong>AURI</strong> - <em>All up-front reserved instance</em>: se realiza un pago inicial completo.</li>
+<li><strong>PURI</strong> - <em>Partial up-front reserved instance</em>: se realiza una pago inicial parcial y cuotas mensuales.</li>
+<li><strong>NURI</strong> - <em>No up-front reserved instance</em>: sin pago inicial, se realiza un pago mensual.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/05auripurinuri.png" width="500">
+    <figcaption>Modelos de pago de las instancias reservadas</figcaption>
+</figure>
+
+<p>El planteamiento ideal es utilizar instancias reservadas para la carga mínima de base de nuestro sistema, bajo demanda para autoescalar según necesidades y quizá las instancias <em>spot</em>  para cargas opcionales que se contemplarán sólo si el coste es bajo.</p>
+<p>Puedes consultar el coste de las diferentes instancias en <a href="https://aws.amazon.com/es/ec2/pricing/reserved_instances">https://aws.amazon.com/es/ec2/pricing/reserved_instances</a>, y consultar precios en <a href="https://aws.amazon.com/es/ec2/pricing/reserved-instances/pricing/">https://aws.amazon.com/es/ec2/pricing/reserved-instances/pricing/</a></p>
+<h3 id="optimizacion-de-costes">Optimización de costes<a class="headerlink" href="#optimizacion-de-costes" title="Permanent link">&para;</a></h3>
+<p>Los cuatro pilares de la optimización de costes son:</p>
+<ul>
+<li><em>Adaptación del tamaño</em>: consiste en conseguir el equilibrio adecuado de los tipos de instancias. Los servidores pueden desactivarse o reducirse y seguir cumpliendo con sus requisitos de rendimiento. Si seguimos las métricas de Amazon Cloudwatch podremos ver el porcentaje de actividades de las instancias o los rangos horarios donde están inactivas. Se recomienda primero adaptar el tamaño, y una vez que ya es estable la configuración, utilizar instancias reservadas.</li>
+<li><em>Aumento de la elasticidad</em>: mediante soluciones elásticas podemos reducir la capacidad del servidor (por ejemplo, deteniendo o hibernando las instancias que utilizan Amazon EBS que no están activas, como puedan ser entornos de prueba o durante las noches) o utilizar el escalado automático para administrar picos de cargas.</li>
+<li><em>Modelo de precios óptimo</em>: hay que conocer las opciones de precios disponibles, analizando los patrones de uso para combinar los tipos de compra. Por ejemplo, utilizar instancias bajo demanda e instancias de spot para las cargas de trabajo variables, incluso el uso de funciones <em>serverless</em>.</li>
+<li><em>Optimización de las opciones de almacenamiento</em>: hay que reducir la sobrecarga de almacenamiento sin utilizar siempre que sea posible (reduciendo el tamaño de los volúmenes) y elegir las opciones de almacenamiento más económicas si cumplen los requisitos de rendimiento de almacenamiento. Otro caso puede ser el eliminar las instancias EBS que ya no se necesitan o las copias de seguridad ya pasadas.</li>
+</ul>
+<h2 id="aws-lambda">AWS Lambda<a class="headerlink" href="#aws-lambda" title="Permanent link">&para;</a></h2>
+<p>La informática <em>serverless</em> permite crear y ejecutar aplicaciones y servicios sin aprovisionar ni administrar servidores.</p>
+<p><em>AWS Lambda</em> (<a href="https://aws.amazon.com/es/lambda/">https://aws.amazon.com/es/lambda/</a>) es un servicio de informática sin servidor que proporciona tolerancia a errores y escalado automático, y que se factura por el tiempo de ejecución (cantidad de milisegundos por el número de invocaciones a la función). Para ello, permite la ejecución de código en el servidor con soporte para múltiples lenguajes (Java, C#, Python, Go, ...) sin necesidad de configurar una instancia EC2.</p>
+<p>Un <em>origen de eventos</em> es un servicio de AWS (<em>S3</em>, <em>DynamoDB</em>, <em>Elastic Load Balancing</em>...) o una aplicación creada por un desarrollador que desencadena la ejecución de una función de Lambda. Podemos encadenar funciones Lambda para flujos de trabajo mediante <em>AWS Step Functions</em>.</p>
+<h3 id="creando-una-funcion">Creando una función<a class="headerlink" href="#creando-una-funcion" title="Permanent link">&para;</a></h3>
+<p>Al crear una función Lambda, primero le asignaremos un nombre a la función. Tras  elegir el entorno de ejecución (versión de Python, Node.js, etc...), hemos de elegir el rol de ejecución (en el caso de AWS Academy, elegimos el rol <em>LabRole</em>), mediante un permiso de IAM, dependiendo de los servicios con los que tenga que interactuar...(al menos el rol <code>AWSLambdaBasicExecutionRole</code> y <code>AWSLambdaVPCAccessExecutionRole</code>).</p>
+<p>Respecto a la configuración de la función, deberemos:</p>
+<ul>
+<li>Agregar un desencadenador / origen de evento.</li>
+<li>Agregar el código de la función.</li>
+<li>Especificar la cantidad de memoria en MB que se asignará a la función (de 128MB a 3008MB)</li>
+<li>Si queremos, podemos configurar las variables del entorno, la descripción, el tiempo de espera, la VPC específica en la que se debe ejecutar la función, las etiquetas que desea utilizar y otros ajustes.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/05lambda.png" width=600>
+    <figcaption>Ejemplo de función Lambda</figcaption>
+</figure>
+
+<div class="admonition tip">
+<p class="admonition-title">Cargando código</p>
+<p>Además de poder utilizar el IDE que ofrece AWS, podemos subir nuestras propias funciones en formato zip o desde S3. El fichero que contiene las funciones por defecto se llamará <code>lambda_function</code> y el manejador <code>def_handler</code>. Si queremos cambiar alguno de esos nombres, hay que editar el controlador en la configuración en tiempo de ejecución de la función.</p>
+</div>
+<h3 id="restricciones">Restricciones<a class="headerlink" href="#restricciones" title="Permanent link">&para;</a></h3>
+<p>Las restricciones más destacables son:</p>
+<ul>
+<li>Permite hasta 1000 ejecuciones simultáneas en una única región.</li>
+<li>La cantidad máxima de memoria que se puede asignar para una sola función Lambda es de 3008 MB.</li>
+<li>El tiempo de ejecución máximo para una función Lambda es de 15 minutos.</li>
+</ul>
+<h2 id="aws-elastic-beanstalk">AWS Elastic Beanstalk<a class="headerlink" href="#aws-elastic-beanstalk" title="Permanent link">&para;</a></h2>
+<p><em>AWS ElasticBeanstalk</em> es un servicio PaaS que facilita la implementación, el escalado y la administración de aplicaciones y servicios web con rapidez.
+Nosotros, como desarrolladores, sólo deberemos cargar el código, elegir el tipo de instancia y de base de datos, configurar y ajustar el escalador automático. <em>Beanstalk</em> automáticamente administra la implementación, desde el aprovisionamiento de capacidad, el balanceo de carga y el escalado automático hasta la monitorización del estado de las aplicaciones. Al mismo tiempo, si queremos, podemos mantener el control total de los recursos de AWS que alimentan la aplicación y acceder a los recursos subyacentes en cualquier momento.</p>
+<figure style="align: center;">
+    <img src="images/05beanstalk.png" width=600>
+    <figcaption>Ejemplo de despliegue con Beanstalk</figcaption>
+</figure>
+
+<p>Es compatible con Java, .NET, PHP, Node.js, Python, Ruby, Go y Docker, y se desplegan en servidores como Apache, Nginx o IIS.</p>
+<p>No se aplican cargos por utilizar <em>ElasticBeanstalk</em>, solo se paga por los recursos que AWS utilice (instancia, base de datos, almacenamiento S3, etc...)</p>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Realizar el módulo 6 (Informática) del curso <a href="https://awsacademy.instructure.com/courses/2243/">ACF de AWS</a>.</li>
+<li>(opcional) Crea una instancia ec2 mediante <em>AWS CLI</em>, siguiendo todos los pasos del apartado <a href="#uso-de-la-consola">Uso de la consola</a>. Adjunta una captura con todos los comandos empleados y el resultado que aparece en la consola. Además, conéctate mediante SSH a la máquina creada, y realiza una nueva captura.</li>
+<li>(opcional) Mediante AWS Lambda, realiza una función que reciba del evento dos números (por ejemplo, <code>a</code> y <code>b</code>) y devuelva un objeto JSON con el <code>total</code> de la suma. Adjunta captura del código fuente, del evento de prueba y de las métricas capturadas tras probar la función 10 veces.</li>
+</ol>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://aws.amazon.com/es/ec2/">Amazon EC2</a></li>
+<li><a href="https://aws.amazon.com/es/lambda/">Funciones Lambda en AWS</a></li>
+</ul>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>

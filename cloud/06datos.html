@@ -1,0 +1,1263 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Repaso a los servicios PAAS que ofrece AWS para gestionar los datos, centrándonos tanto en RDS para los datos relacionales como en DynamoDB como sistema NoSQL.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/06datos.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>Gestión de datos en la nube con AWS. RDS y DynamoDB. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Gestión de datos en la nube con AWS. RDS y DynamoDB. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Repaso a los servicios PAAS que ofrece AWS para gestionar los datos, centrándonos tanto en RDS para los datos relacionales como en DynamoDB como sistema NoSQL." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/06datos.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/cloud/06datos.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Gestión de datos en la nube con AWS. RDS y DynamoDB. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Repaso a los servicios PAAS que ofrece AWS para gestionar los datos, centrándonos tanto en RDS para los datos relacionales como en DynamoDB como sistema NoSQL." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/06datos.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#datos-en-la-nube" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Gestión de datos en la nube con AWS. RDS y DynamoDB.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../hadoop/index.html">UT5.- Ecosistema Hadoop</a>
+          
+            <label for="__nav_2_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          UT5.- Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT6.- Datos en el cloud</a>
+          
+            <label for="__nav_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT6.- Datos en el cloud" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          UT6.- Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#datos-relacionales-amazon-rds" class="md-nav__link">
+    Datos relacionales - Amazon RDS
+  </a>
+  
+    <nav class="md-nav" aria-label="Datos relacionales - Amazon RDS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instancias-de-bases-de-datos" class="md-nav__link">
+    Instancias de bases de datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alta-disponibilidad" class="md-nav__link">
+    Alta disponibilidad
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#casos-de-uso" class="md-nav__link">
+    Casos de uso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#costes" class="md-nav__link">
+    Costes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-rds" class="md-nav__link">
+    Ejemplo RDS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amazon-aurora" class="md-nav__link">
+    Amazon Aurora
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datos-nosql-dynamodb" class="md-nav__link">
+    Datos NoSQL - DynamoDB
+  </a>
+  
+    <nav class="md-nav" aria-label="Datos NoSQL - DynamoDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#componentes-y-particiones" class="md-nav__link">
+    Componentes y particiones
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infraestructura" class="md-nav__link">
+    Infraestructura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#costes_1" class="md-nav__link">
+    Costes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-dynamodb" class="md-nav__link">
+    Ejemplo DynamoDB
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="datos-en-la-nube">Datos en la nube<a class="headerlink" href="#datos-en-la-nube" title="Permanent link">&para;</a></h1>
+<p>Ya hemos visto que el almacenamiento en la nube ofrece un gran número de ventajas. Otro de los productos estrella de la computación en la nube es el uso de bases de datos, ya sean distribuidas o no.</p>
+<p>La principal ventaja de utilizar un servicio de base de datos basado en la nube es que no requieren de la administración por parte del usuario. Éste sólo utiliza el servicio sin necesidad de tener conocimientos avanzados sobre su administración. Estos servicios se conocen como <strong>administrados</strong>, ya que la propia plataforma cloud se encarga de gestionar el escalado, las copias de seguridad automáticas, la tolerancia a errores y la alta disponibilidad, y por tanto, estos servicios forman parte de una solución PaaS.</p>
+<p>Si nosotros creásemos una instancia EC2 e instalásemos cualquier sistema gestor de base de datos, como <em>MariaDB</em> o <em>PostgreSQL</em>, seríamos responsables de varias tareas administrativas, como el mantenimiento del servidor y la huella energética, el software, la instalación, la implementación de parches y las copias de seguridad de la base de datos, así como de garantizar su alta disponibilidad, de planificar la escalabilidad y la seguridad de los datos, y de instalar el sistema operativo e instalarle los respectivos parches.</p>
+<h2 id="datos-relacionales-amazon-rds">Datos relacionales - <em>Amazon RDS</em><a class="headerlink" href="#datos-relacionales-amazon-rds" title="Permanent link">&para;</a></h2>
+<p>AWS ofrece <em>Amazon RDS</em> (<a href="https://aws.amazon.com/es/rds/">https://aws.amazon.com/es/rds/</a>) como servicio administrado que configura y opera una base de datos relacional en la nube, de manera que como desarrolladores sólo hemos de enfocar nuestros esfuerzos en los datos y optimizar nuestras aplicaciones.</p>
+<h3 id="instancias-de-bases-de-datos">Instancias de bases de datos<a class="headerlink" href="#instancias-de-bases-de-datos" title="Permanent link">&para;</a></h3>
+<p>Una instancia de base de datos es un entorno de base de datos aislado que puede contener varias bases de datos creadas por el usuario. Se puede acceder a él utilizando las mismas herramientas y aplicaciones que utiliza con una instancia de base de datos independiente.</p>
+<p>Cuando vamos a crear una instancia de base de datos, primero hemos de indicar qué motor de base de datos ejecutar. Actualmente, RDS admite seis motores de bases de datos:</p>
+<ul>
+<li><a href="https://aws.amazon.com/es/rds/mysql/">MySQL</a>, compatible con las versiones 5.6, 5.7 y 8.0.</li>
+<li><a href="https://aws.amazon.com/es/rds/aurora/">Amazon Aurora</a></li>
+<li><a href="https://aws.amazon.com/es/rds/sqlserver/">Microsoft SQL Server</a>, que permite implementar varias versiones de SQL Server (2012, 2014, 2016, 2017 y 2019), incluidas las Express, Web, Standard y Enterprise.</li>
+<li><a href="https://aws.amazon.com/es/rds/postgresql/">PostgreSQL</a>, compatible con las versiones 9.6, 10, 11 y 12.</li>
+<li><a href="https://aws.amazon.com/es/rds/mariadb/">MariaDB</a>, compatible con las versiones 10.2, 10.3, 10.4 y 10.5</li>
+<li>y <a href="https://aws.amazon.com/es/rds/oracle">Oracle</a>, compatible con Oracle 12 y Oracle 19, con dos modelos de licencia diferentes: <em>Licencia incluida</em> y <em>Bring-Your-Own-License (BYOL)</em>.</li>
+</ul>
+<p>Los recursos que se encuentran en una instancia de base de datos se definen en función de la clase de instancia de base de datos, y el tipo de almacenamiento se determina por el tipo de disco. Las instancias y el almacenamiento de base de datos difieren en cuanto a las características de rendimiento y al precio, lo que permite adaptar el coste y el rendimiento a las necesidades de nuestra base de datos.</p>
+<figure style="align: center;">
+    <img src="images/06rds.png" width="500">
+    <figcaption>Instancia de RDS</figcaption>
+</figure>
+
+<p>Por ejemplo, si seleccionamos el motor de <em>MariaDB</em>, podemos observar como mediante la creación sencilla nos ofrece tres propuestas de tamaño, dependiendo de si es para el entorno de producción, desarrollo y pruebas o el de la capa gratuita.</p>
+<figure style="align: center;">
+    <img src="images/06mariadb.png">
+    <figcaption>Configuración de tamaño de la instancia con MariaDB</figcaption>
+</figure>
+
+<h3 id="alta-disponibilidad">Alta disponibilidad<a class="headerlink" href="#alta-disponibilidad" title="Permanent link">&para;</a></h3>
+<p>Una de las características más importantes de <em>RDS</em> es la capacidad de configurar la instancia de base de datos para una alta disponibilidad con una <a href="https://aws.amazon.com/es/rds/features/multi-az/">implementación Multi-AZ</a>. Al hacerlo, se genera de manera automática una <strong>copia en espera</strong> de la instancia de base de datos en otra zona de disponibilidad dentro de la misma VPC. Después de propagar la copia de la base de datos, las transacciones se replican de forma <ins>síncrona</ins> a la copia en espera.</p>
+<figure style="align: center;">
+    <img src="images/06rdsMultiAZ.png">
+    <figcaption>Alta disponibilidad en Multi-AZ</figcaption>
+</figure>
+
+<p>Por lo tanto, si la instancia de base de datos principal falla en una implementación Multi-AZ, <em>RDS</em> activa automáticamente la instancia de base de datos en espera como la nueva instancia principal.</p>
+<h4 id="replica-de-lectura">Réplica de lectura<a class="headerlink" href="#replica-de-lectura" title="Permanent link">&para;</a></h4>
+<p>RDS también admite la creación de <a href="https://aws.amazon.com/es/rds/features/read-replicas/">réplicas de lectura</a> para MySQL, MariaDB, PostgreSQLy Amazon Aurora. </p>
+<figure style="float: right;">
+    <img src="images/06rdsReplicaLectura.png">
+    <figcaption>Réplica de lectura</figcaption>
+</figure>
+
+<p>Las actualizaciones que se realizan en la instancia principal se copian de manera <ins>asíncrona</ins> en la instancia de réplica de lectura, de manera que direccionando las consultas a esta nueva réplica reduciremos la carga de la instancia principal.</p>
+<p>Las réplicas de lectura también pueden convertirse en la instancia de base de datos principal, pero, debido a la replicación asíncrona, este proceso debe hacerse de forma manual.</p>
+<p>Las réplicas de lectura pueden crearse en una región diferente a la utilizada por la base de datos principal, lo que puede mejorar la recuperación de desastres y/o disminuir la latencia al dirigir las lecturas a una réplica de lectura lo más cercana al usuario.</p>
+<h3 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h3>
+<p>AmazonRDS es ideal para las aplicaciones web y móviles que necesitan una base de datos con alto rendimiento, enorme escalabilidad en el almacenamiento y alta disponibilidad.</p>
+<p>Se recomienda <em>RDS</em> cuando nuestra aplicación necesite:</p>
+<ul>
+<li>Transacciones o consultas complejas</li>
+<li>Tasa de consulta o escritura media a alta: hasta 30.000 IOPS (15.000 lecturas + 15.000 escrituras)</li>
+<li>No más de una única partición o nodo de trabajo</li>
+<li>Alta durabilidad</li>
+</ul>
+<p>En cambio, no se recomienda cuando:</p>
+<ul>
+<li>Tasas de lectura o escritura muy grandes (por ejemplo, 150.000 escrituras por segundo)</li>
+<li>Fragmentación causada por el gran tamaño de los datos o las altas demandas de rendimiento</li>
+<li>Solicitudes y consultas GET o PUT simples que una base de datos NoSQL puede manejar</li>
+<li>Personalización del sistema de administración de bases de datos relacionales (en este caso, es mejor instalar por nuestra cuenta el SGBD que necesitemos en una instancia EC2).</li>
+</ul>
+<h3 id="costes">Costes<a class="headerlink" href="#costes" title="Permanent link">&para;</a></h3>
+<p>El <a href="https://aws.amazon.com/es/rds/pricing/">coste</a> se calcula en base al tiempo de ejecución (calculado en horas) así como las características de la base de datos. Las características de la base de datos varían según el motor, el <a href="https://aws.amazon.com/es/rds/instance-types/">tipo de instancia</a> y su cantidad, así como la clase de memoria de la base de datos.</p>
+<p>Otros gastos asociados son:</p>
+<ul>
+<li>almacenamiento aprovisionado: el almacenamiento para copias de seguridad de hasta el 100% del almacenamiento de nuestra base de datos activa es gratuito. Una vez que se termina la instancia de base de datos, el almacenamiento para copias de seguridad se factura por GB por mes.</li>
+<li>cantidad de solicitudes de entrada y de salida.</li>
+</ul>
+<p>Aunque se recomienda utilizar la <a href="https://calculator.aws/#/addService">calculadora de costes</a> para afinar en el presupuesto, por ejemplo, una base de datos con MariaDB con una instancia <code>db.m4.large</code> con 2 procesadores y 8GB de RAM, en una única AZ, con un porcentaje de utilización del 100%  y 30GB para almacenar los datos, cuesta alrededor de 131$ mensuales. En cambio si la cambiamos por dos instancias más potentes, como puede ser la <code>db.m4.4xlarge</code>, con 16 procesadores y 64 GB de RAM, en multi-AZ ya sube a unos 4.100$ al mes.</p>
+<p>Es importante recordar que si reservamos las instancias estos costes se reducirían en proporción a 2350$ (reserva de un año) o 1526$ (reserva de tres años).</p>
+<h3 id="ejemplo-rds">Ejemplo RDS<a class="headerlink" href="#ejemplo-rds" title="Permanent link">&para;</a></h3>
+<p>A continuación vamos a hacer un ejemplo sencillo donde vamos a crear una base de datos con la información que vimos en el bloque de SQL. Para ello, crearemos una instancia de MariaDB y nos conectaremos desde <em>HeidiSQL</em>.</p>
+<figure style="align: center;">
+    <img src="images/06rds-instituto1.png">
+    <figcaption>Creación de la BD en RDS</figcaption>
+</figure>
+
+<p>Así pues, desde la consola de AWS, crearemos nuestra base de datos a la que llamaremos <code>instituto</code>.</p>
+<p>En nuestro caso hemos seguido la creación estándar con una plantilla de la capa gratuita (utiliza una instancia <code>db.t2.micro</code>). Una vez configurado el usuario <code>admin</code> y la contraseña <code>adminadmin</code> (al menos debe tener ocho caracteres), debemos configurar la conectividad.</p>
+<div class="admonition caution">
+<p class="admonition-title">Instancias permitidas en AWS Academy</p>
+<p>Si queréis crear bases de datos con máquinas más potentes, podéis utilizar instancias hasta nivel <em>medium</em>, y a ser posible a ráfagas (instancias <em>t</em>). Dentro de la <em>Configuración adicional</em>, es importante deshabilitar la monitorización mejorada (no tenemos permiso para su uso en <em>AWS Academy</em>).</p>
+</div>
+<p>Como vamos a querer acceder a nuestro servidor de MariaDB desde fuera de una VPC de EC2, necesitamos configurar el acceso público. Al hacerlo, no quiere decir que ya sea accesible desde fuera de internet, ya que necesitamos configurar su grupo de seguridad (recordad que funciona a modo de <em>firewall</em>). Así pues, es recomendable crear un nuevo grupo de seguridad para que permitamos las conexiones del puerto 3306 a nuestra IP.</p>
+<figure style="align: center;">
+    <img src="images/06rds-instituto2.png">
+    <figcaption>Configuración de la conectividad en RDS</figcaption>
+</figure>
+
+<p>Así pues, una vez creada (lo cual tarda unos minutos), podremos seleccionar la instancia creada y ver su panel de información:</p>
+<figure style="align: center;">
+    <img src="images/06rds-instituto3.png">
+    <figcaption>Resumen de instancia en RDS</figcaption>
+</figure>
+
+<p>Así pues, si copiamos la información del punto de enlace y creamos una conexión en <em>HeidiSQL</em>, veremos que nos conectamos correctamente (si no hemos creado un nuevo grupo de seguridad, deberemos editar el grupo de seguridad por defecto, y añadir una regla de entrada para el protocolo TCP para el puerto 3306, y por ejemplo para todo internet - <code>0.0.0.0/0</code>).</p>
+<figure style="align: center;">
+    <img src="images/06rds-instituto4.png" width="600">
+    <figcaption>Configuración en HeidiSQL</figcaption>
+</figure>
+
+<p>Una vez conectado, ya procedemos de la misma manera que hemos trabajado en el módulo de repaso de SQL.</p>
+<h2 id="amazon-aurora">Amazon Aurora<a class="headerlink" href="#amazon-aurora" title="Permanent link">&para;</a></h2>
+<p>Amazon Aurora es una base de datos relacional compatible con <em>MySQL</em> y <em>PostgreSQL</em> optimizada para la nube. Combina el rendimiento y la disponibilidad de las bases de datos comerciales de alta gama con la simplicidad y la rentabilidad de las bases de datos de código abierto. Ofrece dos modelos, el clásico basado en instancias y un <a href="https://aws.amazon.com/es/rds/aurora/serverless/">modelo <em>serverless</em></a> en el cual se contratan unidades de computación (ACU). Cabe destacar que si creamos una base de datos serverless, Amazon no permite hacerla pública, de manera que únicamente se puede acceder desde otro servicio de AWS.</p>
+<p>Al estar desarrollado de forma nativa por Amazon se adapta mejor a su infraestructura en coste, rendimiento y alta disponibilidad. Está pensado como un subsistema de almacenamiento distribuido de alto rendimiento, ofreciendo automatización de las tareas que requieren mucho tiempo, como el aprovisionamiento, la implementación de parches, las copias ​de seguridad, la recuperación, la detección de errores y su reparación.</p>
+<figure style="float: right;">
+    <img src="images/06aurora.png">
+    <figcaption>Alta disponibles con Aurora</figcaption>
+</figure>
+
+<p>Aurora replica varias copias de los datos en múltiples zonas de disponibilidad y realiza copias de seguridad continuas de los datos en <em>S3</em>.</p>
+<p>Respecto a la seguridad, hay varios niveles disponibles, incluidos el aislamiento de la red con <em>VPC</em>, el cifrado en reposo por medio de claves creadas y controladas con <em>AWS KMS</em> y el cifrado de los datos en tránsito mediante SSL.</p>
+<p>Respecto al coste, si cogemos el mismo ejemplo anterior de una instancia de Aurora compatible con MySQL con dos procesadores y 8GB de RAM, en este caso, la <code>db.t4g.large</code>, el precio se queda en 106$ mensuales.</p>
+<h2 id="datos-nosql-dynamodb">Datos NoSQL - <em>DynamoDB</em><a class="headerlink" href="#datos-nosql-dynamodb" title="Permanent link">&para;</a></h2>
+<p>DynamoDB (<a href="https://aws.amazon.com/es/dynamodb/">https://aws.amazon.com/es/dynamodb/</a>) es un servicio administrado de base de datos NoSQL clave-valor y documental, rápido y flexible para todas las aplicaciones que requieren una latencia uniforme de un solo dígito de milisegundos a cualquier escala y una capacidad de almacenamiento prácticamente ilimitado.</p>
+<p>Así pues, es un almacén de claves/valor (similar a <a href="https://redis.io/">Redis</a> y <a href="https://www.mongodb.com/es">MongoDB</a> a la vez), flexible y sin estructura fija (los elementos pueden tener atributos diferentes), diseñado para garantizar un determinado rendimiento así como una determinada disponibilidad para cada tabla (en NoSQL suele haber pocas tablas), es decir, se definen elementos por tabla y se paga según lo exigido en cada una.</p>
+<h3 id="componentes-y-particiones">Componentes y particiones<a class="headerlink" href="#componentes-y-particiones" title="Permanent link">&para;</a></h3>
+<p>Los componentes principales son:</p>
+<ul>
+<li>las <strong>tablas</strong>: son conjuntos de datos, formada por los elementos.</li>
+<li>los <strong>elementos</strong>: grupo de atributos que se puede identificar de forma exclusiva entre todos los demás elementos</li>
+<li>los <strong>atributos</strong>: elemento de datos fundamental que no es preciso seguir dividiendo.</li>
+</ul>
+<p>DynamoDB soporta dos tipos de claves principales:</p>
+<ul>
+<li>La <strong>clave de partición</strong> es una clave principal simple.</li>
+<li>La <strong>clave de partición y de ordenamiento</strong>, también conocidas como clave principal compuesta, ya que está formada por dos atributos.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/06ddb-claves.png" width="600">
+    <figcaption>Claves</figcaption>
+</figure>
+
+<p>A medida que aumenta el volumen de datos, la clave principal particiona e indexa los datos de la tabla. Podemos recuperar los datos de una tabla de <em>DynamoDB</em> de dos formas distintas, bien por la clave y hacer una consulta directa, o utilizar un escaneo de todos los elementos en busca de aquello que coincida con el parámetro de búsqueda.</p>
+<figure style="align: center;">
+    <img src="images/06ddb-particiones.png" width="600">
+    <figcaption>Consultas por clave o escaneo</figcaption>
+</figure>
+
+<p>Para aprovechar al máximo las operaciones de consulta, es importante que la clave utilizada identifique de forma unívoca los elementos de la tabla de DynamoDB. Podemos configurar una clave principal simple basada en un único atributo de los valores de los datos con una distribución uniforme. De forma alternativa, podemos especificar una clave compuesta, que incluye una clave de partición y una clave secundaria.</p>
+<p>Además, <em>DynamoDB</em> permite crear índices para optimizar las consultas que realicemos sobre atributos que no forman parte de la clave de partición u ordenamiento.</p>
+<h3 id="infraestructura">Infraestructura<a class="headerlink" href="#infraestructura" title="Permanent link">&para;</a></h3>
+<p>Amazon administra toda la infraestructura subyacente de datos y los almacena de manera redundante en varias instalaciones dentro de una región, como parte de la arquitectura tolerante a errores.</p>
+<p>El sistema particiona los datos automáticamente, distribuyendo los datos entre diferentes dispositivos de almacenamiento. No existe ningún límite práctico respecto de la cantidad de elementos que se pueden almacenar en una tabla. Por ejemplo, algunos clientes tienen tablas de producción con miles de millones de elementos.</p>
+<p>Todos los datos de <em>DynamoDB</em> se almacenan en unidades SSD, y su lenguaje de consulta simple (<a href="https://partiql.org/">PartiQL</a>) permite un rendimiento de las consultas uniforme y de baja latencia. Además de escalar el almacenamiento, <em>DynamoDB</em> permite aprovisionar el volumen del rendimiento de lectura o escritura que necesita para cada tabla.</p>
+<p>También permite habilitar el escalado automático, monitorizando la carga de la tabla e incrementando o disminuyendo el rendimiento aprovisionado de manera automática. Otras características clave son las tablas globales que permiten generar réplicas de manera automática en las regiones de AWS que elijamos, el cifrado en reposo y la visibilidad del tiempo de vida (TTL) de los elementos.</p>
+<h3 id="costes_1">Costes<a class="headerlink" href="#costes_1" title="Permanent link">&para;</a></h3>
+<p>Con <em>DynamoDB</em> se cobran las operaciones de lectura, escritura y almacenamiento de datos en sus tablas, junto con las características opcionales que decidamos habilitar. Ofrece dos modos de capacidad con opciones de facturación:</p>
+<ul>
+<li>
+<p><a href="https://aws.amazon.com/es/dynamodb/pricing/on-demand/">Bajo demanda</a>: se cobran las operaciones de lectura y escritura de datos realizada en las tablas. No necesitamos especificar el rendimiento de lectura y escritura que espera de nuestras aplicaciones. Apropiado cuando:</p>
+<ul>
+<li>Creamos nuevas tablas con cargas de trabajo desconocidas.</li>
+<li>El tráfico de la aplicación es impredecible.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://aws.amazon.com/es/dynamodb/pricing/provisioned/">Aprovisionada</a>: se configura el número de operaciones de lectura y escritura por segundo que consideramos que necesitará nuestra aplicación. Permite usar el escalado automático para ajustar automáticamente la capacidad de la tabla en función de la tasa de uso especificada. Apropiado cuando:</p>
+<ul>
+<li>El tráfico de la aplicación es predecible.</li>
+<li>Las aplicaciones tienen un tráfico uniforme o aumenta gradualmente.</li>
+<li>Los requisitos de capacidad se pueden predecir para controlar los costos</li>
+</ul>
+</li>
+</ul>
+<p>Por ejemplo, una tabla donde especificamos un rendimiento garantizado de 1000  millones lecturas y 1 millón de escrituras al mes, con una coherencia eventual (es decir, que permite desorden de peticiones ) nos costará $67,17 al mes.</p>
+<h3 id="ejemplo-dynamodb">Ejemplo DynamoDB<a class="headerlink" href="#ejemplo-dynamodb" title="Permanent link">&para;</a></h3>
+<p>A continuación vamos a crear un ejemplo donde tras crear una tabla, la cargaremos con datos para posteriormente realizar alguna consulta.</p>
+<p>Supongamos que tenemos datos relativos a un catálogo de productos, almacenados en el archivo <a href="resources/ProductCatalog.json">ProductCatalog.json</a>, el cual queremos poder consultar.</p>
+<p>Si visualizamos el primer registro podemos observar su estructura. Esta estructura es específica de <em>DynamoDB</em>, ya que indica en el primer elemento el nombre de la tabla (en nuestro caso <code>ProductCatalog</code>), y a continuación el tipo de operación (<code>PutRequest</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">&quot;ProductCatalog&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="nt">&quot;PutRequest&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">                </span><span class="nt">&quot;Item&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">                    </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">                        </span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;101&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">                    </span><span class="nt">&quot;Title&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">                        </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Book 101 Title&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">                    </span><span class="nt">&quot;ISBN&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">                        </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;111-1111111111&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">                    </span><span class="nt">&quot;Authors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">                        </span><span class="nt">&quot;L&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">                            </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">                                </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Author1&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">                            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">                        </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="w">                    </span><span class="nt">&quot;Price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="w">                        </span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="25 "></span><span class="w">                    </span><span class="nt">&quot;Dimensions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="26 "></span><span class="w">                        </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;8.5 x 11.0 x 0.5&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="27 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="28 "></span><span class="w">                    </span><span class="nt">&quot;PageCount&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="29 "></span><span class="w">                        </span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;500&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="30 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="31 "></span><span class="w">                    </span><span class="nt">&quot;InPublication&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="32 "></span><span class="w">                        </span><span class="nt">&quot;BOOL&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="linenos" data-linenos="33 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="34 "></span><span class="w">                    </span><span class="nt">&quot;ProductCategory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="35 "></span><span class="w">                        </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Book&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="36 "></span><span class="w">                    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="37 "></span><span class="w">                </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="38 "></span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="39 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+</code></pre></div>
+<p>Para ello, primero vamos a crear la tabla desde el interfaz web de AWS. Tras seleccionar <em>Amazon DynamoDB</em>, creamos una tabla que llamamos <code>ProductCatalog</code>, cuyo identificador será <code>Id</code> de tipo <em>número</em>. El resto de campos se crearán automáticamente al importar los datos.</p>
+<figure style="align: center;">
+    <img src="images/06ddb-createTable.png" width="600">
+    <figcaption>Creando la tabla</figcaption>
+</figure>
+
+<p>También podíamos haber creado la tabla mediante el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/create-table.html">create-table</a> de AWS CLI:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws dynamodb create-table <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --table-name ProductCatalog <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --attribute-definitions <span class="nv">AttributeName</span><span class="o">=</span>Id,AttributeType<span class="o">=</span>N  <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --key-schema <span class="nv">AttributeName</span><span class="o">=</span>Id,KeyType<span class="o">=</span>HASH <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --billing-mode PAY_PER_REQUEST
+</code></pre></div>
+<p>Para introducir los datos, podemos hacerlo de varias maneras.</p>
+<ul>
+<li>Si pulsamos sobra la tabla y luego en elementos podemos rellenar un formulario indicando el tipo de los elementos y su valor.</li>
+<li>
+<p>Otra manera más ágil es mediante AWS CLI (recordad antes configurar las <a href="02aws.html#variablesEntorno">variables de entorno</a> con la información de la conexión):</p>
+<p>El comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/batch-write-item.html">batch-write-item</a> permite importar los datos desde un archivo JSON siempre y cuando cumpla con el formato comentado anteriormente.</p>
+<p>Así pues, el comando sería:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws dynamodb batch-write-item --request-items file://ProductCatalog.json
+</code></pre></div>
+<p>Una vez ejecutado tendremos un mensaje de <code>UnprocessedItems: {}</code>.</p>
+</li>
+</ul>
+<p>Si volvemos a la consola web, tras entrar en la tabla y pulsar en <em>Ver elementos</em> veremos los datos ya introducidos.</p>
+<figure style="align: center;">
+    <img src="images/06ddb-elementos.png" width="600">
+    <figcaption>Ver elementos</figcaption>
+</figure>
+
+<p>Si queremos consultar información de la tabla mediante el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/describe-table.html">describe-table</a> de AWS CLi, ejecutaremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws dynamodb describe-table --table-name ProductCatalog
+</code></pre></div>
+<p>Si queremos hacer la consulta de la tabla para ver los datos que contiene desde el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/scan.html">scan</a> de AWS CLI, ejecutaremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws dynamodb scan --table-name ProductCatalog
+</code></pre></div>
+<p>Y veremos algo similar a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">&quot;Items&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="nt">&quot;Title&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">                </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;18-Bike-204&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">&quot;Price&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">                </span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;500&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="nt">&quot;Brand&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">                </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Brand-Company C&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">            </span><span class="nt">&quot;Description&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">                </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;205 Description&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">            </span><span class="nt">&quot;Color&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">                </span><span class="nt">&quot;L&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">                    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">                        </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Red&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">                    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="w">                    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="w">                        </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Black&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="w">                    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span><span class="w">                </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="25 "></span><span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="26 "></span><span class="w">            </span><span class="nt">&quot;ProductCategory&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="27 "></span><span class="w">                </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Bicycle&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="28 "></span><span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="29 "></span><span class="w">            </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="30 "></span><span class="w">                </span><span class="nt">&quot;N&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;205&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="31 "></span><span class="w">            </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="32 "></span><span class="w">            </span><span class="nt">&quot;BicycleType&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="33 "></span><span class="w">                </span><span class="nt">&quot;S&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hybrid&quot;</span><span class="w"></span>
+</code></pre></div>
+<p>Como se puede observar, los datos salen desordenados.</p>
+<p>Vamos a realizar consultas sobre estos datos haciendo uso de <em>PartiQL</em>. Así pues, en el menú de la izquierda, seleccionamos el editor <em>PartiQL</em>.</p>
+<figure style="align: center;">
+    <img src="images/06ddb-partiQL.png">
+    <figcaption>Consultas con PartiQL</figcaption>
+</figure>
+
+<p>En el panel de la derecha podremos realizar consultas del tipo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ProductCatalog</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">Id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">101</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="k">select</span><span class="w"> </span><span class="n">Title</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ProductCatalog</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">ProductCategory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Book&#39;</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ProductCatalog</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">Price</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">300</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Consultas <em>PartiQL</em> mediante <em>Python</em></p>
+<p>Más adelante mediante <em>Python</em>, accederemos a <em>DynamoDB</em> y realizaremos consultas con <em>PartiQL</em>, además de operaciones de inserción, modificación y borrado de datos.</p>
+</div>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Realizar el módulo 8 (Bases de Datos) del curso <a href="https://awsacademy.instructure.com/courses/2243/">ACF de AWS</a>.</p>
+</li>
+<li>
+<p>Siguiendo el ejemplo de RDS, crea una instancia (<code>instituto</code>) de una base de datos de tipo <em>MariaDB</em> y cárgala con todos los datos de las sesiones de repaso de SQL (las tablas iniciales y las de inserción).</p>
+</li>
+<li>
+<p>(opcional) A partir de la instancia del ejercicio anterior, crea una instantánea de forma manual. A continuación, restaura esta instantánea en una nueva instancia (por ejemplo, <code>instituto2</code>) de tipo <code>db.t4g.medium</code>, y tras conectarte mediante <em>HeidiSQL</em>, comprueba que tiene los datos ya cargados. Adjunta una captura de pantalla donde se vean las características de las dos instancias.</p>
+</li>
+<li>
+<p>Siguiendo el ejemplo de <em>DynamoDB</em>, crea la tabla (<code>ProductCatalog</code>), cárgala con los datos del ejemplo y realiza un consulta para obtener bicicletas híbridas. Exporta el resultado a CSV.</p>
+</li>
+</ol>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/es_es/AmazonRDS/latest/UserGuide/Welcome.html">Guía de usuario de Amazon RDS</a></li>
+<li><a href="https://docs.aws.amazon.com/es_es/amazondynamodb/latest/developerguide/Introduction.html">Guía de referencias de Amazon DynamoDB</a></li>
+<li><a href="https://amazon-dynamodb-labs.com/index.html">Laboratorios con ejemplos y modelado con Amazon DynamoDB</a></li>
+</ul>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>

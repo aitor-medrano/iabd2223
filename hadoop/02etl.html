@@ -1,0 +1,1452 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Elementos de la ingesta de datos. Fases de una ETL, ETL vs ELT. Herramientas de ingesta">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/02etl.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>Ingesta de Datos. Pipeline de datos y ETL. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Ingesta de Datos. Pipeline de datos y ETL. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Elementos de la ingesta de datos. Fases de una ETL, ETL vs ELT. Herramientas de ingesta" >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/02etl.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/hadoop/02etl.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Ingesta de Datos. Pipeline de datos y ETL. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Elementos de la ingesta de datos. Fases de una ETL, ETL vs ELT. Herramientas de ingesta" >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/02etl.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ingesta-de-datos" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Ingesta de Datos. Pipeline de datos y ETL.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          UF1 - Toma de decisiones
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="UF1 - Toma de decisiones" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UF1 - Toma de decisiones
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2_1">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT5.- Ecosistema Hadoop</a>
+          
+            <label for="__nav_2_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          UT5.- Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S36.- Ingesta de datos
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="02etl.html" class="md-nav__link md-nav__link--active">
+        S36.- Ingesta de datos
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    Introducción
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-de-datos" class="md-nav__link">
+    Pipeline de datos
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline de datos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fases-del-pipeline" class="md-nav__link">
+    Fases del pipeline
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-iterativo" class="md-nav__link">
+    Pipeline iterativo
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    ETL
+  </a>
+  
+    <nav class="md-nav" aria-label="ETL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extraccion" class="md-nav__link">
+    Extracción
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transformacion" class="md-nav__link">
+    Transformación
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carga" class="md-nav__link">
+    Carga
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#elt" class="md-nav__link">
+    ELT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#herramientas-etl" class="md-nav__link">
+    Herramientas ETL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#la-ingesta-por-dentro" class="md-nav__link">
+    La ingesta por dentro
+  </a>
+  
+    <nav class="md-nav" aria-label="La ingesta por dentro">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#batch-vs-streaming" class="md-nav__link">
+    Batch vs Streaming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    Arquitectura
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#herramientas-de-ingesta-de-datos" class="md-nav__link">
+    Herramientas de Ingesta de datos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consideraciones" class="md-nav__link">
+    Consideraciones
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_3" type="checkbox" id="__nav_2_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">UT6.- Datos en el cloud</a>
+          
+            <label for="__nav_2_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT6.- Datos en el cloud" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_3">
+          <span class="md-nav__icon md-icon"></span>
+          UT6.- Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    Introducción
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-de-datos" class="md-nav__link">
+    Pipeline de datos
+  </a>
+  
+    <nav class="md-nav" aria-label="Pipeline de datos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fases-del-pipeline" class="md-nav__link">
+    Fases del pipeline
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-iterativo" class="md-nav__link">
+    Pipeline iterativo
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etl" class="md-nav__link">
+    ETL
+  </a>
+  
+    <nav class="md-nav" aria-label="ETL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extraccion" class="md-nav__link">
+    Extracción
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transformacion" class="md-nav__link">
+    Transformación
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#carga" class="md-nav__link">
+    Carga
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#elt" class="md-nav__link">
+    ELT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#herramientas-etl" class="md-nav__link">
+    Herramientas ETL
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#la-ingesta-por-dentro" class="md-nav__link">
+    La ingesta por dentro
+  </a>
+  
+    <nav class="md-nav" aria-label="La ingesta por dentro">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#batch-vs-streaming" class="md-nav__link">
+    Batch vs Streaming
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    Arquitectura
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#herramientas-de-ingesta-de-datos" class="md-nav__link">
+    Herramientas de Ingesta de datos
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consideraciones" class="md-nav__link">
+    Consideraciones
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="ingesta-de-datos">Ingesta de Datos<a class="headerlink" href="#ingesta-de-datos" title="Permanent link">&para;</a></h1>
+<h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
+<p>Formalmente, la ingesta de datos es el proceso mediante el cual se introducen datos, desde diferentes fuentes, estructura y/o características dentro de otro sistema de almacenamiento o procesamiento de datos.</p>
+<figure style="float: right;">
+    <img src="images/02ingesta.png">
+    <figcaption>Ingesta de datos</figcaption>
+</figure>
+
+<p>La ingesta de datos es un proceso muy importante porque la productividad de un equipo va directamente ligada a la calidad del proceso de ingesta de datos. Estos procesos deben ser flexibles y ágiles, ya que una vez puesta en marcha, los analistas y científicos de datos puedan construir un <em>pipeline</em> de datos para mover los datos a la herramienta con la que trabajen. Entendemos como <em>pipeline</em> de datos un proceso que consume datos desde un punto de origen, los limpia y los escribe en un nuevo destino.</p>
+<p>Es sin duda, el primer paso que ha de tenerse en cuenta a la hora de diseñar una arquitectura <em>Big Data</em>, para lo cual, hay que tener muy claro, no solamente el tipo y fuente de datos, sino cual es el objetivo final y qué se pretende conseguir con ellos. A la hora de diseñar un <em>pipeline</em>, se debe empezar desde el problema que negocio quiere solucionar, y retroceder con los datos hasta el origen de los mismos. Por lo tanto, en este punto, hay que realizar un análisis detallado, porque es la base para determinar las tecnologías que compondrán nuestra arquitectura Big Data.</p>
+<p>Dada la gran cantidad de datos que disponen las empresas, toda la información que generan desde diferentes fuentes se deben integrar en un único lugar, al que actualmente se le conoce como <em>data lake</em>, asegurándose que los datos sean compatibles entre sí. Gestionar tal volumen de datos puede llegar a ser un procedimiento complejo, normalmente dividido en procesos distintos y de relativamente larga duración.</p>
+<h2 id="pipeline-de-datos">Pipeline de datos<a class="headerlink" href="#pipeline-de-datos" title="Permanent link">&para;</a></h2>
+<p>Un <em>pipeline</em> es una construcción lógica que representa un proceso dividido en fases. Los pipelines de datos se caracterizan por definir el conjunto de pasos o fases y las tecnologías involucradas en un proceso de movimiento o procesamiento de datos. En su forma más simple, consisten en recoger los datos, almacenarlos y procesarlos, y construir algo útil con los datos.</p>
+<figure style="align: center;">
+    <img src="images/02data-pipeline.png" width="500">
+    <figcaption>Pipeline de datos - AWS</figcaption>
+</figure>
+
+<p>Las pipelines de datos son necesarios ya que no debemos analizar los datos en los mismos sistemas donde se crean (principalmente para evitar problemas de rendimiento). El proceso de analítica es costoso computacionalmente, por lo que se separa para evitar perjudicar el rendimiento del servicio. De esta forma, tenemos sistemas OLTP (sistemas de procesamiento transaccional online, como un CRM), encargados de capturar y crear datos, y de forma separada, sistemas OLAP (sistemas de procesamiento analítico, como un <em>Data Warehouse</em>), encargados de analizar los datos.</p>
+<h3 id="fases-del-pipeline">Fases del pipeline<a class="headerlink" href="#fases-del-pipeline" title="Permanent link">&para;</a></h3>
+<p>Los movimientos de datos entre estos sistemas involucran varias fases. Por ejemplo:</p>
+<ol>
+<li>Ingesta. Recogemos los datos y los enviamos a un topic de <em>Apache Kafka</em>.</li>
+<li>
+<p>Almacenamiento. <em>Kafka</em> actúa aquí como un <em>buffer</em> para el siguiente paso.</p>
+<p><figure style="align: center;">
+    <img src="images/02data-pipeline-phases.png" width="600">
+    <figcaption>Fases en un pipeline de datos - AWS</figcaption>
+</figure></p>
+</li>
+<li>
+<p>Procesamiento. Mediante una tecnología de procesamiento, que puede ser <em>streaming</em> o <em>batch</em>, leemos los datos del buffer.</p>
+</li>
+<li>Análisis y Visualización. Por ejemplo, mediante <em>Spark</em> realizamos la analítica sobre estos datos (haciendo cálculos, filtrados, agrupaciones de datos, etc...). Finalmente, podemos visualizar los resultado obtenidos o almacenarlos en una base de datos NoSQL como <em>Amazon DynamoDB</em> o un sistema de almacenamiento distribuido como <em>Amazon S3</em>.</li>
+</ol>
+<p>Antes de realizar el análisis de los datos, va a ser muy normal tener que limpiar o normalizar los datos, ya sea porque las fuentes de datos, al ser distintas, utilicen diferentes codificaciones o nomenclaturas, o bien que haya datos sin rellenar o incorrectos. Conforme los datos avanzan a través del <em>pipeline</em>, los datos se van a transformar (por ejemplo, poniendo ceros en los campos vacíos, o rellenando los huecos con valores que aporten valor). Estas transformaciones se conocen como <em>Data Wrangling</em> (manipulación o disputa de datos), termino que engloba las acciones realizadas desde los datos en crudo hasta el estado final en el cual el dato cobra valor y sentido para los usuarios.</p>
+<h3 id="pipeline-iterativo">Pipeline iterativo<a class="headerlink" href="#pipeline-iterativo" title="Permanent link">&para;</a></h3>
+<p>Este proceso de ingesta, almacenamiento, procesamiento y análisis es iterativo. Sobre una hipótesis que se nos plantee en negocio, comprobaremos los datos almacenados, y si no disponemos de la información necesaria, recogeremos nuevos datos. EStos nuevos datos pasaran por todo el pipeline, integrándose con los datos ya existentes. En la fase de analítica, si no obtenemos el resultado esperado, nos tocará volver a la fase de ingesta para obtener o modificar los datos recogidos, y así, de forma iterativa, hasta producir el resultado esperado.</p>
+<figure style="align: center;">
+    <img src="images/02data-pipeline-iterative.png" width="600">
+    <figcaption>Desarrollo iterativo de un pipeline de datos - AWS</figcaption>
+</figure>
+
+<p>Aunque a menudo se intercambian los términos de <em>pipeline</em> de datos y ETL, no significan lo mismo. Las ETLs son un caso particular de pipeline de datos que involucran las fases de extracción, transformación y carga de datos. Las pipelines de datos son cualquier proceso que involucre el movimiento de datos entre sistemas.</p>
+<h2 id="etl">ETL<a class="headerlink" href="#etl" title="Permanent link">&para;</a></h2>
+<p>Una ETL, entendida como un proceso que lleva la información de un punto A a un punto B, puede realizarse mediante diversas herramientas, scripts, Python, etc... Pero cuando nos metemos con Big Data no servirá cualquier tipo de herramienta, ya que necesitamos que sean:</p>
+<ul>
+<li>Flexibles y soporten formatos variados (JSON, CSV, etc...)</li>
+<li>Escalables y tolerante a fallos.</li>
+<li>Dispongan de conectores a múltiples fuentes y destinos de datos.</li>
+</ul>
+<p>Los procesos ETL, siglas de <strong>e</strong>xtracción, <strong>t</strong>ransformación y carga (<strong><em>l</em></strong><em>oad</em>), permiten a las organizaciones recopilar en un único lugar todos los datos de los que pueden disponer. Ya hemos comentado que estos datos provienen de diversas fuentes, por lo que es necesario acceder a ellos, y formatearlos para poder ser capaces de integrarlos. Además, es muy recomendable asegurar la calidad de los datos y su veracidad, para así evitar la creación de errores en los datos.</p>
+<figure style="align: center;">
+    <img src="images/02etl.png">
+    <figcaption>Extracción, Transformación y Carga (load)</figcaption>
+</figure>
+
+<p>Una vez los datos están unificados en un <em>data lake</em>, otro tipo de herramientas de análisis permitirán su estudio para apoyar procesos de negocio.</p>
+<p>Dada la gran variedad de posibilidades existentes para representar la realidad en un dato, junto con la gran cantidad de datos almacenados en las diferentes fuentes de origen, los procesos ETL consumen una gran cantidad de los recursos asignados a un proyecto.</p>
+<h3 id="extraccion">Extracción<a class="headerlink" href="#extraccion" title="Permanent link">&para;</a></h3>
+<p>Encargada de recopilar los datos de los sistemas originales y transportarlos al sistema donde se almacenarán, de manera general suele tratarse de un entorno de Data Warehouse o almacén de datos. Las fuentes de datos pueden encontrarse en diferentes formatos, desde ficheros planos hasta bases de datos relacionales, pasando por mensajes de redes sociales como <em>Twitter</em> o <em>Reddit</em>.</p>
+<p>Un paso que forma parte de la extracción es la de analizar que los datos sean veraces, que contiene la información que se espera, verificando que siguen el formato que se esperaba. En caso contrario, esos datos se rechazan.</p>
+<p>La primera característica deseable de un proceso de extracción es que debe ser un proceso rápido, ligero, causar el menor impacto posible, ser transparente para los sistemas operacionales e independiente de las infraestructuras.</p>
+<p>La segunda característica es que debe reducir al mínimo el impacto que se genera en el sistema origen de la información. No se puede poner en riesgo el sistema original, generalmente operacional, ni perder ni modificar sus datos; ya que si colapsase esto podría afectar el uso normal del sistema y generar pérdidas a nivel operacional.</p>
+<p>Así pues, la extracción convierte los datos a un formato preparado para iniciar el proceso de transformación.</p>
+<h3 id="transformacion">Transformación<a class="headerlink" href="#transformacion" title="Permanent link">&para;</a></h3>
+<p>En esta fase se espera realizar los cambios necesarios en los datos de manera que estos tengan el formato y contenido esperado.</p>
+<p>En concreto, la transformación puede comprender:</p>
+<ul>
+<li>Cambios de codificación.</li>
+<li>Eliminar datos duplicados.</li>
+<li>Cruzar diferentes fuentes de datos para obtener una fuente diferente.</li>
+<li>Agregar información en función de alguna variable.</li>
+<li>Tomar parte de los datos para cargarlos.</li>
+<li>Transformar información para generar códigos, claves, identificadores…</li>
+<li>Generar información.</li>
+<li>Estructurar mejor la información.</li>
+<li>Generar indicadores que faciliten el procesamiento y entendimiento.</li>
+</ul>
+<p>Respecto a sus características, debe transformar los datos para mejorarlos, incrementar su calidad, integrarlos con otros sistemas, normalizarlos, eliminar duplicidades o ambigüedades. Además, no debe crear información, duplicar, eliminar información relevante, ser errónea o impredecible.</p>
+<p>Una vez transformados, los datos ya estarán listos para su carga.</p>
+<h3 id="carga">Carga<a class="headerlink" href="#carga" title="Permanent link">&para;</a></h3>
+<p>Fase encargada de almacenar los datos en el destino, un <em>data warehouse</em> o en cualquier tipo de base de datos. Por tanto la fase de carga interactúa de manera directa con el sistema destino, y debe adaptarse al mismo con el fin de cargar los datos de manera satisfactoria.</p>
+<p>La carga debe realizarse buscando minimizar el tiempo de la transacción.</p>
+<p>Cada BBDD puede tener un sistema ideal de carga basado en:</p>
+<ul>
+<li>SQL (Oracle, SQL Server, Redshift, Postgres, Teradata, Greenplum, …)</li>
+<li>Ficheros (Postgres, Redshift, ...)</li>
+<li>Cargadores Propios (HDFS, S3, ...)</li>
+</ul>
+<p>Para mejorar la carga debemos tener en cuenta la:</p>
+<ul>
+<li>Gestiones de índices</li>
+<li>Gestión de claves de distribución y particionado</li>
+<li>Tamaño de las transacciones y commit’s</li>
+</ul>
+<h2 id="elt">ELT<a class="headerlink" href="#elt" title="Permanent link">&para;</a></h2>
+<p>ELT cambia el orden de las siglas y se basa en extraer, cargar y transformar. Es un técnica de ingestión de datos donde los datos que se obtienen desde múltiples fuentes se colocan sin transformar directamente en un <em>data lake</em> o almacenamiento de objetos en la nube. Desde ahí, los datos se pueden transformar dependiendo de los diferentes objetivos de negocio.</p>
+<p>En principio un proceso ELT necesita menos ingenieros de datos necesarios. Con la separación de la extracción y la transformación, ELT permite que los analistas y científicos de datos realicen las transformaciones, ya sea con SQL o mediante Python. De esta manera, más departamentos se involucran en obtener y mejorar los datos.</p>
+<p>Una de las principales razones de que ELT cueste menos de implementar es que permite una mayor generalización de la información que se almacena. Los ingenieros de datos generan un <em>data lake</em> con los datos obtenidos de las fuentes de datos más populares, dejando que la transformación la realicen los expertos en el negocio. Esto también implica que los datos estén disponibles antes, ya que mediante un proceso ETL los datos no están disponibles para los usuarios hasta que se han transformado, lo que suele implicar un largo proceso de trabajo.</p>
+<p>En resumen, el mercado se está moviendo desde un desarrollo centralizado mediante ETL a uno más orientado a servicios como ELT, que permite automatizar la carga del <em>data lake</em> y la posterior codificación de los flujos de datos.</p>
+<h2 id="herramientas-etl">Herramientas ETL<a class="headerlink" href="#herramientas-etl" title="Permanent link">&para;</a></h2>
+<p>Las caracteristicas de las herramientas ETL son:</p>
+<ul>
+<li>
+<p>Permiten conectividad con diferentes sistemas y tipos de datos</p>
+<ul>
+<li>Excel, BBDD transaccionales, XML, ficheros CSV / JSON, Teradata, HDFS, Hive, S3, ...</li>
+<li>Peticiones HTTP, servicios REST...</li>
+<li>APIs de aplicaciones de terceros, logs…</li>
+</ul>
+</li>
+<li>
+<p>Permiten la planificación mediante <em>batch</em>, <em>eventos</em> o en <em>streaming</em>.</p>
+</li>
+<li>
+<p>Capacidad para transformar los datos:</p>
+<ul>
+<li>Transformaciones simples: tipos de datos, cadenas, codificaciones, cálculos simples.</li>
+<li>Transformaciones intermedias: agregaciones, lookups.</li>
+<li>Transformaciones complejas: algoritmos de IA, segmentación, integración de código de terceros, integración con otros lenguajes.</li>
+</ul>
+</li>
+<li>
+<p>Metadatos y gestión de errores</p>
+<ul>
+<li>Permiten tener información del funcionamiento de todo el proceso</li>
+<li>Permiten el control de errores y establecer politicas al respecto</li>
+</ul>
+</li>
+</ul>
+<p>Las soluciones más empleadas son:</p>
+<ul>
+<li><a href="https://www.hitachivantara.com/en-us/products/data-management-analytics/lumada-data-integration.html">Pentaho Data Integration (PDI)</a></li>
+<li><a href="https://www.oracle.com/es/middleware/technologies/data-integrator.html">Oracle Data Integrator</a></li>
+<li><a href="https://www.talend.com/products/talend-open-studio/">Talend Open Studio</a></li>
+<li><a href="https://www.mulesoft.com">Mulesoft</a></li>
+<li><a href="https://www.informatica.com/products/data-integration.html">Informatica Data Integration</a></li>
+</ul>
+<figure style="align: center;">
+    <img src="images/02herramientasETL.png">
+    <figcaption>Herramientas ETL</figcaption>
+</figure>
+
+<h2 id="la-ingesta-por-dentro">La ingesta por dentro<a class="headerlink" href="#la-ingesta-por-dentro" title="Permanent link">&para;</a></h2>
+<p>La ingesta extrae los datos desde la fuente donde se crean o almacenan originalmente y los carga en un destino o zona temporal. Un <em>pipeline</em> de datos sencillo puede que tenga que aplicar uno más transformaciones ligeras para enriquecer o filtrar los datos antes de escribirlos en un destino, almacén de datos o cola de mensajería. Se pueden añadir nuevos <em>pipelines</em> para transformaciones más complejas como <em>joins</em>, agregaciones u ordenaciones para analítica de datos, aplicaciones o sistema de informes.</p>
+<figure style="align: center;">
+    <img src="images/02dataIngestion.png">
+    <figcaption>La ingesta de datos - StreamSets</figcaption>
+</figure>
+
+<p>Las fuentes más comunes desde las que se obtienen los datos son:</p>
+<ul>
+<li>servicios de mensajería como Apache Kafka, los cuales han obtenido datos desde fuentes externas, como pueden ser dispositivos IOT o contenido obtenido directamente de las redes sociales.</li>
+<li>bases de datos relacionales, las cuales se acceden, por ejemplo, mediante JDBC.</li>
+<li>servicios REST que devuelven los datos en formato JSON.</li>
+<li>servicios de almacenamiento distribuido como HDFS o S3.</li>
+</ul>
+<p>Los destinos donde se almacenan los datos son:</p>
+<ul>
+<li>servicios de mensajería como <em>Apache Kafka</em>.</li>
+<li>bases de datos relacionales.</li>
+<li>bases de datos NoSQL.</li>
+<li>servicios de almacenamiento distribuido como HDFS o S3.</li>
+<li>plataformas de datos como <em>Snowflake</em> o <em>Databricks</em>.</li>
+</ul>
+<h3 id="batch-vs-streaming">Batch vs Streaming<a class="headerlink" href="#batch-vs-streaming" title="Permanent link">&para;</a></h3>
+<p>El movimiento de datos entre los orígenes y los destinos se puede hacer, tal como vimos en la sesión de <a href="01arq.html#tipos-de-arquitecturas">Arquitecturas de Big Data</a>, mediante un proceso:</p>
+<ul>
+<li><em>Batch</em>: el proceso se ejecuta de forma periódica (normalmente en intervalos fijos) a partir de unos datos <em>estáticos</em>. Muy eficiente para grandes volúmenes de datos, y donde la latencia (del orden de minutos) no es el factor más importante. Algunas de las herramientas utilizadas son <em>Apache Sqoop</em>, trabajos en <em>MapReduce</em> o de <em>Spark jobs</em>, etc...</li>
+<li><em>Streaming</em>: también conocido como en tiempo real, donde los datos se leen, modifican y cargan tan pronto como llegan a la capa de ingesta (la latencia es crítica). Algunas de las herramientas utilizadas son <em>Apache Storm</em>, <em>Spark Streaming</em>, <em>Apache Nifi</em>, <em>Apache Kafka</em>, etc...</li>
+</ul>
+<h3 id="arquitectura">Arquitectura<a class="headerlink" href="#arquitectura" title="Permanent link">&para;</a></h3>
+<p>Si nos basamos en la <a href="01arq.html#arquitectura-por-capas">arquitectura por capas</a>, podemos ver como la capa de ingesta es la primera de la arquitectura por capas, la cual recoge los datos que provienen de fuentes diversas. Los datos se categorizan y priorizan, facilitando el flujo de éstos en posteriores capas:</p>
+<figure style="align: center;">
+    <img src="images/01arquitecturasCapas.png">
+    <figcaption>Arquitectura por capas (xenonstack.com)</figcaption>
+</figure>
+
+<p>En el primer paso de la ingesta es el paso más pesado, por tiempo y cantidad de recursos necesarios. Es normal realizar la ingesta de flujos de datos desde cientos a miles de fuentes de datos, los cuales se obtiene a velocidades variables y en diferentes formatos.</p>
+<p>Para ello, es necesario:</p>
+<ul>
+<li>Priorizar las fuentes de datos</li>
+<li>Validar de forma individual cada fichero</li>
+<li>Enrutar cada elemento a su destino correcto.</li>
+</ul>
+<p>Resumiendo, los cuatro parámetros en los que debemos centrar nuestros esfuerzos son:</p>
+<ol>
+<li>Velocidad de los datos: cómo fluyen los datos entre máquinas, interacción con usuario y redes sociales, si el flujo es continuo o masivo.</li>
+<li>Tamaño de los datos: la ingesta de múltiples fuentes puede incrementarse con el tiempo.</li>
+<li>Frecuencia de los datos: ¿Batch o en Streaming?</li>
+<li>Formato de los datos: estructurado (tablas), desestructurado (imágenes, audios, vídeos, ...), o semi-estructurado (JSON).</li>
+</ol>
+<h2 id="herramientas-de-ingesta-de-datos">Herramientas de Ingesta de datos<a class="headerlink" href="#herramientas-de-ingesta-de-datos" title="Permanent link">&para;</a></h2>
+<p>Las herramientas de ingesta de datos para ecosistemas Big Data se clasifican en los siguientes bloques:</p>
+<figure style="float: right;">
+    <img src="images/02ingestaTools.png">
+    <figcaption>Herramientas de ingesta de datos</figcaption>
+</figure>
+
+<ul>
+<li><a href="https://sqoop.apache.org"><em>Apache Sqoop</em></a>: permite la transferencia bidireccional de datos entre <em>Hadoop/Hive/HBase</em> y una bases de datos SQL (datos estructurados). Aunque principalmente se interactúa mediante comandos, proporciona una API Java.</li>
+<li><a href="https://flume.apache.org"><em>Apache Flume</em></a>: sistema de ingesta de datos semiestructurados o no estructurados sobre HDFS o HBase mediante una arquitectura basada en flujos de datos en streaming.</li>
+<li><a href="https://nifi.apache.org"><em>Apache Nifi</em></a>: herramienta que facilita un interfaz gráfico que permite cargar datos de diferentes fuentes (tanto <em>batch</em> como <em>streaming</em>), los pasa por un flujo de procesos (mediante grafos dirigidos) para su tratamiento y transformación, y los vuelca en otra fuente.</li>
+<li><a href="https://www.elastic.co/es/logstash/"><em>Elastic Logstash</em></a>: Pensada inicialmente para la ingesta de logs en <em>Elasticsearch</em>, admite entradas y salidas de diferentes tipos (incluso AWS).</li>
+<li><a href="https://aws.amazon.com/es/glue"><em>AWS Glue</em></a>: servicios gestionado para realizar tareas ETL desde la consola de AWS. Facilita el descubrimiento de datos y esquemas. También se utiliza como almacenamiento de servicios como <em>Amazon Athena</em> o <em>AWS Data Pipeline</em>.</li>
+</ul>
+<p>Por otro lado existen sistemas de mensajería con funciones propias de ingesta, tales como:</p>
+<ul>
+<li><em>Apache Kafka</em>: sistema de intermediación de mensajes basado en el modelo publicador/suscriptor.</li>
+<li><em>RabbitMQ</em>: sistema de colas de mensajes (MQ) que actúa de middleware entre productores y consumidores.</li>
+<li><em>Amazon Kinesis</em>: homólogo de Kafka para la infraestructura Amazon Web Services.</li>
+<li><em>Microsoft Azure Event Hubs</em>: homólogo de Kafka para la infraestructura Microsoft Azure.</li>
+<li><em>Google Pub/Sub</em>: homólogo de Kafka para la infraestructura Google Cloud.</li>
+</ul>
+<h2 id="consideraciones">Consideraciones<a class="headerlink" href="#consideraciones" title="Permanent link">&para;</a></h2>
+<p>A la hora de analizar cual sería la tecnología y arquitectura adecuada para realizar la ingesta de datos en un sistema <em>Big Data</em>, hemos de tener en cuenta los siguientes factores:</p>
+<ul>
+<li>Origen y formato de los datos<ul>
+<li>¿Cuál va a ser el origen u orígenes de los datos?</li>
+<li>¿Provienen de sistemas externos o internos a nuestra empresa?</li>
+<li>¿Serán datos estructurados o datos sin estructurar?</li>
+<li>¿Cuál es el volumen de los datos? Analizar el volumen diario, y plantear como sería la primera carga de datos.</li>
+<li>¿Existe la posibilidad de que más adelante se incorporen nuevas fuentes de datos?</li>
+</ul>
+</li>
+<li>Latencia/Disponibilidad<ul>
+<li>¿Cómo de importante es la velocidad con la que se deben obtener los datos?</li>
+<li>Ventana temporal que debe pasar desde que los datos se ingestan hasta que puedan ser utilizables, desde horas/días (mediante procesos <em>batch</em>) o ser <em>real-time</em> (mediante <em>streaming</em>)</li>
+</ul>
+</li>
+<li>Actualizaciones<ul>
+<li>¿Las fuentes origen se modifican habitualmente?</li>
+<li>¿Podemos almacenar toda la información y guardar un histórico de cambios?</li>
+<li>¿Modificamos la información que tenemos? ¿mediante <em>updates</em>, o <em>deletes + insert</em>?</li>
+</ul>
+</li>
+<li>Transformaciones<ul>
+<li>¿Son necesarias durante la ingesta?</li>
+<li>¿Aportan latencia al sistema? ¿Afecta al rendimiento?</li>
+<li>¿Tiene consecuencias que la información sea transformada y no sea la original?</li>
+</ul>
+</li>
+<li>Destino de los datos<ul>
+<li>¿Será necesario enviar los datos a más de un destino, por ejemplo, <em>S3</em> y <em>DynamoDB</em>?</li>
+<li>¿Almacenaremos los datos con el mismo formato que los ingestamos? ¿Los almacenamos en formatos basados en filas (<em>Avro</em>) o columnares (<em>Parquet</em>)?</li>
+<li>¿Cómo se van a utilizar los datos en el destino? ¿cómo serán las consultas? ¿es necesario particionar los datos? ¿serán búsquedas aleatorias o no? ¿Utilizaremos <em>Hive</em> / <em>Pig</em> / <em>DynamoDB</em>?</li>
+<li>¿Qué procesos de transformación se van a realizar una vez ingestados los datos?</li>
+<li>¿Cual es la frecuencia y actualización de los datos origen?</li>
+</ul>
+</li>
+<li>Estudio de los datos<ul>
+<li>Calidad de los datos ¿son fiables? ¿existen duplicados?</li>
+<li>Seguridad de los datos. Si tenemos datos sensibles o confidenciales, ¿los enmascaramos o decidimos no realizar su ingesta? ¿Conocemos los requisitos de seguridad de nuestros datos? ¿Quién tiene que acceder y en qué estado?</li>
+</ul>
+</li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Completa el cuestionario disponible en <em>Aules</em> (dentro del apartado <em>Big Data Aplicado</em>).</li>
+</ol>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.futurespace.es/ingesta-es-mas-que-una-mudanza-de-datos/">Ingesta, es más que una mudanza de datos</a></li>
+<li><a href="https://www.talend.com/es/resources/what-is-etl/">¿Qué es ETL?</a></li>
+<li><a href="https://docs.aws.amazon.com/whitepapers/latest/building-data-lakes/building-data-lake-aws.html?did=wp_card&amp;trk=wp_card">Building Big Data Storage Solutions (Data Lakes) for Maximum Flexibility</a></li>
+</ul>
+<!--
+https://streamsets.com/learn/data-ingestion/
+https://streamsets.com/learn/etl-or-elt/
+https://aprenderbigdata.com/pipeline-de-datos/
+-->
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="01arq.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S36.- Arquitecturas Big Data" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              S36.- Arquitecturas Big Data
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../cloud/index.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: Unidad de Trabajo 6.- Datos en el cloud" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              Unidad de Trabajo 6.- Datos en el cloud
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>
