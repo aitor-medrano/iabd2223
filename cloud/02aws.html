@@ -1045,7 +1045,7 @@
     <figcaption>Servicios de almacenamiento de AWS</figcaption>
 </figure>
 
-<p>Estos servicios los veremos en mayor profundidad en la sesión <a href="03s3.html">3.- Almacenamiento en AWS</a>.</p>
+<p>Estos servicios los veremos en mayor profundidad en la sesión <a href="03s3.html">Almacenamiento en AWS</a>.</p>
 <h3 id="informatica-computacion">Informática / Computación<a class="headerlink" href="#informatica-computacion" title="Permanent link">&para;</a></h3>
 <p>Los servicios que ofrece AWS relativos a la informática o computación son:</p>
 <ul>
@@ -1056,7 +1056,7 @@
 <li><strong><em>Amazon Elastic Beanstalk</em></strong>: servicio para desplegar y escalar aplicaciones y/o servicios web desarrolladas en <em>Java</em> / <em>PHP</em> / <em>Python</em> en servidores web conocidos, como <em>Apache</em>, <em>Nginx</em>, Passenger o IIS.</li>
 <li><strong><em>AWS Lambda</em></strong>: permite ejecutar código sin necesidad de aprovisionar ni administrador servidores (<em>serverless</em>). Se sube el código fuente a ejecutar, y AWS se encarga de ejecutarlo y escalarlo conforme necesite. Sólo se paga por el tiempo de computación (cuando el código no se ejecuta, no se paga nada).</li>
 </ul>
-<p>Estos servicios los veremos en mayor profundidad en la sesión <a href="05computacion.html">3.- Computación en AWS</a>.</p>
+<p>Estos servicios los veremos en mayor profundidad en la sesión <a href="05computacion.html">Computación en AWS</a>.</p>
 <p>Los servicios que están relacionado con el uso de contenedores son:</p>
 <ul>
 <li><em>Amazon Elastic Container Service</em> (<strong>Amazon ECS</strong>): servicio de organización de contenedores altamente escalable y de gran rendimiento (permite lanzar miles de contenedores en segundos), compatible con los contenedores <em>Docker</em>. Mantiene y escala la flota de nodos que ejecutan los contenedores eliminando la complejidad de poner en marcha la infraestructura.<ul>
@@ -1079,7 +1079,7 @@
     <figcaption>Servicios de datos de AWS</figcaption>
 </figure>
 
-<p>Estos servicios los veremos en mayor profundidad en la sesión <a href="06datos.html">5.- Datos en AWS</a>.</p>
+<p>Estos servicios los veremos en mayor profundidad en la sesión <a href="06datos.html">Datos en AWS</a>.</p>
 <h3 id="redes">Redes<a class="headerlink" href="#redes" title="Permanent link">&para;</a></h3>
 <p>Los servicios que ofrece AWS para gestionar las redes son:</p>
 <ul>
@@ -1096,7 +1096,8 @@
 <p>Los servicios que ofrece AWS para gestionar la seguridad, identidad y conformidad son:</p>
 <ul>
 <li><em>AWS Identity and Access Management</em> (<strong>IAM</strong>): le permite administrar el acceso a los recursos y servicios de AWS de manera segura. Con IAM, puede crear y administrar usuarios y grupos de AWS. Puede utilizar los permisos de IAM para permitir y denegar el acceso de usuarios y grupos a los recursos de AWS.</li>
-<li><strong><em>AWS Organizations</em></strong>: permite restringir los servicios y acciones autorizadas en sus cuentas.<em>Amazon Cognito</em> facilita incorporar control de acceso, inscripción e inicio de sesión de usuarios a sus aplicaciones web y móviles.</li>
+<li><strong><em>AWS Organizations</em></strong>: permite restringir los servicios y acciones autorizadas en sus cuentas.</li>
+<li><em>Amazon Cognito</em> facilita incorporar control de acceso, inscripción e inicio de sesión de usuarios a sus aplicaciones web y móviles.</li>
 <li><em>AWS Artifact</em> proporciona acceso bajo demanda a los informes de seguridad y conformidad de AWS y a los acuerdos en línea.</li>
 <li><em>AWS Key Management Service</em> (<strong>AWS KMS</strong>): permite crear y administrar claves de acceso. Puede utilizar AWS KMS para controlar el uso del cifrado en una amplia gama de servicios de AWS y en sus aplicaciones.</li>
 <li><strong><em>AWS Shield</em></strong>: es un servicio administrado de protección contra ataques de denegación de servicio distribuidos (DDoS) que protege las aplicaciones que se ejecutan en AWS.</li>
@@ -1125,7 +1126,7 @@
 <h2 id="redes-en-aws">Redes en AWS<a class="headerlink" href="#redes-en-aws" title="Permanent link">&para;</a></h2>
 <p>Suponemos que los conceptos de red, subred y dirección IP y el modelo de la OSI están claros.</p>
 <p>Dentro de AWS se utiliza el método CIDR para describir redes, por ejemplo, <code>192.0.2.0/24</code> (los primeros 24 bits son estáticos, y los últimos 8 flexibles). Cabe destacar que AWS reserva las primeras cuatro direcciones IP y la última dirección IP de cada subred para fines de redes internas. Por ejemplo, una subred / 28 tendría 16 direcciones IP disponibles. De ahí hay que restar las 5 IP reservadas por AWS para obtener 11 direcciones IP para nuestro uso dentro de la subred.</p>
-<p>Muchos de los conceptos de redes físicas son validos para las redes <em>cloud</em>, con la ventaja que en la nube nos ahorraremos gran parte de la complejidad.</p>
+<p>Muchos de los conceptos de redes físicas son válidos para las redes <em>cloud</em>, con la ventaja que en la nube nos ahorraremos gran parte de la complejidad.</p>
 <h3 id="amazon-vpc">Amazon VPC<a class="headerlink" href="#amazon-vpc" title="Permanent link">&para;</a></h3>
 <p>AWS utiliza las VPC (<em>Amazon Virtual Private Cloud</em>) como redes privadas virtuales donde están conectados todos los recursos con los que trabajamos, de manera que el acceso queda aislado de otros usuarios. Dicho de otro modo, Amazon VPC permite lanzar recursos de AWS en la red virtual que definamos. Esta red virtual se asemeja en gran medida a una red tradicional que ejecutaríamos en nuestro propio centro de datos, con los beneficios de utilizar la infraestructura escalable de AWS, pudiendo crear una VPC que abarque varias AZ.</p>
 <p>Al definir la red virtual podemos seleccionar nuestro propio intervalo de direcciones IP, crear subredes y configurar las tablas de enrutamiento y gateways de red. También podemos colocar el <em>backend</em> (servidores de aplicaciones o de bases de datos) en una subred privada sin acceso a Internet público. Finalmente, podemos añadir varias capas de seguridad, como grupos de seguridad y listas de control de acceso a la red (ACL de red), para ayudar a controlar el acceso a las instancias de EC2 en cada subred.</p>
@@ -1145,7 +1146,7 @@
 </li>
 </ul>
 <h3 id="vpc-wizard">VPC Wizard<a class="headerlink" href="#vpc-wizard" title="Permanent link">&para;</a></h3>
-<p>Cada vez que vayamos a crear un recurso en AWS nos va a preguntar en qué VPC queremos desplegar la solución. Siempre hay una VPC predeterminada. Muchas de las configuraciones se pueden realizar mediante el asistente de <em>VPC Wizard</em>, la cual facilita la creación de arquitecturas de red válidas para soluciones cloud e híbridas.</p>
+<p>Cada vez que vayamos a crear un recurso en AWS nos va a preguntar en qué VPC queremos desplegar la solución. Siempre hay una VPC predeterminada. Muchas de las configuraciones se pueden realizar mediante el asistente de <em>VPC Wizard</em>, el cual facilita la creación de arquitecturas de red válidas para soluciones cloud e híbridas.</p>
 <figure style="align: center;">
     <img src="images/02vpcWizard1.png">
     <figcaption>VPC Wizard: Paso 1</figcaption>
