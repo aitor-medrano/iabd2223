@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/03s3.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
         
       
       
@@ -153,6 +153,7 @@
         
           
           
+          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -160,6 +161,7 @@
             </label>
           
         
+          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -677,6 +679,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#elementos-de-un-objeto" class="md-nav__link">
+    Elementos de un objeto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#clases-de-almacenamiento" class="md-nav__link">
     Clases de almacenamiento
   </a>
@@ -721,6 +730,20 @@
           <li class="md-nav__item">
   <a href="#acceso" class="md-nav__link">
     Acceso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seguridad" class="md-nav__link">
+    Seguridad
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-y-python" class="md-nav__link">
+    S3 y Python
   </a>
   
 </li>
@@ -820,22 +843,31 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <p>Estas instantáneas se pueden utilizar como punto de partida para nuevos volúmenes de Amazon EBS (clonando o restaurando copias de seguridad) y permiten proteger la durabilidad de los datos a largo plazo. Como todo recurso S3, también se pueden compartir fácilmente con compañeros del equipo de desarrollo y otros desarrolladores de AWS.</p>
 <h2 id="amazon-s3">Amazon S3<a class="headerlink" href="#amazon-s3" title="Permanent link">&para;</a></h2>
 <p><em>S3</em> (<a href="https://aws.amazon.com/es/s3/">https://aws.amazon.com/es/s3/</a>) es un servicio de almacenamiento persistente de objetos creado para almacenar y recuperar cualquier cantidad de datos desde cualquier lugar mediante una URL: sitios web y aplicaciones móviles, aplicaciones corporativas y datos de sensores o dispositivos de Internet de las cosas (IoT) y análisis de <em>Big Data</em>.</p>
-<p>S3 es un servicio de <strong>almacenamiento a nivel de objetos</strong>, y tal como habíamos comentado, significa que además de que los datos contengan metadatos que ayudan a catalogar el objeto, si desea cambiar una parte de un archivo, tiene que realizar la modificación y luego volver a cargar todo el archivo modificado. Esto puede tener implicaciones de rendimiento y consistencia, que conviene tener en cuenta. Los datos se almacenan como objetos dentro de recursos conocidos como <strong>buckets</strong>.</p>
-<p>Es una solución administrada de almacenamiento en la nube que se diseñó para brindar un escalado sin problemas y 99,999999999% (11 nueves) de durabilidad. Además de poder almacenar prácticamente todos los objetos que desee dentro de un bucket (los objetos pueden ser de hasta 5TB), permite realizar operaciones de escritura, lectura y eliminación de los objetos almacenados en el bucket. Los nombres de los buckets son universales y deben ser <ins>únicos</ins> entre todos los nombres de buckets existentes en Amazon S3.</p>
+<p>S3 es un servicio de <strong>almacenamiento a nivel de objetos</strong>, y tal como habíamos comentado, significa que además de que los datos contengan metadatos que ayudan a catalogar el objeto, si desea cambiar una parte de un archivo, tiene que realizar la modificación y luego volver a cargar todo el archivo modificado. Esto puede tener implicaciones de rendimiento y consistencia, que conviene tener en cuenta.</p>
+<p>Los datos se almacenan como objetos dentro de recursos conocidos como <strong>buckets</strong>. Los objetos pueden ser prácticamente cualquier archivo de datos, como imágenes, videos o registros del servidor. </p>
+<p>Es una solución administrada de almacenamiento en la nube que se diseñó para brindar un escalado sin problemas, ofreciendo 99,99% de <strong>disponibilidad</strong> (4 nueves) y 99,999999999% (11 nueves) de <strong>durabilidad</strong>. Además de poder almacenar prácticamente todos los objetos que deseemos dentro de un bucket (los objetos pueden ser de hasta 5TB), S3 permite realizar operaciones de escritura, lectura y eliminación de los objetos almacenados en el bucket. Los nombres de los buckets son universales y deben ser <ins>únicos</ins> entre todos los nombres de buckets existentes en Amazon S3.</p>
 <p>De forma predeterminada, en Amazon S3 los datos se almacenan de forma redundante en varias instalaciones y en diferentes dispositivos de cada instalación.</p>
 <figure style="align: center;">
     <img src="images/03s3replicacion.png" width="500">
     <figcaption>Replicación en S3</figcaption>
 </figure>
 
-<p>Los datos que almacenamos en <em>S3</em> no están asociados a ningún servidor en particular (aunque los <em>buckets</em> se asocien a regiones, los archivo se dice que están almacenados de forma global), con lo que no necesitamos administrar ningún tipo de servidor.</p>
+<p>Los datos que almacenamos en <em>S3</em> no están asociados a ningún servidor en particular (aunque los <em>buckets</em> se asocien a regiones, los archivos se dice que están almacenados de forma global), con lo que no necesitamos administrar ningún tipo de servidor.</p>
 <figure style="float: right;">
     <img src="images/03s3versioning.png" width="100">
     <figcaption>Replicación en S3</figcaption>
 </figure>
 
-<p>También tenemos la posibilidad de activar el <em>versionado de los archivos</em>, de manera que cuando actualicemos un objeto, en vez de sustituirlo, se crea una nuevo versión manteniendo un histórico. Más información en <a href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/versioning-workflows.html">https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/versioning-workflows.html</a></p>
-<p>Amazon S3 contiene billones de objetos y, con regularidad, tiene picos de millones de solicitudes por segundo. Los objetos pueden ser prácticamente cualquier archivo de datos, como imágenes, videos o registros del servidor.</p>
+<p>Amazon S3 contiene billones de objetos y, con regularidad, tiene picos de millones de solicitudes por segundo, por ende, es un servicio de alto rendimiento, con una latencia de primer byte que se mide en milisegundos para la mayoría de las clases de almacenamiento.</p>
+<h3 id="elementos-de-un-objeto">Elementos de un objeto<a class="headerlink" href="#elementos-de-un-objeto" title="Permanent link">&para;</a></h3>
+<p>Cada objeto que almacenamos en S3 tiene:</p>
+<ul>
+<li>una clave: nombre que se le asigna al objeto y que se utiliza para recuperarlo.</li>
+<li>un id de versión: podemos mantener un histórico de cambios mediante el <em>versionado de los archivos</em>, de manera que cuando actualicemos un objeto, en vez de sustituirlo, se crea una nuevo versión manteniendo un histórico. Más información en <a href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/versioning-workflows.html">https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/versioning-workflows.html</a></li>
+<li>un valor: contenido real que se almacena.</li>
+<li>metadatos: pares clave-valor, que podemos definir nosotros como usuarios.</li>
+<li>subrecursos: que utiliza AWS para almacenar información adicional.</li>
+</ul>
 <h3 id="clases-de-almacenamiento">Clases de almacenamiento<a class="headerlink" href="#clases-de-almacenamiento" title="Permanent link">&para;</a></h3>
 <p>S3 ofrece una variedad de clases de almacenamiento (<a href="https://docs.aws.amazon.com/es_es/S3/latest/userguide/storage-class-intro.html">https://docs.aws.amazon.com/es_es/S3/latest/userguide/storage-class-intro.html</a>) a nivel de objetos que están diseñadas para diferentes casos de uso. Entre estas clases se incluyen las siguientes:</p>
 <ul>
@@ -919,7 +951,7 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <p>La información actualizada y detallada se encuentra disponible en <a href="https://aws.amazon.com/es/s3/pricing/">https://aws.amazon.com/es/s3/pricing/</a>.</p>
 <h3 id="sitio-web-estatico">Sitio web estático<a class="headerlink" href="#sitio-web-estatico" title="Permanent link">&para;</a></h3>
 <p>Vamos a hacer un caso práctico de uso de S3. AWS permite que un <em>bucket</em> funcione como un sitio web estático. Para ello, una vez creado el <em>bucket</em>, sobre sus propiedades, al final de la página, podemos habilitar el alojamiento de web estáticas.</p>
-<p>Para este ejemplo, primero creamos un <em>bucket</em> llamado <code>severo2122web</code>.</p>
+<p>Para este ejemplo, primero creamos un <em>bucket</em> llamado <code>severo8a-web</code>.</p>
 <p>A continuación subiremos nuestro archivo <a href="resources/siteEstatico.zip">siteEstatico.zip</a> descomprimido al bucket.</p>
 <p>Para que la web sea visible, tenemos que modificar los permisos para que no bloquee el acceso público. Así pues, en la pestaña de permisos del bucket deshabilitamos todas las opciones.</p>
 <figure>
@@ -937,7 +969,7 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">&quot;Principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::severo2122web/*&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::severo8a-web/*&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos="11 "></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="p">]</span><span class="w"></span>
 <span class="linenos" data-linenos="13 "></span><span class="p">}</span><span class="w"></span>
@@ -958,8 +990,8 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
     <figcaption>Cargando el bucket</figcaption>
 </figure>
 
-<p>Por ejemplo, si trabajamos sobre el bucket que habíamos creado, tras seleccionarlo, en las <em>Acciones de objeto</em>, elegiremos la opción de <em>Consultar con S3 Select</em> , y si no queremos configurar nada, podemos ejecutar una consulta de tipo <em>select</em> desde la propia ventana mediante el botón <em>Ejectuar consulta SQL</em>.</p>
-<p>Si nos fijamos en la imagen, se crea una tabla fictia denominada <code>s3object</code> que referencia al documento cargado. Si queremos hacer referencia a columna, podemos hacerlo por su posición (por ejemplo <code>s._1</code> referencia a la primera columna) o por el nombre de la columna (en nuestro caso, <code>s.VendorID</code>). Es importante marcar la casilla <em>Excluir la primera línea de CSV datos</em> si la primera fila de nuestro CSV contiene etiquetas a modo de encabezado.</p>
+<p>Por ejemplo, si trabajamos sobre el bucket que habíamos creado, tras seleccionarlo, en las <em>Acciones de objeto</em>, elegiremos la opción de <em>Consultar con S3 Select</em> , y si no queremos configurar nada, podemos ejecutar una consulta de tipo <em>select</em> desde la propia ventana mediante el botón <em>Ejecutar consulta SQL</em>.</p>
+<p>Si nos fijamos en la imagen, se crea una tabla ficticia denominada <code>s3object</code> que referencia al documento cargado. Si queremos hacer referencia a columna, podemos hacerlo por su posición (por ejemplo <code>s._1</code> referencia a la primera columna) o por el nombre de la columna (en nuestro caso, <code>s.VendorID</code>). Es importante marcar la casilla <em>Excluir la primera línea de CSV datos</em> si la primera fila de nuestro CSV contiene etiquetas a modo de encabezado.</p>
 <!-- SELECT * FROM s3object s WHERE s.VendorID='1' LIMIT 5 -->
 
 <p>Si pulsamos sobre el botón de <em>Agregar SQL desde plantillas</em>, podremos seleccionar entre algunas consultas predefinidas (contar, elegir columnas, filtrar los datos, etc...).</p>
@@ -973,37 +1005,44 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <p>Puedes probar también con los datos almacenados en un <a href="resources/labS3.csv.gz">fichero comprimido</a>.</p>
 </div>
 <p>La consola de Amazon S3 limita la cantidad de datos devueltos a 40 MB. Para recuperar más datos, deberemos utilizar la AWS CLI o la API REST.</p>
+<p>Más información en <a href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/selecting-content-from-objects.html">https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/selecting-content-from-objects.html</a>.</p>
 <h3 id="acceso">Acceso<a class="headerlink" href="#acceso" title="Permanent link">&para;</a></h3>
-<p>Podemos obtener acceso a <em>S3</em> a través de la consola, de la interfaz de línea de comandos de AWS (CLI de AWS), o del SDK de AWS. También se puede acceder a <em>S3</em> de forma privada a través de una VPC.</p>
+<p>Podemos obtener acceso a <em>S3</em> a través de la consola, de la interfaz de línea de comandos de AWS (CLI de AWS) o del SDK de AWS. También se puede acceder a <em>S3</em> de forma privada a través de una VPC.</p>
 <p>Por ejemplo, como ya conoces la AWS CLI, podríamos utilizarla para crear un <em>bucket</em>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Creando un bucket</label><label for="__tabbed_1_2">Resultado</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">aws s3api create-bucket --bucket severo2122cli --region us-east-1</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">aws s3api create-bucket --bucket severo8a-cli --region us-east-1</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="nt">&quot;Location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/severo2122cli&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="nt">&quot;Location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/severo8a-cli&quot;</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
 </div>
 </div>
 </div>
-<p>Otra forma que veremos más adelante es el acceso a los datos de los bucket directamente a través de servicios REST, mediante puntos de enlace que admiten el acceso HTTP o HTTPS.</p>
-<div class="admonition note">
-<p class="admonition-title">Trabajando programativamente con S3 / S3 Select</p>
-<p>En el bloque de ingesta de datos, atacaremos S3 mediante Python directamente y utilizando AWS Lambda.</p>
-</div>
-<p>Para facilitar la integración de S3 con otros servicios, S3 ofrece notificaciones de eventos que permiten configurar notificaciones automáticas cuando se producen determinados eventos, como la carga o la eliminación de un objeto en un bucket específico. Estas notificaciones se pueden enviar o utilizarse para desencadenar otros procesos, como funciones de AWS Lambda.</p>
-<p>Mediante la configuración de IAM, podemos obtener un control detallado sobre quién puede acceder a los datos. También podemos utilizar las políticas de bucket de <em>S3</em> e, incluso, las listas de control de acceso por objeto (ACL).</p>
+<p>Otra forma es el acceso a los datos de los bucket directamente a través de servicios REST, mediante puntos de enlace que admiten el acceso HTTP o HTTPS.</p>
+<p>Para facilitar la integración de S3 con otros servicios, S3 ofrece <strong>notificaciones de eventos</strong> que permiten configurar notificaciones automáticas cuando se producen determinados eventos, como la carga o la eliminación de un objeto en un bucket específico. Estas notificaciones se pueden enviar o utilizarse para desencadenar otros procesos, como funciones de AWS Lambda.</p>
+<h3 id="seguridad">Seguridad<a class="headerlink" href="#seguridad" title="Permanent link">&para;</a></h3>
+<p>Por defecto, todos los buckets de S3 son privados y solo pueden acceder los usuarios a los que se les concede acceso explícitamente.
+Normalmente utilizaremos S3 para almacenar datos que utiliza una aplicación que se ejecuta fuera de S3 o para hacer copias de seguridad de información confidencial. Para estos casos de uso comunes, el acceso público a los buckets que contienen datos nunca debe ser otorgado.</p>
+<p>Disponemos de varias herramientas y posibilidades para controlar el acceso a los buckets u objetos de S3:</p>
+<ul>
+<li>Uso del bloqueo de acceso público, la cual anula de manera sencilla cualquier otra política o permisos de objetos.    </li>
+<li>La escritura de políticas IAM que indiquen los usuarios o roles que pueden acceder a buckets y objetos específicos.</li>
+<li>La escritura de políticas de bucket que definan el acceso a buckets u objetos específicos, ya sea para conceder acceso entre cuentas de AWS o para conceder acceso público o anónimo a los datos de Amazon S3. Se utiliza cuando el usuario o el sistema no pueden autenticarse mediante IAM.</li>
+<li>Creación de puntos de acceso de S3, los cuales son nombres de alojamiento únicos que aplican permisos y controles de red definidos para las solicitudes que se realizan a través de él. Podemos crear puntos de acceso individualizados con nombres y permisos personalizados para cada aplicación que accede a los datos.</li>
+<li>Configuración de listas de control de acceso (ACL). Se utilizan con menos frecuencia (las ACL preceden a la IAM). Si utilizamos ACL, se recomienda no establecer un acceso muy permisivo.</li>
+</ul>
 <div class="admonition caution">
-<p class="admonition-title">Seguridad</p>
+<p class="admonition-title">La seguridad es crítica</p>
 <p>Recuerda que hay que controlar el acceso a los recursos, y en especial a S3. Si lo dejamos abierto, cualquier podrá introducir datos con el consiguiente incremento en el coste.
-Para ello, se recomienda hacer uso de IAM, creando un grupo de usuarios donde definamos los permisos mediante políticas.
 También podemos cifrar los datos en tránsito y habilitar el cifrado del lado del servidor en nuestros objetos.</p>
 </div>
-<p>Más información en <a href="https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/selecting-content-from-objects.html">https://docs.aws.amazon.com/es_es/AmazonS3/latest/userguide/selecting-content-from-objects.html</a>.</p>
+<h3 id="s3-y-python">S3 y Python<a class="headerlink" href="#s3-y-python" title="Permanent link">&para;</a></h3>
+<p>FIXME: completar</p>
 <h2 id="amazon-efs">Amazon EFS<a class="headerlink" href="#amazon-efs" title="Permanent link">&para;</a></h2>
 <p><em>Amazon Elastic File System</em> (Amazon EFS - <a href="https://aws.amazon.com/es/efs/">https://aws.amazon.com/es/efs/</a>) ofrece almacenamiento para las instancias EC2 a las que pueden acceder <ins>varias máquinas virtuales de forma simultánea</ins>, de manera similar a un NAS (<em>Network Area Storage</em>). Se ha implementado como un sistema de archivos de uso compartido que utiliza el protocolo de sistemas de archivos de red (NFS), al que acceden varios miles de instancia EC2 así como servidores <em>on-premise</em> a traves de una VPN o conexiones directas (<em>AWS Direct Connect</em>).</p>
 <p>Se trata de un almacenamiento de archivos simple, escalable y elástico para utilizarlo con los servicios de AWS y los recursos disponibles en las instalaciones. Mediante una interfaz sencilla permite crear y configurar sistemas de archivos de forma rápida y simple.</p>
@@ -1161,12 +1200,14 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 
   
 
+
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input type="checkbox" class="md-toggle" id="__settings">
+<input class="md-toggle" type="checkbox" id="__settings" >
 <div class="md-consent__settings">
   <ul class="task-list">
     
+      
       
         
         
@@ -1201,10 +1242,10 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>
