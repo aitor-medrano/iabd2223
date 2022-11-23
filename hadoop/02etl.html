@@ -1062,7 +1062,7 @@
 <li><a href="https://www.hitachivantara.com/en-us/products/data-management-analytics/lumada-data-integration.html">Pentaho Data Integration (PDI)</a></li>
 <li><a href="https://www.oracle.com/es/middleware/technologies/data-integrator.html">Oracle Data Integrator</a></li>
 <li><a href="https://www.talend.com/products/talend-open-studio/">Talend Open Studio</a></li>
-<li><a href="https://www.mulesoft.com">Mulesoft</a></li>
+<li><a href="https://www.mulesoft.com/es/">Mulesoft</a></li>
 <li><a href="https://www.informatica.com/products/data-integration.html">Informatica Data Integration</a></li>
 </ul>
 <figure style="align: center;">
@@ -1071,7 +1071,7 @@
 </figure>
 
 <h2 id="la-ingesta-por-dentro">La ingesta por dentro<a class="headerlink" href="#la-ingesta-por-dentro" title="Permanent link">&para;</a></h2>
-<p>La ingesta extrae los datos desde la fuente donde se crean o almacenan originalmente y los carga en un destino o zona temporal. Un <em>pipeline</em> de datos sencillo puede que tenga que aplicar uno más transformaciones ligeras para enriquecer o filtrar los datos antes de escribirlos en un destino, almacén de datos o cola de mensajería. Se pueden añadir nuevos <em>pipelines</em> para transformaciones más complejas como <em>joins</em>, agregaciones u ordenaciones para analítica de datos, aplicaciones o sistema de informes.</p>
+<p>La ingesta extrae los datos desde la fuente donde se crean o almacenan originalmente y los carga en un destino o zona temporal. Un <em>pipeline</em> de datos sencillo puede que tenga que aplicar uno o más transformaciones ligeras para enriquecer o filtrar los datos antes de escribirlos en un destino, almacén de datos o cola de mensajería. Se pueden añadir nuevos <em>pipelines</em> para transformaciones más complejas como <em>joins</em>, agregaciones u ordenaciones para analítica de datos, aplicaciones o sistema de informes.</p>
 <figure style="align: center;">
     <img src="images/02dataIngestion.png">
     <figcaption>La ingesta de datos - StreamSets</figcaption>
@@ -1099,7 +1099,7 @@
 <li><em>Streaming</em>: también conocido como en tiempo real, donde los datos se leen, modifican y cargan tan pronto como llegan a la capa de ingesta (la latencia es crítica). Algunas de las herramientas utilizadas son <em>Apache Storm</em>, <em>Spark Streaming</em>, <em>Apache Nifi</em>, <em>Apache Kafka</em>, etc...</li>
 </ul>
 <h3 id="arquitectura">Arquitectura<a class="headerlink" href="#arquitectura" title="Permanent link">&para;</a></h3>
-<p>Si nos basamos en la <a href="01arq.html#arquitectura-por-capas">arquitectura por capas</a>, podemos ver como la capa de ingesta es la primera de la arquitectura por capas, la cual recoge los datos que provienen de fuentes diversas. Los datos se categorizan y priorizan, facilitando el flujo de éstos en posteriores capas:</p>
+<p>Si nos basamos en la <a href="01arq.html#arquitectura-por-capas">arquitectura por capas</a>, podemos ver como la capa de ingesta es la primera de las capas, la cual recoge los datos que provienen de fuentes diversas. Los datos se categorizan y priorizan, facilitando el flujo de éstos en posteriores capas:</p>
 <figure style="align: center;">
     <img src="images/01arquitecturasCapas.png">
     <figcaption>Arquitectura por capas (xenonstack.com)</figcaption>
@@ -1116,8 +1116,8 @@
 <ol>
 <li>Velocidad de los datos: cómo fluyen los datos entre máquinas, interacción con usuario y redes sociales, si el flujo es continuo o masivo.</li>
 <li>Tamaño de los datos: la ingesta de múltiples fuentes puede incrementarse con el tiempo.</li>
-<li>Frecuencia de los datos: ¿Batch o en Streaming?</li>
-<li>Formato de los datos: estructurado (tablas), desestructurado (imágenes, audios, vídeos, ...), o semi-estructurado (JSON).</li>
+<li>Frecuencia de los datos: <em>¿batch</em> o en <em>streaming</em>?</li>
+<li>Formato de los datos: estructurado (tablas), desestructurado (imágenes, audios, vídeos, ...) o semi-estructurado (JSON).</li>
 </ol>
 <h2 id="herramientas-de-ingesta-de-datos">Herramientas de Ingesta de datos<a class="headerlink" href="#herramientas-de-ingesta-de-datos" title="Permanent link">&para;</a></h2>
 <p>Las herramientas de ingesta de datos para ecosistemas Big Data se clasifican en los siguientes bloques:</p>
@@ -1137,9 +1137,9 @@
 <ul>
 <li><em>Apache Kafka</em>: sistema de intermediación de mensajes basado en el modelo publicador/suscriptor.</li>
 <li><em>RabbitMQ</em>: sistema de colas de mensajes (MQ) que actúa de middleware entre productores y consumidores.</li>
-<li><em>Amazon Kinesis</em>: homólogo de Kafka para la infraestructura Amazon Web Services.</li>
-<li><em>Microsoft Azure Event Hubs</em>: homólogo de Kafka para la infraestructura Microsoft Azure.</li>
-<li><em>Google Pub/Sub</em>: homólogo de Kafka para la infraestructura Google Cloud.</li>
+<li><em>Amazon Kinesis</em>: homólogo de <em>Kafka</em> para la infraestructura <em>Amazon Web Services</em>.</li>
+<li><em>Microsoft Azure Event Hubs</em>: homólogo de <em>Kafka</em> para la infraestructura <em>Microsoft Azure</em>.</li>
+<li><em>Google Pub/Sub</em>: homólogo de <em>Kafka</em> para la infraestructura <em>Google Cloud</em>.</li>
 </ul>
 <h2 id="consideraciones">Consideraciones<a class="headerlink" href="#consideraciones" title="Permanent link">&para;</a></h2>
 <p>A la hora de analizar cual sería la tecnología y arquitectura adecuada para realizar la ingesta de datos en un sistema <em>Big Data</em>, hemos de tener en cuenta los siguientes factores:</p>
@@ -1148,7 +1148,7 @@
 <li>¿Cuál va a ser el origen u orígenes de los datos?</li>
 <li>¿Provienen de sistemas externos o internos a nuestra empresa?</li>
 <li>¿Serán datos estructurados o datos sin estructurar?</li>
-<li>¿Cuál es el volumen de los datos? Analizar el volumen diario, y plantear como sería la primera carga de datos.</li>
+<li>¿Cuál es el volumen de los datos? Analizar el volumen diario y plantear como sería la primera carga de datos.</li>
 <li>¿Existe la posibilidad de que más adelante se incorporen nuevas fuentes de datos?</li>
 </ul>
 </li>
@@ -1158,7 +1158,7 @@
 </ul>
 </li>
 <li>Actualizaciones<ul>
-<li>¿Las fuentes origen se modifican habitualmente?</li>
+<li>¿Las fuentes de origen se modifican habitualmente?</li>
 <li>¿Podemos almacenar toda la información y guardar un histórico de cambios?</li>
 <li>¿Modificamos la información que tenemos? ¿mediante <em>updates</em>, o <em>deletes + insert</em>?</li>
 </ul>
@@ -1170,16 +1170,16 @@
 </ul>
 </li>
 <li>Destino de los datos<ul>
-<li>¿Será necesario enviar los datos a más de un destino, por ejemplo, <em>S3</em> y <em>DynamoDB</em>?</li>
+<li>¿Será necesario enviar los datos a más de un destino, por ejemplo, <em>S3</em> y <em>MongoDB</em>?</li>
 <li>¿Almacenaremos los datos con el mismo formato que los ingestamos? ¿Los almacenamos en formatos basados en filas (<em>Avro</em>) o columnares (<em>Parquet</em>)?</li>
-<li>¿Cómo se van a utilizar los datos en el destino? ¿cómo serán las consultas? ¿es necesario particionar los datos? ¿serán búsquedas aleatorias o no? ¿Utilizaremos <em>Hive</em> / <em>Pig</em> / <em>DynamoDB</em>?</li>
+<li>¿Cómo se van a utilizar los datos en el destino? ¿cómo serán las consultas? ¿es necesario particionar los datos? ¿serán búsquedas aleatorias o no? ¿Utilizaremos <em>Hive</em> / <em>Pig</em> / <em>Spark</em>?</li>
 <li>¿Qué procesos de transformación se van a realizar una vez ingestados los datos?</li>
 <li>¿Cual es la frecuencia y actualización de los datos origen?</li>
 </ul>
 </li>
 <li>Estudio de los datos<ul>
 <li>Calidad de los datos ¿son fiables? ¿existen duplicados?</li>
-<li>Seguridad de los datos. Si tenemos datos sensibles o confidenciales, ¿los enmascaramos o decidimos no realizar su ingesta? ¿Conocemos los requisitos de seguridad de nuestros datos? ¿Quién tiene que acceder y en qué estado?</li>
+<li>Respecto a la seguridad de los datos, si tenemos datos sensibles o confidenciales, ¿los enmascaramos o decidimos no realizar su ingesta? ¿Conocemos los requisitos de seguridad de nuestros datos? ¿Quién tiene que acceder y en qué estado?</li>
 </ul>
 </li>
 </ul>
