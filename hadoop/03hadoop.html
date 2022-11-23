@@ -520,6 +520,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#procesamiento-distribuido" class="md-nav__link">
+    Procesamiento distribuido
+  </a>
+  
+    <nav class="md-nav" aria-label="Procesamiento distribuido">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principios-scv" class="md-nav__link">
+    Principios SCV
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#componentes-y-ecosistema" class="md-nav__link">
     Componentes y Ecosistema
   </a>
@@ -806,6 +826,26 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#procesamiento-distribuido" class="md-nav__link">
+    Procesamiento distribuido
+  </a>
+  
+    <nav class="md-nav" aria-label="Procesamiento distribuido">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principios-scv" class="md-nav__link">
+    Principios SCV
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#componentes-y-ecosistema" class="md-nav__link">
     Componentes y Ecosistema
   </a>
@@ -983,8 +1023,11 @@
 <li>Confiable: crea múltiples copias de los datos de manera automática y, en caso de fallo, vuelve a desplegar la lógica de procesamiento.</li>
 <li>Tolerante a fallos: tras detectar un fallo aplica una recuperación automática. Cuando un componente se recupera, vuelve a formar parte del clúster. En <em>Hadoop</em> los fallos de hardware se tratan como una regla, no como una excepción.</li>
 <li>Escalable: los datos y su procesamiento se distribuyen sobre un clúster de ordenadores (escalado horizontal), desde un único servidor a miles de máquinas, cada uno ofreciendo computación y almacenamiento local.</li>
-<li>Portable: se puede instalar en todo tipos de <em>hardware</em> y sistemas operativos.</li>
+<li>Portable: se puede instalar en todo tipos de <em>hardware</em> y sistemas 
+operativos.</li>
 </ul>
+<p>En la actualidad se ha impuesto Hadoop v3 (la última versión a día de hoy es la 3.3.1), aunque todavía existe mucho código para Hadoop v2.</p>
+<h2 id="procesamiento-distribuido">Procesamiento distribuido<a class="headerlink" href="#procesamiento-distribuido" title="Permanent link">&para;</a></h2>
 <p>Hadoop está diseñado para ejecutar sistemas de procesamiento en el mismo clúster que almacena los datos (<em>data local computing</em>). La filosofía de Hadoop es almacenar todos los datos en un lugar y procesar los datos en el mismo lugar, esto es, mover el procesamiento al almacén de datos y no mover los datos al sistema de procesamiento.</p>
 <p>Esto lo logra mediante un entorno distribuido de datos y procesos. El procesamiento se realiza en paralelo a través de nodos de datos en un sistema de ficheros distribuidos (HDFS), donde se distingue entre:</p>
 <ul>
@@ -992,7 +1035,7 @@
 <li>Nodos esclavos/<em>workers</em>: tratan con los datos locales y los procesos de aplicación. Su número dependerá de las necesidad de nuestros sistemas, pero pueden estar comprendido entre 4 y 10.000. Su hardware es relativamente barato (<em>commodity hardware</em>) mediante servidores X86.</li>
 </ul>
 <p>Cada vez que añadimos un nuevo nodo esclavo, aumentamos tanto la capacidad como el rendimiento de nuestro sistema.</p>
-<p>En la actualidad se ha impuesto Hadoop v3 (la última versión a día de hoy es la 3.3.1), aunque todavía existe mucho código para Hadoop v2.</p>
+<h3 id="principios-scv">Principios SCV<a class="headerlink" href="#principios-scv" title="Permanent link">&para;</a></h3>
 <h2 id="componentes-y-ecosistema">Componentes y Ecosistema<a class="headerlink" href="#componentes-y-ecosistema" title="Permanent link">&para;</a></h2>
 <p>El núcleo se compone de:</p>
 <ul>
@@ -1534,7 +1577,10 @@ En mi caso, yo lo he probado en la versión <em>Lubuntu 20.04 LTS</em> y la vers
 http://www.tsc.uc3m.es/~miguel/MLG/adjuntos/Hadoop.pdf
 -->
 
-<p>FIXME: corregir con info/apuntes del MEC, tema 1 BDA sobre especificaciones del hw de Hadoop</p>
+<!--
+FIXME: corregir con info/apuntes del MEC, tema 1 BDA sobre especificaciones del hw de Hadoop
+-->
+
 <!--
 4.6.- Principio SCV.
 Mientras que el teorema CAP tiene que ver con almacenamiento de datos distribuidos, el principio SCV está relacionado con el procesamiento distribuido de los datos. Es decir, no tiene que ver con la escritura y lectura (consistente o no) de los datos en entornos distribuidos sino con el procesamiento que se realiza sobre ellos dentro de los nodos de un sistema de procesamiento distribuido.
@@ -1551,17 +1597,18 @@ Se refiere a la cantidad de datos que pueden ser procesados.
 Hay que tener en cuenta que en entornos de Big Data, el alto volumen de datos es una características siempre presente (una de las 5 Vs).
 De igual modo que hicimos al estudiar el teorema CAP, nos fijaremos en una serie de escenarios para mostrar que no podemos conseguir un sistema que cumpla a la vez las 3 características del principio SCV.
 
- Si se requiere velocidad (S) y consistencia (C), no podemos procesar un alto volumen (V) de datos ya que eso aumenta el tiempo de respuesta.
-Si se requiere consistencia (C) y poder procesar grande volúmenes de datos (V), no es posible realizar tal procesado a una alta velocidad (S).
-Si necesitamos procesar un alto volumen de datos (V) a una alta velocidad (S), entonces necesitaremos emplear técnicas de muestreo para seleccionar sólo un subconjunto de esos datos, lo cual producirá un resultado no consistente (C).
 
 
 Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar analítica en tiempo real con todos ellos?
+
 Mostrar retroalimentación
+
 No, ya que para que sea en tiempo real debemos cumplir S, por lo que necesitaríamos realizar la analítica sobre un subconjunto de los datos, encontrándonos en el caso S+V, y produciendo por lo tanto un resultado no totalmente consistente (C).
 
 Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar procesamiento por lotes empleando todo ese conjunto de datos?
+
 Mostrar retroalimentación
+
 Sí, ya que al ser analítica por lotes en lugar de en tiempo real, la característica S ya no es necesaria, de modo que podemos encontrarnos en un caso C+V, utilizando todos los datos sin ningún tipo de muestreo para así producir un resultado consistente (C).
 
 Revisar gráficos de https://learning.oreilly.com/library/view/next-generation-databases/9781484213292/9781484213308_Ch02.xhtml#Sec11
