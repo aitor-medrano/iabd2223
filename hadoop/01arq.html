@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming. Además, estudiamos cómo AWS define el marco de buena arquitectura y la gestión que realiza para el escalado y la monitorización de recursos en la nube.">
+        <meta name="description" content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming, revisamos sus casos de uso y las buenas prácticas.">
       
       
       
@@ -17,7 +17,7 @@
     
     
       
-        <title>Arquitecturas Big Data. Escalado y Monitorización en la nube. - Inteligencia Artificial y Big Data</title>
+        <title>Arquitecturas Big Data - Kappa y Lambda. - Inteligencia Artificial y Big Data</title>
       
     
     
@@ -64,9 +64,9 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Arquitecturas Big Data. Escalado y Monitorización en la nube. - Inteligencia Artificial y Big Data" >
+        <meta  property="og:title"  content="Arquitecturas Big Data - Kappa y Lambda. - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming. Además, estudiamos cómo AWS define el marco de buena arquitectura y la gestión que realiza para el escalado y la monitorización de recursos en la nube." >
+        <meta  property="og:description"  content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming, revisamos sus casos de uso y las buenas prácticas." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/01arq.png" >
       
@@ -80,9 +80,9 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Arquitecturas Big Data. Escalado y Monitorización en la nube. - Inteligencia Artificial y Big Data" >
+        <meta  name="twitter:title"  content="Arquitecturas Big Data - Kappa y Lambda. - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming. Además, estudiamos cómo AWS define el marco de buena arquitectura y la gestión que realiza para el escalado y la monitorización de recursos en la nube." >
+        <meta  name="twitter:description"  content="Analizamos las arquitecturas Kappa y Lambda, comparando el procesamiento batch y en streaming, revisamos sus casos de uso y las buenas prácticas." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/01arq.png" >
       
@@ -142,7 +142,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Arquitecturas Big Data. Escalado y Monitorización en la nube.
+              Arquitecturas Big Data - Kappa y Lambda.
             
           </span>
         </div>
@@ -976,10 +976,10 @@ En informática, un sistema de tiempo real es aquel que responde en un periodo d
 <li>Capa de visualización: también conocida como capa de presentación, es con la que interactúan los usuarios.</li>
 </ul>
 <h2 id="tecnologias">Tecnologías<a class="headerlink" href="#tecnologias" title="Permanent link">&para;</a></h2>
-<p>Por ejemplo, la ingesta de datos hacia las arquitecturas Lambda y Kappa se pueden realizar mediante un sistema de mensajería de colas <em>publish/subscribe</em> como <a href="https://kafka.apache.org">Apache Kafka</a> y/o un servicio de flujo de datos como <a href="https://nifi.apache.org/">Apache Nifi</a>.</p>
-<p>El almacenamiento de los datos y modelos lo podemos realizar mediante HDFS o S3. Dentro de una arquitectura Lamba, en el sistema batch, mediante algoritmos MapReduce de Hadoop podemos entrenar modelos. Para la capa de <em>streaming</em> (tanto para Lambda como Kappa) se pueden utilizar otras tecnologías como <a href="http://storm.apache.org"><em>Apache Storm</em></a>, <a href="http://samza.apache.org"><em>Apache Samza</em></a> o <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html"><em>Spark Streaming</em></a> para modificar modelos de forma incremental.</p>
+<p>Por ejemplo, la ingesta de datos hacia las arquitecturas <em>Lambda</em> y <em>Kappa</em> se pueden realizar mediante un sistema de mensajería de colas <em>publish/subscribe</em> como <a href="https://kafka.apache.org">Apache Kafka</a> y/o un servicio de flujo de datos como <a href="https://nifi.apache.org/">Apache Nifi</a>.</p>
+<p>El almacenamiento de los datos y modelos lo podemos realizar mediante <em>HDFS</em> o <em>S3</em>. Dentro de una arquitectura <em>Lambda</em>, en el sistema batch, mediante algoritmos <em>MapReduce de Hadoop</em> o consultas <em>Hive</em> podemos generar modelos. Para la capa de <em>streaming</em> (tanto para Lambda como Kappa) se pueden utilizar otras tecnologías como <a href="http://storm.apache.org"><em>Apache Storm</em></a>, <a href="http://samza.apache.org"><em>Apache Samza</em></a> o <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html"><em>Spark Streaming</em></a> para modificar modelos de forma incremental.</p>
 <p>De forma alternativa, <a href="https://spark.apache.org">Apache Spark</a> se puede utilizar como plataforma común para desarrollar las capas <em>batch</em> y <em>streaming</em> de la arquitectura Lambda. De ahí su amplia aceptación y uso a día de hoy en la industria, se codifica una vez y se comparte en ambas capas</p>
-<p>La capa de <em>serving</em> se puede implementar mediante una base de datos NoSQL como pueda ser <a href="https://hbase.apache.org">Apache HBase</a>, <a href="https://www.mongodb.com">MongoDB</a>, <a href="https://redis.com">Redis</a> o <a href="https://aws.amazon.com/es/dynamodb/">AWS Dynamo DB</a>. También se pueden utilizar motores de consultas como <a href="https://drill.apache.org">Apache Drill</a>.</p>
+<p>La capa de <em>serving</em> se puede implementar mediante una base de datos NoSQL como pueda ser <a href="https://hbase.apache.org">Apache HBase</a>, <a href="https://www.mongodb.com">MongoDB</a>, <a href="https://redis.com">Redis</a> o <a href="https://aws.amazon.com/es/dynamodb/">AWS Dynamo DB</a>. También se pueden utilizar motores de consultas como <a href="https://drill.apache.org">Apache Drill</a> o <a href="https://prestodb.io/">Presto</a>.</p>
 <h2 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h2>
 <p>¿Qué arquitectura se adapta mejor a los requerimientos que nos traslada el cliente? <em>¿Lambda</em> o <em>Kappa</em>? ¿Cuál encaja mejor en nuestro modelo de negocio?.</p>
 <p>Depende. La arquitectura <em>Lambda</em> es más versátil y es capaz de cubrir un mayor número de casos, muchos de ellos que requieren incluso procesamiento en tiempo real.</p>
@@ -997,11 +997,11 @@ En informática, un sistema de tiempo real es aquel que responde en un periodo d
 <h2 id="buenas-practicas">Buenas prácticas<a class="headerlink" href="#buenas-practicas" title="Permanent link">&para;</a></h2>
 <ul>
 <li>En la ingesta de datos: evaluar los tipos de fuentes de datos, no todas las herramientas sirven para cualquier fuente de datos, y en algún caso lo mejor es combinar varias herramientas para cubrir todo el abanico.</li>
-<li>En el procesamiento: analizar si el sistema debe ser streaming o batch. Algunos sistemas que no se definen como puramente streaming, es decir, utilizan lo que denominan micro-batch que suele dar respuesta a problemas que en el uso cotidiano del lenguaje se denomina como streaming.</li>
+<li>En el procesamiento: analizar si el sistema debe ser <em>streaming</em> o <em>batch</em>. Algunos sistemas que no se definen como puramente <em>streaming</em>, es decir, utilizan lo que denominan <em>micro-batch</em> que suele dar respuesta a problemas que en el uso cotidiano del lenguaje se denomina como <em>streaming</em>.</li>
 <li>En la monitorización: al trabajar con multitud de herramientas es importante utilizar herramienta para controlar, monitorizar y gestionar la arquitectura.</li>
 <li>Algunas decisiones que debemos tomar a la hora de elegir la arquitectura son:<ul>
 <li>Enfocar los casos de uso. Cuando tengamos los objetivos claros sabremos qué parte debemos fortalecer en la arquitectura. ¿Volumen, variedad, velocidad?</li>
-<li>Definir la arquitectura: ¿batch o streaming? ¿Realmente es necesario que nuestra arquitectura soporte  streaming?</li>
+<li>Definir la arquitectura: <em>¿batch</em> o <em>streaming</em>? ¿Realmente es necesario que nuestra arquitectura soporte <em>streaming</em>?</li>
 <li>Evaluar las fuentes de datos: ¿Cómo de heterogéneas son? ¿soportan las herramientas elegidas todos los tipos de fuentes de datos que se utilizan?</li>
 </ul>
 </li>
