@@ -625,6 +625,78 @@
 
 
 <h1 id="aws-elastic-map-reduce">AWS Elastic Map Reduce<a class="headerlink" href="#aws-elastic-map-reduce" title="Permanent link">&para;</a></h1>
+<p>Arrancar EMR con instancias m4.large
+Seguridad: vockey</p>
+<p>Descargar claves:
+Conectar mediante SSH</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>ssh -i labsuser.pem hadoop@ec2-75-101-186-154.compute-1.amazonaws.com
+<span class="linenos" data-linenos=" 2 "></span>The authenticity of host <span class="s1">&#39;ec2-75-101-186-154.compute-1.amazonaws.com (75.101.186.154)&#39;</span> can<span class="s1">&#39;t be established.</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="s1">ECDSA key fingerprint is SHA256:ZDeS9KrmmJP1vCdPDgRXUMZUpMuuOiLSGvX8qERbFaI.</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="s1">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="s1">Warning: Permanently added &#39;</span>ec2-75-101-186-154.compute-1.amazonaws.com,75.101.186.154<span class="err">&#39;</span> <span class="o">(</span>ECDSA<span class="o">)</span> to the list of known hosts.
+<span class="linenos" data-linenos=" 6 "></span>Last login: Thu Nov <span class="m">24</span> <span class="m">12</span>:19:03 <span class="m">2022</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span>       __<span class="p">|</span>  __<span class="p">|</span>_  <span class="o">)</span>
+<span class="linenos" data-linenos=" 9 "></span>       _<span class="p">|</span>  <span class="o">(</span>     /   Amazon Linux <span class="m">2</span> AMI
+<span class="linenos" data-linenos="10 "></span>      ___<span class="p">|</span><span class="se">\_</span>__<span class="p">|</span>___<span class="p">|</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span>https://aws.amazon.com/amazon-linux-2/
+<span class="linenos" data-linenos="13 "></span><span class="m">22</span> package<span class="o">(</span>s<span class="o">)</span> needed <span class="k">for</span> security, out of <span class="m">32</span> available
+<span class="linenos" data-linenos="14 "></span>Run <span class="s2">&quot;sudo yum update&quot;</span> to apply all updates.
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span>EEEEEEEEEEEEEEEEEEEE MMMMMMMM           MMMMMMMM RRRRRRRRRRRRRRR
+<span class="linenos" data-linenos="17 "></span>E::::::::::::::::::E M:::::::M         M:::::::M R::::::::::::::R   
+<span class="linenos" data-linenos="18 "></span>EE:::::EEEEEEEEE:::E M::::::::M       M::::::::M R:::::RRRRRR:::::R
+<span class="linenos" data-linenos="19 "></span>  E::::E       EEEEE M:::::::::M     M:::::::::M RR::::R      R::::R
+<span class="linenos" data-linenos="20 "></span>  E::::E             M::::::M:::M   M:::M::::::M   R:::R      R::::R
+<span class="linenos" data-linenos="21 "></span>  E:::::EEEEEEEEEE   M:::::M M:::M M:::M M:::::M   R:::RRRRRR:::::R
+<span class="linenos" data-linenos="22 "></span>  E::::::::::::::E   M:::::M  M:::M:::M  M:::::M   R:::::::::::RR
+<span class="linenos" data-linenos="23 "></span>  E:::::EEEEEEEEEE   M:::::M   M:::::M   M:::::M   R:::RRRRRR::::R
+<span class="linenos" data-linenos="24 "></span>  E::::E             M:::::M    M:::M    M:::::M   R:::R      R::::R
+<span class="linenos" data-linenos="25 "></span>  E::::E       EEEEE M:::::M     MMM     M:::::M   R:::R      R::::R
+<span class="linenos" data-linenos="26 "></span>EE:::::EEEEEEEE::::E M:::::M             M:::::M   R:::R      R::::R
+<span class="linenos" data-linenos="27 "></span>E::::::::::::::::::E M:::::M             M:::::M RR::::R      R::::R
+<span class="linenos" data-linenos="28 "></span>EEEEEEEEEEEEEEEEEEEE MMMMMMM             MMMMMMM RRRRRRR      RRRRRR
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo chmod <span class="m">777</span> /etc/hadoop/conf/hdfs-site.xml
+</code></pre></div>
+<p>nano /etc/hadoop/conf/hdfs-site.xml</p>
+<p>Editamos la propiedad dfs.webhdfs.enabled y la ponemos a true:ç</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span> <span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;name&gt;</span>dfs.webhdfs.enabled<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="4 "></span>  <span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+<p>Reiniciamos el servicios HDFS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo systemctl restart hadoop-hdfs-namenode
+</code></pre></div>
+<p>Ahora desde el interfaz de HDFS ya podemos navegar por las carpetas y ver el contenido:
+`</p>
+<p>Ahora vamos a cambiar la configuración de Hue para indicarle la ruta de HDFS y poder navegar:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo chmod <span class="m">777</span> /etc/hue/conf/hue.ini
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>nano /etc/hue/conf/hue.ini
+<span class="linenos" data-linenos="2 "></span>``
+<span class="linenos" data-linenos="3 "></span>
+<span class="linenos" data-linenos="4 "></span>Y ponemos bien el puerto al 50070
+<span class="linenos" data-linenos="5 "></span>
+<span class="linenos" data-linenos="6 "></span>webhdfs_url = http://ip-172-31-60-228.ec2.internal:50070/webhdfs/v1
+<span class="linenos" data-linenos="7 "></span>
+<span class="linenos" data-linenos="8 "></span>``` bash
+<span class="linenos" data-linenos="9 "></span>sudo systemctl restart hue
+</code></pre></div>
+<p>CREATE TABLE impressions2 (
+requestBeginTime string,
+adId string,
+impressionId string,
+referrer string,
+userAgent string,
+userCookie string,
+ip string)
+PARTITIONED BY (dt string)
+ROW FORMAT  serde 'org.apache.hive.hcatalog.data.JsonSerDe' with serdeproperties
+('paths'='requestBeginTime, adId, impressionId, referrer, userAgent, userCookie, ip')
+LOCATION '${SAMPLE}/tables/impressions';</p>
 
 
   

@@ -2,142 +2,142 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/index.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/cloud/index.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/cloud/01cloud.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/cloud/02aws.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/cloud/03s3.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/cloud/04emr.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/cloud/05computacion.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/cloud/06datos.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/index.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/01arq.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/02etl.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/03hadoop.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/04hdfs.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/05flume.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/06hive.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/index.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/01nosql.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/02mongo.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/03modelado.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/04formatos.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/05agregaciones.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/06replicacion.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/07pymongo.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/08indices.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/09pymodm.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/10changeStreams.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/mflix.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://aitor-medrano.github.io/iabd2223/sa/planning.html</loc>
-         <lastmod>2022-11-23</lastmod>
+         <lastmod>2022-11-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

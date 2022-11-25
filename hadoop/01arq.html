@@ -1013,17 +1013,17 @@ En informática, un sistema de tiempo real es aquel que responde en un periodo d
 <p>De forma alternativa, <a href="https://spark.apache.org">Apache Spark</a> se puede utilizar como plataforma común para desarrollar las capas <em>batch</em> y <em>streaming</em> de la arquitectura Lambda. De ahí su amplia aceptación y uso a día de hoy en la industria, se codifica una vez y se comparte en ambas capas</p>
 <p>La capa de <em>serving</em> se puede implementar mediante una base de datos NoSQL como pueda ser <a href="https://hbase.apache.org">Apache HBase</a>, <a href="https://www.mongodb.com">MongoDB</a>, <a href="https://redis.com">Redis</a> o <a href="https://aws.amazon.com/es/dynamodb/">AWS Dynamo DB</a>. También se pueden utilizar motores de consultas como <a href="https://drill.apache.org">Apache Drill</a> o <a href="https://prestodb.io/">Presto</a>.</p>
 <h2 id="principio-scv">Principio SCV<a class="headerlink" href="#principio-scv" title="Permanent link">&para;</a></h2>
-<p>Mientras que el teorema CAP tiene que ver con almacenamiento de datos distribuidos, el principio SCV está relacionado con el procesamiento distribuido de los datos.</p>
+<p>Mientras que el teorema CAP tiene que ver con almacenamiento de datos distribuidos, el <a href="https://fulmanski.pl/tutorials/computer-science/big-data/processing-concepts-for-big-data/#scv_principle">principio SCV</a> está relacionado con el <strong>procesamiento distribuido de los datos</strong>.</p>
 <p>Es decir, no tiene que ver con la escritura y lectura (consistente o no) de los datos en entornos distribuidos sino con el procesamiento que se realiza sobre ellos dentro de los nodos de un sistema de procesamiento distribuido.</p>
 <p>De modo similar a lo que ocurría con el teorema CAP, el principio SCV establece que un sistema de procesamiento distribuido sólo puede soportar como máximo 2 de las siguientes 3 características:</p>
 <ul>
-<li>Velocidad (<em>Speed</em>): Se refiere a cuánto tardan en procesarse los datos desde el momento en el que son recibidos en el sistema analítico. Por lo general se excluye el tiempo que se tarda en capturar los datos, considerando sólo lo que se tarda en generar la estadística o ejecutar el algoritmo en cuestión.
+<li><strong>Velocidad</strong> (<em>Speed</em>): Se refiere a cuánto tardan en procesarse los datos desde el momento en el que son recibidos en el sistema analítico. Por lo general se excluye el tiempo que se tarda en capturar los datos, considerando sólo lo que se tarda en generar la estadística o ejecutar el algoritmo en cuestión.
 Esta velocidad es más alta si estamos ante un sistema de analítica en tiempo real que si se trata de un sistema de analítica por lotes (del inglés batch).</li>
-<li>Consistencia (<em>Consistency</em>): Se refiere en este caso a la precisión de los resultados de la analítica (no confundir, por lo tanto, con el significado de la C del teorema CAP).
+<li><strong>Consistencia</strong> (<em>Consistency</em>): Se refiere en este caso a la precisión de los resultados de la analítica (no confundir, por lo tanto, con el significado de la C del teorema CAP).
 Tal precisión depende de si para la analítica se utilizan todos los datos disponibles (precisión alta) o de si por el contrario se emplean técnicas de muestreo para seleccionar sólo un subconjunto de los mismos con la intención de producir resultados (de menor precisión) en un menor tiempo.</li>
-<li>Volumen (<em>Volume</em>). Se refiere a la cantidad de datos que pueden ser procesados. Hay que tener en cuenta que en entornos de Big Data, el alto volumen de datos es una características siempre presente (una de las 5 Vs).</li>
+<li><strong>Volumen</strong> (<em>Volume</em>). Se refiere a la cantidad de datos que pueden ser procesados. Hay que tener en cuenta que en entornos de Big Data, el alto volumen de datos es una características siempre presente (una de las 5 Vs).</li>
 </ul>
-<p>De igual modo que hicimos al estudiar el teorema CAP, nos fijaremos en una serie de escenarios para mostrar que no podemos conseguir un sistema que cumpla a la vez las 3 características del principio SCV.</p>
+<p>De igual modo que hicimos al estudiar el <a href="../sa/01nosql.html#teorema-de-cap">teorema CAP</a>, nos fijaremos en una serie de escenarios para mostrar que no podemos conseguir un sistema que cumpla a la vez las 3 características del principio SCV.</p>
 <figure style="float: right;">
     <img src="images/01scv.png" width="300">
     <figcaption>Principio SCV</figcaption>
@@ -1031,9 +1031,17 @@ Tal precisión depende de si para la analítica se utilizan todos los datos disp
 
 <ul>
 <li>Si se requiere velocidad (S) y consistencia (C), no podemos procesar un alto volumen (V) de datos ya que eso aumenta el tiempo de respuesta.</li>
-<li>Si se requiere consistencia (C) y poder procesar grande volúmenes de datos (V), no es posible realizar tal procesado a una alta velocidad (S).</li>
+<li>Si se requiere consistencia (C) y poder procesar grandes volúmenes de datos (V), no es posible realizar tal procesado a una alta velocidad (S).</li>
 <li>Si necesitamos procesar un alto volumen de datos (V) a una alta velocidad (S), entonces necesitaremos emplear técnicas de muestreo para seleccionar sólo un subconjunto de esos datos, lo cual producirá un resultado no consistente (C).</li>
 </ul>
+<!--
+Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar analítica en tiempo real con todos ellos?
+    No, ya que para que sea en tiempo real debemos cumplir S, por lo que necesitaríamos realizar la analítica sobre un subconjunto de los datos, encontrándonos en el caso S+V, y produciendo por lo tanto un resultado no totalmente consistente (C).
+
+Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de datos (V) es una obligación, ¿podremos típicamente realizar procesamiento por lotes empleando todo ese conjunto de datos?
+    Sí, ya que al ser analítica por lotes en lugar de en tiempo real, la característica S ya no es necesaria, de modo que podemos encontrarnos en un caso C+V, utilizando todos los datos sin ningún tipo de muestreo para así producir un resultado consistente (C).
+-->
+
 <h2 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h2>
 <p>¿Qué arquitectura se adapta mejor a los requerimientos que nos traslada el cliente? <em>¿Lambda</em> o <em>Kappa</em>? ¿Cuál encaja mejor en nuestro modelo de negocio?.</p>
 <p>Depende. La arquitectura <em>Lambda</em> es más versátil y es capaz de cubrir un mayor número de casos, muchos de ellos que requieren incluso procesamiento en tiempo real.</p>
