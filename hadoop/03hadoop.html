@@ -1209,11 +1209,6 @@ Y por otro lado, las aplicaciones, que pueden desarrollarse utilizando un marco 
 <li><em>Applications Manager</em>: responsable de aceptar las peticiones de trabajos, negociar el contenedor con los recursos necesarios en el que ejecutar la <em>Application Master</em> y proporcionar reinicios de los trabajos en caso de que fuera necesario debido a errores.</li>
 </ul>
 <h3 id="node-manager"><em>Node Manager</em><a class="headerlink" href="#node-manager" title="Permanent link">&para;</a></h3>
-<figure style="float: right; width: 300px">
-    <img src="images/03yarn-nodemanager.png">
-    <figcaption>Contenedores en NodeManager</figcaption>
-</figure>
-
 <p>El servicio NodeManager se ejecuta en cada nodo worker y realiza las siguientes funciones:</p>
 <ul>
 <li>Monitoriza y proporciona información sobre el consumo de recursos (CPU/memoria) por parte de los contenedores al <em>ResourceManager</em>.</li>
@@ -1227,6 +1222,10 @@ Y por otro lado, las aplicaciones, que pueden desarrollarse utilizando un marco 
 <p class="admonition-title">Contenedores</p>
 <p>Es la unidad mínima de recursos de ejecución para las aplicaciones, y que representa una cantidad específica de memoria, núcleos de procesamiento (cores) y otros recursos (disco, red), para procesar las aplicaciones. Por ejemplo, un contenedor puede representar 4 gigabytes de memoria y 1 núcleo de procesamiento.</p>
 <p>Todas las tareas de las aplicaciones YARN se ejecutan en contenedores. Cada trabajo puede contener múltiples tareas y cada una de las tareas se ejecuta en su propio contenedor. Cuando una tarea va a arrancar, YARN le asigna un contenedor, y cuando la tarea termina, el contenedor se elimina y sus recursos se asignan a otras tareas.</p>
+<p><figure style="float: right; width: 300px">
+    <img src="images/03yarn-nodemanager.png">
+    <figcaption>Contenedores en NodeManager</figcaption>
+</figure></p>
 <p>La cantidad de tareas y, por lo tanto, la cantidad de aplicaciones de YARN que puede ejecutar en cualquier momento, está limitada por la cantidad de contenedores que tiene un clúster. Por ejemplo, en un clúster de 20 nodos, con 256 GB de RAM y 12 cores por nodo, si se le ha asignado a YARN toda la capacidad existente, habrá un total de 5 TB de RAM y 240 cores disponibles. Si se ha definido un tamaño de contenedor de 32 gigabytes, habrá un máximo de 160 contenedores disponibles, es decir, se podrán ejecutar como máximo 160 tareas de forma concurrente.</p>
 </div>
 <p>Los contenedores YARN tienen una asignación de recursos (CPU, memoria, disco y red) fija de un host del clúster y el <em>Node Manager</em> es el encargado de monitorizar esta asignación. Si un proceso sobrepasase los recursos asignados, por ejemplo, sería el encargado de detenerlo. Además, mapean las variables de entorno necesarias, las dependencias y los servicios necesarios para crear los procesos.</p>
@@ -1597,11 +1596,11 @@ Para esta sesión y la siguiente, con una imagen sencilla como la que podemos cr
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <p>Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla donde se muestre el resultado de cada acción.</p>
 <ol>
-<li>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 1p) Sobre Hadoop, ejecuta el siguiente comando y explica qué sucede:</li>
-</ol>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 1p) Sobre Hadoop, ejecuta el siguiente comando y explica qué sucede:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>yarn jar <span class="nv">$HADOOP_HOME</span>/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar pi <span class="m">16</span> <span class="m">32</span>
 </code></pre></div>
-<ol start="2">
+</li>
 <li>
 <p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 2p) Vuelve a contar las palabras que tiene <em>El Quijote</em>, pero haciendo usos de los scripts <em>Python</em>, teniendo en cuenta que el proceso de mapeo va a limpiar las palabras de signos ortográficos (quitar puntos, comas, paréntesis) y en el <em>reducer</em> vamos a considerar que las palabras en mayúsculas y minúsculas son la misma palabra.</p>
 <ul>
