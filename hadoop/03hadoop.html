@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/03hadoop.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
         
       
       
@@ -153,6 +153,7 @@
         
           
           
+          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -160,6 +161,7 @@
             </label>
           
         
+          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -571,6 +573,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#componentes" class="md-nav__link">
+    Componentes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resource-manager" class="md-nav__link">
     Resource Manager
   </a>
@@ -587,6 +596,13 @@
           <li class="md-nav__item">
   <a href="#application-master" class="md-nav__link">
     Application Master
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionamiento" class="md-nav__link">
+    Funcionamiento
   </a>
   
 </li>
@@ -894,6 +910,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#componentes" class="md-nav__link">
+    Componentes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#resource-manager" class="md-nav__link">
     Resource Manager
   </a>
@@ -910,6 +933,13 @@
           <li class="md-nav__item">
   <a href="#application-master" class="md-nav__link">
     Application Master
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionamiento" class="md-nav__link">
+    Funcionamiento
   </a>
   
 </li>
@@ -1157,36 +1187,55 @@ Cloudera con Docker: https://github.com/rubensa/hortonworks-sandbox-hdp
     <figcaption>YARN y Hadoop</figcaption>
 </figure>
 
-<p>El objetivo principal de YARN es separar en dos servicios las funcionalidades de gestión de recursos de la monitorización/planificación de tareas.</p>
+<p>El objetivo principal de YARN es separar en dos servicios las funcionalidades de gestión de recursos de la monitorización/planificación de tareas. Por un lado, un gestor de los procesos que se ejecutan en el clúster, que permite coordinar diferentes aplicaciones, asignar recursos y prioridades, permitir su convivencia, etc.
+Y por otro lado, las aplicaciones, que pueden desarrollarse utilizando un marco de ejecución más ligero, no atado a un modelo estricto sobre cómo ejecutarse, lo que da más libertad para poder desarrollar las aplicaciones.</p>
+<h3 id="componentes">Componentes<a class="headerlink" href="#componentes" title="Permanent link">&para;</a></h3>
 <p>Se divide en tres componentes principales: un <em>Resource Manager</em>, múltiples <em>Node Manager</em> y varios <em>ApplicationMaster</em>.</p>
 <p>La idea es tener un <em>Resource Manager</em> por clúster y un <em>Application Master</em> por aplicación, considerando una aplicación tanto un único <em>job</em> como un conjunto de jobs cíclicos.</p>
-<p>El <em>Resource Manager</em> y el <em>Node Manager</em> componen el framework de computación de datos. En concreto, el <em>ResourceManager</em> controla el arranque de la aplicación, siendo la autoridad que orquesta los recursos entre todas las aplicaciones del sistema. A su vez, tendremos tantos <em>NodeManager</em> como <em>datanodes</em> tenga nuestro clúster, siendo responsables de gestionar y monitorizar los recursos de cada nodo (CPU, memoria, disco y red) y reportar estos datos al <em>Resource Manager</em>.</p>
-<p>El <em>Application Master</em> es una librería específica encargada de negociar los recursos con el <em>ResourceManager</em> y de trabajar con los <em>Node Manager</em> para ejecutar y monitorizar las tareas.</p>
-<p>Finalmente, en nuestro clúster, tendremos corriendo un <em>Job History Server</em> encargado de archivar los fichero de log de los <em>jobs</em>. Aunque es un proceso opcional, se recomienda su uso para monitorizar los jobs ejecutados.</p>
 <figure style="align: center;">
     <img src="images/03yarn-components.png">
     <figcaption>Componentes en YARN</figcaption>
 </figure>
 
+<p>El <em>Resource Manager</em> y el <em>Node Manager</em> componen el framework de computación de datos. En concreto, el <em>ResourceManager</em> controla el arranque de la aplicación, siendo la autoridad que orquesta los recursos entre todas las aplicaciones del sistema. A su vez, tendremos tantos <em>NodeManager</em> como <em>datanodes</em> tenga nuestro clúster, siendo responsables de gestionar y monitorizar los recursos de cada nodo (CPU, memoria, disco y red) y reportar estos datos al <em>Resource Manager</em>.</p>
+<p>El <em>Application Master</em> es una librería específica encargada de negociar los recursos con el <em>ResourceManager</em> y de trabajar con los <em>Node Manager</em> para ejecutar y monitorizar las tareas.</p>
+<p>Finalmente, en nuestro clúster, tendremos corriendo un <em>Job History Server</em> encargado de archivar los fichero de log de los <em>jobs</em>. Aunque es un proceso opcional, se recomienda su uso para monitorizar los jobs ejecutados.</p>
 <h3 id="resource-manager"><em>Resource Manager</em><a class="headerlink" href="#resource-manager" title="Permanent link">&para;</a></h3>
+<p>El <em>Resource Manager</em> mantiene un listado de los <em>Node Manager</em> activos y de sus recursos disponibles. Dicho de otro modo, es el equivalente al <em>Namenode</em> de HDFS.</p>
+<p>Cuando un cliente quiere ejecutar una aplicación en YARN, se comunica con el <em>ResourceManager</em>, que será el encargado de asignarle los recursos en base a las políticas de prioridad asignadas y los recursos disponibles, distribuir la aplicación (el ejecutable) por los diferentes nodos <em>worker</em> que realizarán la ejecución, controlar la ejecución para detectar si ha habido una caída de una de las tareas, para relanzarla en otro nodo, y liberar los recursos una vez la ejecución haya finalizado.</p>
 <p>El gestor de recursos, a su vez, se divide en dos componentes:</p>
 <ul>
 <li>El <em>Scheduler</em> o planificador es el encargado de gestionar la distribución de los recursos del clúster de YARN. Además, las aplicaciones usan los recursos que el <em>Resource Manager</em> les ha proporcionado en función de sus criterios de planificación. Este planificador no monitoriza el estado de ninguna aplicación ni les ofrece garantías de ejecución, ni recuperación por fallos de la aplicación o el hardware, sólo planifica. Este componente realiza su planificación a partir de los requisitos de recursos necesarios por las aplicaciones (CPU, memoria, disco y red).</li>
-<li><em>Applications Manager</em>:  es el componente del <em>Resource Manager</em> responsable de aceptar las peticiones de trabajos, negociar el contenedor con los recursos necesarios en el que ejecutar la <em>Application Master</em> y proporcionar reinicios de los trabajos en caso de que fuera necesario debido a errores.</li>
+<li><em>Applications Manager</em>: responsable de aceptar las peticiones de trabajos, negociar el contenedor con los recursos necesarios en el que ejecutar la <em>Application Master</em> y proporcionar reinicios de los trabajos en caso de que fuera necesario debido a errores.</li>
 </ul>
-<p>El <em>Resource Manager</em> mantiene un listado de los <em>Node Manager</em> activos y de sus recursos disponibles.</p>
 <h3 id="node-manager"><em>Node Manager</em><a class="headerlink" href="#node-manager" title="Permanent link">&para;</a></h3>
 <figure style="float: right; width: 300px">
     <img src="images/03yarn-nodemanager.png">
     <figcaption>Contenedores en NodeManager</figcaption>
 </figure>
 
-<p>Arranca el <em>Application Masters</em> tras petición del <em>Resource Manager</em>, iniciando las tareas/jobs que le indique el <em>Application Master</em>.</p>
-<p>Gestiona los trabajos en contenedores proporcionado los recursos computacionales necesarios para las aplicaciones.</p>
+<p>El servicio NodeManager se ejecuta en cada nodo worker y realiza las siguientes funciones:</p>
+<ul>
+<li>Monitoriza y proporciona información sobre el consumo de recursos (CPU/memoria) por parte de los contenedores al <em>ResourceManager</em>.</li>
+<li>Envía mensajes para notificar al <em>ResourceManager</em> su actividad (no está caído) así como la información sobre su estado a nivel de recursos.</li>
+<li>Supervisa el ciclo de vida de los contenedores de aplicaciones.</li>
+<li>Supervisa la ejecución de las distintas tareas en contenedores y termina aquellas tareas que se han quedado bloqueadas.</li>
+<li>Almacena un log (fichero en HDFS) con todas las operaciones que se realizan en el nodo.</li>
+<li>Lanza procesos <em>ApplicationMaster</em>, que coordinan los trabajos para cada aplicación.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Contenedores</p>
+<p>Es la unidad mínima de recursos de ejecución para las aplicaciones, y que representa una cantidad específica de memoria, núcleos de procesamiento (cores) y otros recursos (disco, red), para procesar las aplicaciones. Por ejemplo, un contenedor puede representar 4 gigabytes de memoria y 1 núcleo de procesamiento.</p>
+<p>Todas las tareas de las aplicaciones YARN se ejecutan en contenedores. Cada trabajo puede contener múltiples tareas y cada una de las tareas se ejecuta en su propio contenedor. Cuando una tarea va a arrancar, YARN le asigna un contenedor, y cuando la tarea termina, el contenedor se elimina y sus recursos se asignan a otras tareas.</p>
+<p>La cantidad de tareas y, por lo tanto, la cantidad de aplicaciones de YARN que puede ejecutar en cualquier momento, está limitada por la cantidad de contenedores que tiene un clúster. Por ejemplo, en un clúster de 20 nodos, con 256 GB de RAM y 12 cores por nodo, si se le ha asignado a YARN toda la capacidad existente, habrá un total de 5 TB de RAM y 240 cores disponibles. Si se ha definido un tamaño de contenedor de 32 gigabytes, habrá un máximo de 160 contenedores disponibles, es decir, se podrán ejecutar como máximo 160 tareas de forma concurrente.</p>
+</div>
 <p>Los contenedores YARN tienen una asignación de recursos (CPU, memoria, disco y red) fija de un host del clúster y el <em>Node Manager</em> es el encargado de monitorizar esta asignación. Si un proceso sobrepasase los recursos asignados, por ejemplo, sería el encargado de detenerlo. Además, mapean las variables de entorno necesarias, las dependencias y los servicios necesarios para crear los procesos.</p>
-<p>También implementa <em>heartbeats</em> para mantener informado del estado al <em>Resource Manager</em>. Finalmente, almacena los <em>logs</em> de aplicación en HDFS.</p>
+<p>Los <em>NodeManager</em>, al igual que los <em>Datanodes</em> en HDFS, son tolerantes a fallos, por lo que en caso de caída de alguno de ellos, el <em>ResourceManager</em> detectará que no funciona y redirigirá la ejecución de las aplicaciones al resto de nodos activos.</p>
 <h3 id="application-master"><em>Application Master</em><a class="headerlink" href="#application-master" title="Permanent link">&para;</a></h3>
 <p>El <em>Application Master</em> es el responsable de negociar los recursos apropiados con el <em>Resource Manager</em> y monitorizar su estado y su progreso. También coordina la ejecución de todas las tareas en las que puede dividirse su aplicación.</p>
+<p>Existe un proceso <em>ApplicationMaster</em> por aplicación, y se ejecuta en uno de los nodos worker, para garantizar la escalabilidad de YARN, ya que si se ejecutaran todos los <em>ApplicationMaster</em> en el nodo maestro, junto con el <em>ResourceManager</em>, éste sería un cuello de botella para poder escalar o poder lanzar un gran número de aplicaciones sobre el clúster.</p>
+<p>Asimismo, a diferencia del <em>ResourceManager</em> y los <em>NodeManager</em>, el <em>ApplicationMaster</em> es específico para una aplicación por lo que, cuando la aplicación finaliza, el proceso <em>ApplicationMaster</em> termina. En el caso de los servicios <em>ResourceManager</em> y <em>NodeManager</em>, siempre se están ejecutando aunque no haya aplicaciones activas en el clúster. Cada vez que se inicia una nueva aplicación, <em>ResourceManager</em> asigna un contenedor que ejecuta <em>ApplicationMaster</em> en uno de los nodos del clúster.</p>
+<h3 id="funcionamiento">Funcionamiento<a class="headerlink" href="#funcionamiento" title="Permanent link">&para;</a></h3>
 <p>Podemos ver la secuencia de trabajo y colaboración de estos componentes en el siguiente gráfico:</p>
 <figure style="align: center;">
     <img src="images/03yarn_architecture.gif">
@@ -1749,12 +1798,14 @@ Revisar gráficos de https://learning.oreilly.com/library/view/next-generation-d
 
   
 
+
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input type="checkbox" class="md-toggle" id="__settings">
+<input class="md-toggle" type="checkbox" id="__settings" >
 <div class="md-consent__settings">
   <ul class="task-list">
     
+      
       
         
         
@@ -1789,10 +1840,10 @@ Revisar gráficos de https://learning.oreilly.com/library/view/next-generation-d
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
     
   </body>
