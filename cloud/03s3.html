@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/03s3.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -153,7 +153,6 @@
         
           
           
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -161,7 +160,6 @@
             </label>
           
         
-          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -428,6 +426,10 @@
         
           
         
+          
+        
+          
+        
       
       
         
@@ -492,6 +494,34 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04hdfs.html" class="md-nav__link">
+        S39.- HDFS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04formatos.html" class="md-nav__link">
+        S39.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -504,18 +534,22 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       
       
         
           
             
+          
+        
           
         
           
@@ -567,6 +601,198 @@
       <a href="02aws.html" class="md-nav__link">
         S33.- AWS
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S40.- S3
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="03s3.html" class="md-nav__link md-nav__link--active">
+        S40.- S3
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#amazon-ebs" class="md-nav__link">
+    Amazon EBS
+  </a>
+  
+    <nav class="md-nav" aria-label="Amazon EBS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#volumenes" class="md-nav__link">
+    Volúmenes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instantaneas" class="md-nav__link">
+    Instantáneas
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amazon-efs" class="md-nav__link">
+    Amazon EFS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amazon-s3" class="md-nav__link">
+    Amazon S3
+  </a>
+  
+    <nav class="md-nav" aria-label="Amazon S3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#elementos-de-un-objeto" class="md-nav__link">
+    Elementos de un objeto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clases-de-almacenamiento" class="md-nav__link">
+    Clases de almacenamiento
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#buckets" class="md-nav__link">
+    Buckets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#casos-de-uso" class="md-nav__link">
+    Casos de uso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#costes" class="md-nav__link">
+    Costes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sitio-web-estatico" class="md-nav__link">
+    Sitio web estático
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-select" class="md-nav__link">
+    S3 Select
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acceso" class="md-nav__link">
+    Acceso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seguridad" class="md-nav__link">
+    Seguridad
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#s3-y-python" class="md-nav__link">
+    S3 y Python
+  </a>
+  
+    <nav class="md-nav" aria-label="S3 y Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-comunicacion-con-s3" class="md-nav__link">
+    Caso de uso - Comunicación con S3
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -647,6 +873,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#amazon-efs" class="md-nav__link">
+    Amazon EFS
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#amazon-s3" class="md-nav__link">
     Amazon S3
   </a>
@@ -717,22 +950,28 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#s3-y-python" class="md-nav__link">
-    S3 y Python
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#amazon-efs" class="md-nav__link">
-    Amazon EFS
+  <a href="#s3-y-python" class="md-nav__link">
+    S3 y Python
   </a>
+  
+    <nav class="md-nav" aria-label="S3 y Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-comunicacion-con-s3" class="md-nav__link">
+    Caso de uso - Comunicación con S3
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -768,14 +1007,19 @@
 <h1 id="almacenamiento-en-la-nube">Almacenamiento en la nube<a class="headerlink" href="#almacenamiento-en-la-nube" title="Permanent link">&para;</a></h1>
 <p>El almacenamiento en la nube, por lo general, es más confiable, escalable y seguro que los sistemas de almacenamiento tradicionales en las instalaciones.</p>
 <p>El análisis de <em>Big Data</em>, el almacenamiento de datos, el Internet de las cosas (IoT), las bases de datos y las aplicaciones de copias de seguridad y archivo dependen de algún tipo de arquitectura de almacenamiento de datos.</p>
-<p>El almacenamiento más básico es el que incluyen las propias instancias, también conocido como el <strong>almacén de instancias</strong>, o almacenamiento efímero, es un almacenamiento temporal que se agrega a la instancia de AmazonEC2.</p>
-<p>El almacén de instancias es una buena opción para el almacenamiento temporal de información que cambia con frecuencia, como buffers, memorias caché, datos de pruebas y demás contenido temporal. También se puede utilizar para los datos que se replican en una flota de instancias, como un grupo de servidores web con balanceo de carga. Si las instancias se detienen, ya sea debido a un error del usuario o un problema de funcionamiento, se eliminarán los datos en el almacén de instancias.</p>
+<p>El almacenamiento más básico es el que incluyen las propias instancias, también conocido como el <strong>almacén de instancias</strong>, o almacenamiento efímero, es un almacenamiento temporal que se agrega a la instancia de EC2.</p>
+<p>El almacén de instancias es una buena opción para el almacenamiento temporal de información que cambia con frecuencia, como <em>buffers</em>, memorias caché, datos de pruebas y demás contenido temporal. También se puede utilizar para los datos que se replican en una flota de instancias, como un grupo de servidores web con balanceo de carga. Si las instancias se detienen, ya sea debido a un error del usuario o un problema de funcionamiento, se eliminarán los datos en el almacén de instancias.</p>
 <div class="admonition info">
 <p class="admonition-title">Almacenamiento de bloque o de objeto</p>
 <p>AWS permite almacenar los datos en bloques o como objetos. Si el almacenamiento es en bloques, los datos se almacenan por trozos (bloques), de manera si se modifica una parte de los datos, solo se ha de modificar el bloque que lo contiene. En cambio, si el almacenamiento es a nivel de objeto, una modificación implica tener que volver a actualizar el objeto entero.<br />
 Esto provoca que el almacenamiento por bloque sea más rápido. En cambio, el almacenamiento de objetos es más sencillo y por tanto más barato.</p>
 </div>
-<p>AWS ofrece múltiples soluciones que vamos a revisar.</p>
+<p>AWS ofrece múltiples soluciones que vamos a revisar:</p>
+<figure style="align: center;">
+    <img src="images/02s3-ebs-efs.png" width="500">
+    <figcaption>Servicios de almacenamiento de AWS</figcaption>
+</figure>
+
 <h2 id="amazon-ebs">Amazon EBS<a class="headerlink" href="#amazon-ebs" title="Permanent link">&para;</a></h2>
 <p><em>Amazon Elastic Block Store</em> (<a href="https://aws.amazon.com/es/ebs/">https://aws.amazon.com/es/ebs/</a>) ofrece volúmenes de almacenamiento a nivel de bloque de alto rendimiento para utilizarlos con instancias de Amazon EC2 para las cargas de trabajo con un uso intensivo de transacciones y de rendimiento.</p>
 <p>Los beneficios adicionales incluyen la replicación en la misma zona de disponibilidad, el cifrado fácil y transparente, los volúmenes elásticos y las copias de seguridad mediante instantáneas.</p>
@@ -817,6 +1061,19 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <h3 id="instantaneas">Instantáneas<a class="headerlink" href="#instantaneas" title="Permanent link">&para;</a></h3>
 <p>Sin embargo, para los que quieran aún más durabilidad, con <em>Amazon EBS</em> es posible crear instantáneas uniformes puntuales de los volúmenes, que luego se almacenan en <em>Amazon S3</em> y se replican automáticamente en varias zonas de disponibilidad.</p>
 <p>Estas instantáneas se pueden utilizar como punto de partida para nuevos volúmenes de Amazon EBS (clonando o restaurando copias de seguridad) y permiten proteger la durabilidad de los datos a largo plazo. Como todo recurso S3, también se pueden compartir fácilmente con compañeros del equipo de desarrollo y otros desarrolladores de AWS.</p>
+<h2 id="amazon-efs">Amazon EFS<a class="headerlink" href="#amazon-efs" title="Permanent link">&para;</a></h2>
+<p><em>Amazon Elastic File System</em> (<a href="https://aws.amazon.com/es/efs/">https://aws.amazon.com/es/efs/</a>) ofrece almacenamiento para las instancias EC2 a las que pueden acceder <ins>varias máquinas virtuales de forma simultánea</ins>, de manera similar a un NAS (<em>Network Area Storage</em>). Se ha implementado como un sistema de archivos de uso compartido que utiliza el protocolo de sistemas de archivos de red (NFS), al que acceden varios miles de instancia EC2 así como servidores <em>on-premise</em> a traves de una VPN o conexiones directas (<em>AWS Direct Connect</em>).</p>
+<p>Se trata de un almacenamiento de archivos simple, escalable y elástico para utilizarlo con los servicios de AWS y los recursos disponibles en las instalaciones. Mediante una interfaz sencilla permite crear y configurar sistemas de archivos de forma rápida y simple.</p>
+<p>EFS está diseñado para escalar a petabytes de manera dinámica bajo demanda sin interrumpir las aplicaciones, por lo que se ampliará y reducirá de forma automática a medida que agregue o elimine archivos, no necesitando asignar espacio inicial. Respecto al rendimiento, su IOPS escala de forma automática conforme crece el tamaño del sistema de archivos, ofreciendo dos modos, el de uso general (ofrece alrededor de 7000 operaciones por segundo y fichero) y el max I/O (para miles de instancias que acceden al mismo archivo de forma simultanea), pudiendo admitir un rendimiento superior a 10 GB/seg y hasta 500.000 IOPS.</p>
+<p>Las instancias se conectan a EFS desde cualquier AZ de la región. Todas las lecturas y escrituras son consistentes en todas las AZ. Por ejemplo, una lectura en una AZ garantiza que tendrá la misma información, aunque los datos se hayan escrito en otra AZ.</p>
+<figure style="align: center;">
+    <img src="images/03efs.png">
+    <figcaption>EFS compartido entre instancias</figcaption>
+</figure>
+
+<p>Respecto al coste (<a href="https://aws.amazon.com/es/efs/pricing/">https://aws.amazon.com/es/efs/pricing/</a>), dependiendo del tipo de acceso y la administración del ciclo de vida, el acceso estándard se factura desde 0,30$ Gb/mes, mientras que si el acceso es poco frecuente, baja a 0,013$ Gb/mes más 0,01$ por transferencia y Gb/mes.</p>
+<p>Su casos de uso más comunes son para bigdata y análisis, flujos de trabajo de procesamiento multimedia, administración de contenido, servidores web y directorios principales.</p>
+<p>Respecto a su acceso, de manera similar al resto de servicios de almacenamiento, es un servicio completamente administrado al que se puede acceder desde la consola, una API o la CLI de AWS.</p>
 <h2 id="amazon-s3">Amazon S3<a class="headerlink" href="#amazon-s3" title="Permanent link">&para;</a></h2>
 <p><em>S3</em> (<a href="https://aws.amazon.com/es/s3/">https://aws.amazon.com/es/s3/</a>) es un servicio de almacenamiento persistente de objetos creado para almacenar y recuperar cualquier cantidad de datos desde cualquier lugar mediante una URL: sitios web y aplicaciones móviles, aplicaciones corporativas y datos de sensores o dispositivos de Internet de las cosas (IoT) y análisis de <em>Big Data</em>.</p>
 <p>S3 es un servicio de <strong>almacenamiento a nivel de objetos</strong>, y tal como habíamos comentado, significa que además de que los datos contengan metadatos que ayudan a catalogar el objeto, si desea cambiar una parte de un archivo, tiene que realizar la modificación y luego volver a cargar todo el archivo modificado. Esto puede tener implicaciones de rendimiento y consistencia, que conviene tener en cuenta.</p>
@@ -876,7 +1133,7 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
     <figcaption>Creamos el bucket</figcaption>
 </figure>
 
-<p>Por ejemplo, vamos a crear un <em>bucket</em> dentro de la región <code>us-east-1</code> con el nombre <code>severo2122</code> (recuerda que el nombre debe ser único y en minúsculas, así como evitar las tildes, ñ, etc...).</p>
+<p>Por ejemplo, vamos a crear un <em>bucket</em> dentro de la región <code>us-east-1</code> con el nombre <code>s3severo2223</code> (recuerda que el nombre debe ser único y en minúsculas, así como evitar las tildes, ñ, etc...).</p>
 <p>Para almacenar un objeto en <em>S3</em>, debemos cargarlo en un bucket.</p>
 <figure style="float: right;">
     <img src="images/03s3_2.png" width="500">
@@ -884,7 +1141,7 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 </figure>
 
 <p>Para cargar un archivo, una vez elegido el bucket sobre el que queremos cargar, simplemente arrastrando el <a href="resources/labS3.csv">fichero</a>, éste se subirá a S3 (también podemos establecer permisos sobre los datos y cualquier metadato).</p>
-<p>Ya hemos comentado que un objeto está compuesto por los datos y cualquier metadato que describa a ese archivo, incluida la dirección URL. En nuestro caso su URL sería <a href="https://severo2122.s3.amazonaws.com/labS3.csv">https://severo2122.s3.amazonaws.com/labS3.csv</a></p>
+<p>Ya hemos comentado que un objeto está compuesto por los datos y cualquier metadato que describa a ese archivo, incluida la dirección URL. En nuestro caso su URL sería <a href="https://s3severo2223.s3.amazonaws.com/labS3.csv">https://s3severo2223.s3.amazonaws.com/labS3.csv</a></p>
 <p><em>S3</em> administra automáticamente el almacenamiento detrás de cada bucket a medida que aumenta la cantidad de datos. <em>S3</em> también es escalable, lo que permite gestionar un volumen elevado de solicitudes. No es necesario aprovisionar el almacenamiento ni el rendimiento, y solo se facturará por lo que utilicemos.</p>
 <h3 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h3>
 <p>Esta flexibilidad para almacenar una cantidad prácticamente ilimitada de datos y para acceder a ellos desde cualquier lugar convierte a <em>S3</em> en un servicio adecuado para distintos casos:</p>
@@ -1017,21 +1274,124 @@ Normalmente utilizaremos S3 para almacenar datos que utiliza una aplicación que
 <p>Recuerda que hay que controlar el acceso a los recursos, y en especial a S3. Si lo dejamos abierto, cualquier podrá introducir datos con el consiguiente incremento en el coste.
 También podemos cifrar los datos en tránsito y habilitar el cifrado del lado del servidor en nuestros objetos.</p>
 </div>
-<h3 id="s3-y-python">S3 y Python<a class="headerlink" href="#s3-y-python" title="Permanent link">&para;</a></h3>
-<p>FIXME: completar</p>
-<h2 id="amazon-efs">Amazon EFS<a class="headerlink" href="#amazon-efs" title="Permanent link">&para;</a></h2>
-<p><em>Amazon Elastic File System</em> (Amazon EFS - <a href="https://aws.amazon.com/es/efs/">https://aws.amazon.com/es/efs/</a>) ofrece almacenamiento para las instancias EC2 a las que pueden acceder <ins>varias máquinas virtuales de forma simultánea</ins>, de manera similar a un NAS (<em>Network Area Storage</em>). Se ha implementado como un sistema de archivos de uso compartido que utiliza el protocolo de sistemas de archivos de red (NFS), al que acceden varios miles de instancia EC2 así como servidores <em>on-premise</em> a traves de una VPN o conexiones directas (<em>AWS Direct Connect</em>).</p>
-<p>Se trata de un almacenamiento de archivos simple, escalable y elástico para utilizarlo con los servicios de AWS y los recursos disponibles en las instalaciones. Mediante una interfaz sencilla permite crear y configurar sistemas de archivos de forma rápida y simple.</p>
-<p>EFS está diseñado para escalar a petabytes de manera dinámica bajo demanda sin interrumpir las aplicaciones, por lo que se ampliará y reducirá de forma automática a medida que agregue o elimine archivos, no necesitando asignar espacio inicial. Respecto al rendimiento, su IOPS escala de forma automática conforme crece el tamaño del sistema de archivos, ofreciendo dos modos, el de uso general (ofrece alrededor de 7000 operaciones por segundo y fichero) y el max I/O (para miles de instancias que acceden al mismo archivo de forma simultanea), pudiendo admitir un rendimiento superior a 10 GB/seg y hasta 500.000 IOPS.</p>
-<p>Las instancias se conectan a EFS desde cualquier AZ de la región. Todas las lecturas y escrituras son consistentes en todas las AZ. Por ejemplo, una lectura en una AZ garantiza que tendrá la misma información, aunque los datos se hayan escrito en otra AZ.</p>
-<figure style="align: center;">
-    <img src="images/03efs.png">
-    <figcaption>EFS compartido entre instancias</figcaption>
-</figure>
-
-<p>Respecto al coste (<a href="https://aws.amazon.com/es/efs/pricing/">https://aws.amazon.com/es/efs/pricing/</a>), dependiendo del tipo de acceso y la administración del ciclo de vida, el acceso estándard se factura desde 0,30$ Gb/mes, mientras que si el acceso es poco frecuente, baja a 0,013$ Gb/mes más 0,01$ por transferencia y Gb/mes.</p>
-<p>Su casos de uso más comunes son para bigdata y análisis, flujos de trabajo de procesamiento multimedia, administración de contenido, servidores web y directorios principales.</p>
-<p>Respecto a su acceso, de manera similar al resto de servicios de almacenamiento, es un servicio completamente administrado al que se puede acceder desde la consola, una API o la CLI de AWS.</p>
+<h2 id="s3-y-python">S3 y Python<a class="headerlink" href="#s3-y-python" title="Permanent link">&para;</a></h2>
+<p>AWS ofrece diferentes interfaces para interactuar con S3, siendo Python una de las formas. A continuación, vamos a crear una serie de scripts en nuestra máquina local que accede, añade o recupere objeto&lt;s de S3.</p>
+<p>Para autenticarnos en AWS desde nuestro sistema local, recuerda que necesitas copiar las credenciales de acceso en <code>~/.aws/credentials</code> o mediante las <a href="02aws.html#variablesEntorno">variables de entorno</a>.</p>
+<p>Para acceder a AWS desde <em>Python</em>, <em>Amazon</em> ofrece el <a href="https://aws.amazon.com/es/sdk-for-python/">SDK Boto3</a>. Para poder utilizarlo, la instalaremos mediante</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">pip install boto3</span>
+</code></pre></div>
+<p>Podéis consultar toda la información relativa a <em>Boto3</em> en su documentación oficial en
+<a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html">https://boto3.amazonaws.com/v1/documentation/api/latest/index.html</a></p>
+<p>Existen dos posibilidades para acceder a AWS mediante <em>Boto3</em>:</p>
+<ul>
+<li><strong>Recursos</strong>: representan un interfaz orientado a objetos de AWS, de manera que cada recurso contendrá un identificador, unos atributos y un conjunto de operaciones. Un ejemplo de recurso es el <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html#object">S3</a>. Más información sobre recursos en la <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/guide/resources.html">documentación oficial</a>.</li>
+<li><strong>Clientes</strong>: ofrecen un interfaz de bajo nivel que se mapea 1:1 con el API de cada servicio. Los clientes se generan a partir de la definición JSON del servicio. Más información en la <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/guide/clients.html">documentación oficial</a>.</li>
+</ul>
+<p>En resumen, los recursos son una abstracción a más alto nivel de los servicios AWS que los clientes. Se recomienda el uso de los recursos al no tener que preocuparse de cómo se realiza por debajo la comunicación e interacción con los servicios. Sin embargo, a día de hoy no hay recursos para todos los servicios AWS, y por ello, en ocasiones no queda otra opción que utilizar los clientes.</p>
+<p>Para demostrar las diferencias, vamos a ver cómo podemos realizar algunas operaciones haciendo uso del cliente o del recurso (en estos ejemplos nos vamos a centrar en el servicio S3 - <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html">https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html</a>.):</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Buckets de un usuario</label><label for="__tabbed_2_2">Elementos de un bucket</label><label for="__tabbed_2_3">Creación de un bucket</label><label for="__tabbed_2_4">Eliminación de un recurso/bucket</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">s3-buckets.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># Opción 1</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Buckets mediante resource:&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">s3resource</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">buckets</span> <span class="o">=</span> <span class="n">s3resource</span><span class="o">.</span><span class="n">buckets</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">buckets</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">{</span><span class="n">bucket</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># Opción 2</span>
+<span class="linenos" data-linenos="11 "></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Buckets mediante el cliente:&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">s3client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span><span class="n">response</span> <span class="o">=</span> <span class="n">s3client</span><span class="o">.</span><span class="n">list_buckets</span><span class="p">()</span>
+<span class="linenos" data-linenos="14 "></span><span class="k">for</span> <span class="n">bucket</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Buckets&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">{</span><span class="n">bucket</span><span class="p">[</span><span class="s2">&quot;Name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">s3-bucket-objects.py</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">bucket</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="s1">&#39;s3severo2223python&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span><span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">bucket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+<span class="linenos" data-linenos="6 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">s3-create-bucket.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># Opción 1 - resource</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">s3r</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">bucket</span> <span class="o">=</span> <span class="n">s3r</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="s1">&#39;s3severo2223python-r&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">bucket</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># Opción 2 - cliente</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">s3c</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">response</span> <span class="o">=</span> <span class="n">s3c</span><span class="o">.</span><span class="n">create_bucket</span><span class="p">(</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="n">Bucket</span><span class="o">=</span><span class="s1">&#39;s3severo2223python&#39;</span>
+<span class="linenos" data-linenos="12 "></span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">s3-delete.py</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">s3r</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">bucket</span> <span class="o">=</span> <span class="n">s3r</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="s1">&#39;s3severo2223python&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># Elimina todos los objetos del bucket</span>
+<span class="linenos" data-linenos="7 "></span><span class="n">bucket</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<span class="linenos" data-linenos="8 "></span><span class="c1"># Elimina el bucket</span>
+<span class="linenos" data-linenos="9 "></span><span class="n">bucket</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="caso-de-uso-comunicacion-con-s3">Caso de uso - Comunicación con S3<a class="headerlink" href="#caso-de-uso-comunicacion-con-s3" title="Permanent link">&para;</a></h3>
+<p>Vamos a trabajar con el archivo <a href="resources/datosPeliculas.json">datosPeliculas.json</a> el cual contiene un listado de películas con las que trabajaremos en los siguientes casos de uso.</p>
+<p>Primero vamos a ver cómo podemos subir el archivo a S3 mediante Python:</p>
+<div class="highlight"><span class="filename">upload-movies-s3.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">ficheroUpload</span> <span class="o">=</span> <span class="s2">&quot;datosPeliculas.json&quot;</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">nombreBucket</span> <span class="o">=</span> <span class="s2">&quot;s3severo2223python&quot;</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># Opción 1 - resource</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">s3r</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># 1.1 mediante upload_file</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">bucket</span> <span class="o">=</span> <span class="n">s3r</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="n">nombreBucket</span><span class="p">,</span> <span class="s1">&#39;datosSubidosR1.txt&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span><span class="n">bucket</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">ficheroUpload</span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># 1.2 mediante put</span>
+<span class="linenos" data-linenos="14 "></span><span class="nb">object</span> <span class="o">=</span> <span class="n">s3r</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="n">nombreBucket</span><span class="p">,</span> <span class="s1">&#39;datosSubidosR2.txt&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span><span class="nb">object</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">Body</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Ejemplo de datos binarios&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># Opción 2 - cliente</span>
+<span class="linenos" data-linenos="18 "></span><span class="n">s3c</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="19 "></span>
+<span class="linenos" data-linenos="20 "></span><span class="c1"># 2.1 mediante upload_file</span>
+<span class="linenos" data-linenos="21 "></span><span class="n">response</span> <span class="o">=</span> <span class="n">s3c</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">ficheroUpload</span><span class="p">,</span> <span class="n">nombreBucket</span><span class="p">,</span> <span class="s2">&quot;datosSubidosC1.json&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="22 "></span>
+<span class="linenos" data-linenos="23 "></span><span class="c1"># 2.2 mediante upload_fileobj</span>
+<span class="linenos" data-linenos="24 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ficheroUpload</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="n">s3c</span><span class="o">.</span><span class="n">upload_fileobj</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">nombreBucket</span><span class="p">,</span> <span class="s2">&quot;datosSubidosC2.json&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="26 "></span>
+<span class="linenos" data-linenos="27 "></span><span class="c1"># Cliente: Ejemplo de como crear un objeto y añadirle contenido desde Python</span>
+<span class="linenos" data-linenos="28 "></span><span class="n">s3c</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Body</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;Ejemplo de datos binarios&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="29 "></span>               <span class="n">Bucket</span><span class="o">=</span><span class="n">nombreBucket</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="s2">&quot;datosSubidosC3&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Si lo que queremos es descargar un recurso de S3 para tenerlo en nuestro sistema local haremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># Opción 1 - descarga</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">s3c</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">s3c</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s1">&#39;s3severo2223python&#39;</span><span class="p">,</span> <span class="s1">&#39;datosPeliculas.json&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span>                 <span class="s1">&#39;datosDescargados.json&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># Opción 2 - Abrimos el fichero y metemos el contenido</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;fichero.json&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="n">s3c</span><span class="o">.</span><span class="n">download_fileobj</span><span class="p">(</span><span class="s1">&#39;s3severo2223python&#39;</span><span class="p">,</span> <span class="s1">&#39;datosPeliculas.json&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
@@ -1117,6 +1477,27 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
       
         <footer class="md-footer">
   
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="02aws.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S33.- AWS" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              S33.- AWS
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -1176,14 +1557,12 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 
   
 
-
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input class="md-toggle" type="checkbox" id="__settings" >
+<input type="checkbox" class="md-toggle" id="__settings">
 <div class="md-consent__settings">
   <ul class="task-list">
     
-      
       
         
         
@@ -1218,10 +1597,10 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
     
   </body>

@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/04hdfs.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -153,7 +153,6 @@
         
           
           
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -161,7 +160,6 @@
             </label>
           
         
-          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -408,18 +406,24 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
         
           
             
+          
+        
+          
+        
           
         
           
@@ -492,6 +496,198 @@
 
             
           
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S39.- HDFS
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="04hdfs.html" class="md-nav__link md-nav__link--active">
+        S39.- HDFS
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#namenodes-y-datanodes" class="md-nav__link">
+    Namenodes y Datanodes
+  </a>
+  
+    <nav class="md-nav" aria-label="Namenodes y Datanodes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#namenode" class="md-nav__link">
+    Namenode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datanode" class="md-nav__link">
+    Datanode
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funcionamiento-de-hdfs" class="md-nav__link">
+    Funcionamiento de HDFS
+  </a>
+  
+    <nav class="md-nav" aria-label="Funcionamiento de HDFS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procesos-de-lectura" class="md-nav__link">
+    Procesos de lectura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proceso-de-escritura" class="md-nav__link">
+    Proceso de escritura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdfs-por-dentro" class="md-nav__link">
+    HDFS por dentro
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trabajando-con-hdfs" class="md-nav__link">
+    Trabajando con HDFS
+  </a>
+  
+    <nav class="md-nav" aria-label="Trabajando con HDFS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bloques" class="md-nav__link">
+    Bloques
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#administracion" class="md-nav__link">
+    Administración
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snapshots" class="md-nav__link">
+    Snapshots
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hdfs-ui" class="md-nav__link">
+    HDFS UI
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hdfs-y-python" class="md-nav__link">
+    HDFS y Python
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hue" class="md-nav__link">
+    Hue
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04formatos.html" class="md-nav__link">
+        S39.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -516,6 +712,8 @@
         
           
             
+          
+        
           
         
           
@@ -572,6 +770,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/03s3.html" class="md-nav__link">
+        S40.- S3
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -618,6 +830,33 @@
       Tabla de contenidos
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#namenodes-y-datanodes" class="md-nav__link">
+    Namenodes y Datanodes
+  </a>
+  
+    <nav class="md-nav" aria-label="Namenodes y Datanodes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#namenode" class="md-nav__link">
+    Namenode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#datanode" class="md-nav__link">
+    Datanode
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#funcionamiento-de-hdfs" class="md-nav__link">
@@ -738,6 +977,50 @@
 
 
 <h1 id="hdfs">HDFS<a class="headerlink" href="#hdfs" title="Permanent link">&para;</a></h1>
+<h2 id="namenodes-y-datanodes">Namenodes y Datanodes<a class="headerlink" href="#namenodes-y-datanodes" title="Permanent link">&para;</a></h2>
+<p>En la sesión anterior ya vimos una pequeña introducción a la arquitectura de HDFS.</p>
+<figure style="align: center;">
+    <img src="images/03hdfsArquitectura.png" width="500">
+    <figcaption>Arquitectura HDFS</figcaption>
+</figure>
+
+<p>Vamos a profundizar en sus elementos.</p>
+<h3 id="namenode">Namenode<a class="headerlink" href="#namenode" title="Permanent link">&para;</a></h3>
+<p>Tal como hemos comentado, existen dos tipos de nodos. El principal se conoce como <strong>Namenode</strong>:</p>
+<ul>
+<li>Solo existe uno, y hace de servidor principal.</li>
+<li>Nodo al que se tienen que conectar los clientes para realizar las lecturas / escrituras.</li>
+<li>Mantiene el árbol del sistema de archivos (<em>espacio de nombre</em>) y los metadatos para todos los ficheros y directorios en el árbol, de manera que sabe en qué nodo del clúster está cada bloque de información (<em>mapa de bloques</em>)</li>
+<li>Los metadatos se almacenan tanto en memoria (para acelerar su uso) como en disco a la vez, por lo que es un nodo que requiere de mucha memoria RAM.</li>
+<li>Los bloques nunca pasan por el <em>NameNode</em>, se transfieren entre <em>DataNodes</em> y/o el cliente. Es decir, el <em>Namenode</em> no es responsable de almacenar o transferir los datos.</li>
+<li>Si se cae, no hay acceso a HDFS, por lo que es crítico el mantenimiento de copias de seguridad.</li>
+</ul>
+<p>El segundo tipo es el <strong>Secondary Namenode</strong>:</p>
+<ul>
+<li>Su función principal es guardar una copia de <em>FsImage</em> y <em>EditLog</em>:<ul>
+<li><em>FsImage</em>: instantánea de los metadatos del sistema de archivos.</li>
+<li><em>EditLog</em>: registro de transacciones que contiene los registros de cada cambio (<em>deltas</em>) que se produce en los metadatos del sistema de archivos.</li>
+</ul>
+</li>
+<li>No se trata de un nodo de respaldo</li>
+<li>Por lo general se ejecuta en una máquina distinta</li>
+</ul>
+<p>Además de distribuir los bloques entre distintos nodos de datos, también los replica (con un factor de replicación igual a tres, los replicaría en 3 nodos diferentes, 2 en el mismo rack y 1 en otro diferente) para evitar pérdidas de información si alguno de los nodos falla.</p>
+<p>Cuando una aplicación cliente necesita leer o modificar un bloque de datos, el <em>Namenode</em> le indica en qué nodo se localiza esa información. También se asegura de que los nodos no estén caídos y que la información esté replicada, para asegurar su disponibilidad aún en estos casos.</p>
+<p>Para hacernos una idea, independientemente del cloud, <em>Facebook</em> utiliza un clúster de 1100 máquinas, con 8800 nodos y cerca de 12 PB de almacenamiento.</p>
+<h3 id="datanode">Datanode<a class="headerlink" href="#datanode" title="Permanent link">&para;</a></h3>
+<ul>
+<li>De este tipo de nodo habrá más de uno en cada clúster. Por cada <em>Namenode</em> podemos tener miles de <em>Datanodes</em></li>
+<li>Almacena y lee bloques de datos.</li>
+<li>Recuperado por <em>Namenode</em> clientes.</li>
+<li>Reportan al <em>Namenode</em> la lista de bloques que están almacenando.</li>
+<li>Pueden ir en distintos discos.</li>
+<li>Guarda un <em>checksum</em> del bloque.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/03hdfsNodes.png">
+    <figcaption>Relación entre Namenodes y Datanodes HDFS</figcaption>
+</figure>
 <h2 id="funcionamiento-de-hdfs">Funcionamiento de HDFS<a class="headerlink" href="#funcionamiento-de-hdfs" title="Permanent link">&para;</a></h2>
 <p>En la sesión anterior hemos estudiado los diferentes componentes que forman parte de HDFS: <em>namenode</em> y <em>datanodes</em>. En esta sesión veremos los procesos de lectura y escritura, aprenderemos a interactuar con HDFS mediante comandos, el uso de instantáneas y practicaremos con los formatos de datos más empleados en <em>Hadoop</em>, como son <em>Avro</em> y <em>Parquet</em>.</p>
 <h3 id="procesos-de-lectura">Procesos de lectura<a class="headerlink" href="#procesos-de-lectura" title="Permanent link">&para;</a></h3>
@@ -967,6 +1250,7 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 <!--
 ## AWS EMR
 FIXME: Pendiente
+Copiar de apuntes de MEC
 -->
 
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
@@ -1097,6 +1381,42 @@ FIXME: Pendiente
       
         <footer class="md-footer">
   
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="03hadoop.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S38.- Hadoop" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              S38.- Hadoop
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="04formatos.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S39.- Formatos de datos" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              S39.- Formatos de datos
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -1156,14 +1476,12 @@ FIXME: Pendiente
 
   
 
-
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input class="md-toggle" type="checkbox" id="__settings" >
+<input type="checkbox" class="md-toggle" id="__settings">
 <div class="md-consent__settings">
   <ul class="task-list">
     
-      
       
         
         
@@ -1198,10 +1516,10 @@ FIXME: Pendiente
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
     
   </body>
