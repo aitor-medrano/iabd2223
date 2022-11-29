@@ -818,7 +818,7 @@ Para las relaciones uno a muchos:
     ];</p>
 <p>var pipeline = [
     { $match: {
-    released: {$lte: new ISODate("2001-01-01T00:00:00Z") }}},
+    released: {$lte: new ISODate("2001-01-01T00:00:00Z") }}}, <br />
     { $group: {
         _id: {"$arrayElemAt": ["$genres", 0]},
         "popularity": { $avg: "$imdb.rating"},

@@ -1249,12 +1249,6 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
     <figcaption>HDFS en Hue</figcaption>
 </figure>
 
-<!--
-## AWS EMR
-FIXME: Pendiente
-Copiar de apuntes de MEC
--->
-
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Documentación de <a href="https://hadoop.apache.org/docs/stable/">Apache Hadoop</a>.</li>
@@ -1268,14 +1262,14 @@ Copiar de apuntes de MEC
 <p>Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla donde se muestre el resultado de cada acción.</p>
 <ol>
 <li>
-<p>Explica paso a paso  el proceso de lectura (indicando qué bloques y los datanodes empleados) que realiza HDFS si queremos leer el archivo <code>/logs/101213.log</code>:</p>
+<p>(<abbr title="Genera mecanismos de integridad de los datos, comprobando su mantenimiento en los sistemas de ficheros distribuidos y valorando la sobrecarga que conlleva en el tratamiento de los datos.">RA5075.3</abbr> / <abbr title="Se ha valorado la importancia de la calidad de los datos en los sistemas de ficheros distribuidos.">CE5.3a</abbr> / 0.5p) Explica paso a paso el proceso de lectura (indicando qué bloques y los <em>datanodes</em> empleados) que realiza HDFS si queremos leer el archivo <code>/logs/101213.log</code>:</p>
 <p><figure style="align: center;">
     <img src="images/04hdfs-lectura-ejercicio.png">
     <figcaption>Proceso de lectura HDFS</figcaption>
 </figure></p>
 </li>
 <li>
-<p>En este ejercicio vamos a practicar los comandos básicos de HDFS. Una vez arrancado <em>Hadoop</em>:</p>
+<p>(<abbr title="Genera mecanismos de integridad de los datos, comprobando su mantenimiento en los sistemas de ficheros distribuidos y valorando la sobrecarga que conlleva en el tratamiento de los datos.">RA5075.3</abbr> / <abbr title="Se ha valorado la importancia de la calidad de los datos en los sistemas de ficheros distribuidos.">CE5.3a</abbr> / 0.5p) En este ejercicio vamos a practicar los comandos básicos de HDFS. Una vez arrancado <em>Hadoop</em>:</p>
 <ol>
 <li>Crea la carpeta <code>/user/iabd/ejercicios</code>.</li>
 <li>Sube el archivo <code>el_quijote.txt</code> a la carpeta creada.</li>
@@ -1287,9 +1281,9 @@ Copiar de apuntes de MEC
 </ol>
 </li>
 <li>
-<p>(opcional) Vamos a practicar los comandos de gestión de instantáneas y administración de HDFS. Para ello:</p>
+<p>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se ha comprobado la fiabilidad de los datos según respuestas.">CE5.4e</abbr> y <abbr title="Se ha analizado la estabilidad de servicios.">CE5.4f</abbr> / 1p) Vamos a practicar los comandos de gestión de instantáneas y administración de HDFS. Para ello:</p>
 <ol>
-<li>Crea la carpeta <code>/user/iabd/instantaneas</code>.</li>
+<li>Crea la carpeta <code>/user/iabd/snaps</code>.</li>
 <li>Habilita las <em>snapshots</em> sobre la carpeta creada.</li>
 <li>Sube el archivo <code>el_quijote.txt</code> a la carpeta creada.</li>
 <li>Crea una copia en HDFS y llámala <code>el_quijote_snapshot.txt</code>.</li>
@@ -1298,16 +1292,16 @@ Copiar de apuntes de MEC
 <li>Comprueba que la carpeta está vacía.</li>
 <li>Recupera desde <code>ss</code> el archivo <code>el_quijote.txt</code>.</li>
 <li>Crea una nueva instantánea de la carpeta llamada <code>ss2</code>.</li>
-<li>Muestra el contenido de la carpeta <code>/user/iabd/instantaneas</code> así como de sus <em>snapshots</em>.</li>
+<li>Muestra el contenido de la carpeta <code>/user/iabd/snaps</code> así como de sus <em>snapshots</em>.</li>
 </ol>
 </li>
 <li>
-<p>(opcional) HDFS por dentro</p>
+<p>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se ha comprobado la fiabilidad de los datos según respuestas.">CE5.4e</abbr> y <abbr title="Se ha analizado la estabilidad de servicios.">CE5.4f</abbr> / 1p) HDFS por dentro</p>
 <ol>
 <li>Accede al archivo de configuración <code>hdfs-site.xml</code> y averigua la carpeta donde se almacena el <em>namenode</em>.</li>
 <li>Muestra los archivos que contiene la carpeta <code>current</code> dentro del <em>namenode</em></li>
 <li>Comprueba el id del archivo <code>VERSION</code>.</li>
-<li>En los siguientes pasos vamos a realizar un checkpoint manual para sincronizar el sistema de ficheros. Para ello entramos en modo <em>safe</em> con el comando <code>hdfs dfsadmin -safemode enter</code>, de manera que impedamos que se trabaje con el sistema de ficheros mientras lanzamos el <em>checkpoint</em>.</li>
+<li>En los siguientes pasos vamos a realizar un <em>checkpoint</em> manual para sincronizar el sistema de ficheros. Para ello entramos en modo <em>safe</em> con el comando <code>hdfs dfsadmin -safemode enter</code>, de manera que impedamos que se trabaje con el sistema de ficheros mientras lanzamos el <em>checkpoint</em>.</li>
 <li>Comprueba mediante el interfaz gráfico que el modo seguro está activo (<em>Safe mode is ON</em>).</li>
 <li>Ahora realiza el checkpoint con el comando <code>hdfs dfsadmin -saveNamespace</code></li>
 <li>Vuelve a entrar al modo normal (saliendo del modo seguro mediante <code>hdfs dfsadmin -safemode leave</code>)</li>
@@ -1315,7 +1309,9 @@ Copiar de apuntes de MEC
 </ol>
 </li>
 </ol>
-<p>FIXME: completar HDFS con documento 2 del MEC de SBD sobre teoría de discos RAID</p>
+<!--
+FIXME: completar HDFS con documento 2 del MEC de SBD sobre teoría de discos RAID
+-->
 
 
   
