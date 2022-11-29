@@ -766,8 +766,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#caso-de-uso-comunicacion-con-s3" class="md-nav__link">
-    Caso de uso - Comunicación con S3
+  <a href="#caso-de-uso-1-comunicacion-con-s3" class="md-nav__link">
+    Caso de uso 1 - Comunicación con S3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-2-de-s3-a-dynamodb" class="md-nav__link">
+    Caso de uso 2 - De S3 a DynamoDB
   </a>
   
 </li>
@@ -778,15 +785,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
+  <a href="#referencias" class="md-nav__link">
+    Referencias
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
+  <a href="#actividades" class="md-nav__link">
+    Actividades
   </a>
   
 </li>
@@ -966,8 +973,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#caso-de-uso-comunicacion-con-s3" class="md-nav__link">
-    Caso de uso - Comunicación con S3
+  <a href="#caso-de-uso-1-comunicacion-con-s3" class="md-nav__link">
+    Caso de uso 1 - Comunicación con S3
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-2-de-s3-a-dynamodb" class="md-nav__link">
+    Caso de uso 2 - De S3 a DynamoDB
   </a>
   
 </li>
@@ -978,15 +992,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
+  <a href="#referencias" class="md-nav__link">
+    Referencias
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
+  <a href="#actividades" class="md-nav__link">
+    Actividades
   </a>
   
 </li>
@@ -1349,13 +1363,13 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 </div>
 </div>
 </div>
-<h3 id="caso-de-uso-comunicacion-con-s3">Caso de uso - Comunicación con S3<a class="headerlink" href="#caso-de-uso-comunicacion-con-s3" title="Permanent link">&para;</a></h3>
+<h3 id="caso-de-uso-1-comunicacion-con-s3">Caso de uso 1 - Comunicación con S3<a class="headerlink" href="#caso-de-uso-1-comunicacion-con-s3" title="Permanent link">&para;</a></h3>
 <p>Vamos a trabajar con el archivo <a href="resources/datosPeliculas.json">datosPeliculas.json</a> el cual contiene un listado de películas con las que trabajaremos en los siguientes casos de uso.</p>
 <p>Primero vamos a ver cómo podemos subir el archivo a S3 mediante Python:</p>
 <div class="highlight"><span class="filename">upload-movies-s3.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
 <span class="linenos" data-linenos=" 2 "></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="n">ficheroUpload</span> <span class="o">=</span> <span class="s2">&quot;datosPeliculas.json&quot;</span>
-<span class="linenos" data-linenos=" 4 "></span><span class="n">nombreBucket</span> <span class="o">=</span> <span class="s2">&quot;s3severo2223python&quot;</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">nombreBucket</span> <span class="o">=</span> <span class="s2">&quot;s3severo-boto3&quot;</span>
 <span class="linenos" data-linenos=" 5 "></span>
 <span class="linenos" data-linenos=" 6 "></span><span class="c1"># Opción 1 - resource</span>
 <span class="linenos" data-linenos=" 7 "></span><span class="n">s3r</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
@@ -1387,31 +1401,79 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 <span class="linenos" data-linenos=" 2 "></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="c1"># Opción 1 - descarga</span>
 <span class="linenos" data-linenos=" 4 "></span><span class="n">s3c</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
-<span class="linenos" data-linenos=" 5 "></span><span class="n">s3c</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s1">&#39;s3severo2223python&#39;</span><span class="p">,</span> <span class="s1">&#39;datosPeliculas.json&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">s3c</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s1">&#39;s3severo-boto3&#39;</span><span class="p">,</span> <span class="s1">&#39;datosPeliculas.json&#39;</span><span class="p">,</span>
 <span class="linenos" data-linenos=" 6 "></span>                 <span class="s1">&#39;datosDescargados.json&#39;</span><span class="p">)</span>
 <span class="linenos" data-linenos=" 7 "></span>
 <span class="linenos" data-linenos=" 8 "></span><span class="c1"># Opción 2 - Abrimos el fichero y metemos el contenido</span>
 <span class="linenos" data-linenos=" 9 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;fichero.json&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="linenos" data-linenos="10 "></span>    <span class="n">s3c</span><span class="o">.</span><span class="n">download_fileobj</span><span class="p">(</span><span class="s1">&#39;s3severo2223python&#39;</span><span class="p">,</span> <span class="s1">&#39;datosPeliculas.json&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="n">s3c</span><span class="o">.</span><span class="n">download_fileobj</span><span class="p">(</span><span class="s1">&#39;s3severo-boto3&#39;</span><span class="p">,</span> <span class="s1">&#39;datosPeliculas.json&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
-<ol>
-<li>
-<p>Realizar el módulo 7 (Almacenamiento) del curso <a href="https://awsacademy.instructure.com/courses/2243/">ACF de AWS</a>.</p>
-</li>
-<li>
-<p>(opcional) Sigue el ejemplo de la web estática para crear un bucket que muestre el contenido como un sitio web. Adjunta una captura de pantalla del navegador una vez puedas acceder a la web.</p>
-</li>
-<li>
-<p>(opcional) A partir del ejemplo de S3 Select, realiza las consultas propuestas en la autoevaluación (utilizando el archivo comprimido) y realiza capturas donde se vea tanto la consulta como su resultado.</p>
-</li>
-</ol>
+<h3 id="caso-de-uso-2-de-s3-a-dynamodb">Caso de uso 2 - De S3 a DynamoDB<a class="headerlink" href="#caso-de-uso-2-de-s3-a-dynamodb" title="Permanent link">&para;</a></h3>
+<p>En este caso, vamos a coger datos de películas de un dataset público disponible en <a href="https://www.kaggle.com/sankha1998/tmdb-top-10000-popular-movies-dataset">https://www.kaggle.com/sankha1998/tmdb-top-10000-popular-movies-dataset</a></p>
+<p>El contenido del dataset es similar a:</p>
+<div class="highlight"><span class="filename">TMDb_updated.CSV</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span>,title,overview,original_language,vote_count,vote_average
+<span class="linenos" data-linenos="2 "></span>0,Ad Astra,&quot;The near future...&quot;,en,2853,5.9
+<span class="linenos" data-linenos="3 "></span>1,Bloodshot,&quot;After he ...&quot;,en,1349,7.2
+<span class="linenos" data-linenos="4 "></span>2,Bad Boys for Life,&quot;Marcus and Mike ...&quot;,en,2530,7.1
+</code></pre></div>
+<p>Una vez descargado <a href="resources/TMDb_updated.csv">TMDb_updated.CSV</a>, vamos a cargar la información en S3 dentro del bucket <code>s3severo-boto3</code>. </p>
+<h4 id="s3select">S3Select<a class="headerlink" href="#s3select" title="Permanent link">&para;</a></h4>
+<p>Podemos realizar una consulta desde <em>Python</em> para poder automatizar un proceso ETL utilizando <em>S3Select</em> para recuperar el subconjunto de los datos, en concreto, información sobre las películas que tienen más de 10.000 votaciones.</p>
+<div class="admonition info">
+<p class="admonition-title">S3Select vs AWS Athena</p>
+<p>Este tipo de procesamiento es más cómodo realizarlo mediante AWS Athena, el cual sí que permite realizar <em>join</em> entre diferentes datasets. <em>S3Select</em> sólo permite trabajar con una única tabla.</p>
+</div>
+<p>Para ello, mediante S3Select ejecutaremos la consulta <code>SELECT s.title, s.overview, s.vote_count, s.vote_average FROM s3object s WHERE cast(s.vote_count as int)&gt; 10000</code> y almacenaremos el resultado en un nuevo CSV dentro del mismo bucket:</p>
+<div class="highlight"><span class="filename">s3select.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># 1.- Realizamos la consulta mediante S3Select</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">select_object_content</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="n">Bucket</span><span class="o">=</span><span class="s1">&#39;s3severo-boto3&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="n">Key</span><span class="o">=</span><span class="s1">&#39;TMDb_updated.csv&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="n">ExpressionType</span><span class="o">=</span><span class="s1">&#39;SQL&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="n">Expression</span><span class="o">=</span><span class="s2">&quot;SELECT s.title, s.overview, s.vote_count, s.vote_average FROM s3object s WHERE cast(s.vote_count as int)&gt; 10000&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="n">InputSerialization</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;CSV&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;FileHeaderInfo&quot;</span><span class="p">:</span> <span class="s2">&quot;USE&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="12 "></span>                                <span class="s1">&#39;AllowQuotedRecordDelimiter&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="linenos" data-linenos="13 "></span>                        <span class="s1">&#39;CompressionType&#39;</span><span class="p">:</span> <span class="s1">&#39;NONE&#39;</span><span class="p">},</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="n">OutputSerialization</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;CSV&#39;</span><span class="p">:</span> <span class="p">{}},</span>
+<span class="linenos" data-linenos="15 "></span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># 2.- Unimos los datos que vamos recibiendo en streaming</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">registros</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;title,overview,vote_count,vote_average</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="20 "></span><span class="k">for</span> <span class="n">evento</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Payload&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="k">if</span> <span class="s1">&#39;Records&#39;</span> <span class="ow">in</span> <span class="n">evento</span><span class="p">:</span>
+<span class="linenos" data-linenos="22 "></span>        <span class="n">registros</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">evento</span><span class="p">[</span><span class="s1">&#39;Records&#39;</span><span class="p">][</span><span class="s1">&#39;Payload&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="linenos" data-linenos="23 "></span>
+<span class="linenos" data-linenos="24 "></span><span class="c1"># 3.- Generamos el contenido en un String</span>
+<span class="linenos" data-linenos="25 "></span><span class="n">file_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">registros</span><span class="p">)</span>
+<span class="linenos" data-linenos="26 "></span>
+<span class="linenos" data-linenos="27 "></span><span class="c1"># 4.- Creamos un nuevo objeto en S3</span>
+<span class="linenos" data-linenos="28 "></span><span class="n">s3</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Body</span><span class="o">=</span><span class="n">file_str</span><span class="p">,</span> <span class="n">Bucket</span><span class="o">=</span><span class="s1">&#39;s3severo-boto3&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="29 "></span>              <span class="n">Key</span><span class="o">=</span><span class="s2">&quot;TMDb_filtered.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://aws.amazon.com/es/ebs/">Amazon EBS</a></li>
 <li><a href="https://aws.amazon.com/es/s3/">Amazon S3</a></li>
 <li><a href="https://aws.amazon.com/es/efs/">Amazon EFS</a></li>
+<li><a href="https://realpython.com/python-boto3-aws-s3/">Python, Boto3, and AWS S3: Demystified</a></li>
+<li><em>S3Select</em> mediante <em>Python</em>: <a href="https://towardsdatascience.com/ditch-the-database-20a5a0a1fb72">Ditch the Database</a></li>
 </ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) Realizar el módulo 7 (Almacenamiento) del curso <a href="https://awsacademy.instructure.com/courses/2243/">ACF de AWS</a>.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) Sigue el ejemplo de la web estática para crear un bucket que muestre el contenido como un sitio web. Adjunta una captura de pantalla del navegador una vez puedas acceder a la web.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) A partir del ejemplo de S3 Select, realiza las consultas propuestas en la autoevaluación (utilizando el archivo comprimido) y realiza capturas donde se vea tanto la consulta como su resultado.</p>
+</li>
+</ol>
 
 
   
