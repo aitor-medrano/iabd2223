@@ -33,16 +33,16 @@ Los tipos de nodos que podemos encontrar en un conjunto de réplica son:
     !!! danger "Consistencia eventual"
         Es posible que al realizar lecturas de un nodo secundario la información que se obtenga no refleje el estado del nodo primario.
 
-* Árbitro: se emplea sólo para votar. No contiene copia de los datos y no se puede convertir en primario. Los conjuntos de réplica pueden tener árbitros para añadir votos en las elecciones de un nuevo primario. Siempre tienen un voto, y permiten que los conjuntos de réplica tengan un número impar de nodos, sin la necesidad de tener un miembro que replique los datos. Además, no requieren hardware dedicado.
+* **Árbitro**: se emplea sólo para votar. No contiene copia de los datos y no se puede convertir en primario. Los conjuntos de réplica pueden tener árbitros para añadir votos en las elecciones de un nuevo primario. Siempre tienen un voto, y permiten que los conjuntos de réplica tengan un número impar de nodos, sin la necesidad de tener un miembro que replique los datos. Además, no requieren hardware dedicado.
 
     !!! important "A tener en cuenta"
         * No ejecutar un árbitro en sistemas que también ejecutan los miembros primarios y secundarios del conjunto de réplicas.
         * Sólo añadir un árbitro a un conjunto con un número par de miembros.
         * Si se añade un árbitro a un conjunto con un número impar de miembros, el conjunto puede sufrir un empate.
 
-* Retrasado (delayed): nodo que se emplea para la recuperación del sistema ante un fallo. Para ello, hay que asignar la propiedad `priority:0`. Este nodo nunca será un nodo primario.
+* **Retrasado** (*delayed*): nodo que se emplea para la recuperación del sistema ante un fallo. Para ello, hay que asignar la propiedad `priority:0`. Este nodo nunca será un nodo primario.
 
-* Oculto: empleado para analíticas del sistema.
+* **Oculto**: empleado para analíticas del sistema.
 
 ##### oplog
 
@@ -154,7 +154,7 @@ mongosh < /scripts/init.js
 
 Finalmente, mediante el archivo [`init.js`](resources/init.js) comprobamos el estado de la réplica y creamos el usuario administrador:
 
-``` js title="rs-init.sh"
+``` js title="init.js"
 rs.status();
 db.createUser({user: 'admin', pwd: 'admin', roles: [ { role: 'root', db: 'admin' } ]});
 ```
@@ -168,7 +168,7 @@ docker-compose --file docker-compose-replicaset.yml --project-name iabd-mongodb-
 Ya sólo nos queda ejecutar el *script* de inicialización sobre el nodo principal:
 
 ``` bash
-docker exec mongo1 /scripts/rs-init.sh
+docker exec mongo1 sh /scripts/rs-init.sh
 ```
 
 Al ejecutarse el script, se inicializa el conjunto de réplicas y se obtiene su estado (mediante `rs.status()`) el cual se muestra por consola y podemos observar como ha creado los tres nodos, diferenciando el nodo principal de los secundarios:
@@ -292,7 +292,7 @@ iabdrs [direct: primary] test> {
 
 Una vez que ya hemos arrancando todo, podemos conectarnos a nuestro conjunto de réplica mediante `mongosh` (si no le pasamos ningún parámetro, se conecta automáticamente a `localhost` y al puerto 27017). Dentro del shell, los comandos que trabajan con réplicas comienzan por el prefijo **`rs`**. Por ejemplo, mediante `rs.help()` obtendremos la ayuda de los métodos disponibles:
 
-``` bash
+``` bash hl_lines="2"
 > mongosh
 iabdrs [direct: primary] test> rs.help()
 
@@ -327,7 +327,7 @@ La próxima vez que lancemos las réplicas ya no deberemos configurarlas. Así p
 
 Una vez que hemos visto que las tres réplicas están funcionando, vamos a comprobar cómo podemos trabajar con ellas.
 
-Ya hemos visto cómo al conectarnos al clúster, nos aparece como símbolo del *shell* el nombre del conjunto de la réplica seguido de dos puntos y `primary` si nos hemos conectado al nodo principal, o `secondary` en caso contrario.
+Ya hemos comprobado cómo al conectarnos al clúster, nos aparece como símbolo del *shell* el nombre del conjunto de la réplica seguido de dos puntos y `primary` si nos hemos conectado al nodo principal, o `secondary` en caso contrario.
 
 ``` sh
 iabdrs [direct: primary] test> 
@@ -377,9 +377,9 @@ iabdrs [direct: primary] test> db.hello()
 }
 ```
 
-Ahora que sabemos que estamos en el nodo principal, vamos a insertar datos.
+Ahora que sabemos que estamos en el nodo principal, vamos a añadir datos.
 
-Para ello, vamos a insertar 1.000 documentos:
+Para ello, vamos a insertar 1.000 documentos en la colección `pruebas`:
 
 ``` js
 for (i=0; i<1000; i++) {
@@ -418,7 +418,7 @@ MongoServerError: not primary
 
 ### Preferencias de lectura
 
-En el ejemplo anterior hemos visto como hemos cambiado las preferencias de lectura para permitir hacerlo desde los nodos secundarios. Así pues, las [preferencias de lectura](https://www.mongodb.com/docs/upcoming/core/read-preference/) definen como MongoDB enruta las lecturas realizadas a los miembros del conjunto de réplicas.
+En el ejemplo anterior hemos visto cómo hemos cambiado las preferencias de lectura para permitir hacerlo desde los nodos secundarios. Así pues, las [preferencias de lectura](https://www.mongodb.com/docs/upcoming/core/read-preference/) definen el modo en el que MongoDB enruta las lecturas realizadas a los miembros del conjunto de réplicas.
 
 <figure style="align: center;">
     <img src="images/06replica-set-read-preference.svg">
@@ -440,13 +440,13 @@ iabdrs [direct: secondary] test> db.getMongo().setReadPref('nearest')
 
 ### Consistencia en la escritura
 
-Ya hemos visto que tanto las lecturas como las escrituras se realizan de manera predeterminada en el nodo principal.
+Por defecto, tanto las lecturas como las escrituras se realizan de manera predeterminada en el nodo principal.
 
-Las aplicaciones pueden decidir que las escrituras vayan al nodo primario pero las lecturas al secundario. Esto puede provocar que haya lecturas caducas, con datos obsoletos, pero como beneficio podemos escalar el sistema.
+Las aplicaciones pueden decidir que las escrituras vayan al nodo primario pero las lecturas al secundario. Esto puede provocar que haya lecturas caducadas, con datos obsoletos. Este hecho, que en sistemas relacionales es inadmisible, en sistemas NoSQL ofrece como beneficio que podamos escalar el sistema.
 
 La replicación es un proceso asíncrono. En el período de tiempo en el que el sistema de votación sucede, no se completa ninguna escritura.
 
-*MongoDB* garantiza la [consistencia en la escritura (Write Concern)](https://docs.mongodb.com/manual/reference/write-concern/), lo que implica que sea un sistema consistente. Para ello, ofrece un mecanismo que garantiza que una escritura ha sido exitosa. Dependiendo del nivel de configuración de la consistencia, las inserciones, modificaciones y borrados pueden tardar más o menos. Si reducimos el nivel de consistencia, el rendimiento será mejor, a costa de poder obtener datos obsoletos u perder datos que no se han terminado de serializar en disco. Con un nivel de consistencia más alto, los clientes esperan tras enviar una operación de escritura a que MongoDB les confirme la operación.
+*MongoDB* garantiza la [consistencia en la escritura (Write Concern)](https://docs.mongodb.com/manual/reference/write-concern/), lo que implica que sea un sistema consistente. Para ello, ofrece un mecanismo que garantiza que una escritura ha sido exitosa. Dependiendo del nivel de configuración de la consistencia, las inserciones, modificaciones y borrados pueden tardar más o menos. Si reducimos el nivel de consistencia, el rendimiento será mejor, a costa de poder obtener datos obsoletos u perder datos que no se han terminado de serializar en disco. Con un nivel de consistencia más alto, los clientes esperan tras enviar una operación de escritura a que *MongoDB* les confirme la operación.
 
 Los valores que podemos configurar se realizan mediante las siguientes opciones:
 
@@ -461,7 +461,12 @@ Con estas opciones, podemos configurar diferentes niveles de consistencia son:
 * Sin confirmación: `w:0`, también conocido como *fire-and-forget*, ya que no se espera ningún tipo de confirmación.
 * Con confirmación: `w:1`, el cual es el modo por defecto, y sólo espera confirmación del nodo principal.
 * Con diario: `w:1`, `j:true`. Cada inserción primero se escribe en el diario y posteriormente en el directorio de datos.
-* Con confirmación de la mayoría: `w: "majority"`, es decir, confirman la mitad + 1 de los nodos de la réplica.
+* Con confirmación de la mayoría: `w: "majority"`, es decir, confirman la mitad + 1 de los nodos de la réplica. Hasta que no han confirmado todos los nodos secundarios necesarios, el principal no envía el ACK a la aplicación cliente.
+
+<figure style="align: center;">
+    <img src="images/06write-majority.png" width="600px">
+    <figcaption>Consistencia en la escritura con confirmación de la mayoría</figcaption>
+</figure>
 
 Estas opciones se indican como parámetro final en las operaciones de inserción y modificación de datos. Por ejemplo:
 
@@ -484,15 +489,15 @@ De igual manera que podemos decidir en cuantos nodos se deben propagar las escri
 * `linearizable`: devuelve datos que hayan sido confirmados por una mayoría de nodos, pero permite al desarrollador establecer su propia funcionalidad.
 * `snapshot`: sólo disponible para transacciones multi-documento, realiza una "foto" de los datos al inicio de la transacción.
 
-Imaginemos un escenario en el que recibimos la confirmación de escritura por el nodo primario. Inmediatamente efectuamos una operación de lectura, el nodo devuelve el dato, pero éste falla antes de replicar la operación de escritura a los nodos secundarios. Sobre esta operación se efectuará un proceso de *rollback* en el momento que el nodo primario vuelva a estar disponible, por lo que ese dato realmente no existirá en el conjunto replicado. Es decir, la aplicación actualmente tiene un dato que no existe en el conjunto.
+Imaginemos un escenario en el cual recibimos la confirmación de escritura desde el nodo primario. Inmediatamente efectuamos una operación de lectura, el nodo devuelve el dato, pero éste nodo falla antes de replicar la operación de escritura a los nodos secundarios. Sobre esta operación se efectuará un proceso de *rollback* en el momento que el nodo primario vuelva a estar disponible, por lo que ese dato realmente no existirá en el conjunto replicado. Es decir, la aplicación actualmente tiene un dato que no existe en el conjunto de réplicas.
 
-Mediante la consistencia en la lectura, podemos obtener unas mínimas garantías de que el dato que estamos leyendo es correcto y durable. Cuando se utiliza, únicamente devolverá datos cuya grabación haya sido confirmada por el número de nodos especificados en sus opciones. Se puede escoger entre devolver el dato más reciente que exista en el cluster, o el dato recibido por una mayoría de miembros en el cluster.
+Mediante la consistencia en la lectura, podemos obtener unas mínimas garantías de que el dato que estamos leyendo es correcto y durable. Cuando se utiliza, únicamente devolverá datos cuya grabación haya sido confirmada por el número de nodos especificados en sus opciones. Se puede escoger entre devolver el dato más reciente que exista en el clúster, o el dato recibido por una mayoría de miembros en el cluster.
 
-El hecho de que un documento no se considere correcto, no quiere decir necesariamente que se haya perdido, sino que en el momento de su lectura, no ha cumplido las condiciones necesarias de durabilidad para ser devuelto. Puede ser que la lectura se esté produciendo antes de que el dato haya sido propagado al número mínimo de miembros necesario, y por eso no se obtenga, pero en lecturas sucesivas sí puede aparecer.
+El hecho de que un documento no se considere correcto, no quiere decir necesariamente que se haya perdido, sino que en el momento de su lectura, no ha cumplido las condiciones necesarias de durabilidad para ser devuelto. Puede ser que la lectura se esté produciendo antes de que el dato haya sido propagado al número mínimo de nodos necesario, y por eso no se obtenga, pero en lecturas sucesivas sí pueda aparecer.
 
 ### Tolerancia a fallos
 
-Cuando un nodo primario no se comunica con otros miembros del conjunto durante más de 10 segundos, el conjunto de réplicas intentará, de entre los secundarios, que un miembro se convierta en el nuevo primario.
+Cuando un nodo primario no se comunica con otros miembros del conjunto durante más de 10 segundos, el conjunto de réplicas intentará, de entre los secundarios, que otro miembro se convierta en el nuevo primario.
 
 Para ello se realiza un proceso de votación, de modo que el nodo que obtenga el mayor número de votos se erigirá en primario. Este proceso de votación se realiza bastante rápido (menos de 3 segundos), durante el cual no existe ningún nodo primario y por tanto la réplica no acepta escrituras y todos los miembros se convierten en nodos de sólo-lectura.
 
@@ -508,7 +513,7 @@ Cuando un nodo secundario no puede contactar con su nodo primario, contactará c
 Antes de dar su voto, el resto de nodos comprobarán:
 
 * si ellos tienen conectividad con el primario
-* si el nodo que solicita ser primario tienen una réplica actualizada de los datos. Todas las operaciones replicadas están ordenadas por el *timestamp* ascendentemente, de modo los candidatos deben tener operaciones posteriores o iguales a cualquier miembro con el que tengan conectividad.
+* si el nodo que solicita ser primario tienen una réplica actualizada de los datos. Todas las operaciones replicadas están ordenadas por el *timestamp* ascendentemente, de modo que los candidatos deben tener operaciones posteriores o iguales a cualquier miembro con el que tengan conectividad.
 * si existe algún nodo con una prioridad mayor que debería ser elegido.
 
 Si algún miembro que quiere ser primario recibe una mayoría de "sís" se convertirá en el nuevo primario, siempre y cuando no haya un servidor que vete la votación. Si un miembro la veta es porque conoce alguna razón por la que el nodo que quiere ser primario no debería serlo, es decir, ha conseguido contactar con el antiguo primario.
@@ -555,7 +560,7 @@ iabdrs [direct: primary] test> rs.stepDown()
 iabdrs [direct: secondary] test>
 ```
 
-Si pasamos al shell del antiguo nodo secundario, y le preguntamos si es el principal, veremos que ahora indica que la propiedad `isWritablePrimary` es `true` que ahora el primary es `mongo2:27017`:
+Si pasamos al *shell* del antiguo nodo secundario, y le preguntamos si es el principal, veremos que ahora indica que la propiedad `isWritablePrimary` es `true` y que ahora el *primary* es `mongo2:27017`:
 
 ``` json hl_lines="10 12"
 iabdrs [direct: primary] test> rs.hello()
@@ -906,7 +911,7 @@ Como podemos observar, interactuar con `mongos` es igual a hacerlo con `mongosh`
 
 Ahora mismo no sabemos en cuál de los dos *shards* se han almacenado los datos. Además, estos datos no están particionados, es decir residen en sólo uno de los shards.
 
-Para habilitar el sharding a nivel de base de datos y que los datos se repartan entre los fragmentos disponibles, ejecutaremos el comando [`sh.enableSharding(<nombreDB>)`](https://www.mongodb.com/docs/manual/reference/method/sh.enableSharding/):
+Para habilitar el *sharding* a nivel de base de datos y que los datos se repartan entre los fragmentos disponibles, ejecutaremos el comando [`sh.enableSharding(<nombreDB>)`](https://www.mongodb.com/docs/manual/reference/method/sh.enableSharding/):
 
 ``` js
 [direct: mongos] iabd> sh.enableSharding("iabd")
@@ -965,7 +970,7 @@ databases
 ]
 ```
 
-Antes de habilitar el *sharding* para una determinada colección, tenemos que crear un índice sobre la *shard key* (si la colección estuviera vacía, no necesitamos crear el índice, ya que al indicar la *shard key*, *MongoDB* automáticamente crearé el índice por nosotros):
+Antes de habilitar el *sharding* para una determinada colección, tenemos que crear un índice sobre la *shard key* (si la colección estuviera vacía, no necesitamos crear el índice, ya que al indicar la *shard key*, *MongoDB* automáticamente creará el índice por nosotros):
 
 ``` js
 db.usuarios.createIndex({"login": 1})
@@ -982,7 +987,7 @@ El método [shardCollection](https://www.mongodb.com/docs/manual/reference/metho
 Para ello, recibe tres parámetros:
 
 * nombre de la colección, con nomenclatura de `nombreBD.nombreColección`
-* nombre del campo para fragmentar la colección, es decir, el *shard key*. Uno de los requisitos es que esta clave tenga una alta cardinalidad. Si fuese nuestro caso, en vez de utilizar una clave *hash*, podemos indicar que lo organice mediante rangos indicando el campo y un 1, por ejemplo, `{"login": 1}`.
+* nombre del campo para fragmentar la colección, es decir, el *shard key*. Uno de los requisitos es que esta clave tenga una alta cardinalidad. Si quisiéramos indicar que queremos utilizar una clave *hasheada*, lo haríamos indicando como valor `hashed`, por ejemplo, `{"login": "hashed"}`. Si queremos utilizar rangos, lo indicamos con valor `1`, por ejemplo, `{"login": 1}`.
 * *booleano* que indica si el valor utilizado como *shard key* es único. Para ello, el índice que se crea sobre el campo debe ser del tipo *unique*.
 
 Este comando divide la colección en fragmentos (*chunks*), la cual es la unidad que utiliza *MongoDB* para mover los datos. Una vez que se ha ejecutado, *MongoDB* comenzará a balancear la colección entre los *shards* del cluster. Este proceso no es instantáneo. Si la colección contiene un gran conjunto de datos puede llevar horas completar el balanceo.
@@ -1034,7 +1039,7 @@ databases
 
 ### Trabajando con particiones
 
-En este momento, el shard está creado pero todos los nodos residen en un único fragmento dentro de una partición. Para obtener esta información, podemos ver el estado del *sharding* o consultar la distribución de una colección mediante el método [`getShardDistribution`](https://www.mongodb.com/docs/manual/reference/method/db.collection.getShardDistribution/):
+En este momento, el *shard* está creado pero todos los nodos residen en un único fragmento dentro de una partición. Para obtener esta información, podemos ver el estado del *sharding* o consultar la distribución de una colección mediante el método [`getShardDistribution`](https://www.mongodb.com/docs/manual/reference/method/db.collection.getShardDistribution/):
 
 ``` js
 [direct: mongos] iabd> db.usuarios.getShardDistribution()
@@ -1155,7 +1160,7 @@ Totals
 
 ## Actividades
 
-1. (RA5075.2 / CE5.2c / 2p) Se pide crear una conjunto de 4 réplicas de nombre `iabdrs4` en la cual insertaremos los datos de [1000 ciudades](resources/1000cities.json), los cuales deberás [importar a una base de datos](02mongo.md#mongodb-database-tools).
+1. (RA5075.2 / CE5.2b, CE5.2c / 2p) Se pide crear una conjunto de 4 réplicas de nombre `iabdrs4` en la cual insertaremos los datos de [1000 ciudades](resources/1000cities.json), los cuales deberás [importar a una base de datos](02mongo.md#mongodb-database-tools).
 
     Una vez creado, se pide:
 
@@ -1169,7 +1174,7 @@ Totals
 
     Adjunta un documento con los scripts de creación, comandos empleados y las salidas generadas.
 
-2. (RA5075.2 / CE5.2c / 2p) Se pide crear un clúster de MongoDB con tres nodos y tres particiones y volver a importar las [1000 ciudades](resources/1000cities.json).
+2. (RA5075.2 / CE5.2b / 2p) Se pide crear un clúster de MongoDB con tres nodos y tres particiones y volver a importar las [1000 ciudades](resources/1000cities.json).
 
     Una vez creado, se pide:
 
@@ -1180,8 +1185,9 @@ Totals
 
     Adjunta un documento con los scripts de creación, los comandos empleados y las salidas generadas.
 
-*[CE5.2c]: Se ha probado la tolerancia a fallos de los sistemas.
 *[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
+*[CE5.2b]: Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.
+*[CE5.2c]: Se ha probado la tolerancia a fallos de los sistemas.
 
 <!--
 https://www.mongodb.com/developer/products/mongodb/cheat-sheet/#sharded-cluster

@@ -13,8 +13,8 @@ En este sitio web podrás consultar los apuntes y ejercicios que he trabajado di
 
 * Unidad Formativa I - Toma de decisiones
     * [UT2 - Sistemas de almacenamiento](sa/index.md)
-    * UT5 - Ecosistema Hadoop
-    * UT6 - Reto: cloud
+    * [UT5 - Ecosistema Hadoop](hadoop/index.md)
+    * [UT6 - Datos en el cloud](cloud/index.md)
     * [UT7 - PIA FP Lara](https://aitor-medrano.github.io/pia2223/)
 * Unidad Formativa II - Industria IoT
 * Unidad Formativa III - Sistemas Expertos

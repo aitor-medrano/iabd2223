@@ -42,30 +42,29 @@ A partir de la URI de conexión a MongoDB, hemos de instanciar la clase [`MongoC
 
 ```  python
 uri = "mongodb+srv://usuario:contrasenya@host"
-cliente = MongoCliente(uri)
+cliente = MongoClient(uri)
 ```
 
 !!! info "Parámetros adicionales"
-    A la hora de crear el cliente, también podemos indicarle opciones de configuración:
+    A la hora de crear el cliente, también podemos indicarle diferentes opciones de configuración:
 
     ``` python
     cliente200Retry = MongoClient(uri, connectTimeoutMS=200, retryWrites=True)
     ```
 
-Podemos obtener información de la conexión mediante la propiedad `state`:
+Realmente, al crear la conexión se inicializa un pool de conexiones, de manera que se crean 100 conexiones, y en vez de crear y destruir una conexión por cada petición, se reutilizan, de manera que cada petición asigna y libera una conexión conforme necesidad. Por defecto, el tamaño del pool es de 100 conexiones.
 
-``` python
-print(cliente.state)
-```
+<figure style="align: center;">
+    <img src="images/07connection-pool.png" width="500px">
+    <figcaption>Pool de conexiones</figcaption>
+</figure>
 
-Por ejemplo, en nuestro caso, nos hemos conectado a *MongoAtlas* y de la salida del estado podemos ver los diferentes *hosts* que forman parte del conjunto de réplicas:
+Podemos obtener información de la conexión mediante la propiedad `state`. Por ejemplo, en nuestro caso, nos hemos conectado a *MongoAtlas* y de la salida del estado podemos ver los diferentes *hosts* que forman parte del conjunto de réplicas:
 
-``` js
+``` python hl_lines="2"
 cliente = MongoClient('mongodb+srv://iabd:iabdiabd@cluster0.dfaz5er.mongodb.net/')
 print(cliente.state)
-
-Database(MongoClient(host=['ac-opunia9-shard-00-01.dfaz5er.mongodb.net:27017', 'ac-opunia9-shard-00-02.dfaz5er.mongodb.net:27017', 'ac-opunia9-shard-00-00.dfaz5er.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, authsource='admin', replicaset='atlas-4wikkb-shard-0', tls=True), 'state')
-Database(MongoClient(host=['localhost:27017'], document_class=dict, tz_aware=False, connect=True), 'state')
+# Database(MongoClient(host=['ac-opunia9-shard-00-01.dfaz5er.mongodb.net:27017', 'ac-opunia9-shard-00-02.dfaz5er.mongodb.net:27017', 'ac-opunia9-shard-00-00.dfaz5er.mongodb.net:27017'], document_class=dict, tz_aware=False, connect=True, authsource='admin', replicaset='atlas-4wikkb-shard-0', tls=True), 'state')
 ```
 
 !!! tip "Conexión a un réplica"
@@ -86,7 +85,7 @@ Para conectarnos a una base de datos en concreto, únicamente accederemos a ella
 
 ``` python
 bd = cliente.sample_mflix
-bd = cliente["sample_mflix'] # tb podemos acceder como si fuera un diccionario
+bd = cliente["sample_mflix"] # tb podemos acceder como si fuera un diccionario
 ```
 
 !!! tip inline end "Bases de datos y colecciones Lazy"
@@ -96,7 +95,7 @@ Una vez tenemos la base de datos, el siguiente paso es obtener una colección:
 
 ``` python
 coleccion = bd.movies
-coleccion = bd["movies'] 
+coleccion = bd["movies"] 
 ```
 
 Si queremos obtener el nombre de todas las colecciones usaremos el método [`list_collection_names()`](https://pymongo.readthedocs.io/en/stable/api/pymongo/database.html#pymongo.database.Database.list_collection_names):
@@ -136,8 +135,8 @@ Por ejemplo, podemos filtrar las películas cuya actriz sea `Salma Hayek`. Al re
 
     ``` python
     cursor = movies.find( { "cast": "Salma Hayek" } )
-    for zip in cursor:
-        print(zip)
+    for movie in cursor:
+        print(movie)
     ```
 
 === "Resultado"
@@ -154,7 +153,7 @@ Por ejemplo, podemos filtrar las películas cuya actriz sea `Salma Hayek`. Al re
     }
     {'_id': ObjectId('573a139af29313caabcef0b6'),
         'awards': {'nominations': 14, 'text': '27 wins & 14 nominations.', 'wins': 27},
-        'cast': ['Ernesto Gèmez Cruz', 'Marèa Rojo', 'Salma Hayek', 'Bruno Bichir'],
+        'cast': ['Ernesto Gómez Cruz', 'María Rojo', 'Salma Hayek', 'Bruno Bichir'],
         'countries': ['Mexico'],
         ...
     }
@@ -172,15 +171,15 @@ Para seleccionar los campos que queremos recuperar, necesitamos pasar un segundo
 
     ``` python
     cursor = movies.find( { "cast": "Salma Hayek" }, { "title": 1, "cast": 1} )
-    for zip in cursor:
-        print(zip)
+    for movie in cursor:
+        print(movie)
     ```
 
 === "Resultado"
 
     ``` js
     {'_id': ObjectId('573a1399f29313caabceea6d'), 'cast': ['David Arquette', 'John Hawkes', 'Salma Hayek', 'Jason Wiles'], 'title': 'Roadracers'}
-    {'_id': ObjectId('573a139af29313caabcef0b6'), 'cast': ['Ernesto Gèmez Cruz', 'Marèa Rojo', 'Salma Hayek', 'Bruno Bichir'], 'title': 'Midaq Alley'}
+    {'_id': ObjectId('573a139af29313caabcef0b6'), 'cast': ['Ernesto Gómez Cruz', 'María Rojo', 'Salma Hayek', 'Bruno Bichir'], 'title': 'Midaq Alley'}
     ...
     ```
 
@@ -217,28 +216,28 @@ Como ya vimos al hacer consultas en sesiones anterior, si no queremos el campo `
     [
         {
             "_id": {
-            "$oid": "573a1399f29313caabceea6d"
-        },
-        "plot": "Cynical look at a 50's rebellious Rocker who has to confront his future, thugs with knives, and the crooked town sheriff.",
-        "genres": [
-            "Action",
-            "Drama"
-        ],
-        "runtime": 95,
-        "rated": "R",
-        "cast": [
-            "David Arquette",
-            "John Hawkes",
-            "Salma Hayek",
-            "Jason Wiles"
+                "$oid": "573a1399f29313caabceea6d"
+            },
+            "plot": "Cynical look at a 50's rebellious Rocker who has to confront his future, thugs with knives, and the crooked town sheriff.",
+            "genres": [
+                "Action",
+                "Drama"
             ],
-        ...
+            "runtime": 95,
+            "rated": "R",
+            "cast": [
+                "David Arquette",
+                "John Hawkes",
+                "Salma Hayek",
+                "Jason Wiles"
+                ],
+            ...
     """
     ```
 
 ## Agregaciones
 
-Para realizar consultas mediante el *framework* de agregación, usaremos el método [`aggregate`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.aggregate),  el cual recibe un array con el pipeline:
+Para realizar consultas mediante el *framework* de agregación, usaremos el método [`aggregate`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.aggregate), el cual recibe un array con el pipeline:
 
 Por ejemplo, vamos a recuperar el título y el casting de las películas dirigidas por `Sam Raimi`:
 
@@ -255,7 +254,7 @@ Por ejemplo, vamos a recuperar el título y el casting de las películas dirigid
 
     sam_raimi_aggregation = movies.aggregate(pipeline)
     for movie in sam_raimi_aggregation:
-        pprint.pprint(movie)
+        print(movie)
     ```
 
 === "Resultados"
@@ -303,7 +302,7 @@ Otro ejemplo, donde recuperamos los directores y la valoración media de sus pel
     director_ratings = movies.aggregate(pipeline)
 
     for director in director_ratings:
-        pprint.pprint(director)
+        print(director)
     ```
 
 === "Resultado"
@@ -342,7 +341,7 @@ O realizamos un *join* entre las películas y sus comentarios para recuperar una
     ]
 
     peliculaConComentarios = movies.aggregate(pipeline).next()
-    pprint.pprint(peliculaConComentarios)
+    print(peliculaConComentarios)
     ```
 
 === "Resultado"
@@ -388,7 +387,7 @@ A continuación vamos a realizar algunas operaciones sobre los [cursores](https:
 
 ### Limitando
 
-Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante el método `.limit()` equivalente a la agregación `$limit`:
+Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante el método [`.limit()`](https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html#pymongo.cursor.Cursor.limit) equivalente a la agregación `$limit`:
 
 === "PyMongo"
 
@@ -444,7 +443,7 @@ Sobre el cursor podemos restringir la cantidad de resultados devueltos mediante 
 
 ### Ordenando
 
-Para ordenar usaremos el método `.sort()` que además de los campos de ordenación, indicaremos si el criterio será ascendente o descendente, de forma similar a como lo hacemos con la operación de agregación `$sort`:
+Para ordenar usaremos el método [`.sort()`](https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html#pymongo.cursor.Cursor.sort) que además de los campos de ordenación, indicaremos si el criterio será ascendente (`ASCENDING`) o descendente (`DESCENDING`), de forma similar a como lo hacemos con la operación de agregación `$sort`:
 
 === "PyMongo"
 
@@ -585,7 +584,7 @@ En el caso de tener una clave compuesta de ordenación, le pasaremos como parám
 
 ### Saltando
 
-Cuando paginamos los resultados, para saltar los documentos, haremos uso del método `.skip()`, el cual es similar a la operación `$skip`.
+Cuando paginamos los resultados, para saltar los documentos, haremos uso del método [`.skip()`](https://pymongo.readthedocs.io/en/stable/api/pymongo/cursor.html#pymongo.cursor.Cursor.skip), el cual es similar a la operación `$skip`.
 
 Por ejemplo, la siguiente consulta devuelve 13 documentos, de manera que al saltarnos 12, sólo nos devolverá uno:
 
@@ -636,9 +635,7 @@ Por ejemplo, la siguiente consulta devuelve 13 documentos, de manera que al salt
 
 ## CRUD
 
-FIXME: <https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_05.xhtml#_idParaDest-92>
-
-Para estas operaciones, vamos a utilizar la colección `iabd.people` que utilizamos en la [primera sesión de *MongoDB*](02mongo.md#hola-mongodb).
+Para estas operaciones, vamos a trabajar con la colección `iabd.people` que utilizamos en la [primera sesión de *MongoDB*](02mongo.md#hola-mongodb).
 
 ### Inserción
 
@@ -664,12 +661,9 @@ Tras realizar una operación de inserción con [`insert_one`](https://pymongo.re
 
 Si queremos insertar más de una documento a la vez, usaremos [`insert_many`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.insert_many), el cual devuelve un objeto [`InsertManyResult`](https://pymongo.readthedocs.io/en/stable/api/pymongo/results.html#pymongo.results.InsertManyResult).
 
-!!! caution "_id duplicado"
-    Al insertar un documento con un `_id` asignado por nosotros puede saltar un [`DuplicateKeyError`](https://pymongo.readthedocs.io/en/stable/api/pymongo/errors.html#pymongo.errors.DuplicateKeyError). O si creamos un índice *unique* también puede suceder en cualquier otro tipo de campos.
-
 #### Join
 
-Al insertar un documento que está relacionado con otro, necesitamos que los campos contengan el mismo valor (normalmente, el `ObjectId`)
+Ya hemos estudiado que al insertar un documento que está relacionado con otro, necesitamos que los campos contengan el mismo valor (normalmente, el `ObjectId`)
 
 Por ejemplo, si queremos añadir un comentario a una película, hemos de unir el identificador de la película en cada comentario haciendo uso de objeto [`ObjectId`](https://pymongo.readthedocs.io/en/stable/api/bson/objectid.html#bson.objectid.ObjectId):
 
@@ -682,9 +676,29 @@ comment_doc = {"name": usuario.nombre, "email": usuario.email,
 comments.insert_one(comment_doc))
 ```
 
+#### Gestión de errores
+
+A la hora de insertar un documento se puede dar el caso de lanzar un [`DuplicateKeyError`](https://pymongo.readthedocs.io/en/stable/api/pymongo/errors.html#pymongo.errors.DuplicateKeyError), ya sea por el atributo identificador o por un índice de tipo único. En dicho caso, podemos capturar la excepción y ajustar el comportamiento o informar al usuario, dependiendo de la gravedad del error.
+
+Por ejemplo, si insertamos una persona con un `_id` que ya existe:
+
+``` python hl_lines="9"
+doc = {
+    "_id": 1,
+    "nombre": "Aitor Medrano"
+}
+
+try:
+    result = people.insert_one(doc)
+    print(res.inserted_id)
+except errors.DuplicateKeyError:
+    usuario_id = doc["_id"]
+    print(f"El usuario #{usuario_id} ya existe en el sistema.")
+```
+
 ### Borrado
 
-El borrado de documento es similar a la creación, pudiendo utilizar [`delete_one`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_one)para borrar el primer documento encontrado, o [`delete_many`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_many) para borrar todos los documentos encontrados:
+El borrado de documento es similar a la creación, pudiendo utilizar [`delete_one`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_one) para borrar el primer documento encontrado, o [`delete_many`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.delete_many) para borrar todos los documentos encontrados:
 
 ``` python
 resultado = people.delete_many({ "edad" : 45})
@@ -724,7 +738,8 @@ Tal como vimos, en las operaciones *update*, le podemos pasar un tercer parámet
 
 Otro argumento opcional que conviene conocer es `bypass_document_validation=False` (valor por defecto), el cual, si lo ponemos a `True` ignorará las validaciones (si hay alguna) para los documentos que modifiquemos.
 
-FIXME: revisar - If we don’t use an update operator as the second argument, the contents of the matched document will be entirely replaced by the new document.
+!!! caution "Operador"
+    Recuerda utilizar un operador de modificación en el segundo parámetro. Si no, el documento del segundo parámetro sustituirá por completo al documento encontrado.
 
 ## Operaciones consistentes
 
@@ -766,30 +781,46 @@ print(coll.read_preference)     # Primary()
 print(coll.read_preference)     # Nearest(tag_sets=None)
 ```
 
-FIXME: Revisar notebook curso MongoDB_PYTHON
-
-<https://docs.mongodb.com/manual/reference/read-concern/>
-
 ### Escrituras consistentes
 
+Tal como vimos en la sesión anterior, para indicar la consistencia en la escritura, haremos uso de la propiedad `write_concern`. Para ello, de la misma forma que hemos indicado la preferencia de lectura, hacemos uso del método `with_options`:
+
 ``` python
-db.users.with_options(write_concern=WriteConcern(w="majority")).insert_one({
-    "name": name,
+coll.with_options(write_concern=WriteConcern(w="majority")).insert_one({
+    "nombre": nombre,
     "email": email,
-    "password": hashedpw
+    "password": hashed_pw
 })
 ```
 
-### Escrituras a granel
+Si tenemos una aplicación crítica, no nos podemos permitir perder los datos. Por ello, necesitamos que las escritura se propaguen a la mayoría de los nodos con la opción `w: majority` para asegurarnos que las escrituras se propagan a la mayoría de nodos del conjunto de nodos.
 
-Bulk writes
+Si sucede un problema en los nodos secundarios, puede ser que el primario no reciba los ACK necesarios. Si llegan más escrituras que lecturas, puede llegar el momento en que se produzca un atasco.
+
+Para evitar esto, para cada escritura que realicemos con la mayoría de los nodos, siempre hay que indicar un *timeout*. La longitud del *timeout* vendrá determinada por la red y el hardware que dispongamos, pero siempre hemos de indicarlo.
+
+``` python
+coll.with_options(write_concern=WriteConcern(w="majority", wtimeout="2500").insert_one({
+    "nombre": nombre,
+    "email": email,
+    "password": hashed_pw
+})
+```
+
+!!! info "Bulk writes"
+    En ocasiones necesitamos ejecutar una bateria de operaciones a granel (*bulk*) las cuales se ejecutan como un proceso *batch*. Para ello se emplea el método [`bulk_write`](https://pymongo.readthedocs.io/en/stable/api/pymongo/collection.html#pymongo.collection.Collection.bulk_write):
+
+    ``` python
+    result = db.test.bulk_write(array_operaciones)
+    ```
 
 ## Transacciones
 
-<https://www.digitalocean.com/community/tutorials/how-to-use-transactions-in-mongodb>
-<https://www.mongodb.com/developer/languages/python/python-acid-transactions/>
-
+<!--
 <https://learning.oreilly.com/library/view/mongodb-the-definitive/9781491954454/ch08.html#idm45882358635912>
+
+<https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_06.xhtml#_idParaDest-111>
+-->
 
 Ya hemos comentado en numerosas ocasiones toda operación en un único documento es atómica, de ahí embeber documentos y arrays para modelar las relaciones de datos en un sólo documento cubre la mayoría de los casos de usos transaccionales.
 
@@ -852,19 +883,430 @@ with cliente.start_session() as session:
     )
 ```
 
-## PIA: Login
+!!! tip "PyMODM"
+    [PyMODM](https://github.com/mongodb/pymodm) es una librería ODM que abstrae el acceso a *MongoDB* mediante un mapeo objeto-documento. De forma similar a los frameworks ORM en los entornos relacionales, como son *Hibernate* (*Java*), *Doctrine*/*Eloquent* (*PHP*) o el ORM de *Django*, abstrae y simplifica el acceso a la base de datos.
 
-<https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login>
+    Un ejemplo de definición de un objeto y su persistencia sería:
 
-<https://www.digitalocean.com/community/tutorials/how-to-use-mongodb-in-a-flask-application>
+    ``` python
+    class User(MongoModel):
+        # Utiliza el 'email'como campo '_id'
+        email = fields.EmailField(primary_key=True)
+        nombre = fields.CharField()
+        apellido = fields.CharField()
+
+    usuario = User('a.medrano@edu.gva.es', 'Aitor', 'Medrano').save()
+    ```
+
+    Hemos decidido no profundizar en su conocimiento ya que el equipo de *MongoDB* ha pausado su mantenimiento desde hace ya dos años.    
+
+## Caso de uso - PIA: Login
+
+El siguiente proyecto se basa inicialmente en el artículo [*How To Add Authentication to Your App with Flask-Login*](https://www.digitalocean.com/community/tutorials/how-to-add-authentication-to-your-app-with-flask-login).
+
+A partir de él, vamos a crear una aplicación en *Flask* que ataca a una base de datos de *MongoDB* para almacenar la información del proyecto PIA Lara.
+
+Esta primera versión de la aplicación únicamente se centra en la gestión de los usuarios, distinguiendo entre los diferentes roles:
+
+* `Administrador`: superusuario, puede crear, editar y eliminar todo tipo de usuarios.
+* `Técnico`: usuario que supervisará a los clientes, el cual, más adelante, puede llegar a crear textos predefinidos para los clientes.
+* `Cliente`: usuario final de la aplicación que, más adelante, grabará los audios.
+
+!!! warning "Simplicidad"
+    El presente caso de uso se ha organizado para intentar simplificar al máximo el código y preparar un esqueleto que facilite el crecimiento de la aplicación. Aún así, una solución basada en *Django* o el uso de herramientas de mapeo entre los datos y los objetos del dominio serían un punto de partida para siguientes fases del proyecto.
+
+### Estructura
+
+Una vez [descargado el proyecto](resources/piafplogin.zip) y tras descomprimirlo, o clonado desde <https://github.com/aitor-medrano/piafplogin>, veremos que tiene la siguiente estructura:
+
+``` txt
+PIAFPLOGIN/
+├── migrations/
+│   └── user_migration.py
+├── project/
+│   ├── static/
+│   │   ├── pialara.js
+│   │   └── pialara.png
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   └── profile.html
+│   ├── __init__.py
+│   ├── auth.py
+│   ├── db.py
+│   ├── main.py
+│   └── models.py
+├── .ini
+└── requirements.txt
+```
+
+El primer paso es crear un entorno virtual:
+
+```  bash
+python3 -m venv app-env
+```
+
+Y activarlo:
+
+```  bash
+source app-env/bin/activate
+```
+
+A continuación instalaremos las dependencias mediante:
+
+``` bash
+pip3 install -r requirements.txt
+```
+
+### Configuración
+
+Para configurar el proyecto, partimos del fichero `.ini` que reside en la raíz del mismo y contiene los datos de configuración a *MongoDB* y la clave secreta que utiliza *Flask* para encriptar la sesión:
+
+``` ini title=".ini"
+[PROD]
+SECRET_KEY = eac5e91171438960ddec0c9c469a4c3dd42e96aea462afc5ab830f78527ad80e
+PIALARA_DB_URI = mongodb+srv://usuario:contraseña@cluster0.xyz.mongodb.net
+PIALARA_DB_NAME = pialara
+
+[LOCAL]
+SECRET_KEY = eac5e91171438960ddec0c9c469a4c3dd42e96aea462afc5ab830f78527ad80e
+PIALARA_DB_URI = localhost
+PIALARA_DB_NAME = pialara
+```
+
+!!! tip "Secret Key"
+    Para generar una clave secreta, tal como indica la [documentación de Flask](https://flask.palletsprojects.com/en/latest/quickstart/#sessions), podemos ejecutar el siguiente comando:
+
+    ``` bash
+    python3 -c 'import secrets; print(secrets.token_hex())'
+    ```
+
+Una vez ya hemos configurado la conexión y antes de arrancar la aplicación, vamos a cargar unos datos básicos con usuarios. Para ello, en la carpeta `migrations` tenemos el archivo `users_migration.py`, el cual lee la configuración del archivo anterior, y crea tres usuarios:
+
+``` python title="users_migration.py"
+from pymongo import MongoClient
+from werkzeug.security import generate_password_hash
+import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read(os.path.abspath(os.path.join(".ini")))
+
+DB_URI = config['PROD']['PIALARA_DB_URI']
+DB_NAME = config['PROD']['PIALARA_DB_NAME']
+# DB_URI = config['LOCAL']['PIALARA_DB_URI']
+# DB_NAME = config['LOCAL']['PIALARA_DB_NAME']
+
+db = MongoClient(DB_URI)[DB_NAME]
+
+usuarios = [
+    {"nombre":"Admin", "email":"admin@admin.com", "password":generate_password_hash("admin", method='sha256'), "rol":"Administrador"},
+    {"nombre":"Alumno", "email":"alumno@alumno.com", "password":generate_password_hash("alumno", method='sha256'), "rol":"Técnico"},
+    {"nombre":"Severo Ochoa", "email":"s8a@s8a.com", "password":generate_password_hash("s8a", method='sha256'), "rol":"Cliente", "parent":"alumno@alumno.com"},
+]
+
+try:
+    db.users.insert_many(usuarios)
+except Exception as e:
+    print(e)
+```
+
+Destacar que al definir los documentos con los usuarios, encriptamos la contraseña mediante la función [`generate_password_hash`](https://tedboy.github.io/flask/generated/werkzeug.generate_password_hash.html) para no almacenarla en la base de datos en texto plano.
+
+Así pues, ejecutamos la migración:
+
+``` bash
+python3 migrations/users_migration.py
+```
+
+Finalmente podemos arrancar la aplicación:
+
+``` bash
+flask --app project --debug run
+```
+
+Y acceder a la aplicación a través de `http://127.0.0.1:5000/`:
+
+=== "Versión escritorio"
+
+    <figure style="align: center;">
+        <img src="images/07pialara-index.png" width="500px" style="border: 1px solid grey">
+        <figcaption>PIA Lara - Index</figcaption>
+    </figure>
+
+=== "Versión móvil"
+
+    <figure style="align: center;">
+        <img src="images/07pialara-index-mobile.png" width="300px" style="border: 1px solid grey">
+        <figcaption>PIA Lara - Index en móvil</figcaption>
+    </figure>
+
+Una vez que un usuario ha entrado a la aplicación, por ejemplo, si es un administrador, dispondrá de las opciones que hemos comentado anteriormente:
+
+<figure style="align: center;">
+    <img src="images/07pialara-admin.png" width="600px" style="border: 1px solid grey">
+    <figcaption>PIA Lara - Administrador</figcaption>
+</figure>
+
+### Blueprints
+
+El archivo .ini que hemos configurado previamente define unos valores que la aplicación va a cargar desde el archivo `__init__.py`, el cual actúa como factoría de la aplicación y le indica a *Flask* los *blueprints* a utilizar:
+
+``` python title="__init__.py"
+from flask import Flask
+from flask_login import LoginManager
+from . import db
+
+import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read(os.path.abspath(os.path.join(".ini")))
+
+def create_app():
+    app = Flask(__name__)
+
+    # cargamos la configuración
+    app.config['PIALARA_DB_URI'] = config['LOCAL']['PIALARA_DB_URI']
+    app.config['PIALARA_DB_NAME'] = config['LOCAL']['PIALARA_DB_NAME']
+    app.config['SECRET_KEY'] = config['LOCAL']['SECRET_KEY']
+
+    # configuramos flask-login con la ruta del login
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    # función que utiliza flask-login para recuperar el usuario
+    @login_manager.user_loader
+    def load_user(user_id):
+        return db.get_user_by_id(user_id)
+        
+    # blueprint para las rutas de autenticación
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint)
+
+    # blueprint para la aplicación
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+
+    return app
+```
+
+Un [***blueprint***](https://flask.palletsprojects.com/en/2.2.x/blueprints/) permite organizar un grupo de vistas y código en módulos. En vez de registrar las vistas y el resto de código en la aplicación, se registran en el blueprint, y éste es que se registra en la aplicación en la función `create_app`.
+
+En nuestro caso, vamos a empezar con dos *blueprints*, uno para las funciones de autenticación, y otra para las funciones de gestión de usuarios. El código de cada *blueprint* irá en un módulo separado. Como la gestión de usuarios necesita primero la autenticación, vamos a ver cómo funciona.
+
+### Login
+
+Para la gestión de la autenticación, nos hemos apoyado en la librería [Flask-login](https://flask-login.readthedocs.io/en/latest/) que facilita la gestión la sesión del usuario.
+
+En archivo `auth.py` contiene la lógica del *login* y el *logout*:
+
+``` python title="auth.py" hl_lines="6 18 27"
+from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.security import check_password_hash
+from . import db
+
+auth = Blueprint('auth', __name__)
+
+@auth.route('/login')
+def login():
+    return render_template('login.html')
+
+@auth.route('/login', methods=['POST'])
+def login_post():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    remember = True if request.form.get('remember') else False
+
+    user = db.get_user(email)
+    # comprobamos si el usuario existe
+    # cogemos la contraseña, la hasheamos y la comparamos con la contraseña hasheada
+    if not user or not check_password_hash(user.password, password):
+        flash('Por favor, comprueba tus datos y vuélvelo a intentar.')
+        # si el usuario no existe, o está mal la contraseña, recargamos la página
+        return redirect(url_for('auth.login')) 
+
+    # marcamos al usuario como autenticado en flask_login 
+    login_user(user, remember=remember) 
+    return redirect(url_for('main.profile', nombre = current_user.nombre))
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Sesión cerrada con éxito')
+    return redirect(url_for('auth.login'))
+```
+
+Los usuarios van a entrar al sistema mediante su email y una contraseña. Así pues, una vez hayamos recuperado un usuario por dicho email, creamos el *hash* de la contraseña recibida, y vemos si comprueba con la recuperada de la base de datos.
+
+El método `login_user` de la línea 27 pertenece a la librería *Flask-Login* y se utiliza para indicar que el usuario ha sido autenticado, de manera que lo almacena en la sesión. La variable `user` es una clase propia que hemos definido nosotros con los atributos básicos de un usuario,el cual se encuentra en el archivo `models.py`:
+
+``` python title="models.py" hl_lines="4"
+from flask_login import UserMixin
+
+class User(UserMixin):
+    def __init__(self, id, email, nombre, password, rol, parent = ""):
+        self.id = id
+        self.email = email
+        self.nombre = nombre
+        self.password = password
+        self.rol = rol
+        self.parent = parent
+
+    def __str__(self):
+        return f"{self.email} ({self.nombre} / {self.password})"
+```
+
+Como se puede observar, la clase define los atributos básicos de un usuario. El atributo `parent` lo vamos a emplear para que los clientes almacenen el email del técnico que tienen asignado.
+
+### Plantillas
+
+Las diferentes plantillas heredan de una plantilla `base.html`, la cual emplea el framework [*Bulma*](https://bulma.io/) para la apariencia de la web. Su funcionamiento es muy similar a Bootstrap.
+
+Por ejemplo, vamos a revisar un fragmento de la plantilla base para ver cómo gestionamos la visualización del menú dependiendo del rol del usuario:
+
+``` html title="base.html" hl_lines="6 20 29"
+...
+<section class="hero is-white is-fullheight">
+    <nav class="navbar is-transparent">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="https://piafplara.es">
+            <img src="{{ url_for('static', filename='pialara.png') }}" alt="PIA Lara: un proyecto que habla por ti" width="112" height="28">
+            </a>
+            <div class="navbar-burger burger" data-target="navbarPIALara">
+            <span></span>
+            <span></span>
+            <span></span>
+            </div>
+        </div>
+        
+        <div id="navbarPIALara" class="navbar-menu">
+            <div class="navbar-start">
+            <a href="{{ url_for('main.index') }}" class="navbar-item">
+                Inicio
+            </a>
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                    Login
+                </a>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('main.profile') }}" class="navbar-item">
+                    Perfil
+                </a>
+                {% if current_user.rol == "Administrador" %}
+                <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link" href="#">
+                    Usuarios
+                </a>
+                <div class="navbar-dropdown is-hidden-mobile is-boxed">
+                    <a class="navbar-item" href="{{ url_for('main.user_create') }}">
+                    Alta
+                    </a>
+                    <a class="navbar-item" href="{{ url_for('main.user_list') }}">
+                    Listado
+                    </a>
+                </div>
+                </div>
+                {% endif %}         
+...
+```
+
+En la línea 6 utilizamos la función `url_for` con el parámetro `static` para indicarle que cargue la imagen con el logo del proyecto desde la carpeta `static`.
+
+Al utilizar la librería *Flask Login*, tendremos siempre disponible el usuario logueado en la variable `current_user`. Además de las propiedades que hayamos definido en la clase, disponemos de la función `is_authenticated` para comprobar si está autenticado (línea 20). De igual forma, podemos comprobar el rol y condicionar el contenido dependiendo de si es `Administrador`, `Técnico` o `Cliente` (línea 24).
+
+### Acceso a los datos
+
+Todo el acceso a los datos los hemos encapsulado en el archivo `db.py`:
+
+``` python title="db.py" hl_lines="12 18 26"
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+from pymongo import ASCENDING
+from flask import current_app, g
+from werkzeug.local import LocalProxy
+from project.models import User
+
+def get_db():
+    """
+    Método de configuración para obtener una instancia de db
+    """
+    db = getattr(g, "_database", None)
+
+    PIALARA_DB_URI = current_app.config["PIALARA_DB_URI"]
+    PIALARA_DB_DB_NAME = current_app.config["PIALARA_DB_NAME"]
+
+    if db is None:
+        db = g._database = MongoClient(
+            PIALARA_DB_URI,
+            maxPoolSize=50,
+            timeoutMS=2500
+       )[PIALARA_DB_DB_NAME]
+    return db
+
+# Utilizamos LocalProxy para leer la variable global usando sólo db
+db = LocalProxy(get_db)
+```
+
+La función `get_db` utiliza el objeto [`g`](https://flask.palletsprojects.com/en/2.2.x/api/#flask.g), el cual en Flask, es un objeto especial que es único para cada petición. Se utiliza para almacenar datos que serán accesibles desde múltiples funciones durante el `request`. Así pues, almacenamos la conexión, mejor dicho, el pool de conexiones a MongoDB en vez de crear un nuevo pool cada vez que queramos obtener acceso a la base de datos.
+
+A continuación, creamos un [`LocalProxy`](https://werkzeug.palletsprojects.com/en/2.2.x/local/#werkzeug.local.LocalProxy) para leer la variable global usando sólo la referencia `db`, de manera que internamente cada referencia a `db` realmente está llamando a `get_db()`.
+
+A continuación, mostramos un par de métodos del mismo archivo que muestran cómo obtenemos datos desde *MongoDB* haciendo uso de *PyMongo*:
+
+``` python title="db.py" hl_lines="6 15 17"
+def get_all_users():
+    """
+    Devuelve una lista con todos los usuarios del sistema
+    """
+    try:
+        return list(db.users.find({}).sort("nombre", ASCENDING))
+    except Exception as e:
+        return e
+
+def get_user_by_id(id):
+    """
+    Devuelve un objeto User a partir de su id
+    """
+    try:
+        usuario = db.users.find_one({"_id":ObjectId(id)})
+
+        usuario_obj = User( id=usuario["_id"],
+                            email=usuario.get("email"),
+                            nombre=usuario.get("nombre"),
+                            password=usuario.get("password"),
+                            rol=usuario.get("rol"),
+                            parent=usuario.get("parent"))
+
+        return usuario_obj
+    except Exception as e:
+        return e
+...
+```
+
+Cuando recuperamos un usuario por su `id`, lo convertimos en un objeto `User` para que *Flask Login* falicita la gestión de la autenticación. En cambio, en el listado de todos los usuarios, vamos a acceder al cursor de usuarios que ofrece *MongoDB*.
 
 ## Referencias
 
-<https://www.askpython.com/python-modules/python-mongodb>
-
 * [Tutorial oficial de PyMongo](https://pymongo.readthedocs.io/en/stable/tutorial.html)
 * [Introduction to Multi-Document ACID Transactions in Python](https://www.mongodb.com/developer/languages/python/python-acid-transactions/)
+* [How To Use Transactions in MongoDB](https://www.digitalocean.com/community/tutorials/how-to-use-transactions-in-mongodb)
 
 ## Actividades
 
-<https://learning.oreilly.com/library/view/mastering-mongodb-6-x/9781803243863/B18155_06.xhtml#_idParaDest-111>
+1. (RA5074.3 / CE4.3d / 4p) A partir del caso de uso de PIA Login, se pide:
+
+    * (0.25) Configurar la URI de Mongo Atlas para atacar vuestra propia base de datos.
+    * (0.25) Modificar la migración para introducir más usuarios (al menos uno más de cada rol)
+    * (0.75) Cuando un usuario pulsa sobre su nombre, actualmente aparece un formulario para editar sus datos, pero no puede cambiar la contraseña. Modifica (o crea) el/los formulario/s adecuado/s para que cada usuario pueda cambiar su propia contraseña.
+    * (0.75) Desde el rol `Administrador`, al crear un usuario, si es un cliente, debe mostrar un desplegable con todos los técnicos disponibles.
+    * (1) Tanto el `Técnico` como el `Cliente`, al dar de alta o editar un cliente, almacenarán datos necesarios para el proyecto, como son el sexo, la fecha de nacimiento y la patología.
+    * (1) Cuando un `Técnico` visualiza el listado de sus clientes, debe recuperar únicamente el nombre, el sexo, la edad y su patología.
+
+*[RA5074.3]: Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.
+*[CE4.3d]: Se han desarrollado sistemas de gestión, almacenamiento y procesamiento de grandes volúmenes de datos de manera eficiente y segura, teniendo en cuenta la normativa existente.

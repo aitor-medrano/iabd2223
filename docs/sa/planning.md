@@ -103,7 +103,7 @@ var pipeline = [
 
 var pipeline = [
     { $match: {
-    released: {$lte: new ISODate("2001-01-01T00:00:00Z") }}},
+    released: {$lte: new ISODate("2001-01-01T00:00:00Z") }}},   
     { $group: {
         _id: {"$arrayElemAt": ["$genres", 0]},
         "popularity": { $avg: "$imdb.rating"},
@@ -204,14 +204,6 @@ Rendimiento
     Índices
 
 ## 06 PyMongo (2h)
-
-## Sesiones
-
-1. NoSQL + MongoDB I
-2. MongoDB II. Framework de agregación
-3. Formatos de datos. Modelado NoSQL
-4. Escalabilidad y Rendimiento.
-5. Mongo y Python
 
 ## Pendiente
 

@@ -4,23 +4,28 @@ use_directory_urls: false
 
 nav:
   - "Inicio": "index.md"
-  - "UF1 - Toma de decisiones":
-      - "UT2.- Sistemas de almacenamiento":
-          - "sa/index.md"
-          - "S18.- Almacenamiento de datos. NoSQL": "sa/01nosql.md"
-          - "S19.- MongoDB": "sa/02mongo.md"
-          - "S21.- Modelado de datos NoSQL": "sa/03modelado.md"
+  - "UT2.- Sistemas de almacenamiento":
+      - "sa/index.md"
+      - "S18.- Almacenamiento de datos. NoSQL": "sa/01nosql.md"
+      - "S19.- MongoDB": "sa/02mongo.md"
+      - "S21.- Modelado de datos NoSQL": "sa/03modelado.md"
 #          - "S21.- Formatos de datos": "sa/04formatos.md"
-          - "S25.- Agregaciones": "sa/05agregaciones.md"
-          - "S28.- Replicación y Particionado": "sa/06replicacion.md"
-      #     - "S28.- MongoDB y Python": "sa/07pymongo.md"
-      # - "UT5.- Ecosistema Hadoop":
-      #     - "hadoop/index.md"
-      #     - "S1.- Hadoop": "hadoop/01hadoop.md"
-      # - "UT6.- Reto: Datos en el cloud":
-      #     - "cloud/index.md"
-      #     - "S1.- Cloud": "cloud/01cloud.md"
-      - "UT7.- PIAFP Lara": "https://aitor-medrano.github.io/pia2223/"
+      - "S25.- Agregaciones": "sa/05agregaciones.md"
+      - "S28.- Replicación y Particionado": "sa/06replicacion.md"
+      - "S30.- MongoDB y Python": "sa/07pymongo.md"
+  - "UT5.- Ecosistema Hadoop":
+      - "hadoop/index.md"
+      - "S36.- Arquitecturas Big Data": "hadoop/01arq.md"
+      - "S36.- Ingesta de datos": "hadoop/02etl.md"
+      - "S38.- Hadoop": "hadoop/03hadoop.md"
+      - "S39.- HDFS": "hadoop/04hdfs.md"
+      - "S39.- Formatos de datos": "hadoop/04formatos.md"
+  - "UT6.- Datos en el cloud":
+      - "cloud/index.md"
+      - "S33.- Cloud": "cloud/01cloud.md"
+      - "S33.- AWS": "cloud/02aws.md"
+      - "S40.- S3": "cloud/03s3.md"
+  - "UT7.- PIAFP Lara": "https://aitor-medrano.github.io/pia2223/"
 
 theme:
   language: es
