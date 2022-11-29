@@ -1142,28 +1142,39 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 </ul>
 <h3 id="buckets">Buckets<a class="headerlink" href="#buckets" title="Permanent link">&para;</a></h3>
 <p>Amazon S3 almacena los datos en buckets, los cuales son los bloques básicos donde se estructura la información, actuando como contenedores lógicos de objetos. Los buckets son esencialmente el prefijo de un conjunto de archivos y, como tales, deben tener un <ins>nombre único</ins> en todo Amazon S3 a nivel mundial.</p>
-<p>Podemos controlar el acceso a cada bucket mediante mecanismos de control de acceso (ACL) que pueden aplicarse tanto a objetos individuales como a los buckets, es decir, quién puede crear, eliminar y enumerar objetos en el bucket. También podemos obtener registros de acceso al bucket y a sus objetos, además de elegir la región geográfica donde <em>Amazon S3</em> almacenará el bucket y su contenido. Para cargar los datos (como fotos, vídeos o documentos), primero hemos de crear un bucket en una región de AWS y, a continuación, cargar casi cualquier cantidad de objetos en el bucket (los objetos pueden ocupar hasta 5TB).</p>
-<p>Cuando creamos un bucket en S3, este se asocia a una región de AWS específica. Cuando almacenamos datos en el bucket, estos se almacenan de forma redundante en varias instalaciones de AWS dentro de la región seleccionada. <em>S3</em> está diseñado para almacenar los datos de forma duradera, incluso en el caso de producirse una pérdida de datos simultánea en dos instalaciones de AWS.</p>
+<p>Podemos controlar el acceso a cada bucket mediante mecanismos de control de acceso (<em>ACL</em>) que pueden aplicarse tanto a objetos individuales como a los buckets, es decir, quién puede crear, eliminar y enumerar objetos en el bucket. También podemos obtener registros de acceso al bucket y a sus objetos, además de elegir la región geográfica donde <em>Amazon S3</em> almacenará el bucket y su contenido. Para cargar los datos (como fotos, vídeos o documentos), primero hemos de crear un bucket en una región de AWS y, a continuación, cargar casi cualquier cantidad de objetos en el bucket (los objetos pueden ocupar hasta 5TB).</p>
 <figure style="float: right;">
-    <img src="images/03s3_1.png" width="500">
+    <img src="images/03s3severo8a.png" width="450">
     <figcaption>Creamos el bucket</figcaption>
 </figure>
 
-<p>Por ejemplo, vamos a crear un <em>bucket</em> dentro de la región <code>us-east-1</code> con el nombre <code>s3severo2223</code> (recuerda que el nombre debe ser único y en minúsculas, así como evitar las tildes, ñ, etc...).</p>
-<p>Para almacenar un objeto en <em>S3</em>, debemos cargarlo en un bucket.</p>
+<p>Cuando creamos un bucket en S3, este se asocia a una región de AWS específica. Cuando almacenamos datos en el bucket, estos se almacenan de forma redundante en varias instalaciones de AWS dentro de la región seleccionada. <em>S3</em> está diseñado para almacenar los datos de forma duradera, incluso en el caso de producirse una pérdida de datos simultánea en dos instalaciones de AWS.</p>
+<p>Por ejemplo, vamos a crear un <em>bucket</em> dentro de la región <code>us-east-1</code> con el nombre <code>s3severo8a</code> (recuerda que el nombre debe ser único y en minúsculas, así como evitar las tildes, ñ, etc...).</p>
 <figure style="float: right;">
-    <img src="images/03s3_2.png" width="500">
+    <img src="images/03s3severo8a-labs3.png" width="450">
     <figcaption>Cargando el bucket</figcaption>
 </figure>
 
-<p>Para cargar un archivo, una vez elegido el bucket sobre el que queremos cargar, simplemente arrastrando el <a href="resources/labS3.csv">fichero</a>, éste se subirá a S3 (también podemos establecer permisos sobre los datos y cualquier metadato).</p>
-<p>Ya hemos comentado que un objeto está compuesto por los datos y cualquier metadato que describa a ese archivo, incluida la dirección URL. En nuestro caso su URL sería <a href="https://s3severo2223.s3.amazonaws.com/labS3.csv">https://s3severo2223.s3.amazonaws.com/labS3.csv</a></p>
+<p>Para almacenar un objeto en <em>S3</em>, debemos cargarlo en un bucket.</p>
+<p>Para cargar un archivo, una vez elegido el bucket sobre el que queremos cargar, simplemente arrastrando el <a href="resources/labS3.csv">fichero</a>, éste se subirá a <em>S3</em> (también podemos establecer permisos sobre los datos y cualquier metadato).</p>
+<p>Ya hemos comentado que un objeto está compuesto por los datos y cualquier metadato que describa a ese archivo, incluida la dirección URL. En nuestro caso su URL sería <a href="https://s3severo8a.s3.amazonaws.com/labS3.csv">https://s3severo8a.s3.amazonaws.com/labS3.csv</a></p>
+<div class="admonition warning">
+<p class="admonition-title">Acceso denegado</p>
+<p>Si intentamos acceder al fichero mediante la URL obtendremos un fichero XML indicándonos que no tenemos permisos para visualizar el recurso:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;Error&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;Code&gt;</span>AccessDenied<span class="nt">&lt;/Code&gt;</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nt">&lt;Message&gt;</span>Access Denied<span class="nt">&lt;/Message&gt;</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="nt">&lt;RequestId&gt;</span>ZCZ6XBHYC8C8SYSH<span class="nt">&lt;/RequestId&gt;</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="nt">&lt;HostId&gt;</span>btHdjBYCmNFdndkpfKiOKlSoxN0yvn+kkGoFWYGKr4F2oLYE0OkxpwlxLLlafoH+uvHFRpS4fw0=<span class="nt">&lt;/HostId&gt;</span>
+<span class="linenos" data-linenos="6 "></span><span class="nt">&lt;/Error&gt;</span>
+</code></pre></div>
+</div>
 <p><em>S3</em> administra automáticamente el almacenamiento detrás de cada bucket a medida que aumenta la cantidad de datos. <em>S3</em> también es escalable, lo que permite gestionar un volumen elevado de solicitudes. No es necesario aprovisionar el almacenamiento ni el rendimiento, y solo se facturará por lo que utilicemos.</p>
 <h3 id="casos-de-uso">Casos de uso<a class="headerlink" href="#casos-de-uso" title="Permanent link">&para;</a></h3>
 <p>Esta flexibilidad para almacenar una cantidad prácticamente ilimitada de datos y para acceder a ellos desde cualquier lugar convierte a <em>S3</em> en un servicio adecuado para distintos casos:</p>
 <ul>
 <li>Como ubicación para cualquier dato de aplicación, ya sea nuestra propia aplicación hospedada <em>on-premise</em>, como las aplicaciones de EC2 o mediante servidores en otros <em>hostings</em>. Esta característica puede resultar útil para los archivos multimedia generados por el usuario, los registros del servidor u otros archivos que su aplicación deba almacenar en una ubicación común. Además, como el contenido se puede obtener de manera directa a través de Internet, podemos delegar la entrega de contenido de nuestra aplicación y permitir que los clientes la consigan ellos mismos.</li>
-<li>Para el alojamiento web estático. <em>S3</em> puede entregar el contenido estático de un sitio web, que incluye HTML, CSS, JavaScript y otros archivos.</li>
+<li>Para el alojamiento web estático. <em>S3</em> puede entregar el contenido estático de un sitio web, que incluye <em>HTML</em>, <em>CSS</em>, <em>JavaScript</em> y otros archivos.</li>
 <li>Para almacenar copias de seguridad de sus datos. Para una disponibilidad y capacidad de recuperación de desastres incluso mejores, <em>S3</em> puede hasta configurarse para admitir la replicación entre regiones, de modo que los datos ubicados en un bucket de <em>S3</em> en una región puedan replicarse de forma automática en otra región de <em>S3</em>.</li>
 </ul>
 <div class="admonition info">
@@ -1177,7 +1188,7 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <p>Así pues, es el usuario o el diseñador de la aplicación quien debe decidir si el almacenamiento de Amazon S3 o de Amazon EBS es el más apropiado para una aplicación determinada.</p>
 </div>
 <h3 id="costes">Costes<a class="headerlink" href="#costes" title="Permanent link">&para;</a></h3>
-<p>Con <em>S3</em>, los costes específicos varían en función de la región y de las solicitudes específicas que se realizan. Solo se paga por lo que se utiliza, lo que incluye gigabytes por mes; transferencias desde otras regiones; y solicitudes PUT, COPY, POST, LIST y GET. Como regla general, solo se paga por las transferencias que cruzan el límite de su región, lo que significa que no paga por las transferencias entrantes a <em>S3</em> ni por las transferencias salientes desde <em>S3</em> a las ubicaciones de borde de Amazon CloudFront dentro de esa misma región.</p>
+<p>Con <em>S3</em>, los costes específicos varían en función de la región y de las solicitudes específicas que se realizan. Solo se paga por lo que se utiliza, lo que incluye gigabytes por mes; transferencias desde otras regiones; y solicitudes <code>PUT</code>, <code>COPY</code>, <code>POST</code>, <code>LIST</code> y <code>GET</code>. Como regla general, solo se paga por las transferencias que cruzan el límite de su región, lo que significa que no paga por las transferencias entrantes a <em>S3</em> ni por las transferencias salientes desde <em>S3</em> a las ubicaciones de borde de Amazon CloudFront dentro de esa misma región.</p>
 <p>Para calcular los costes de <em>S3</em> hay que tener en cuenta:</p>
 <ol>
 <li>
@@ -1186,12 +1197,12 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <li>El almacenamiento estándar está diseñado para proporcionar 99,999.999.999% (11 nueves) de durabilidad y 99,99% (4 nueves) de disponibilidad. Por ejemplo, los primeros 50 TB/mes cuestan 0,023$ por GB.</li>
 <li>El almacenamiento Estándar - Acceso poco frecuente ofrece la misma durabilidad de 99,999.999.999% (11 nueves) de <em>S3</em>, pero con 99,9% (3 nueves) de disponibilidad en un año concreto. Su precio parte desde los 0,0125$ por GB.</li>
 <li>Y si elegimos el almacenamiento poco frecuente pero en una única zona, el precio pasa a ser de 0,01$ por GB.</li>
-<li>Si fuese a la capa Glacier, con una opción de recuperación de 1 minutos a 12 horas el precio baja a 0,004$ por GB.</li>
-<li>Finalmente, con Glacier Deep Archive (archivos que se recuperan 1 o 2 veces al año con plazos de recuperación de 12 horas) baja hasta 0,000.99$ por GB</li>
+<li>Si fuese a la capa <em>Glacier</em>, con una opción de recuperación de 1 minutos a 12 horas el precio baja a 0,004$ por GB.</li>
+<li>Finalmente, con <em>Glacier Deep Archive</em> (archivos que se recuperan 1 o 2 veces al año con plazos de recuperación de 12 horas) baja hasta 0,000.99$ por GB</li>
 </ul>
 </li>
 <li>
-<p>Solicitudes: se consideran la cantidad y el tipo de las solicitudes. Las solicitudes GET generan cargos (0,000.4$ por cada 1.000 solicitudes) a tasas diferentes de las de otras solicitudes, como PUT y COPY (0,005$ cada 1.000 solicitudes).</p>
+<p>Solicitudes: se consideran la cantidad y el tipo de las solicitudes. Las solicitudes GET generan cargos (0,000.4$ por cada 1.000 solicitudes) a tasas diferentes de las de otras solicitudes, como <code>PUT</code> y <code>COPY</code> (0,005$ cada 1.000 solicitudes).</p>
 </li>
 <li>
 <p>Transferencia de datos: se considera la cantidad de datos transferidos fuera de la región de <em>S3</em>, los datos salientes, siendo el primer GB gratuito y luego comienza a facturar a 0,09$ por GB. La transferencia entrante de datos es gratuita.</p>
@@ -1209,6 +1220,9 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 </figure>
 
 <p>Una vez que tenemos el bucket visible, tenemos que añadir una política para acceder a los recursos del mismo (la política también la podemos crear desde el generador de políticas que tenemos disponible en la misma página de edición):</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Política</label><label for="__tabbed_1_2">Asistente para generar la política</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">&quot;Id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Policy1633602259164&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
@@ -1223,9 +1237,18 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="p">]</span><span class="w"></span>
 <span class="linenos" data-linenos="13 "></span><span class="p">}</span><span class="w"></span>
 </code></pre></div>
-<p>Tras ello, ahora tenemos que configurar el bucket como un sitio web. Para ello, en las propiedades, en la parte final de la página, tenemos la opción de <em>Alojamiento de sitios web estáticos</em>, la cual debemos habilitar y posteriormente nos mostrará la URL de acceso a nuestro sitio web.</p>
+</div>
+<div class="tabbed-block">
+<p><figure>
+    <img src="images/03s3-policy-editor.png">
+    <figcaption>Editor de políticas</figcaption>
+</figure></p>
+</div>
+</div>
+</div>
+<p>Tras ello, sólo nos queda configurar el <em>bucket</em> como un sitio web. Para ello, en las propiedades, en la parte final de la página, tenemos la opción de <em>Alojamiento de sitios web estáticos</em>, la cual debemos habilitar y posteriormente nos mostrará la URL de acceso a nuestro sitio web, en nuestro caso en <a href="http://severo8a-web.s3-website-us-east-1.amazonaws.com/">http://severo8a-web.s3-website-us-east-1.amazonaws.com/</a></p>
 <figure>
-    <img src="images/03sitioweb.png">
+    <img src="images/03s3-sitioweb.png">
     <figcaption>Sitio Web público</figcaption>
 </figure>
 
@@ -1258,7 +1281,7 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 <h3 id="acceso">Acceso<a class="headerlink" href="#acceso" title="Permanent link">&para;</a></h3>
 <p>Podemos obtener acceso a <em>S3</em> a través de la consola, de la interfaz de línea de comandos de AWS (CLI de AWS) o del SDK de AWS. También se puede acceder a <em>S3</em> de forma privada a través de una VPC.</p>
 <p>Por ejemplo, como ya conoces la AWS CLI, podríamos utilizarla para crear un <em>bucket</em>:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Creando un bucket</label><label for="__tabbed_1_2">Resultado</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Creando un bucket</label><label for="__tabbed_2_2">Resultado</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">aws s3api create-bucket --bucket severo8a-cli --region us-east-1</span>
@@ -1305,7 +1328,7 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 </ul>
 <p>En resumen, los recursos son una abstracción a más alto nivel de los servicios AWS que los clientes. Se recomienda el uso de los recursos al no tener que preocuparse de cómo se realiza por debajo la comunicación e interacción con los servicios. Sin embargo, a día de hoy no hay recursos para todos los servicios AWS, y por ello, en ocasiones no queda otra opción que utilizar los clientes.</p>
 <p>Para demostrar las diferencias, vamos a ver cómo podemos realizar algunas operaciones haciendo uso del cliente o del recurso (en estos ejemplos nos vamos a centrar en el servicio S3 - <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html">https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html</a>.):</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Buckets de un usuario</label><label for="__tabbed_2_2">Elementos de un bucket</label><label for="__tabbed_2_3">Creación de un bucket</label><label for="__tabbed_2_4">Eliminación de un recurso/bucket</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:4"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><input id="__tabbed_3_4" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Buckets de un usuario</label><label for="__tabbed_3_2">Elementos de un bucket</label><label for="__tabbed_3_3">Creación de un bucket</label><label for="__tabbed_3_4">Eliminación de un recurso/bucket</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">s3-buckets.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
@@ -1472,6 +1495,9 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 </li>
 <li>
 <p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) A partir del ejemplo de S3 Select, realiza las consultas propuestas en la autoevaluación (utilizando el archivo comprimido) y realiza capturas donde se vea tanto la consulta como su resultado.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) Realiza los casos de uso 1 y 2 de interacción desde Python con S3.</p>
 </li>
 </ol>
 
