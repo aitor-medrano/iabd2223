@@ -2,6 +2,7 @@
 /site/
 /.cache/
 *planning.md*
+*.DS_Store
 docs/sa/planning.md
 docs/sa/09pymodm.md
 docs/sa/10changeStreams.md

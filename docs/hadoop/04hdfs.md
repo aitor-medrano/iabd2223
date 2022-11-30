@@ -54,13 +54,10 @@ Para hacernos una idea, independientemente del cloud, *Facebook* utiliza un clú
     <img src="images/03hdfsNodes.png">
     <figcaption>Relación entre Namenodes y Datanodes HDFS</figcaption>
 </figure>
-## Funcionamiento de HDFS
 
-En la sesión anterior hemos estudiado los diferentes componentes que forman parte de HDFS: *namenode* y *datanodes*. En esta sesión veremos los procesos de lectura y escritura, aprenderemos a interactuar con HDFS mediante comandos, el uso de instantáneas y practicaremos con los formatos de datos más empleados en *Hadoop*, como son *Avro* y *Parquet*.
+## Procesos de lectura
 
-### Procesos de lectura
-
-Vamos a entender como fluyen los datos en un proceso de lectura entre el cliente y HDFS a partir de la siguiente imagen:
+Vamos a revisar como fluyen los datos en un proceso de lectura entre el cliente y HDFS a partir de la siguiente imagen:
 
 <figure style="align: center;">
     <img src="images/04hdfs-read.png">
@@ -80,7 +77,7 @@ Durante la lectura, si el flujo encuentra un error al comunicarse con un *datano
     Recordad que los datos nunca pasan por el *namenode*. El cliente que realiza la conexión con HDFS es el que hace las operaciones de lectura/escritura directamente con los *datanodes*.
     Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de los clientes se esparce por todos los *datanodes* de nuestro clúster.
 
-### Proceso de escritura
+## Proceso de escritura
 
 El proceso de escritura en HDFS sigue un planteamiento similar. Vamos a analizar la creación, escritura y cierre de un archivo con la siguiente imagen:
 
@@ -96,7 +93,7 @@ El proceso de escritura en HDFS sigue un planteamiento similar. Vamos a analizar
 5. Cuando todos los nodos han confirmado la recepción y almacenamiento de los paquetes, envía un paquete de confirmación al flujo.
 6. Cuando el cliente finaliza con la escritura de los datos, cierra el flujo mediante el método `close()` el cual libera los paquetes restantes al pipeline de datanodes y queda a la espera de recibir las confirmaciones. Una vez confirmado, le indica al *namenode* que la escritura se ha completado, informando de los bloques finales que conforman el fichero (puede que hayan cambiado respecto al paso 2 si ha habido algún error de escritura).
 
-### HDFS por dentro
+## HDFS por dentro
 
 HDFS utiliza de un conjunto de ficheros que gestionan los cambios que se producen en el clúster.
 
@@ -142,7 +139,7 @@ hdfs comando
 
     `hadoop fs` se relaciona con un sistema de archivos genérico que puede apuntar a cualquier sistema de archivos como local, HDFS, FTP, S3, etc. En versiones anteriores se utilizaba el comando `hadoop dfs` para acceder a HDFS, pero ya quedado obsoleto en favor de `hdfs dfs`.
 
-En el caso concreto de interactuar con el sistema de ficheros de Hadoop se utiliza el comando `dfs`, el cual requiere de otro argumento (empezando con un guión) el cual será uno de los comandos Linux para interactuar con el shell. Podéis consultar la lista de comandos en la [documentación oficial](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html).
+En el caso concreto de interactuar con el sistema de ficheros de *Hadoop* se utiliza el comando `dfs`, el cual requiere de otro argumento (empezando con un guion) el cual será uno de los comandos Linux para interactuar con el shell. Podéis consultar la lista de comandos en la [documentación oficial](https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html).
 
 ``` bash
 hdfs dfs -comandosLinux
@@ -156,12 +153,18 @@ hdfs dfs -ls
 
 Los comandos más utilizados son:
 
-* `put`: Coloca un archivo dentro de HDFS
-* `get`: Recupera un archivo de HDFS y lo lleva a nuestro sistema *host*.
+* `put` (o `copyFromLocal`): Coloca un archivo dentro de HDFS
+* `get` (o `copyToLocal`): Recupera un archivo de HDFS y lo lleva a nuestro sistema *host*.
 * `cat` / `text` / `head` / `tail`: Visualiza el contenido de un archivo.
 * `mkdir` / `rmdir`: Crea / borra una carpeta.
 * `count`: Cuenta el número de elementos (número de carpetas, ficheros, tamaño y ruta).
 * `cp` / `mv` / `rm`: Copia / mueve-renombra / elimina un archivo.
+
+Durante la realización de los ejercicios, es muy común necesitar eliminar una carpeta y todo los archivo que contiene. Para ello, podemos hacer un borrado recursivo:
+
+``` bash
+hdfs dfs -rm -r /user/iabd/datos
+```
 
 !!! question "Autoevaluación"
 
@@ -177,9 +180,16 @@ Los comandos más utilizados son:
     hdfs dfs -get /datos/otroNombre.json /tmp
     ```
 
-### Bloques
+!!! info "CRC"
+    Cuando recuperamos un archivo desde HDFS podemos indicarle que genere un fichero con el *checksum* CRC, y así poder comprobar la fiabilidad de los datos transmitidos.
 
-A continuación vamos a ver cómo trabaja internamente HDFS con los bloques. Para el siguiente ejemplo, vamos a trabajar con un archivo que ocupe más de un bloque, como puede ser [El registro de taxis amarillos de Nueva York - Enero 2020](https://s3.amazonaws.com/nyc-tlc/trip+data/yellow_tripdata_2020-01.csv).
+    ``` bash
+    hdfs dfs fs -get -crc /user/iabd/archivo archivoLocal
+    ```
+
+## Bloques
+
+A continuación vamos a ver cómo trabaja internamente HDFS con los bloques. Para el siguiente ejemplo, vamos a trabajar con un archivo que ocupe más de un bloque, como pueden ser [los datos de incidencias de bomberos de la ciudad de San Francisco](https://data.sfgov.org/api/views/nuek-vuh3/rows.csv).
 
 Comenzaremos creando un directorio dentro de HDFS llamado `prueba-hdfs`:
 
@@ -190,7 +200,7 @@ hdfs dfs -mkdir /user/iabd/prueba-hdfs
 Una vez creado subimos el archivo con los taxis:
 
 ``` bash
-hdfs dfs -put yellow_tripdata_2020-01.csv  /user/iabd/prueba-hdfs
+hdfs dfs -put Fire_Department_Calls_for_Service.csv  /user/iabd/prueba-hdfs
 ```
 
 Con el fichero subido nos vamos al interfaz gráfico de Hadoop (<http://iabd-virtualbox:9870/explorer.html#/>), localizamos el archivo y obtenemos el *Block Pool ID* del *block information*:
@@ -226,7 +236,7 @@ En mi caso devuelve `./subdir6/blk_1073743451`. De manera que ya podemos comprob
 head /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir6/blk_1073743451
 ```
 
-### Administración
+## Administración
 
 Algunas de las opciones más útiles para administrar HDFS son:
 
@@ -282,7 +292,7 @@ hdfs dfs -deleteSnapshot /user/iabd/datos snapshot1
 hdfs dfsadmin -disallowSnapshot /user/iabd/datos
 ```
 
-### HDFS UI
+## HDFS UI
 
 En la sesión anterior ya vimos que podíamos acceder al interfaz gráfico de Hadoop (<http://iabd-virtualbox:9870/explorer.html#/>) y navegar por las carpetas de HDFS.
 
@@ -315,7 +325,7 @@ Tras reiniciar *Hadoop*, ya podremos crear los recursos como el usuario `iabd`.
 
 ## HDFS y Python
 
-Para el acceso mediante Python a HDFS podemos utilizar la librería HdfsCLI (<https://hdfscli.readthedocs.io/en/latest/>).
+Para el acceso mediante Python a HDFS podemos utilizar la librería [HdfsCLI](https://hdfscli.readthedocs.io/en/latest/).
 
 Primero hemos de instalarla mediante `pip`:
 
@@ -348,7 +358,38 @@ datos="nombre,apellidos\nAitor,Medrano\nPedro,Casas"
 hdfs_client.write("/user/iabd/datos.csv", datos)
 ```
 
+Otra librería que podemos utilizar es [Snakebite](https://snakebite.readthedocs.io/en/latest/), la cual fue creada por *Spotify* para interactuar con HDFS (aunque a día de hoy ya no se mantiene), y utiliza *protobuf* como protocolo de comunicación, lo cual incrementa su rendimiento.
+
+Tras instalarla (es necesario instalar la versión para Python3 y *downgradear* la librería *protobuf*):
+
+``` bash
+pip install snakebite-py3
+pip install protobuf==3.20.*
+```
+
+Ya podemos repetir parte del ejemplo anterior (ya que *Snakebite* no permite escribir en HDFS):
+
+``` python
+from snakebite.client import Client
+
+sb_client = Client('iabd-virtualbox', 9000)
+# Mostramos el contenido de /user/iabd
+for x in sb_client.ls(['/user/iabd']):
+   print(x)
+
+# Leemos el fichero de 'El quijote' que tenemos en HDFS
+fichero = '/user/iabd/el_quijote.txt'
+for linea in sb_client.text([fichero]):
+   print(linea)
+```
+
 En el mundo real, los formatos de los archivos normalmente serán *Avro* y/o *Parquet*, y el acceso lo realizaremos en gran medida mediante la librería de *Pandas*.
+
+!!! info "Otras librerías"
+    Python ofrece muchas más librerías para trabajar con Hadoop y HDFS:
+
+    * [mrjob](https://mrjob.readthedocs.io/en/latest/index.html): permite ejecutar tareas *MapReduce* y ejecutarlas en diferentes plataformas, ya sea en local, un cluster Hadoop, AWS EMR, etc..
+    * [Pydoop](https://crs4.github.io/pydoop/): también permite escribir aplicaciones *MapReduce*, así como ofrece una api para HDFS y trabaja de forma transparente con el formato Avro.
 
 ## Hue
 
@@ -396,12 +437,13 @@ Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla
         <figcaption>Proceso de lectura HDFS</figcaption>
     </figure>
 
-2. (RA5075.3 / CE5.3a / 0.5p) En este ejercicio vamos a practicar los comandos básicos de HDFS. Una vez arrancado *Hadoop*:
+2. (RA5075.3 / CE5.3a y CE5.3c / 0.5p) En este ejercicio vamos a practicar los comandos básicos de HDFS. Una vez arrancado *Hadoop*:
     1. Crea la carpeta `/user/iabd/ejercicios`.
     2. Sube el archivo `el_quijote.txt` a la carpeta creada.
     3. Crea una copia en HDFS y llámala `el_quijote2.txt`.
     4. Recupera el principio del fichero `el_quijote2.txt`.
     5. Renombra `el_quijote2.txt` a `el_quijote_copia.txt`.
+    6. Descarga en local `el_quijote_copia.txt` con su código CRC.
     6. Adjunta una captura desde el interfaz web donde se vean ambos archivos.
     7. Vuelve al terminal y elimina la carpeta con los archivos contenidos mediante un único comando.
 
@@ -427,21 +469,11 @@ Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla
     7. Vuelve a entrar al modo normal (saliendo del modo seguro mediante `hdfs dfsadmin -safemode leave`)
     8. Accede a la carpeta del *namenode* y comprueba que los *fsimage* del *namenode* son iguales.
 
-<!--
-FIXME: completar HDFS con documento 2 del MEC de SBD sobre teoría de discos RAID
---> 
-
-*[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
-*[CE5.2b]: Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.
-*[CE5.2d]: Se ha determinado que se pueden almacenar tantos datos como se desee y decidir cómo utilizarlos más tarde.
-
-
 *[RA5075.3]: Genera mecanismos de integridad de los datos, comprobando su mantenimiento en los sistemas de ficheros distribuidos y valorando la sobrecarga que conlleva en el tratamiento de los datos.
 *[CE5.3a]: Se ha valorado la importancia de la calidad de los datos en los sistemas de ficheros distribuidos. 
 *[CE5.3b]: Se ha valorado que a mayor volumen de tratamiento de datos corresponde un mayor peligro relacionado con la integridad de los datos. 
 *[CE5.3c]: Se ha reconocido que los sistemas de ficheros distribuidos implementan una suma de verificación para la comprobación de los contenidos de los archivos. 
 *[CE5.3d]: Se ha reconocido el papel del servidor en los procesos previos a la suma de verificación. 
-
 
 *[RA5075.4]:  Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen
 *[CE5.4a]: Se han aplicado herramientas de monitorización eficiente de los recursos.

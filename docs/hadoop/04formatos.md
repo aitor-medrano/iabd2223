@@ -647,7 +647,7 @@ Si comparamos los tamaños de los archivos respecto al formato de datos empleado
 
 ## Actividades
 
-1. (RA5075.1 / CE5.1c / 1p) Mediante *Python* y utilizando *Kaggle*, crea un notebook a partir de los datos del dataset de [retrasos en los vuelos](https://www.kaggle.com/datasets/yuanyuwendymu/airline-delay-and-cancellation-data-2009-2018) y a partir de uno de los ficheros (el que más te guste) transforma los datos y persiste los siguientes archivos:
+5. (RA5075.1 / CE5.1c / 1p) Mediante *Python* y utilizando *Kaggle*, crea un notebook a partir de los datos del dataset de [retrasos en los vuelos](https://www.kaggle.com/datasets/yuanyuwendymu/airline-delay-and-cancellation-data-2009-2018) y a partir de uno de los ficheros (el que más te guste) transforma los datos y persiste los siguientes archivos:
 
     * `air<anyo>.parquet`: el archivo csv en formato *Parquet*.
     * `air<anyo>.orc`: el archivo csv en formato *ORC*.

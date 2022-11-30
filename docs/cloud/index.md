@@ -14,6 +14,7 @@
 | 33.- [Cloud](01cloud.md)          | Lunes 21 Nov      | 2p + 2o       |
 | 33.- [AWS](02aws.md)              | Lunes 21 Nov      | 1p + 1o       |
 | 40.- [Almacenamiento en AWS](03s3.md)   | Miércoles 30 Nov  | 2p + 2o       |
-| 44.- [Computación en AWS](05computacion.md)     | Lunes 5 Dic       | 1p + 1o   |
-| 44.- [Datos en AWS](06datos.md)   | Lunes 5 Dic       | 1p + 1o   |
-| 46.- Servicios de datos en AWS (Glue y Athena)    | Miércoles 7 Dic   | 2p + 2o   |
+| 44.- [Computación en AWS](05computacion.md)     | Lunes 5 Dic   | 1p + 1o   |
+| 44.- Hadoop en AWS (EMR)                        | Lunes 5 Dic   | 1p + 1o   |
+| 46.- [Datos en AWS](06datos.md)   | Miércoles 5 Dic       | 1p + 1o   |
+| 46.- Servicios de datos en AWS (Glue y Athena)    | Miércoles 7 Dic   | 1p + 1o   |
