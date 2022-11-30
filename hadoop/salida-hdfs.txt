@@ -1,0 +1,105 @@
+iabd@iabd-virtualbox:~/Descargas/ml-25m$ cd /opt/hadoop-data/hdfs/datanode/current/
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current$ ls
+BP-481169443-127.0.1.1-1639217848073  VERSION
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current$ cd BP-481169443-127.0.1.1-1639217848073/
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073$ ls
+current  scanner.cursor  tmp
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073$ cd current/
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current$ ls
+dfsUsed  finalized  rbw  VERSION
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current$ cd finalized/
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized$ ls
+subdir0
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized$ cd subdir0/
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ ls                                                                                                      
+subdir0  subdir1  subdir2  subdir3  subdir4  subdir5  subdir6  subdir7  subdir8  subdir9
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ ls -l                                                                                                   
+total 172
+drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir0
+drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir1
+drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir2
+drwxrwxr-x 2 iabd iabd 12288 feb  9  2022 subdir3
+drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir4
+drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir5
+drwxrwxr-x 2 iabd iabd 12288 nov 28 20:16 subdir6
+drwxrwxr-x 2 iabd iabd 20480 nov 28 20:03 subdir7
+drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir8
+drwxrwxr-x 2 iabd iabd  4096 nov 30 17:31 subdir9
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ find -name blk_1073744314                                                                               
+./subdir9/blk_1073744314
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ cd subdir9                                                                                              
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir9$ ls -l                                                                                           
+total 672816
+-rw-rw-r-- 1 iabd iabd     81712 mar 16  2022 blk_1073744169
+-rw-rw-r-- 1 iabd iabd       647 mar 16  2022 blk_1073744169_3345.meta
+-rw-rw-r-- 1 iabd iabd     82910 mar 16  2022 blk_1073744171
+-rw-rw-r-- 1 iabd iabd       655 mar 16  2022 blk_1073744171_3347.meta
+-rw-rw-r-- 1 iabd iabd     82747 mar 16  2022 blk_1073744172
+-rw-rw-r-- 1 iabd iabd       655 mar 16  2022 blk_1073744172_3348.meta
+-rw-rw-r-- 1 iabd iabd     85023 mar 16  2022 blk_1073744173
+-rw-rw-r-- 1 iabd iabd       675 mar 16  2022 blk_1073744173_3349.meta
+-rw-rw-r-- 1 iabd iabd       428 mar 16  2022 blk_1073744174
+-rw-rw-r-- 1 iabd iabd        11 mar 16  2022 blk_1073744174_3350.meta
+-rw-rw-r-- 1 iabd iabd       469 mar 16  2022 blk_1073744186
+-rw-rw-r-- 1 iabd iabd        11 mar 16  2022 blk_1073744186_3362.meta
+-rw-rw-r-- 1 iabd iabd    332392 mar 16  2022 blk_1073744195
+-rw-rw-r-- 1 iabd iabd      2607 mar 16  2022 blk_1073744195_3371.meta
+-rw-rw-r-- 1 iabd iabd       468 mar 16  2022 blk_1073744198
+-rw-rw-r-- 1 iabd iabd        11 mar 16  2022 blk_1073744198_3374.meta
+-rw-rw-r-- 1 iabd iabd    741614 mar 16  2022 blk_1073744243
+-rw-rw-r-- 1 iabd iabd      5803 mar 16  2022 blk_1073744243_3419.meta
+-rw-rw-r-- 1 iabd iabd    753022 mar 16  2022 blk_1073744245
+-rw-rw-r-- 1 iabd iabd      5891 mar 16  2022 blk_1073744245_3421.meta
+-rw-rw-r-- 1 iabd iabd    752368 mar 16  2022 blk_1073744246
+-rw-rw-r-- 1 iabd iabd      5887 mar 16  2022 blk_1073744246_3422.meta
+-rw-rw-r-- 1 iabd iabd    752940 mar 16  2022 blk_1073744247
+-rw-rw-r-- 1 iabd iabd      5891 mar 16  2022 blk_1073744247_3423.meta
+-rw-rw-r-- 1 iabd iabd       425 mar 16  2022 blk_1073744248
+-rw-rw-r-- 1 iabd iabd        11 mar 16  2022 blk_1073744248_3424.meta
+-rw-rw-r-- 1 iabd iabd       470 mar 16  2022 blk_1073744260
+-rw-rw-r-- 1 iabd iabd        11 mar 16  2022 blk_1073744260_3436.meta
+-rw-rw-r-- 1 iabd iabd       227 mar 16  2022 blk_1073744263
+-rw-rw-r-- 1 iabd iabd        11 mar 16  2022 blk_1073744263_3439.meta
+-rw-rw-r-- 1 iabd iabd       227 mar 16  2022 blk_1073744264
+-rw-rw-r-- 1 iabd iabd        11 mar 16  2022 blk_1073744264_3440.meta
+-rw-rw-r-- 1 iabd iabd    257233 nov 28 19:54 blk_1073744271
+-rw-rw-r-- 1 iabd iabd      2019 nov 28 19:54 blk_1073744271_3447.meta
+-rw-rw-r-- 1 iabd iabd     22917 nov 28 19:54 blk_1073744273
+-rw-rw-r-- 1 iabd iabd       187 nov 28 19:54 blk_1073744273_3449.meta
+-rw-rw-r-- 1 iabd iabd    270662 nov 28 19:54 blk_1073744274
+-rw-rw-r-- 1 iabd iabd      2123 nov 28 19:54 blk_1073744274_3450.meta
+-rw-rw-r-- 1 iabd iabd    317052 nov 28 20:17 blk_1073744283
+-rw-rw-r-- 1 iabd iabd      2487 nov 28 20:17 blk_1073744283_3459.meta
+-rw-rw-r-- 1 iabd iabd     26584 nov 28 20:17 blk_1073744285
+-rw-rw-r-- 1 iabd iabd       215 nov 28 20:17 blk_1073744285_3461.meta
+-rw-rw-r-- 1 iabd iabd    273738 nov 28 20:17 blk_1073744286
+-rw-rw-r-- 1 iabd iabd      2147 nov 28 20:17 blk_1073744286_3462.meta
+-rw-rw-r-- 1 iabd iabd     78187 nov 28 20:22 blk_1073744312
+-rw-rw-r-- 1 iabd iabd       619 nov 28 20:22 blk_1073744312_3488.meta
+-rw-rw-r-- 1 iabd iabd    270980 nov 28 20:22 blk_1073744313
+-rw-rw-r-- 1 iabd iabd      2127 nov 28 20:22 blk_1073744313_3489.meta
+-rw-rw-r-- 1 iabd iabd 134217728 nov 30 17:31 blk_1073744314
+-rw-rw-r-- 1 iabd iabd   1048583 nov 30 17:31 blk_1073744314_3490.meta
+-rw-rw-r-- 1 iabd iabd 134217728 nov 30 17:31 blk_1073744315
+-rw-rw-r-- 1 iabd iabd   1048583 nov 30 17:31 blk_1073744315_3491.meta
+-rw-rw-r-- 1 iabd iabd 134217728 nov 30 17:31 blk_1073744316
+-rw-rw-r-- 1 iabd iabd   1048583 nov 30 17:31 blk_1073744316_3492.meta
+-rw-rw-r-- 1 iabd iabd 134217728 nov 30 17:31 blk_1073744317
+-rw-rw-r-- 1 iabd iabd   1048583 nov 30 17:31 blk_1073744317_3493.meta
+-rw-rw-r-- 1 iabd iabd 134217728 nov 30 17:31 blk_1073744318
+-rw-rw-r-- 1 iabd iabd   1048583 nov 30 17:31 blk_1073744318_3494.meta
+-rw-rw-r-- 1 iabd iabd   7172347 nov 30 17:31 blk_1073744319
+-rw-rw-r-- 1 iabd iabd     56043 nov 30 17:31 blk_1073744319_3495.meta
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir9$ head blk_1073744314
+userId,movieId,rating,timestamp
+1,296,5.0,1147880044
+1,306,3.5,1147868817
+1,307,5.0,1147868828
+1,665,5.0,1147878820
+1,899,3.5,1147868510
+1,1088,4.0,1147868495
+1,1175,3.5,1147868826
+1,1217,3.5,1147878326
+1,1237,5.0,1147868839
+
+

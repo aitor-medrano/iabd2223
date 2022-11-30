@@ -1109,21 +1109,28 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 <p>Comenzaremos creando un directorio dentro de HDFS llamado <code>prueba-hdfs</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -mkdir /user/iabd/prueba-hdfs
 </code></pre></div>
-<p>Una vez creado subimos el archivo con los taxis:</p>
+<p>Una vez creado subimos el archivo con las calificaciones de las películas:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -put ratings.csv  /user/iabd/prueba-hdfs
 </code></pre></div>
 <p>Con el fichero subido nos vamos al interfaz gráfico de Hadoop (<a href="http://iabd-virtualbox:9870/explorer.html#/">http://iabd-virtualbox:9870/explorer.html#/</a>), localizamos el archivo y obtenemos el <em>Block Pool ID</em> del <em>block information</em>:</p>
 <figure style="align: center;">
-    <img src="images/04hdfs-blockid.png">
+    <img src="images/04hdfs-ratings-blockpoolid.png" width="500px">
     <figcaption>Identificador de bloque</figcaption>
 </figure>
 
 <p>Si desplegamos el combo de <em>block information</em>, podremos ver cómo ha partido el archivo CSV en 5 bloques (566 MB que ocupa el fichero CSV / 128 del tamaño del bloque).</p>
+<figure style="align: center;">
+    <img src="images/04hdfs-ratings-blocks.png" width="500px">
+    <figcaption>Bloques del archivo</figcaption>
+</figure>
+
 <p>Así pues, con el código del <em>Block Pool Id</em>, podemos confirmar que debe existir el directorio <code>current</code> del <em>datanode</em> donde almacena la información nuestro servidor (en `/opt/hadoop-data/):</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current
+<p><div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$ ls /opt/hadoop-data/hdfs/datanode/current
+<span class="linenos" data-linenos="2 "></span>BP-481169443-127.0.1.1-1639217848073  VERSION
 </code></pre></div>
+El valor que aparece coincide con el que hemos recuperado en la imagen.</p>
 <p>Dentro de este subdirectorio existe otro <code>finalized</code>, donde <em>Hadoop</em> irá creando una estructura de subdirectorios <code>subdir</code> donde albergará los bloques de datos:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$ ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
 </code></pre></div>
 <p>Una vez en este nivel, vamos a buscar el archivo que coincide con el <em>block id</em> poniéndole como prefijo <code>blk_</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>find -name blk_1073743451
@@ -1300,7 +1307,7 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 <li>Crea una instantánea de la carpeta llamada <code>ss1</code>.</li>
 <li>Elimina ambos ficheros del quijote.</li>
 <li>Comprueba que la carpeta está vacía.</li>
-<li>Recupera desde <code>ss</code> el archivo <code>el_quijote.txt</code>.</li>
+<li>Recupera desde <code>ss1</code> el archivo <code>el_quijote.txt</code>.</li>
 <li>Crea una nueva instantánea de la carpeta llamada <code>ss2</code>.</li>
 <li>Muestra el contenido de la carpeta <code>/user/iabd/snaps</code> así como de sus <em>snapshots</em>.</li>
 </ol>
