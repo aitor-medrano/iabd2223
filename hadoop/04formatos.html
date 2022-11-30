@@ -1281,7 +1281,7 @@ https://www.xenonstack.com/blog/data-serialization-hadoop
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Acceso HDFS</p>
-<p>Aunque todavía no hayamos estudiado el ecosistema Hadoop, vamos a ver como podemos conectarnos a HDFS para leer y persistir datos en formato <em>Avro</em>:</p>
+<p>También podemos conectarnos a HDFS para leer y persistir datos en formato <em>Avro</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">fastavro</span> <span class="kn">import</span> <span class="n">parse_schema</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">hdfs</span> <span class="kn">import</span> <span class="n">InsecureClient</span>
@@ -1531,7 +1531,7 @@ https://towardsdatascience.com/understanding-apache-parquet-7197ba6462a9
 <p><a href="https://orc.apache.org/">Apache ORC</a> es un formato de datos columnar optimizado para la lectura, escritura y procesamiento de datos en <em>Hive</em>. <em>ORC</em> tiene una tasa de compresión alta (utiliza <em>zlib</em>), y al basarse en Hive, soporta sus tipos de datos (<em>datetime</em>, <em>decimal</em>, y tipos complejos como <em>struct</em>, <em>list</em>, <em>map</em> y <em>union</em>) y es compatible con HiveQL.</p>
 <p>Los fichero <em>ORC</em> se componen de tiras de datos (<em>stripes</em>), donde cada tira contiene un índice, los datos de la fila y un pie (con estadísticas como la cantidad, máximos y mínimos y la suma de cada columna convenientemente cacheadas)</p>
 <h3 id="orc-y-python">ORC y Python<a class="headerlink" href="#orc-y-python" title="Permanent link">&para;</a></h3>
-<p>Para crear archivos ORC y leerlos, volvemos a necesitar la librería <a href="https://arrow.apache.org/docs/python/"><em>PyArrow</em></a>.</p>
+<p>Para crear archivos <em>ORC</em> y leerlos, volvemos a necesitar la librería <a href="https://arrow.apache.org/docs/python/"><em>PyArrow</em></a>.</p>
 <p>Así pues, para la escritura de datos, por ejemplo, desde un Dataframe, haríamos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">pyarrow</span> <span class="k">as</span> <span class="nn">pa</span>
@@ -1558,9 +1558,9 @@ https://towardsdatascience.com/understanding-apache-parquet-7197ba6462a9
 <p>Acabamos de ver que cada uno de los formatos tiene sus puntos fuertes.</p>
 <p>Los formatos basados en filas ofrecen un rendimiento mayor en las escrituras que en las lecturas, ya que añadir nuevos registros en más sencillo. Si sólo vamos a hacer consultas sobre un subconjunto de las columnas, entonces un formato columnas se comportará mejor, ya que no necesita recuperar los registros enteros (cosa que sí hacen los formatos basados en filas).</p>
 <p>Respecto a la compresión, entendiendo que ofrece una ventaja a la hora de almacenar y transmitir la información, es útil cuando trabajamos con un gran volumen de datos. Los formatos basado en columnas ofrecen un mejor rendimiento ya que todos los datos del mismo tipo se almacenan de forma contigua lo que permite una mayor eficiencia en la compresión (además, cada tipo de columna tiene su propia codificación).</p>
-<p>Respecto a la evolución del esquema, con operaciones como añadir o eliminar columnas o cambiar su nombre, la mejor decisión es decantarse por Avro. Además, al tener el esquema en JSON facilita su gestión y permite que tengan más de un esquema.</p>
-<p>Si nuestros documentos tienen una estructura compleja compuesta por columnas anidadas y normalmente realizamos consultas sobre un subconjunto de las subcolumnas, la elección debería ser Parquet, por la estructura que utiliza.</p>
-<p>Finalmente, recordar que ORC está especialmente enfocado a su uso con Hive, mientras que Spark tiene un amplio soporte para Parquet y que si trabajamos con Kafka, Avro es una buena elección.</p>
+<p>Respecto a la evolución del esquema, con operaciones como añadir o eliminar columnas o cambiar su nombre, la mejor decisión es decantarse por <em>Avro</em>. Además, al tener el esquema en <em>JSON</em> facilita su gestión y permite que tengan más de un esquema.</p>
+<p>Si nuestros documentos tienen una estructura compleja compuesta por columnas anidadas y normalmente realizamos consultas sobre un subconjunto de las subcolumnas, la elección debería ser <em>Parquet</em>, por la estructura que utiliza.</p>
+<p>Finalmente, recordar que ORC está especialmente enfocado a su uso con Hive, mientras que <em>Spark</em> tiene un amplio soporte para <em>Parquet</em> y que si trabajamos con <em>Kafka</em>, <em>Avro</em> es una buena elección.</p>
 <figure style="align: center;">
     <img src="images/04data-comparison.png">
     <figcaption>Comparativa de formatos</figcaption>
@@ -1576,7 +1576,7 @@ https://towardsdatascience.com/understanding-apache-parquet-7197ba6462a9
 </li>
 <li><code>ger_sales.parquet</code>: 2,3 MiB<ul>
 <li><code>ger_sales-gzip.parquet</code>: 1,6 MiB</li>
-<li><code>ger_sales-snappy.parquet</code>: 2,3 MiBa</li>
+<li><code>ger_sales-snappy.parquet</code>: 2,3 MiB</li>
 </ul>
 </li>
 <li><code>ger_sales.orc</code>: 6,98 MiB</li>
