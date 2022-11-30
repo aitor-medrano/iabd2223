@@ -1184,7 +1184,7 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 </code></pre></div>
 <p>Tras reiniciar <em>Hadoop</em>, ya podremos crear los recursos como el usuario <code>iabd</code>.</p>
 <h2 id="hdfs-y-python">HDFS y Python<a class="headerlink" href="#hdfs-y-python" title="Permanent link">&para;</a></h2>
-<p>Para el acceso mediante Python a HDFS podemos utilizar la librería HdfsCLI (<a href="https://hdfscli.readthedocs.io/en/latest/">https://hdfscli.readthedocs.io/en/latest/</a>).</p>
+<p>Para el acceso mediante Python a HDFS podemos utilizar la librería <a href="https://hdfscli.readthedocs.io/en/latest/">HdfsCLI</a>.</p>
 <p>Primero hemos de instalarla mediante <code>pip</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install hdfs
 </code></pre></div>
@@ -1210,7 +1210,33 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 <span class="linenos" data-linenos="19 "></span><span class="n">datos</span><span class="o">=</span><span class="s2">&quot;nombre,apellidos</span><span class="se">\n</span><span class="s2">Aitor,Medrano</span><span class="se">\n</span><span class="s2">Pedro,Casas&quot;</span>
 <span class="linenos" data-linenos="20 "></span><span class="n">hdfs_client</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;/user/iabd/datos.csv&quot;</span><span class="p">,</span> <span class="n">datos</span><span class="p">)</span>
 </code></pre></div>
+<p>Otra librería que podemos utilizar es <a href="https://snakebite.readthedocs.io/en/latest/">Snakebite</a>, la cual fue creada por <em>Spotify</em> para interactuar con HDFS (aunque a día de hoy ya no se mantiene), y utiliza <em>protobuf</em> como protocolo de comunicación, lo cual incrementa su rendimiento.</p>
+<p>Tras instalarla (es necesario instalar la versión para Python3 y <em>downgradear</em> la librería <em>protobuf</em>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip install snakebite-py3
+<span class="linenos" data-linenos="2 "></span>pip install <span class="nv">protobuf</span><span class="o">==</span><span class="m">3</span>.20.*
+</code></pre></div>
+<p>Ya podemos repetir parte del ejemplo anterior (ya que <em>Snakebite</em> no permite escribir en HDFS):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">snakebite.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">sb_client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="s1">&#39;iabd-virtualbox&#39;</span><span class="p">,</span> <span class="mi">9000</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># Mostramos el contenido de /user/iabd</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sb_client</span><span class="o">.</span><span class="n">ls</span><span class="p">([</span><span class="s1">&#39;/user/iabd&#39;</span><span class="p">]):</span>
+<span class="linenos" data-linenos=" 6 "></span>   <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># Leemos el fichero de &#39;El quijote&#39; que tenemos en HDFS</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">fichero</span> <span class="o">=</span> <span class="s1">&#39;/user/iabd/el_quijote.txt&#39;</span>
+<span class="linenos" data-linenos="10 "></span><span class="k">for</span> <span class="n">linea</span> <span class="ow">in</span> <span class="n">sb_client</span><span class="o">.</span><span class="n">text</span><span class="p">([</span><span class="n">fichero</span><span class="p">]):</span>
+<span class="linenos" data-linenos="11 "></span>   <span class="nb">print</span><span class="p">(</span><span class="n">linea</span><span class="p">)</span>
+</code></pre></div>
 <p>En el mundo real, los formatos de los archivos normalmente serán <em>Avro</em> y/o <em>Parquet</em>, y el acceso lo realizaremos en gran medida mediante la librería de <em>Pandas</em>.</p>
+<div class="admonition info">
+<p class="admonition-title">Otras librerías</p>
+<p>Python ofrece muchas más librerías para trabajar con Hadoop y HDFS:</p>
+<ul>
+<li><a href="https://mrjob.readthedocs.io/en/latest/index.html">mrjob</a>: permite ejecutar tareas <em>MapReduce</em> y ejecutarlas en diferentes plataformas, ya sea en local, un cluster Hadoop, AWS EMR, etc..</li>
+<li><a href="https://crs4.github.io/pydoop/">Pydoop</a>: también permite escribir aplicaciones <em>MapReduce</em>, así como ofrece una api para HDFS y trabaja de forma transparente con el formato Avro.</li>
+</ul>
+</div>
 <h2 id="hue">Hue<a class="headerlink" href="#hue" title="Permanent link">&para;</a></h2>
 <p><a href="https://gethue.com">Hue</a> (<em>Hadoop User Experience</em>) es una interfaz gráfica de código abierto basada en web para su uso con <em>Apache Hadoop</em>. <em>Hue</em> actúa como front-end para las aplicaciones que se ejecutan en el clúster, lo que permite interactuar con las aplicaciones mediante una interfaz más amigable que el interfaz de comandos.</p>
 <p>En nuestra máquina virtual ya lo tenemos instalado y configurado para que funcione con HDFS y Hive.</p>
@@ -1290,9 +1316,6 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 </ol>
 </li>
 </ol>
-<!--
-FIXME: completar HDFS con documento 2 del MEC de SBD sobre teoría de discos RAID
--->
 
 
   
