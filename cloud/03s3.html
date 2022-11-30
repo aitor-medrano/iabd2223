@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/03s3.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -153,7 +153,6 @@
         
           
           
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -161,7 +160,6 @@
             </label>
           
         
-          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -773,8 +771,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#caso-de-uso-2-de-s3-a-dynamodb" class="md-nav__link">
-    Caso de uso 2 - De S3 a DynamoDB
+  <a href="#caso-de-uso-2-s3select-desde-python" class="md-nav__link">
+    Caso de uso 2 - S3Select desde Python
   </a>
   
 </li>
@@ -980,8 +978,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#caso-de-uso-2-de-s3-a-dynamodb" class="md-nav__link">
-    Caso de uso 2 - De S3 a DynamoDB
+  <a href="#caso-de-uso-2-s3select-desde-python" class="md-nav__link">
+    Caso de uso 2 - S3Select desde Python
   </a>
   
 </li>
@@ -1057,7 +1055,11 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 </ul>
 <p>Más información sobre los diferentes volúmenes: <a href="https://docs.aws.amazon.com/es_es/AWSEC2/latest/UserGuide/ebs-volume-types.html">https://docs.aws.amazon.com/es_es/AWSEC2/latest/UserGuide/ebs-volume-types.html</a></p>
 <p>Para crear o configurar un volumen, dentro de las instancias EC2, en el menú lateral podemos ver las opciones de <em>Elastic Block Store</em> y el submenú <em>Volúmenes</em>:</p>
-<p><img alt="Volumenes" src="images/03volumen.png" /></p>
+<figure style="align: center;">
+    <img src="images/03volumen.png">
+    <figcaption>Volúmenes en EBS</figcaption>
+</figure>
+
 <p>Los volúmenes de Amazon EBS están asociados a la red, y su duración es independiente a la vida de una instancia. Al tener un alto nivel de disponibilidad y de confianza, pueden aprovecharse como particiones de arranque de instancias de EC2 o asociarse a una instancia de EC2 en ejecución como dispositivos de bloques estándar.</p>
 <p>Cuando se utilizan como particiones de arranque, las instancias de Amazon EC2 pueden detenerse y, posteriormente, reiniciarse, lo que le permite pagar solo por los recursos de almacenamiento utilizados al mismo tiempo que conserva el estado de la instancia. Los volúmenes de Amazon EBS tienen mayor durabilidad que los almacenes de instancias de EC2 locales porque los volúmenes de Amazon EBS se <strong>replican automáticamente</strong> en el <em>backend</em> (en una única zona de disponibilidad).</p>
 <p>Los volúmenes de Amazon EBS ofrecen las siguientes características:</p>
@@ -1087,8 +1089,8 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
     <figcaption>EFS compartido entre instancias</figcaption>
 </figure>
 
-<p>Respecto al coste (<a href="https://aws.amazon.com/es/efs/pricing/">https://aws.amazon.com/es/efs/pricing/</a>), dependiendo del tipo de acceso y la administración del ciclo de vida, el acceso estándard se factura desde 0,30$ Gb/mes, mientras que si el acceso es poco frecuente, baja a 0,013$ Gb/mes más 0,01$ por transferencia y Gb/mes.</p>
-<p>Su casos de uso más comunes son para bigdata y análisis, flujos de trabajo de procesamiento multimedia, administración de contenido, servidores web y directorios principales.</p>
+<p>Respecto al coste (<a href="https://aws.amazon.com/es/efs/pricing/">https://aws.amazon.com/es/efs/pricing/</a>), dependiendo del tipo de acceso y la administración del ciclo de vida, el acceso estándar se factura desde 0,30$ Gb/mes, mientras que si el acceso es poco frecuente, baja a 0,013$ Gb/mes más 0,01$ por transferencia y Gb/mes.</p>
+<p>Su casos de uso más comunes son para <em>Big Data</em> y análisis, flujos de trabajo de procesamiento multimedia, administración de contenido, servidores web y directorios principales.</p>
 <p>Respecto a su acceso, de manera similar al resto de servicios de almacenamiento, es un servicio completamente administrado al que se puede acceder desde la consola, una API o la CLI de AWS.</p>
 <h2 id="amazon-s3">Amazon S3<a class="headerlink" href="#amazon-s3" title="Permanent link">&para;</a></h2>
 <p><em>S3</em> (<a href="https://aws.amazon.com/es/s3/">https://aws.amazon.com/es/s3/</a>) es un servicio de almacenamiento persistente de objetos creado para almacenar y recuperar cualquier cantidad de datos desde cualquier lugar mediante una URL: sitios web y aplicaciones móviles, aplicaciones corporativas y datos de sensores o dispositivos de Internet de las cosas (IoT) y análisis de <em>Big Data</em>.</p>
@@ -1302,7 +1304,7 @@ Un artículo muy interesante es <a href="https://cloudcasts.io/article/what-you-
 Normalmente utilizaremos S3 para almacenar datos que utiliza una aplicación que se ejecuta fuera de S3 o para hacer copias de seguridad de información confidencial. Para estos casos de uso comunes, el acceso público a los buckets que contienen datos nunca debe ser otorgado.</p>
 <p>Disponemos de varias herramientas y posibilidades para controlar el acceso a los buckets u objetos de S3:</p>
 <ul>
-<li>Uso del bloqueo de acceso público, la cual anula de manera sencilla cualquier otra política o permisos de objetos.    </li>
+<li>Uso del bloqueo de acceso público, la cual anula de manera sencilla cualquier otra política o permisos de objetos.</li>
 <li>La escritura de políticas IAM que indiquen los usuarios o roles que pueden acceder a buckets y objetos específicos.</li>
 <li>La escritura de políticas de bucket que definan el acceso a buckets u objetos específicos, ya sea para conceder acceso entre cuentas de AWS o para conceder acceso público o anónimo a los datos de Amazon S3. Se utiliza cuando el usuario o el sistema no pueden autenticarse mediante IAM.</li>
 <li>Creación de puntos de acceso de S3, los cuales son nombres de alojamiento únicos que aplican permisos y controles de red definidos para las solicitudes que se realizan a través de él. Podemos crear puntos de acceso individualizados con nombres y permisos personalizados para cada aplicación que accede a los datos.</li>
@@ -1314,9 +1316,9 @@ Normalmente utilizaremos S3 para almacenar datos que utiliza una aplicación que
 También podemos cifrar los datos en tránsito y habilitar el cifrado del lado del servidor en nuestros objetos.</p>
 </div>
 <h2 id="s3-y-python">S3 y Python<a class="headerlink" href="#s3-y-python" title="Permanent link">&para;</a></h2>
-<p>AWS ofrece diferentes interfaces para interactuar con S3, siendo Python una de las formas. A continuación, vamos a crear una serie de scripts en nuestra máquina local que accede, añade o recupere objeto&lt;s de S3.</p>
-<p>Para autenticarnos en AWS desde nuestro sistema local, recuerda que necesitas copiar las credenciales de acceso en <code>~/.aws/credentials</code> o mediante las <a href="02aws.html#variablesEntorno">variables de entorno</a>.</p>
-<p>Para acceder a AWS desde <em>Python</em>, <em>Amazon</em> ofrece el <a href="https://aws.amazon.com/es/sdk-for-python/">SDK Boto3</a>. Para poder utilizarlo, la instalaremos mediante</p>
+<p>AWS ofrece diferentes interfaces para interactuar con S3, siendo Python una de las formas. A continuación, vamos a crear una serie de scripts en nuestra máquina local que accede, añade o recupere objetos de S3.</p>
+<p>Para autenticarnos en AWS desde nuestro sistema local, recuerda que necesitas copiar las credenciales de acceso en <code>~/.aws/credentials</code> (también puedes hacerlo mediante las <a href="02aws.html#variablesEntorno">variables de entorno</a>).</p>
+<p>Para acceder a AWS desde <em>Python</em>, <em>Amazon</em> ofrece el <a href="https://aws.amazon.com/es/sdk-for-python/">SDK Boto3</a>. Antes de utilizarlo, lo instalaremos mediante:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">pip install boto3</span>
 </code></pre></div>
 <p>Podéis consultar toda la información relativa a <em>Boto3</em> en su documentación oficial en
@@ -1387,7 +1389,7 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 </div>
 </div>
 <h3 id="caso-de-uso-1-comunicacion-con-s3">Caso de uso 1 - Comunicación con S3<a class="headerlink" href="#caso-de-uso-1-comunicacion-con-s3" title="Permanent link">&para;</a></h3>
-<p>Vamos a trabajar con el archivo <a href="resources/datosPeliculas.json">datosPeliculas.json</a> el cual contiene un listado de películas con las que trabajaremos en los siguientes casos de uso.</p>
+<p>Vamos a trabajar con el archivo <a href="resources/datosPeliculas.json">datosPeliculas.json</a> el cual contiene un listado de películas con las que trabajaremos en las siguientes sesiones.</p>
 <p>Primero vamos a ver cómo podemos subir el archivo a S3 mediante Python:</p>
 <div class="highlight"><span class="filename">upload-movies-s3.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
 <span class="linenos" data-linenos=" 2 "></span>
@@ -1431,7 +1433,7 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 <span class="linenos" data-linenos=" 9 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;fichero.json&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 <span class="linenos" data-linenos="10 "></span>    <span class="n">s3c</span><span class="o">.</span><span class="n">download_fileobj</span><span class="p">(</span><span class="s1">&#39;s3severo-boto3&#39;</span><span class="p">,</span> <span class="s1">&#39;datosPeliculas.json&#39;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="caso-de-uso-2-de-s3-a-dynamodb">Caso de uso 2 - De S3 a DynamoDB<a class="headerlink" href="#caso-de-uso-2-de-s3-a-dynamodb" title="Permanent link">&para;</a></h3>
+<h3 id="caso-de-uso-2-s3select-desde-python">Caso de uso 2 - S3Select desde Python<a class="headerlink" href="#caso-de-uso-2-s3select-desde-python" title="Permanent link">&para;</a></h3>
 <p>En este caso, vamos a coger datos de películas de un dataset público disponible en <a href="https://www.kaggle.com/sankha1998/tmdb-top-10000-popular-movies-dataset">https://www.kaggle.com/sankha1998/tmdb-top-10000-popular-movies-dataset</a></p>
 <p>El contenido del dataset es similar a:</p>
 <div class="highlight"><span class="filename">TMDb_updated.CSV</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span>,title,overview,original_language,vote_count,vote_average
@@ -1439,9 +1441,9 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 <span class="linenos" data-linenos="3 "></span>1,Bloodshot,&quot;After he ...&quot;,en,1349,7.2
 <span class="linenos" data-linenos="4 "></span>2,Bad Boys for Life,&quot;Marcus and Mike ...&quot;,en,2530,7.1
 </code></pre></div>
-<p>Una vez descargado <a href="resources/TMDb_updated.csv">TMDb_updated.CSV</a>, vamos a cargar la información en S3 dentro del bucket <code>s3severo-boto3</code>. </p>
+<p>Una vez descargado <a href="resources/TMDb_updated.csv">TMDb_updated.CSV</a>, vamos a cargar la información en S3 dentro del bucket <code>s3severo-boto3</code>.</p>
 <h4 id="s3select">S3Select<a class="headerlink" href="#s3select" title="Permanent link">&para;</a></h4>
-<p>Podemos realizar una consulta desde <em>Python</em> para poder automatizar un proceso ETL utilizando <em>S3Select</em> para recuperar el subconjunto de los datos, en concreto, información sobre las películas que tienen más de 10.000 votaciones.</p>
+<p>Podemos realizar una consulta desde <em>Python</em> para automatizar un proceso ETL utilizando <em>S3Select</em> para recuperar el subconjunto de los datos, en concreto, información sobre las películas que tienen más de 10.000 votaciones.</p>
 <div class="admonition info">
 <p class="admonition-title">S3Select vs AWS Athena</p>
 <p>Este tipo de procesamiento es más cómodo realizarlo mediante AWS Athena, el cual sí que permite realizar <em>join</em> entre diferentes datasets. <em>S3Select</em> sólo permite trabajar con una única tabla.</p>
@@ -1491,10 +1493,10 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 <p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) Realizar el módulo 7 (Almacenamiento) del curso <a href="https://awsacademy.instructure.com/courses/2243/">ACF de AWS</a>.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) Sigue el ejemplo de la web estática para crear un bucket que muestre el contenido como un sitio web. Adjunta una captura de pantalla del navegador una vez puedas acceder a la web.</p>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr>, <abbr title="Se ha determinado que se pueden almacenar tantos datos como se desee y decidir cómo utilizarlos más tarde.">CE5.2d</abbr>  / 1p) Sigue el ejemplo de la web estática para crear un bucket que muestre el contenido como un sitio web. Adjunta una captura de pantalla del navegador una vez puedas acceder a la web.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) A partir del ejemplo de S3 Select, realiza las consultas propuestas en la autoevaluación (utilizando el archivo comprimido) y realiza capturas donde se vea tanto la consulta como su resultado.</p>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) A partir del ejemplo de <em>S3 Select</em>, realiza las consultas propuestas en la autoevaluación (utilizando el archivo comprimido) y realiza capturas donde se vea tanto la consulta como su resultado.</p>
 </li>
 <li>
 <p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.">CE5.2a</abbr> / 1p) Realiza los casos de uso 1 y 2 de interacción desde Python con S3.</p>
@@ -1647,14 +1649,12 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
 
   
 
-
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input class="md-toggle" type="checkbox" id="__settings" >
+<input type="checkbox" class="md-toggle" id="__settings">
 <div class="md-consent__settings">
   <ul class="task-list">
     
-      
       
         
         
@@ -1689,10 +1689,10 @@ También podemos cifrar los datos en tránsito y habilitar el cifrado del lado d
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
     
   </body>
