@@ -1126,13 +1126,13 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 
 <p>Así pues, con el código del <em>Block Pool Id</em>, podemos confirmar que debe existir el directorio <code>current</code> del <em>datanode</em> donde almacena la información nuestro servidor (en `/opt/hadoop-data/):</p>
 <p><div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$ ls /opt/hadoop-data/hdfs/datanode/current
-<span class="linenos" data-linenos="2 "></span>BP-481169443-127.0.1.1-1639217848073  VERSION
-</code></pre></div>
+<span class="hll"><span class="linenos" data-linenos="2 "></span>BP-481169443-127.0.1.1-1639217848073  VERSION
+</span></code></pre></div>
 El valor que aparece coincide con el que hemos recuperado en la imagen.</p>
 <p>Dentro de este subdirectorio existe otro <code>finalized</code>, donde <em>Hadoop</em> irá creando una estructura de subdirectorios <code>subdir</code> donde albergará los bloques de datos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>iabd@iabd-virtualbox:~$ ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
-<span class="linenos" data-linenos=" 2 "></span>total <span class="m">172</span>
-<span class="linenos" data-linenos=" 3 "></span>drwxrwxr-x <span class="m">2</span> iabd iabd <span class="m">20480</span> dic <span class="m">22</span>  <span class="m">2021</span> subdir0
+<span class="hll"><span class="linenos" data-linenos=" 2 "></span>total <span class="m">172</span>
+</span><span class="linenos" data-linenos=" 3 "></span>drwxrwxr-x <span class="m">2</span> iabd iabd <span class="m">20480</span> dic <span class="m">22</span>  <span class="m">2021</span> subdir0
 <span class="linenos" data-linenos=" 4 "></span>drwxrwxr-x <span class="m">2</span> iabd iabd <span class="m">20480</span> dic <span class="m">22</span>  <span class="m">2021</span> subdir1
 <span class="linenos" data-linenos=" 5 "></span>drwxrwxr-x <span class="m">2</span> iabd iabd <span class="m">20480</span> dic <span class="m">22</span>  <span class="m">2021</span> subdir2
 <span class="linenos" data-linenos=" 6 "></span>drwxrwxr-x <span class="m">2</span> iabd iabd <span class="m">12288</span> feb  <span class="m">9</span>  <span class="m">2022</span> subdir3
@@ -1144,10 +1144,25 @@ El valor que aparece coincide con el que hemos recuperado en la imagen.</p>
 <span class="linenos" data-linenos="12 "></span>drwxrwxr-x <span class="m">2</span> iabd iabd  <span class="m">4096</span> nov <span class="m">30</span> <span class="m">17</span>:31 subdir9
 </code></pre></div>
 <p>Una vez en este nivel, vamos a buscar el archivo que coincide con el <em>block id</em> poniéndole como prefijo <code>blk_</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>find -name blk_1073744314
-</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$ <span class="nb">cd</span> /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
+<span class="linenos" data-linenos="2 "></span>iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ <span class="se">\</span>
+<span class="hll"><span class="linenos" data-linenos="3 "></span>&gt; find -name blk_1073744314
+</span></code></pre></div>
 <p>En mi caso devuelve <code>./subdir9/blk_1073744314</code>. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>head /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir6/blk_1073743451
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ <span class="se">\</span>
+<span class="linenos" data-linenos=" 2 "></span>&gt; <span class="nb">cd</span> subdir9
+<span class="linenos" data-linenos=" 3 "></span>iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir9$ <span class="se">\</span>
+<span class="hll"><span class="linenos" data-linenos=" 4 "></span>&gt; head blk_1073744314
+</span><span class="linenos" data-linenos=" 5 "></span>userId,movieId,rating,timestamp
+<span class="linenos" data-linenos=" 6 "></span><span class="m">1</span>,296,5.0,1147880044
+<span class="linenos" data-linenos=" 7 "></span><span class="m">1</span>,306,3.5,1147868817
+<span class="linenos" data-linenos=" 8 "></span><span class="m">1</span>,307,5.0,1147868828
+<span class="linenos" data-linenos=" 9 "></span><span class="m">1</span>,665,5.0,1147878820
+<span class="linenos" data-linenos="10 "></span><span class="m">1</span>,899,3.5,1147868510
+<span class="linenos" data-linenos="11 "></span><span class="m">1</span>,1088,4.0,1147868495
+<span class="linenos" data-linenos="12 "></span><span class="m">1</span>,1175,3.5,1147868826
+<span class="linenos" data-linenos="13 "></span><span class="m">1</span>,1217,3.5,1147878326
+<span class="linenos" data-linenos="14 "></span><span class="m">1</span>,1237,5.0,1147868839
 </code></pre></div>
 <h2 id="administracion">Administración<a class="headerlink" href="#administracion" title="Permanent link">&para;</a></h2>
 <p>Algunas de las opciones más útiles para administrar HDFS son:</p>
