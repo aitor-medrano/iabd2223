@@ -1101,7 +1101,7 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 <div class="admonition info">
 <p class="admonition-title">CRC</p>
 <p>Cuando recuperamos un archivo desde HDFS podemos indicarle que genere un fichero con el <em>checksum</em> CRC, y así poder comprobar la fiabilidad de los datos transmitidos.</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs fs -get -crc /user/iabd/archivo archivoLocal
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -get -crc /user/iabd/archivo archivoLocal
 </code></pre></div>
 </div>
 <h2 id="bloques">Bloques<a class="headerlink" href="#bloques" title="Permanent link">&para;</a></h2>
