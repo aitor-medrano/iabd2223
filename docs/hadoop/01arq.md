@@ -64,7 +64,7 @@ Su objetivo era montar un sistema robusto y tolerante a fallos, tanto humanos co
 
 Todos los datos que llegan al sistema van a ir por dos caminos, uno el lento (capa *batch*) y otro el rápido (capa *streaming*), que finalmente confluyen en la capa de consultas. Así pues, se compone de tres capas:
 
-* Capa **batch**: se encarga de gestionar los datos históricos y recalcular los resultados. De manera específica, la capa *batch* recibe todos los datos en crudo, los almacena de forma inmutable y los combina con el histórico existente (se añaden a los datos existente y los datos previos nunca se sobreescriben) y recalcula los resultados iterando sobre todo el conjunto de datos combinado. Cualquier cambio en un dato se almacena como un nuevo registro, no modifica nada, para así poder seguir el ^^linaje de los datos^^.
+* Capa **batch**: se encarga de gestionar los datos históricos y recalcular los resultados. De manera específica, la capa *batch* recibe todos los datos en crudo, los almacena de forma inmutable y los combina con el histórico existente (se añaden a los datos existente y los datos previos nunca se sobrescriben) y recalcula los resultados iterando sobre todo el conjunto de datos combinado. Cualquier cambio en un dato se almacena como un nuevo registro, no modifica nada, para así poder seguir el ^^linaje de los datos^^.
 
     !!! info inline end "Linaje de los datos"
         Indica las transformaciones que ha sufrido un dato, desde el origen hasta el estado actual, incluyendo las combinaciones con otros datos o el cambio del dato en sí a lo largo de su ciclo de vida.
@@ -237,7 +237,7 @@ Es muy importante siempre tener en mente lo rápido que evolucionan los casos de
 
 ## Actividades
 
-1. (RA5075.1 / CE5.1a / 2p) Contesta a las siguientes preguntas justificando tus repuestas:
+1. (RA5075.1 / CE5.1a / 2p) Contesta a las siguientes preguntas justificando tus respuestas:
     1. En una arquitectura *Lambda*, ¿cómo consigue la capa de streaming mostrar la más información más rápida que la de batch? ¿A coste de que se consigue la velocidad?
     2. Indica las diferencias en cantidad de datos y tiempo entre el procesamiento *batch* y en *streaming*.
     3. Respecto al procesamiento *batch*/*streaming* ¿Por qué *Spark* es una de las herramientas más utilizadas a día de hoy?
