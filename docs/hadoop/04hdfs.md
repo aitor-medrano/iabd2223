@@ -184,12 +184,12 @@ hdfs dfs -rm -r /user/iabd/datos
     Cuando recuperamos un archivo desde HDFS podemos indicarle que genere un fichero con el *checksum* CRC, y así poder comprobar la fiabilidad de los datos transmitidos.
 
     ``` bash
-    hdfs dfs fs -get -crc /user/iabd/archivo archivoLocal
+    hdfs dfs -get -crc /user/iabd/archivo archivoLocal
     ```
 
 ## Bloques
 
-A continuación vamos a ver cómo trabaja internamente HDFS con los bloques. Para el siguiente ejemplo, vamos a trabajar con un archivo que ocupe más de un bloque, como pueden ser [los datos de incidencias de bomberos de la ciudad de San Francisco](https://data.sfgov.org/api/views/nuek-vuh3/rows.csv).
+A continuación vamos a ver cómo trabaja internamente HDFS con los bloques. Para el siguiente ejemplo, vamos a trabajar con un archivo que ocupe más de un bloque, como pueden ser [los datos de 25 millones de películas](https://files.grouplens.org/datasets/movielens/ml-25m.zip). Una vez descargado y descomprimido, colocaremos el archivo `ratings.csv` dentro de HDFS.
 
 Comenzaremos creando un directorio dentro de HDFS llamado `prueba-hdfs`:
 
@@ -197,43 +197,76 @@ Comenzaremos creando un directorio dentro de HDFS llamado `prueba-hdfs`:
 hdfs dfs -mkdir /user/iabd/prueba-hdfs
 ```
 
-Una vez creado subimos el archivo con los taxis:
+Una vez creado subimos el archivo con las calificaciones de las películas:
 
 ``` bash
-hdfs dfs -put Fire_Department_Calls_for_Service.csv  /user/iabd/prueba-hdfs
+hdfs dfs -put ratings.csv  /user/iabd/prueba-hdfs
 ```
 
 Con el fichero subido nos vamos al interfaz gráfico de Hadoop (<http://iabd-virtualbox:9870/explorer.html#/>), localizamos el archivo y obtenemos el *Block Pool ID* del *block information*:
 
 <figure style="align: center;">
-    <img src="images/04hdfs-blockid.png">
+    <img src="images/04hdfs-ratings-blockpoolid.png" width="500px">
     <figcaption>Identificador de bloque</figcaption>
 </figure>
 
 Si desplegamos el combo de *block information*, podremos ver cómo ha partido el archivo CSV en 5 bloques (566 MB que ocupa el fichero CSV / 128 del tamaño del bloque).
 
+<figure style="align: center;">
+    <img src="images/04hdfs-ratings-blocks.png" width="500px">
+    <figcaption>Bloques del archivo</figcaption>
+</figure>
+
 Así pues, con el código del *Block Pool Id*, podemos confirmar que debe existir el directorio `current` del *datanode* donde almacena la información nuestro servidor (en `/opt/hadoop-data/):
 
-``` bash
-ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current
+``` bash hl_lines="2"
+iabd@iabd-virtualbox:~$ ls /opt/hadoop-data/hdfs/datanode/current
+BP-481169443-127.0.1.1-1639217848073  VERSION
 ```
+El valor que aparece coincide con el que hemos recuperado en la imagen.
 
 Dentro de este subdirectorio existe otro `finalized`, donde *Hadoop* irá creando una estructura de subdirectorios `subdir` donde albergará los bloques de datos:
 
-``` bash
-ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
+``` bash hl_lines="2"
+iabd@iabd-virtualbox:~$ ls /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
+total 172
+drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir0
+drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir1
+drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir2
+drwxrwxr-x 2 iabd iabd 12288 feb  9  2022 subdir3
+drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir4
+drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir5
+drwxrwxr-x 2 iabd iabd 12288 nov 28 20:16 subdir6
+drwxrwxr-x 2 iabd iabd 20480 nov 28 20:03 subdir7
+drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir8
+drwxrwxr-x 2 iabd iabd  4096 nov 30 17:31 subdir9
 ```
 
 Una vez en este nivel, vamos a buscar el archivo que coincide con el *block id* poniéndole como prefijo `blk_`:
 
-``` bash
-find -name blk_1073743451
+``` bash hl_lines="3"
+iabd@iabd-virtualbox:~$ cd /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ \
+> find -name blk_1073744314
 ```
 
-En mi caso devuelve `./subdir6/blk_1073743451`. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:
+En mi caso devuelve `./subdir9/blk_1073744314`. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:
 
-``` bash
-head /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir6/blk_1073743451
+``` bash hl_lines="4"
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ \
+> cd subdir9
+iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir9$ \
+> head blk_1073744314
+userId,movieId,rating,timestamp
+1,296,5.0,1147880044
+1,306,3.5,1147868817
+1,307,5.0,1147868828
+1,665,5.0,1147878820
+1,899,3.5,1147868510
+1,1088,4.0,1147868495
+1,1175,3.5,1147868826
+1,1217,3.5,1147878326
+1,1237,5.0,1147868839
 ```
 
 ## Administración
@@ -244,7 +277,8 @@ Algunas de las opciones más útiles para administrar HDFS son:
 * `hdfs fsck`: Comprueba el estado del sistema de ficheros. Si queremos comprobar el estado de un determinado directorio, lo indicamos mediante un segundo parámetro: `hdfs fsck /datos/prueba`
 * `hdfs dfsadmin -printTopology`: Muestra la topología, identificando los nodos que tenemos y al rack al que pertenece cada nodo.
 * `hdfs dfsadmin -listOpenFiles`: Comprueba si hay algún fichero abierto.
-* `hdfs dfsadmin -safemode enter`: Pone el sistema en modo seguro el cual evita la modificación de los recursos del sistema de archivos.
+* `hdfs dfsadmin -safemode enter`: Pone el sistema en modo seguro, el cual evita la modificación de los recursos del sistema de archivos.
+* `hdfs dfsadmin -safemode leave`: Sale del modo seguro.
 
 ### *Snapshots*
 
@@ -455,7 +489,7 @@ Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla
     5. Crea una instantánea de la carpeta llamada `ss1`.
     6. Elimina ambos ficheros del quijote.
     7. Comprueba que la carpeta está vacía.
-    8. Recupera desde `ss` el archivo `el_quijote.txt`.
+    8. Recupera desde `ss1` el archivo `el_quijote.txt`.
     9. Crea una nueva instantánea de la carpeta llamada `ss2`.
     10. Muestra el contenido de la carpeta `/user/iabd/snaps` así como de sus *snapshots*.
 
