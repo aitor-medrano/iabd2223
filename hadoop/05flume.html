@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/05flume.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -153,7 +153,6 @@
         
           
           
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -161,7 +160,6 @@
             </label>
           
         
-          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -408,18 +406,22 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
         
           
             
+          
+        
           
         
           
@@ -524,6 +526,199 @@
 
             
           
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S43.- Sqoop y Flume
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="05flume.html" class="md-nav__link md-nav__link--active">
+        S43.- Sqoop y Flume
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sqoop" class="md-nav__link">
+    Sqoop
+  </a>
+  
+    <nav class="md-nav" aria-label="Sqoop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#importando-datos" class="md-nav__link">
+    Importando datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-1-importando-datos-desde-mariadb" class="md-nav__link">
+    Caso 1 - Importando datos desde MariaDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-2-exportando-datos-a-mariadb" class="md-nav__link">
+    Caso 2 - Exportando datos a MariaDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatos-avro-y-parquet" class="md-nav__link">
+    Formatos Avro y Parquet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trabajando-con-datos-comprimidos" class="md-nav__link">
+    Trabajando con datos comprimidos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importando-con-filtros" class="md-nav__link">
+    Importando con filtros
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importacion-incremental" class="md-nav__link">
+    Importación incremental
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trabajando-con-hive" class="md-nav__link">
+    Trabajando con Hive
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flume" class="md-nav__link">
+    Flume
+  </a>
+  
+    <nav class="md-nav" aria-label="Flume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    Arquitectura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probando-flume" class="md-nav__link">
+    Probando Flume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurando-un-agente" class="md-nav__link">
+    Configurando un agente
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-3a-almacenando-en-hdfs" class="md-nav__link">
+    Caso 3a - Almacenando en HDFS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-3b-de-netcat-a-hdfs" class="md-nav__link">
+    Caso 3b - De Netcat a HDFS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-4-flujos-encadenados" class="md-nav__link">
+    Caso 4 - Flujos encadenados
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-5-flujo-multi-agente" class="md-nav__link">
+    Caso 5 - Flujo multi-agente
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -548,6 +743,10 @@
         
           
             
+          
+        
+          
+        
           
         
           
@@ -614,6 +813,34 @@
     <li class="md-nav__item">
       <a href="../cloud/03s3.html" class="md-nav__link">
         S40.- S3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/04computacion.html" class="md-nav__link">
+        S44.- EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/05emr.html" class="md-nav__link">
+        S44.- EMR
       </a>
     </li>
   
@@ -799,15 +1026,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
+  <a href="#referencias" class="md-nav__link">
+    Referencias
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
+  <a href="#actividades" class="md-nav__link">
+    Actividades
   </a>
   
 </li>
@@ -1640,6 +1867,14 @@ Si quieres profundizar en el tema, el siguiente artículo detalla los diferentes
 <a href="https://data-flair.training/blogs/flume-interceptors/">https://data-flair.training/blogs/flume-interceptors/</a></p>
 </div>
 <p>En este caso, para poder probarlo, además de enviar comandos <em>Netstat</em> en <code>curl telnet://localhost:10004</code>, prueba a colocar un archivo de texto (por ejemplo, un documento CSV) en <code>/home/iabd/flume/spoolDir</code>.</p>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Página oficial de <a href="https://sqoop.apache.org">Sqoop</a></li>
+<li><a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html">Sqoop User Guide</a></li>
+<li><a href="https://www.tutorialspoint.com/sqoop/index.htm">Sqoop Tutorial</a> en <em>Tutorialspoint</em></li>
+<li>Página oficial de <a href="https://flume.apache.org/">Flume</a></li>
+<li><a href="https://flume.apache.org/FlumeUserGuide.html">Flume User Guide</a></li>
+</ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <div class="admonition tip">
 <p class="admonition-title">Preparación MariaBD</p>
@@ -1654,35 +1889,30 @@ Si quieres profundizar en el tema, el siguiente artículo detalla los diferentes
 </div>
 <ol>
 <li>
-<p>Haciendo uso de <em>Sqoop</em> y la base de datos <em>retail_db</em>, importa todos los pedidos de la tabla <code>orders</code> cuyo campo <code>order_status</code> sea <code>COMPLETE</code>.</p>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.">CE4.3a</abbr> y <abbr title="Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.">CE4.3b</abbr> / 1p) Haciendo uso de <em>Sqoop</em> y la base de datos <em>retail_db</em>, importa:</p>
+<ol>
+<li>
+<p>Todos los pedidos de la tabla <code>orders</code> cuyo campo <code>order_status</code> sea <code>COMPLETE</code>.</p>
 <p>Coloca los datos en <code>user/iabd/sqoop/orders/datos_parquet</code> en formato Parquet, utilizando el tabulador como delimitador de campos y utilizando la compresión Snappy. Deberás recuperar 22.899 (¿o 22.902?) registros.</p>
 </li>
 <li>
-<p>Haciendo uso de <em>Sqoop</em> y la base de datos <em>retail_db</em>, importa todos los clientes de la tabla <code>customers</code> cuyo campo <code>state</code> sea <code>CA</code>.</p>
+<p>Todos los clientes de la tabla <code>customers</code> cuyo campo <code>state</code> sea <code>CA</code>.</p>
 <p>Coloca los datos en <code>user/iabd/sqoop/customers/datos_avro</code> en formato Avro,  utilizando la compresión bzip2. Deberás recuperar las columnas <code>customer_id, customer_fname, customer_lname, customer_state</code>. El resultado contendrá 2012 registros.</p>
 </li>
-<li>
-<p>Mediante <em>Flume</em>, realiza los caso de uso 3, 4 y 5.</p>
-</li>
 </ol>
-<p>FIXME: Revisar claves de Twitter</p>
-<ol start="4">
+</li>
 <li>
-<p>(opcional) Haciendo uso de Flume, recupera información de Twitter y almacénala en HDFS. Para ello, utiliza el <a href="https://flume.apache.org/FlumeUserGuide.html#twitter-1-firehose-source-experimental">Twitter 1% Firehouse source</a> y el <a href="https://flume.apache.org/FlumeUserGuide.html#hdfs-sink">HDFS sink</a>. Para ello, necesitaréis las claves de desarrollo que ya creamos en las sesiones sobre Nifi. Adjunta una captura de pantalla donde se visualice el contenido de uno de los bloques de HDFS.</p>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.">CE4.3a</abbr> y <abbr title="Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.">CE4.3b</abbr> / 2p) Mediante <em>Flume</em>, realiza los caso de uso 3, 4 y 5.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.">CE4.3a</abbr>, <abbr title="Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.">CE4.3b</abbr> y <abbr title="Se ha comprobado que la revolución digital exige poder almacenar y procesar ingentes cantidades de datos de distinto tipo y descubrir su valor.">CE4.3c</abbr> / 1p) Haciendo uso de Flume, recupera información de Twitter y almacénala en HDFS. Para ello, utiliza el <a href="https://flume.apache.org/FlumeUserGuide.html#twitter-1-firehose-source-experimental">Twitter 1% Firehouse source</a> y el <a href="https://flume.apache.org/FlumeUserGuide.html#hdfs-sink">HDFS sink</a>.</p>
+<p>Para ello, necesitaréis las claves de desarrollo de <em>Twitter</em>. Adjunta una captura de pantalla donde se visualice el contenido de uno de los bloques de HDFS.</p>
 <div class="admonition tip">
 <p class="admonition-title">Cuidado con el espacio de almacenamiento</p>
 <p>Una vez lances el agente, detenlo a los tres segundos para no llenar de datos HDFS.</p>
 </div>
 </li>
 </ol>
-<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
-<ul>
-<li>Página oficial de <a href="https://sqoop.apache.org">Sqoop</a></li>
-<li><a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html">Sqoop User Guide</a></li>
-<li><a href="https://www.tutorialspoint.com/sqoop/index.htm">Sqoop Tutorial</a> en <em>Tutorialspoint</em></li>
-<li>Página oficial de <a href="https://flume.apache.org/">Flume</a></li>
-<li><a href="https://flume.apache.org/FlumeUserGuide.html">Flume User Guide</a></li>
-</ul>
 
 
   
@@ -1750,6 +1980,42 @@ Si quieres profundizar en el tema, el siguiente artículo detalla los diferentes
       
         <footer class="md-footer">
   
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="04formatos.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S39.- Formatos de datos" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              S39.- Formatos de datos
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../cloud/index.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: Unidad de Trabajo 6.- Datos en el cloud" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Siguiente
+              </span>
+              Unidad de Trabajo 6.- Datos en el cloud
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -1809,14 +2075,12 @@ Si quieres profundizar en el tema, el siguiente artículo detalla los diferentes
 
   
 
-
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input class="md-toggle" type="checkbox" id="__settings" >
+<input type="checkbox" class="md-toggle" id="__settings">
 <div class="md-consent__settings">
   <ul class="task-list">
     
-      
       
         
         
@@ -1851,10 +2115,10 @@ Si quieres profundizar en el tema, el siguiente artículo detalla los diferentes
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
     
   </body>

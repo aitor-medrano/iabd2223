@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/01arq.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.472b142f.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.08040f6c.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -153,7 +153,6 @@
         
           
           
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -161,7 +160,6 @@
             </label>
           
         
-          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -434,6 +432,8 @@
         
           
         
+          
+        
       
       
         
@@ -670,6 +670,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05flume.html" class="md-nav__link">
+        S43.- Sqoop y Flume
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -694,6 +708,10 @@
         
           
             
+          
+        
+          
+        
           
         
           
@@ -760,6 +778,34 @@
     <li class="md-nav__item">
       <a href="../cloud/03s3.html" class="md-nav__link">
         S40.- S3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/04computacion.html" class="md-nav__link">
+        S44.- EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/05emr.html" class="md-nav__link">
+        S44.- EMR
       </a>
     </li>
   
@@ -980,7 +1026,7 @@ En informática, un sistema de tiempo real es aquel que responde en un periodo d
 <p>Todos los datos que llegan al sistema van a ir por dos caminos, uno el lento (capa <em>batch</em>) y otro el rápido (capa <em>streaming</em>), que finalmente confluyen en la capa de consultas. Así pues, se compone de tres capas:</p>
 <ul>
 <li>
-<p>Capa <strong>batch</strong>: se encarga de gestionar los datos históricos y recalcular los resultados. De manera específica, la capa <em>batch</em> recibe todos los datos en crudo, los almacena de forma inmutable y los combina con el histórico existente (se añaden a los datos existente y los datos previos nunca se sobreescriben) y recalcula los resultados iterando sobre todo el conjunto de datos combinado. Cualquier cambio en un dato se almacena como un nuevo registro, no modifica nada, para así poder seguir el <ins>linaje de los datos</ins>.</p>
+<p>Capa <strong>batch</strong>: se encarga de gestionar los datos históricos y recalcular los resultados. De manera específica, la capa <em>batch</em> recibe todos los datos en crudo, los almacena de forma inmutable y los combina con el histórico existente (se añaden a los datos existente y los datos previos nunca se sobrescriben) y recalcula los resultados iterando sobre todo el conjunto de datos combinado. Cualquier cambio en un dato se almacena como un nuevo registro, no modifica nada, para así poder seguir el <ins>linaje de los datos</ins>.</p>
 <div class="admonition info inline end">
 <p class="admonition-title">Linaje de los datos</p>
 <p>Indica las transformaciones que ha sufrido un dato, desde el origen hasta el estado actual, incluyendo las combinaciones con otros datos o el cambio del dato en sí a lo largo de su ciclo de vida.</p>
@@ -1126,7 +1172,7 @@ Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de 
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos">RA5075.1</abbr> / <abbr title="Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos.">CE5.1a</abbr> / 2p) Contesta a las siguientes preguntas justificando tus repuestas:<ol>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos">RA5075.1</abbr> / <abbr title="Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos.">CE5.1a</abbr> / 2p) Contesta a las siguientes preguntas justificando tus respuestas:<ol>
 <li>En una arquitectura <em>Lambda</em>, ¿cómo consigue la capa de streaming mostrar la más información más rápida que la de batch? ¿A coste de que se consigue la velocidad?</li>
 <li>Indica las diferencias en cantidad de datos y tiempo entre el procesamiento <em>batch</em> y en <em>streaming</em>.</li>
 <li>Respecto al procesamiento <em>batch</em>/<em>streaming</em> ¿Por qué <em>Spark</em> es una de las herramientas más utilizadas a día de hoy?</li>
@@ -1295,14 +1341,12 @@ Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de 
 
   
 
-
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input class="md-toggle" type="checkbox" id="__settings" >
+<input type="checkbox" class="md-toggle" id="__settings">
 <div class="md-consent__settings">
   <ul class="task-list">
     
-      
       
         
         
@@ -1337,10 +1381,10 @@ Dado que en ambientes de Big Data el ser capaz de manejar grandes volúmenes de 
       </div>
       <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
     
   </body>
