@@ -504,10 +504,10 @@ Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla
     8. Accede a la carpeta del *namenode* y comprueba que los *fsimage* del *namenode* son iguales.
 
 *[RA5075.3]: Genera mecanismos de integridad de los datos, comprobando su mantenimiento en los sistemas de ficheros distribuidos y valorando la sobrecarga que conlleva en el tratamiento de los datos.
-*[CE5.3a]: Se ha valorado la importancia de la calidad de los datos en los sistemas de ficheros distribuidos. 
+*[CE5.3a]: Se ha valorado la importancia de la calidad de los datos en los sistemas de ficheros distribuidos.
 *[CE5.3b]: Se ha valorado que a mayor volumen de tratamiento de datos corresponde un mayor peligro relacionado con la integridad de los datos. 
-*[CE5.3c]: Se ha reconocido que los sistemas de ficheros distribuidos implementan una suma de verificación para la comprobación de los contenidos de los archivos. 
-*[CE5.3d]: Se ha reconocido el papel del servidor en los procesos previos a la suma de verificación. 
+*[CE5.3c]: Se ha reconocido que los sistemas de ficheros distribuidos implementan una suma de verificación para la comprobación de los contenidos de los archivos.
+*[CE5.3d]: Se ha reconocido el papel del servidor en los procesos previos a la suma de verificación.
 
 *[RA5075.4]:  Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen
 *[CE5.4a]: Se han aplicado herramientas de monitorización eficiente de los recursos.
