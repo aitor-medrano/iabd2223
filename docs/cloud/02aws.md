@@ -43,7 +43,7 @@ Los servicios que ofrece AWS relativos a la informática o computación son:
 * ***Amazon Elastic Beanstalk***: servicio para desplegar y escalar aplicaciones y/o servicios web desarrolladas en *Java* / *PHP* / *Python* en servidores web conocidos, como *Apache*, *Nginx*, Passenger o IIS.
 * ***AWS Lambda***: permite ejecutar código sin necesidad de aprovisionar ni administrador servidores (*serverless*). Se sube el código fuente a ejecutar, y AWS se encarga de ejecutarlo y escalarlo conforme necesite. Sólo se paga por el tiempo de computación (cuando el código no se ejecuta, no se paga nada).
 
-Estos servicios los veremos en mayor profundidad en la sesión [Computación en AWS](05computacion.md).
+Estos servicios los veremos en mayor profundidad en la sesión [Computación en AWS](04computacion.md).
 
 Los servicios que están relacionado con el uso de contenedores son:
 
@@ -246,7 +246,7 @@ Los principales componentes son:
     * No hay ningún grupo predeterminado que incluya automáticamente a todos los usuarios de la cuenta de AWS.
 * **Política de IAM**: documento que define permisos para determinar lo que los usuarios pueden hacer en la cuenta de AWS. Una política normalmente concede acceso a recursos determinados y especifica lo que el usuario puede hacer con esos recursos, aunque también pueden denegar explícitamente el acceso.
 * **Rol**: herramienta para conceder acceso temporal a recursos de AWS específicos de una cuenta de AWS. Un rol de IAM puede tener asociadas políticas de permisos y se puede utilizar para delegar acceso temporal a usuarios o aplicaciones. Dicho de otro modo, un rol de IAM es similar a un usuario, ya que es una identidad de AWS con políticas de permisos que establecen qué puede hacer o no la identidad en AWS. Sin embargo, en lugar de estar asociada únicamente a una persona, el objetivo es que pueda asignarse un rol a cualquier persona que lo necesite.  
-También es conveniente destacar que cuando se asume un rol, se proporcionan credenciales de seguridad temporales para la sesión de rol, de manera que es conveniente utilizar roles para delegar el acceso a usuarios, aplicaciones o servicios que normalmente no tendrían acceso a los recursos de AWS. Veremos el uso de roles en la [configuración de la creación de instancias EC2](05computacion.md#paso-3-configuracion-de-la-instancia-red).
+También es conveniente destacar que cuando se asume un rol, se proporcionan credenciales de seguridad temporales para la sesión de rol, de manera que es conveniente utilizar roles para delegar el acceso a usuarios, aplicaciones o servicios que normalmente no tendrían acceso a los recursos de AWS. Veremos el uso de roles en la [configuración de la creación de instancias EC2](04computacion.md#paso-3-configuracion-de-la-instancia-red).
 
 !!! tip "Consejo"
     Es recomendable crear una cuenta de usuario IAM por separado con privilegios administrativos en lugar de utilizar el usuario de la cuenta raíz.
