@@ -383,7 +383,7 @@ Si accedemos a `http://iabd-virtualbox:9870/` podremos visualizar su interfaz we
 
 Para arrancar YARN utilizaremos el comando `start-yarn.sh` para lanzar el *Resource Manager* y el *Node Manager*:
 
-Y a su vez, YARN también ofrece un interfaz web para obtener información relativa a los jobs ejecutados. Nos conectaremos con el nombre del nodo principal y el puerto `8088`. En nuestro caso lo hemos realizado a `http://hadoop-virtualbox:8088` obteniendo la siguiente página:
+Y a su vez, YARN también ofrece un interfaz web para obtener información relativa a los jobs ejecutados. Nos conectaremos con el nombre del nodo principal y el puerto `8088`. En nuestro caso lo hemos realizado a `http://iabd-virtualbox:8088` obteniendo la siguiente página:
 
 <figure style="align: center">
     <img src="images/03yarn-web.png">
