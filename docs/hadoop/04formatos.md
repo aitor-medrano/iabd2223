@@ -302,7 +302,7 @@ Vamos a leer un fichero *CSV* de [ventas](resources/pdi_sales.csv) mediante *Pan
 
 !!! tip "Acceso HDFS"
 
-    Aunque todavía no hayamos estudiado el ecosistema Hadoop, vamos a ver como podemos conectarnos a HDFS para leer y persistir datos en formato *Avro*:
+    También podemos conectarnos a HDFS para leer y persistir datos en formato *Avro*:
 
     ``` python
     import pandas as pd
@@ -580,7 +580,7 @@ Los fichero *ORC* se componen de tiras de datos (*stripes*), donde cada tira con
 
 ### ORC y Python
 
-Para crear archivos ORC y leerlos, volvemos a necesitar la librería [*PyArrow*](https://arrow.apache.org/docs/python/).
+Para crear archivos *ORC* y leerlos, volvemos a necesitar la librería [*PyArrow*](https://arrow.apache.org/docs/python/).
 
 Así pues, para la escritura de datos, por ejemplo, desde un Dataframe, haríamos:
 
@@ -617,11 +617,11 @@ Los formatos basados en filas ofrecen un rendimiento mayor en las escrituras que
 
 Respecto a la compresión, entendiendo que ofrece una ventaja a la hora de almacenar y transmitir la información, es útil cuando trabajamos con un gran volumen de datos. Los formatos basado en columnas ofrecen un mejor rendimiento ya que todos los datos del mismo tipo se almacenan de forma contigua lo que permite una mayor eficiencia en la compresión (además, cada tipo de columna tiene su propia codificación).
 
-Respecto a la evolución del esquema, con operaciones como añadir o eliminar columnas o cambiar su nombre, la mejor decisión es decantarse por Avro. Además, al tener el esquema en JSON facilita su gestión y permite que tengan más de un esquema.
+Respecto a la evolución del esquema, con operaciones como añadir o eliminar columnas o cambiar su nombre, la mejor decisión es decantarse por *Avro*. Además, al tener el esquema en *JSON* facilita su gestión y permite que tengan más de un esquema.
 
-Si nuestros documentos tienen una estructura compleja compuesta por columnas anidadas y normalmente realizamos consultas sobre un subconjunto de las subcolumnas, la elección debería ser Parquet, por la estructura que utiliza.
+Si nuestros documentos tienen una estructura compleja compuesta por columnas anidadas y normalmente realizamos consultas sobre un subconjunto de las subcolumnas, la elección debería ser *Parquet*, por la estructura que utiliza.
 
-Finalmente, recordar que ORC está especialmente enfocado a su uso con Hive, mientras que Spark tiene un amplio soporte para Parquet y que si trabajamos con Kafka, Avro es una buena elección.
+Finalmente, recordar que ORC está especialmente enfocado a su uso con Hive, mientras que *Spark* tiene un amplio soporte para *Parquet* y que si trabajamos con *Kafka*, *Avro* es una buena elección.
 
 <figure style="align: center;">
     <img src="images/04data-comparison.png">
@@ -636,7 +636,7 @@ Si comparamos los tamaños de los archivos respecto al formato de datos empleado
     * `ger_sales-snappy.avro`:  2,8 MiB
 * `ger_sales.parquet`: 2,3 MiB
     * `ger_sales-gzip.parquet`: 1,6 MiB
-    * `ger_sales-snappy.parquet`: 2,3 MiBa
+    * `ger_sales-snappy.parquet`: 2,3 MiB
 * `ger_sales.orc`: 6,98 MiB
 
 ## Referencias
