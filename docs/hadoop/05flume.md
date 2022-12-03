@@ -966,6 +966,14 @@ Una vez ha arrancado, en una nueva pestaña, lanzamos el multi agente:
 
 En este caso, para poder probarlo, además de enviar comandos *Netstat* en `curl telnet://localhost:10004`, prueba a colocar un archivo de texto (por ejemplo, un documento CSV) en `/home/iabd/flume/spoolDir`.
 
+## Referencias
+
+* Página oficial de [Sqoop](https://sqoop.apache.org)
+* [Sqoop User Guide](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html)
+* [Sqoop Tutorial](https://www.tutorialspoint.com/sqoop/index.htm) en *Tutorialspoint*
+* Página oficial de [Flume](https://flume.apache.org/)
+* [Flume User Guide](https://flume.apache.org/FlumeUserGuide.html)
+
 ## Actividades
 
 !!! tip "Preparación MariaBD"
@@ -982,27 +990,26 @@ En este caso, para poder probarlo, además de enviar comandos *Netstat* en `curl
     show tables;
     ``` 
 
-1. Haciendo uso de *Sqoop* y la base de datos *retail_db*, importa todos los pedidos de la tabla `orders` cuyo campo `order_status` sea `COMPLETE`.
+1. (RA5074.3 / CE4.3a y CE4.3b / 1p) Haciendo uso de *Sqoop* y la base de datos *retail_db*, importa:
 
-    Coloca los datos en `user/iabd/sqoop/orders/datos_parquet` en formato Parquet, utilizando el tabulador como delimitador de campos y utilizando la compresión Snappy. Deberás recuperar 22.899 (¿o 22.902?) registros.
+    1. Todos los pedidos de la tabla `orders` cuyo campo `order_status` sea `COMPLETE`.
 
-2. Haciendo uso de *Sqoop* y la base de datos *retail_db*, importa todos los clientes de la tabla `customers` cuyo campo `state` sea `CA`.
+        Coloca los datos en `user/iabd/sqoop/orders/datos_parquet` en formato Parquet, utilizando el tabulador como delimitador de campos y utilizando la compresión Snappy. Deberás recuperar 22.899 (¿o 22.902?) registros.
 
-    Coloca los datos en `user/iabd/sqoop/customers/datos_avro` en formato Avro,  utilizando la compresión bzip2. Deberás recuperar las columnas `customer_id, customer_fname, customer_lname, customer_state`. El resultado contendrá 2012 registros.
+    2. Todos los clientes de la tabla `customers` cuyo campo `state` sea `CA`.
 
-3. Mediante *Flume*, realiza los caso de uso 3, 4 y 5.
+        Coloca los datos en `user/iabd/sqoop/customers/datos_avro` en formato Avro,  utilizando la compresión bzip2. Deberás recuperar las columnas `customer_id, customer_fname, customer_lname, customer_state`. El resultado contendrá 2012 registros.
 
-FIXME: Revisar claves de Twitter
+2. (RA5074.3 / CE4.3a y CE4.3b / 2p) Mediante *Flume*, realiza los caso de uso 3, 4 y 5.
 
-4. (opcional) Haciendo uso de Flume, recupera información de Twitter y almacénala en HDFS. Para ello, utiliza el [Twitter 1% Firehouse source](https://flume.apache.org/FlumeUserGuide.html#twitter-1-firehose-source-experimental) y el [HDFS sink](https://flume.apache.org/FlumeUserGuide.html#hdfs-sink). Para ello, necesitaréis las claves de desarrollo que ya creamos en las sesiones sobre Nifi. Adjunta una captura de pantalla donde se visualice el contenido de uno de los bloques de HDFS.
+3. (RA5074.3 / CE4.3a, CE4.3b y CE4.3c / 1p) Haciendo uso de Flume, recupera información de Twitter y almacénala en HDFS. Para ello, utiliza el [Twitter 1% Firehouse source](https://flume.apache.org/FlumeUserGuide.html#twitter-1-firehose-source-experimental) y el [HDFS sink](https://flume.apache.org/FlumeUserGuide.html#hdfs-sink).
+
+    Para ello, necesitaréis las claves de desarrollo de *Twitter*. Adjunta una captura de pantalla donde se visualice el contenido de uno de los bloques de HDFS.
 
     !!! tip "Cuidado con el espacio de almacenamiento"
         Una vez lances el agente, detenlo a los tres segundos para no llenar de datos HDFS.
 
-## Referencias
-
-* Página oficial de [Sqoop](https://sqoop.apache.org)
-* [Sqoop User Guide](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html)
-* [Sqoop Tutorial](https://www.tutorialspoint.com/sqoop/index.htm) en *Tutorialspoint*
-* Página oficial de [Flume](https://flume.apache.org/)
-* [Flume User Guide](https://flume.apache.org/FlumeUserGuide.html)
+*[RA5074.3]: Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.
+*[CE4.3a]: Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.
+*[CE4.3b]: Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.
+*[CE4.3c]: Se ha comprobado que la revolución digital exige poder almacenar y procesar ingentes cantidades de datos de distinto tipo y descubrir su valor.
