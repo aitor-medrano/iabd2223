@@ -9,7 +9,6 @@ nav:
       - "S18.- Almacenamiento de datos. NoSQL": "sa/01nosql.md"
       - "S19.- MongoDB": "sa/02mongo.md"
       - "S21.- Modelado de datos NoSQL": "sa/03modelado.md"
-#          - "S21.- Formatos de datos": "sa/04formatos.md"
       - "S25.- Agregaciones": "sa/05agregaciones.md"
       - "S28.- Replicación y Particionado": "sa/06replicacion.md"
       - "S30.- MongoDB y Python": "sa/07pymongo.md"
@@ -20,11 +19,14 @@ nav:
       - "S38.- Hadoop": "hadoop/03hadoop.md"
       - "S39.- HDFS": "hadoop/04hdfs.md"
       - "S39.- Formatos de datos": "hadoop/04formatos.md"
+      - "S43.- Sqoop y Flume": "hadoop/05flume.md"
   - "UT6.- Datos en el cloud":
       - "cloud/index.md"
       - "S33.- Cloud": "cloud/01cloud.md"
       - "S33.- AWS": "cloud/02aws.md"
       - "S40.- S3": "cloud/03s3.md"
+      - "S44.- EC2": "cloud/04computacion.md"
+      - "S44.- EMR": "cloud/05emr.md"
   - "UT7.- PIAFP Lara": "https://aitor-medrano.github.io/pia2223/"
 
 theme:
