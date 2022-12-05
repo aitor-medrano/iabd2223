@@ -1,0 +1,1930 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Apuntes sobre el uso de Sqoop para leer y escribir datos en HDFS y MariaDB, con formatos de datos tanto Avro como Parquet. Mediante Flume estudiamos el uso de agentes, sources y sinks para conectar diferentes agentes y realizar un proceso de ingesta de datos en streaming.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/05flume-DESKTOP-04QD0SR.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+    
+    
+      
+        <title>Sqoop y Flume. Herramientas de ingesta de datos en y desde Hadoop. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Sqoop y Flume. Herramientas de ingesta de datos en y desde Hadoop. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Apuntes sobre el uso de Sqoop para leer y escribir datos en HDFS y MariaDB, con formatos de datos tanto Avro como Parquet. Mediante Flume estudiamos el uso de agentes, sources y sinks para conectar diferentes agentes y realizar un proceso de ingesta de datos en streaming." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/05flume-DESKTOP-04QD0SR.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/hadoop/05flume-DESKTOP-04QD0SR.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Sqoop y Flume. Herramientas de ingesta de datos en y desde Hadoop. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Apuntes sobre el uso de Sqoop para leer y escribir datos en HDFS y MariaDB, con formatos de datos tanto Avro como Parquet. Mediante Flume estudiamos el uso de agentes, sources y sinks para conectar diferentes agentes y realizar un proceso de ingesta de datos en streaming." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/05flume-DESKTOP-04QD0SR.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sqoop-flume" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sqoop y Flume. Herramientas de ingesta de datos en y desde Hadoop.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">UT2.- Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT2.- Sistemas de almacenamiento" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          UT2.- Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">UT5.- Ecosistema Hadoop</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT5.- Ecosistema Hadoop" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          UT5.- Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="03hadoop.html" class="md-nav__link">
+        S38.- Hadoop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04hdfs.html" class="md-nav__link">
+        S39.- HDFS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04formatos.html" class="md-nav__link">
+        S39.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05flume.html" class="md-nav__link">
+        S43.- Sqoop y Flume
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">UT6.- Datos en el cloud</a>
+          
+            <label for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="UT6.- Datos en el cloud" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          UT6.- Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/03s3.html" class="md-nav__link">
+        S40.- S3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/04computacion.html" class="md-nav__link">
+        S44.- EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/05emr.html" class="md-nav__link">
+        S44.- EMR
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        UT7.- PIAFP Lara
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sqoop" class="md-nav__link">
+    Sqoop
+  </a>
+  
+    <nav class="md-nav" aria-label="Sqoop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#importando-datos" class="md-nav__link">
+    Importando datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-1-importando-datos-desde-mariadb" class="md-nav__link">
+    Caso 1 - Importando datos desde MariaDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-2-exportando-datos-a-mariadb" class="md-nav__link">
+    Caso 2 - Exportando datos a MariaDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#formatos-avro-y-parquet" class="md-nav__link">
+    Formatos Avro y Parquet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trabajando-con-datos-comprimidos" class="md-nav__link">
+    Trabajando con datos comprimidos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importando-con-filtros" class="md-nav__link">
+    Importando con filtros
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#importacion-incremental" class="md-nav__link">
+    Importación incremental
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trabajando-con-hive" class="md-nav__link">
+    Trabajando con Hive
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flume" class="md-nav__link">
+    Flume
+  </a>
+  
+    <nav class="md-nav" aria-label="Flume">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    Arquitectura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probando-flume" class="md-nav__link">
+    Probando Flume
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configurando-un-agente" class="md-nav__link">
+    Configurando un agente
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-3a-almacenando-en-hdfs" class="md-nav__link">
+    Caso 3a - Almacenando en HDFS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-3b-de-netcat-a-hdfs" class="md-nav__link">
+    Caso 3b - De Netcat a HDFS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-4-flujos-encadenados" class="md-nav__link">
+    Caso 4 - Flujos encadenados
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-5-flujo-multi-agente" class="md-nav__link">
+    Caso 5 - Flujo multi-agente
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="sqoop-flume">Sqoop / Flume<a class="headerlink" href="#sqoop-flume" title="Permanent link">&para;</a></h1>
+<p>Las dos herramientas principales utilizadas para importar/exportar datos en <em>HDFS</em> son Sqoop y Flume, las cuales vamos a estudiar a continuación.</p>
+<h2 id="sqoop">Sqoop<a class="headerlink" href="#sqoop" title="Permanent link">&para;</a></h2>
+<figure style="float: right;">
+    <img src="images/05sqoop-logo.png">
+    <figcaption>Logo de Apache Sqoop</figcaption>
+</figure>
+
+<p><em>Apache Sqoop</em> (<a href="https://sqoop.apache.org">https://sqoop.apache.org</a>) es una herramienta diseñada para transferir de forma eficiente datos crudos entre un cluster de Hadoop y un almacenamiento estructurado, como una base de datos relacional.</p>
+<div class="admonition caution">
+<p class="admonition-title">Sin continuidad</p>
+<p>Desde Junio de 2021, el proyecto <em>Sqoop</em> ha dejado de mantenerse como proyecto de Apache y forma parte del <em>ático</em>. Aún así, creemos conveniente conocer su uso en el estado actual. Gran parte de las funcionalidad que ofrece <em>Sqoop</em> se pueden realizar mediante <em>Nifi</em> o <em>Spark</em>.</p>
+</div>
+<p>Un caso típico de uso es el de cargar los datos en un <em>data lake</em>  (ya sea en HDFS o en S3) con datos que importaremos desde una base de datos, como <em>MariaDB</em>, <em>PostgreSQL</em> o <em>MongoDB</em>.</p>
+<p><em>Sqoop</em> utiliza una arquitectura basada en conectores, con soporte para <em>plugins</em> que ofrecen la conectividad a los sistemas externos, como pueden ser <em>Oracle</em> o <em>SqlServer</em>. Internamente, Sqoop utiliza los algoritmos <em>MapReduce</em> para importar y exportar los datos.</p>
+<p>Por defecto, todos los trabajos <em>Sqoop</em> ejecutan cuatro mapas de trabajo, de manera que los datos se dividen en cuatro nodos de Hadoop.</p>
+<div class="admonition info">
+<p class="admonition-title">Instalación</p>
+<p>Aunque en la máquina virtual con la que trabajamos ya tenemos tanto <em>Hadoop</em> como <em>Sqoop</em> instalados, podemos descargar la última versión desde <a href="http://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz">http://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz</a>.</p>
+<p>Se recomienda seguir las instrucciones resumidas que tenemos en <a href="https://www.tutorialspoint.com/sqoop/sqoop_installation.htm">https://www.tutorialspoint.com/sqoop/sqoop_installation.htm</a> o las de <a href="https://riptutorial.com/sqoop">https://riptutorial.com/sqoop</a>.</p>
+<p>Un par de aspectos que hemos tenido que modificar en nuestra máquina virtual son:</p>
+<ul>
+<li>Copiar el <a href="resources/mysql-connector-java-5.1.49-bin.jar">driver de MySQL</a> en <code>$SQOOP_HOME/lib</code></li>
+<li>Copiar la librería <a href="https://repo1.maven.org/maven2/commons-lang/commons-lang/2.6/commons-lang-2.6.jar">commons-langs-2.6</a> en <code>$SQOOP_HOME/lib</code></li>
+</ul>
+<p>Una vez configurado, podemos comprobar que funciona, por ejemplo, consultando las bases de datos que tenemos en MariaDB (aparecen mensajes de <em>warning</em> por no tener instalados/configurados algunos productos):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop list-databases --connect jdbc:mysql://localhost --username=iabd --password=iabd
+</code></pre></div>
+</div>
+<h3 id="importando-datos">Importando datos<a class="headerlink" href="#importando-datos" title="Permanent link">&para;</a></h3>
+<p>La sintaxis básica de <em>Sqoop</em> para importar datos en HDFS es mediantel comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal"><code>sqoop import</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import -connect jdbc:mysql://host/nombredb -table &lt;nombreTabla&gt; <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username &lt;usuarioMariaDB&gt; --password &lt;passwordMariaDB&gt; -m <span class="m">2</span>
+</code></pre></div>
+<p>El único parámetro que conviene explicar es <code>-m 2</code>, el cual está indicando que utilice dos <em>mappers</em> en paralelo para importar los datos. Si no le indicamos este parámetro, como hemos comentado antes, <em>Sqoop</em> siempre utilizará cuatro <em>mappers</em>.</p>
+<p>La importación se realiza en dos pasos:</p>
+<ol>
+<li><em>Sqoop</em> escanea la base de datos y colecta los metadatos de la tabla a importar.</li>
+<li>Envía un <em>job</em> y transfiere los datos reales utilizando los metadatos necesarios.</li>
+<li>De forma paralela, cada uno de los <em>mappers</em> se encarga de cargar en HDFS una parte proporcional de los datos.</li>
+</ol>
+<figure style="align: center;">
+    <img src="images/05sqoop-arq.png">
+    <figcaption>Arquitectura de trabajo de Sqoop</figcaption>
+</figure>
+
+<p>Los datos importados se almacenan en carpetas de HDFS, pudiendo especificar otras carpetas, así como los caracteres separadores o de terminación de registro. Además, podemos utilizar diferentes formatos, como son Avro, ORC, Parquet, ficheros secuenciales o de tipo texto, para almacenar los datos en HDFS.</p>
+<h3 id="caso-1-importando-datos-desde-mariadb">Caso 1 - Importando datos desde MariaDB<a class="headerlink" href="#caso-1-importando-datos-desde-mariadb" title="Permanent link">&para;</a></h3>
+<p>En el siguiente caso de uso vamos a importar datos que tenemos en una base de datos de MariaDB a HDFS.</p>
+<div class="admonition caution">
+<p class="admonition-title">Sqoop y las zonas horarias</p>
+<p>Cuando se lanza Sqoop captura los <em>timestamps</em> de nuestra base de datos origen y las convierte a la hora del sistema servidor por lo que tenemos que especificar en nuestra base de datos la zona horaria.</p>
+<p>Para realizar estos ajustes simplemente editamos el fichero <code>mysqld.cnf</code> que se encuentra en <code>/etc/mysql/my.cnf/</code> y añadimos la siguiente propiedad para asignarle nuestra zona horaria:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>[mariabd]
+<span class="linenos" data-linenos="2 "></span>default_time_zone = &#39;Europe/Madrid&#39;
+</code></pre></div>
+</div>
+<p>Primero, vamos a preparar nuestro entorno. Una vez conectados a <em>MariaDB</em>, creamos una base de datos que contenga una tabla con información sobre profesores:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">sqoopCaso1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="n">use</span><span class="w"> </span><span class="n">sqoopCaso1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">profesores</span><span class="p">(</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">MEDIUMINT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="n">nombre</span><span class="w"> </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="n">edad</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="w">    </span><span class="n">materia</span><span class="w"> </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<p>Insertamos datos en la tabla <code>profesores:</code></p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">profesores</span><span class="w"> </span><span class="p">(</span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="n">edad</span><span class="p">,</span><span class="w"> </span><span class="n">materia</span><span class="p">)</span><span class="w"> </span><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;Carlos&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Matemáticas&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="p">(</span><span class="ss">&quot;Pedro&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Inglés&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;Juan&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Tecnología&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;Jose&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Matemáticas&quot;</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="p">(</span><span class="ss">&quot;Paula&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Informática&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;Susana&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">32</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Informática&quot;</span><span class="p">),</span><span class="w"> </span><span class="p">(</span><span class="ss">&quot;Lorena&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">54</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;Informática&quot;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<p>A continuación, arrancamos <em>HDFS</em> y <em>YARN</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>start-dfs.sh
+<span class="linenos" data-linenos="2 "></span>start-yarn.sh
+</code></pre></div>
+<p>Con el comando <code>sqoop list-tables</code> listamos todas las tablas de la base de datos <code>sqoopCaso1</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop list-tables --connect jdbc:mysql://localhost/sqoopCaso1 --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd
+</code></pre></div>
+<p>Y finalmente importamos los datos mediante el comando <code>sqoop import</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_hdfs <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --fields-terminated-by<span class="o">=</span><span class="s1">&#39;,&#39;</span> --lines-terminated-by <span class="s1">&#39;\n&#39;</span>
+</code></pre></div>
+<p>En la primera línea, indicamos que vamos a importar datos desde un conexión JDBC, donde se indica el SGBD (<code>mysql</code>), el host (<code>localhost</code>) y el nombre de la base de datos (<code>sqoopCaso1</code>).
+En la línea dos, se configuran tanto el usuario como la contraseña del usuario (<code>iabd</code> / <code>iabd</code>) que se conecta a la base de datos.
+En la tercera línea, indicamos la tabla que vamos a leer (<code>profesores</code>) y el driver que utilizamos.
+En la cuarta línea configuramos el destino HDFS donde se van a importar los datos.
+Finalmente, en la última línea, indicamos el separador de los campos y el carácter para separar las líneas.</p>
+<p>Si queremos que en el caso de que ya exista la carpeta de destino la borre previamente, añadiremos la opción <code>--delete-target-dir</code>.</p>
+<div class="admonition danger">
+<p class="admonition-title">Unhealthy node</p>
+<p>Nuestra máquina virtual tiene el espacio limitado a 30GB, y es probable que en algún momento se llene el disco. Además de eliminar archivos no necesarios, una opción es configurar YARN mediante el archivo <code>yarn-site.xml</code> y configurar las siguientes propiedades para ser más permisivos con la falta de espacio:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;name&gt;</span>yarn.nodemanager.disk-health-checker.min-healthy-disks<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="nt">&lt;value&gt;</span>0.0<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="4 "></span><span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="5 "></span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="6 "></span>    <span class="nt">&lt;name&gt;</span>yarn.nodemanager.disk-health-checker.max-disk-utilization-per-disk-percentage<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="7 "></span>    <span class="nt">&lt;value&gt;</span>100.0<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="8 "></span><span class="nt">&lt;/property&gt;</span>
+</code></pre></div>
+</div>
+<p>El resultado que aparece en consola es:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>2021-12-14 17:19:04,684 INFO sqoop.Sqoop: Running Sqoop version: 1.4.7
+<span class="linenos" data-linenos=" 2 "></span>2021-12-14 17:19:04,806 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+<span class="linenos" data-linenos=" 3 "></span>2021-12-14 17:19:05,057 WARN sqoop.ConnFactory: Parameter --driver is set to an explicit driver however appropriate connection manager is not being set (via --connection-manager). Sqoop is going to fall back to org.apache.sqoop.manager.GenericJdbcManager. Please specify explicitly which connection manager should be used next time.
+<span class="linenos" data-linenos=" 4 "></span>2021-12-14 17:19:05,087 INFO manager.SqlManager: Using default fetchSize of 1000
+<span class="hll"><span class="linenos" data-linenos=" 5 "></span>2021-12-14 17:19:05,087 INFO tool.CodeGenTool: Beginning code generation
+</span><span class="hll"><span class="linenos" data-linenos=" 6 "></span>2021-12-14 17:19:05,793 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM profesores AS t WHERE 1=0
+</span><span class="hll"><span class="linenos" data-linenos=" 7 "></span>2021-12-14 17:19:05,798 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM profesores AS t WHERE 1=0
+</span><span class="linenos" data-linenos=" 8 "></span>2021-12-14 17:19:05,877 INFO orm.CompilationManager: HADOOP_MAPRED_HOME is /opt/hadoop-3.3.1
+<span class="linenos" data-linenos=" 9 "></span>Note: /tmp/sqoop-iabd/compile/585dc8a5a92b80ebbd22c9f597dd1928/profesores.java uses or overrides a deprecated API.
+<span class="linenos" data-linenos="10 "></span>Note: Recompile with -Xlint:deprecation for details.
+<span class="linenos" data-linenos="11 "></span>2021-12-14 17:19:12,153 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-iabd/compile/585dc8a5a92b80ebbd22c9f597dd1928/profesores.jar
+<span class="linenos" data-linenos="12 "></span>2021-12-14 17:19:12,235 INFO mapreduce.ImportJobBase: Beginning import of profesores
+<span class="linenos" data-linenos="13 "></span>2021-12-14 17:19:12,240 INFO Configuration.deprecation: mapred.job.tracker is deprecated. Instead, use mapreduce.jobtracker.address
+<span class="linenos" data-linenos="14 "></span>2021-12-14 17:19:12,706 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+<span class="hll"><span class="linenos" data-linenos="15 "></span>2021-12-14 17:19:12,714 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM profesores AS t WHERE 1=0
+</span><span class="linenos" data-linenos="16 "></span>2021-12-14 17:19:14,330 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+<span class="linenos" data-linenos="17 "></span>2021-12-14 17:19:14,608 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at iabd-virtualbox/127.0.1.1:8032
+<span class="linenos" data-linenos="18 "></span>2021-12-14 17:19:16,112 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/iabd/.staging/job_1639498733738_0001
+<span class="linenos" data-linenos="19 "></span>2021-12-14 17:19:22,016 INFO db.DBInputFormat: Using read commited transaction isolation
+<span class="hll"><span class="linenos" data-linenos="20 "></span>2021-12-14 17:19:22,018 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(id), MAX(id) FROM profesores
+</span><span class="linenos" data-linenos="21 "></span>2021-12-14 17:19:22,022 INFO db.IntegerSplitter: Split size: 1; Num splits: 4 from: 1 to: 7
+<span class="linenos" data-linenos="22 "></span>2021-12-14 17:19:22,214 INFO mapreduce.JobSubmitter: number of splits:4
+<span class="linenos" data-linenos="23 "></span>2021-12-14 17:19:22,707 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1639498733738_0001
+<span class="linenos" data-linenos="24 "></span>2021-12-14 17:19:22,707 INFO mapreduce.JobSubmitter: Executing with tokens: []
+<span class="linenos" data-linenos="25 "></span>2021-12-14 17:19:23,390 INFO conf.Configuration: resource-types.xml not found
+<span class="linenos" data-linenos="26 "></span>2021-12-14 17:19:23,391 INFO resource.ResourceUtils: Unable to find &#39;resource-types.xml&#39;.
+<span class="linenos" data-linenos="27 "></span>2021-12-14 17:19:24,073 INFO impl.YarnClientImpl: Submitted application application_1639498733738_0001
+<span class="linenos" data-linenos="28 "></span>2021-12-14 17:19:24,300 INFO mapreduce.Job: The url to track the job: http://iabd-virtualbox:8088/proxy/application_1639498733738_0001/
+<span class="hll"><span class="linenos" data-linenos="29 "></span>2021-12-14 17:19:24,303 INFO mapreduce.Job: Running job: job_1639498733738_0001
+</span><span class="hll"><span class="linenos" data-linenos="30 "></span>2021-12-14 17:19:44,015 INFO mapreduce.Job: Job job_1639498733738_0001 running in uber mode : false
+</span><span class="hll"><span class="linenos" data-linenos="31 "></span>2021-12-14 17:19:44,017 INFO mapreduce.Job:  map 0% reduce 0%
+</span><span class="hll"><span class="linenos" data-linenos="32 "></span>2021-12-14 17:20:21,680 INFO mapreduce.Job:  map 50% reduce 0%
+</span><span class="hll"><span class="linenos" data-linenos="33 "></span>2021-12-14 17:20:23,707 INFO mapreduce.Job:  map 100% reduce 0%
+</span><span class="hll"><span class="linenos" data-linenos="34 "></span>2021-12-14 17:20:24,736 INFO mapreduce.Job: Job job_1639498733738_0001 completed successfully
+</span><span class="linenos" data-linenos="35 "></span>2021-12-14 17:20:24,960 INFO mapreduce.Job: Counters: 34
+<span class="linenos" data-linenos="36 "></span>        File System Counters
+<span class="linenos" data-linenos="37 "></span>                FILE: Number of bytes read=0
+<span class="linenos" data-linenos="38 "></span>                FILE: Number of bytes written=1125124
+<span class="linenos" data-linenos="39 "></span>                FILE: Number of read operations=0
+<span class="linenos" data-linenos="40 "></span>                FILE: Number of large read operations=0
+<span class="linenos" data-linenos="41 "></span>                FILE: Number of write operations=0
+<span class="linenos" data-linenos="42 "></span>                HDFS: Number of bytes read=377
+<span class="linenos" data-linenos="43 "></span>                HDFS: Number of bytes written=163
+<span class="linenos" data-linenos="44 "></span>                HDFS: Number of read operations=24
+<span class="linenos" data-linenos="45 "></span>                HDFS: Number of large read operations=0
+<span class="linenos" data-linenos="46 "></span>                HDFS: Number of write operations=8
+<span class="linenos" data-linenos="47 "></span>                HDFS: Number of bytes read erasure-coded=0
+<span class="linenos" data-linenos="48 "></span>        Job Counters 
+<span class="linenos" data-linenos="49 "></span>                Killed map tasks=1
+<span class="linenos" data-linenos="50 "></span>                Launched map tasks=4
+<span class="linenos" data-linenos="51 "></span>                Other local map tasks=4
+<span class="linenos" data-linenos="52 "></span>                Total time spent by all maps in occupied slots (ms)=139377
+<span class="linenos" data-linenos="53 "></span>                Total time spent by all reduces in occupied slots (ms)=0
+<span class="linenos" data-linenos="54 "></span>                Total time spent by all map tasks (ms)=139377
+<span class="linenos" data-linenos="55 "></span>                Total vcore-milliseconds taken by all map tasks=139377
+<span class="linenos" data-linenos="56 "></span>                Total megabyte-milliseconds taken by all map tasks=142722048
+<span class="linenos" data-linenos="57 "></span>        Map-Reduce Framework
+<span class="linenos" data-linenos="58 "></span>                Map input records=7
+<span class="linenos" data-linenos="59 "></span>                Map output records=7
+<span class="linenos" data-linenos="60 "></span>                Input split bytes=377
+<span class="linenos" data-linenos="61 "></span>                Spilled Records=0
+<span class="linenos" data-linenos="62 "></span>                Failed Shuffles=0
+<span class="linenos" data-linenos="63 "></span>                Merged Map outputs=0
+<span class="linenos" data-linenos="64 "></span>                GC time elapsed (ms)=1218
+<span class="linenos" data-linenos="65 "></span>                CPU time spent (ms)=5350
+<span class="linenos" data-linenos="66 "></span>                Physical memory (bytes) snapshot=560439296
+<span class="linenos" data-linenos="67 "></span>                Virtual memory (bytes) snapshot=10029588480
+<span class="linenos" data-linenos="68 "></span>                Total committed heap usage (bytes)=349175808
+<span class="linenos" data-linenos="69 "></span>                Peak Map Physical memory (bytes)=142544896
+<span class="linenos" data-linenos="70 "></span>                Peak Map Virtual memory (bytes)=2507415552
+<span class="linenos" data-linenos="71 "></span>        File Input Format Counters 
+<span class="linenos" data-linenos="72 "></span>                Bytes Read=0
+<span class="linenos" data-linenos="73 "></span>        File Output Format Counters 
+<span class="linenos" data-linenos="74 "></span>                Bytes Written=163
+<span class="linenos" data-linenos="75 "></span>2021-12-14 17:20:24,979 INFO mapreduce.ImportJobBase: Transferred 163 bytes in 70,589 seconds (2,3091 bytes/sec)
+<span class="linenos" data-linenos="76 "></span>2021-12-14 17:20:24,986 INFO mapreduce.ImportJobBase: Retrieved 7 records.
+</code></pre></div>
+<p>Vamos a repasar la salida del log para entender el proceso:</p>
+<ul>
+<li>En la línea 5 vemos como se lanza el generador de código.</li>
+<li>En las líneas 6, 7 y 15 vemos como ejecuta la consulta para obtener todos los datos de profesores.</li>
+<li>En la línea 20 obtiene los valores mínimo y máximo para calcular como dividir los datos.</li>
+<li>De las líneas 29 a la 34 se ejecuta el proceso <em>MapReduce</em>.</li>
+<li>En el resto se puede observar un resumen estadístico.</li>
+</ul>
+<p>Si accedemos al interfaz gráfico de YARN (en <code>http://iabd-virtualbox:8088/cluster</code>) podemos ver cómo aparece el proceso como realizado:</p>
+<figure style="align: center;">
+    <img src="images/05sqoop-caso1yarn.png">
+    <figcaption>Estado de YARN tras la importación</figcaption>
+</figure>
+
+<p>Si accedemos al interfaz gráfico de <em>Hadoop</em> (recuerda que puedes acceder a él mediante <code>http://iabd-virtualbox:9870</code>) podremos comprobar en el directorio <code>/user/iabd/sqoop</code> que ha creado el directorio que hemos especificado junto con los siguientes archivos:</p>
+<figure style="align: center;">
+    <img src="images/05sqoop-caso1a.png">
+    <figcaption>Contenido de /user/iabd/sqoop/profesores_hdfs</figcaption>
+</figure>
+
+<p>Si entramos a ver los datos, podemos visualizar el contenido del primer fragmento que contiene los primeros datos de la tabla:</p>
+<figure style="align: center;">
+    <img src="images/05sqoop-caso1b.png">
+    <figcaption>Contenido de part-m-0000</figcaption>
+</figure>
+
+<div class="admonition tip">
+<p class="admonition-title">Importándolo todo</p>
+<p>Si queremos importar todas las tablas de una base de datos, podemos emplear el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_all_tables_literal"><code>sqoop import-all-tables</code></a>, en el cual ya no indicamos la tabla a importar:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import-all-tables --connect jdbc:mysql://localhost/mi_bd <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --warehouse-dir<span class="o">=</span>/user/iabd/sqoop <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --fields-terminated-by<span class="o">=</span><span class="s1">&#39;,&#39;</span> --lines-terminated-by <span class="s1">&#39;\n&#39;</span>
+</code></pre></div>
+</div>
+<h3 id="caso-2-exportando-datos-a-mariadb">Caso 2 - Exportando datos a MariaDB<a class="headerlink" href="#caso-2-exportando-datos-a-mariadb" title="Permanent link">&para;</a></h3>
+<div class="admonition inline end failure">
+<p class="admonition-title">Tabla no existente</p>
+<p>Si la tabla no existe previamente, recibiremos un error.</p>
+</div>
+<p>Ahora vamos a hacer el paso contrario, desde HDFS vamos a exportar los ficheros a otra tabla mediante el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_export_literal"><code>sqoop export</code></a>. Así pues, primero vamos a crear la nueva tabla en una nueva base de datos (aunque podíamos haber reutilizado la base de datos):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">sqoopCaso2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="n">use</span><span class="w"> </span><span class="n">sqoopCaso2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">profesores2</span><span class="p">(</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="n">id</span><span class="w"> </span><span class="n">MEDIUMINT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="n">nombre</span><span class="w"> </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span><span class="w">    </span><span class="n">edad</span><span class="w"> </span><span class="nb">INTEGER</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="7 "></span><span class="w">    </span><span class="n">materia</span><span class="w"> </span><span class="nb">CHAR</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span><span class="w">    </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="n">id</span><span class="p">)</span><span class="w"> </span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<p>Para exportar los datos de HDFS y cargarlos en esta nueva tabla lanzamos la siguiente orden:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop <span class="nb">export</span> --connect jdbc:mysql://localhost/sqoopCaso2 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores2 --export-dir<span class="o">=</span>/user/iabd/sqoop/profesores_hdfs
+</code></pre></div>
+<h3 id="formatos-avro-y-parquet">Formatos Avro y Parquet<a class="headerlink" href="#formatos-avro-y-parquet" title="Permanent link">&para;</a></h3>
+<p>Sqoop permite trabajar con diferentes formatos, tanto <em>Avro</em> como <em>Parquet</em>.</p>
+<p><em>Avro</em> es un formato de almacenamiento basado en filas para <em>Hadoop</em> que se usa ampliamente como formato de serialización. Recuerda que <em>Avro</em> almacena la estructura en formato JSON y los datos en binario.</p>
+<p><em>Parquet</em> a su vez es un formato de almacenamiento binario basado en columnas que puede almacenar estructuras de datos anidados.</p>
+<div class="admonition bug">
+<p class="admonition-title">Avro y Hadoop</p>
+<p>Para que funcione la serialización con <em>Avro</em> hay que copiar el fichero <code>.jar</code> que viene en el directorio de <code>Sqoop</code> para <em>Avro</em> como librería de <em>Hadoop</em>, mediante el siguiente comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>cp <span class="nv">$SQOOP_HOME</span>/lib/avro-1.8.1.jar <span class="nv">$HADOOP_HOME</span>/share/hadoop/common/lib/
+<span class="linenos" data-linenos="2 "></span>rm <span class="nv">$HADOOP_HOME</span>/share/hadoop/common/lib/avro-1.7.7.jar
+</code></pre></div>
+<p>En nuestra máquina virtual este paso ya está realizado.</p>
+</div>
+<p>Para importar los datos en formato <strong>Avro</strong>, añadiremos la opción <code>--as-avrodatafile</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1    <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver   <span class="se">\</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_avro --as-avrodatafile
+</span></code></pre></div>
+<p>Si en vez de <em>Avro</em>, queremos importar los datos en formato <strong>Parquet</strong> cambiamos el último parámetro por <code>--as-parquetfile</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1    <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver   <span class="se">\</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_parquet --as-parquetfile
+</span></code></pre></div>
+<p>Si queremos comprobar los archivos, podemos acceder via HDFS y la opción <code>-ls</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -ls /user/iabd/sqoop/profesores_avro
+</code></pre></div>
+<p>Obteniendo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">Found 5 items</span>
+<span class="linenos" data-linenos="2 "></span><span class="go">-rw-r--r--   1 iabd supergroup          0 2021-12-14 17:56 /user/iabd/sqoop/profesores_avro/_SUCCESS</span>
+<span class="linenos" data-linenos="3 "></span><span class="go">-rw-r--r--   1 iabd supergroup        568 2021-12-14 17:56 /user/iabd/sqoop/profesores_avro/part-m-00000.avro</span>
+<span class="linenos" data-linenos="4 "></span><span class="go">-rw-r--r--   1 iabd supergroup        569 2021-12-14 17:56 /user/iabd/sqoop/profesores_avro/part-m-00001.avro</span>
+<span class="linenos" data-linenos="5 "></span><span class="go">-rw-r--r--   1 iabd supergroup        547 2021-12-14 17:56 /user/iabd/sqoop/profesores_avro/part-m-00002.avro</span>
+<span class="linenos" data-linenos="6 "></span><span class="go">-rw-r--r--   1 iabd supergroup        574 2021-12-14 17:56 /user/iabd/sqoop/profesores_avro/part-m-00003.avro</span>
+</code></pre></div>
+<p>Si queremos ver el contenido de una de las partes, utilizamos la opción <code>-text</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -text /user/iabd/sqoop/profesores_avro/part-m-00000.avro
+</code></pre></div>
+<p>Obteniendo el esquema y los datos en formato <em>Avro</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>{&quot;id&quot;:{&quot;int&quot;:1},&quot;nombre&quot;:{&quot;string&quot;:&quot;Carlos&quot;},&quot;edad&quot;:{&quot;int&quot;:24},&quot;materia&quot;:{&quot;string&quot;:&quot;Matemáticas&quot;}}
+<span class="linenos" data-linenos="2 "></span>{&quot;id&quot;:{&quot;int&quot;:2},&quot;nombre&quot;:{&quot;string&quot;:&quot;Pedro&quot;},&quot;edad&quot;:{&quot;int&quot;:32},&quot;materia&quot;:{&quot;string&quot;:&quot;Inglés&quot;}}
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Autoevaluación</p>
+<p>¿Qué sucede si ejectuamos el comando <code>hdfs dfs -tail /user/iabd/sqoop/profesores_avro/part-m-00000.avro</code>? ¿Por qué aparece contenido en binario?</p>
+</div>
+<p>En el caso de ficheros <em>Parquet</em>, primero listamos los archivos generados:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -ls /user/iabd/sqoop/profesores_parquet
+</code></pre></div>
+<p>Obteniendo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">Found 6 items</span>
+<span class="linenos" data-linenos="2 "></span><span class="go">drwxr-xr-x   - iabd supergroup          0 2021-12-15 16:13 /user/iabd/sqoop/profesores_parquet/.metadata</span>
+<span class="linenos" data-linenos="3 "></span><span class="go">drwxr-xr-x   - iabd supergroup          0 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/.signals</span>
+<span class="linenos" data-linenos="4 "></span><span class="go">-rw-r--r--   1 iabd supergroup       1094 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/12205ee4-6e63-4c0d-8e64-751882d60179.parquet</span>
+<span class="linenos" data-linenos="5 "></span><span class="go">-rw-r--r--   1 iabd supergroup       1114 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/1e12aaad-98c6-4508-9c41-e1599e698385.parquet</span>
+<span class="linenos" data-linenos="6 "></span><span class="go">-rw-r--r--   1 iabd supergroup       1097 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/6a803503-f3e0-4f2a-8546-a337f7f90e73.parquet</span>
+<span class="linenos" data-linenos="7 "></span><span class="go">-rw-r--r--   1 iabd supergroup       1073 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/eda459b2-1da4-4790-b649-0f2f8b83ab06.parquet</span>
+</code></pre></div>
+<p>Podemos usar las <code>parquet-tools</code> para ver su contenido. Si la instalamos mediante <code>pip install parquet-tools</code>, podremos acceder a ficheros locales y almacenados en S3. Si queremos acceder de forma remota via HDFS, podemos descargar la <a href="https://repo1.maven.org/maven2/org/apache/parquet/parquet-tools/1.11.2/parquet-tools-1.11.2.jar">versión Java</a> y utilizarla mediante <code>hadoop</code> (aunque da problemas entre las versiones de Sqoop y Parquet):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hadoop jar parquet-tools-1.11.2.jar head -n5 hdfs://iabd-virtualbox:9000/user/iabd/sqoop/profesores_parquet/12205ee4-6e63-4c0d-8e64-751882d60179.parquet
+</code></pre></div>
+<p>Si queremos obtener información sobre los documentos, usaremos la opción <code>meta</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hadoop jar parquet-tools-1.11.2.jar meta hdfs://iabd-virtualbox:9000/user/iabd/sqoop/profesores_parquet/12205ee4-6e63-4c0d-8e64-751882d60179.parquet
+</code></pre></div>
+<p>Más información sobre <em>parquet-tools</em> en <a href="https://pypi.org/project/parquet-tools/">https://pypi.org/project/parquet-tools/</a>.</p>
+<h3 id="trabajando-con-datos-comprimidos">Trabajando con datos comprimidos<a class="headerlink" href="#trabajando-con-datos-comprimidos" title="Permanent link">&para;</a></h3>
+<p>En un principio, vamos a trabajar siempre con los datos sin comprimir. Cuando tengamos datos que vamos a utilizar durante mucho tiempo (del orden de varios años) es cuando nos plantearemos comprimir los datos.</p>
+<p>Por defecto, podemos comprimir mediante el formato <strong>gzip</strong> utilizando el parámetro <code>--compress</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_gzip <span class="se">\</span>
+<span class="hll"><span class="linenos" data-linenos="5 "></span>    --compress
+</span></code></pre></div>
+<p>Si en cambio queremos comprimirlo con formato <strong>bzip2</strong>, hemos de añadir también el parámetro <code>--compression-codec bzip2</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_bzip <span class="se">\</span>
+<span class="hll"><span class="linenos" data-linenos="5 "></span>    --compress --compression-codec bzip2
+</span></code></pre></div>
+<!--
+    --compression-codec org.apache.hadoop.io.compress.BZip2Codec --as-sequencefile 
+-->
+
+<p><strong>Snappy</strong> es una biblioteca de compresión y descompresión de datos de gran rendimiento que se utiliza con frecuencia en proyectos Big Data. Así pues, para utilizarlo lo indicaremos mediante el codec <code>snappy</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_snappy <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --compress --compression-codec snappy
+</code></pre></div>
+<!--
+--compression-codec org.apache.hadoop.io.compress.SnappyCodec
+-->
+
+<h3 id="importando-con-filtros">Importando con filtros<a class="headerlink" href="#importando-con-filtros" title="Permanent link">&para;</a></h3>
+<p>Además de poder importar todos los datos de una tabla, podemos filtrar los datos. Por ejemplo, podemos indicar mediante la opción <code>--where</code> el filtro a ejecutar en la consulta:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_materia_info <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --where <span class="s2">&quot;materia=&#39;Informática&#39;&quot;</span>
+</code></pre></div>
+<p>También podemos restringir las columnas que queremos recuperar mediante la opción <code>--columns</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_cols <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --columns <span class="s2">&quot;nombre,materia&quot;</span>
+</code></pre></div>
+<p>Finalmente, podemos especificar una consulta con clave de particionado (en este caso, ya no indicamos el nombre de la tabla):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_query <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --query <span class="s2">&quot;select * from profesores where edad &gt; 40 AND \$CONDITIONS&quot;</span> <span class="se">\</span>
+<span class="linenos" data-linenos="6 "></span>    --split-by <span class="s2">&quot;id&quot;</span>
+</code></pre></div>
+<p>En la consulta, hemos de añadir el token <code>\$CONDITIONS</code>, el cual Hadoop substituirá por la columna por la que realiza el particionado.</p>
+<h3 id="importacion-incremental">Importación incremental<a class="headerlink" href="#importacion-incremental" title="Permanent link">&para;</a></h3>
+<p>Si utilizamos procesos <em>batch</em>, es muy común realizar importaciones incrementales tras una carga de datos. Para ello, utilizaremos las opciones <code>--incremental append</code> junto con la columna a comprobar mediante <code>--check-column</code> y el último registro cargado mediante <code>--last-value</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_inc <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --incremental append <span class="se">\</span>
+<span class="linenos" data-linenos="6 "></span>    --check-column id <span class="se">\</span>
+<span class="linenos" data-linenos="7 "></span>    --last-value <span class="m">4</span>
+</code></pre></div>
+<p>Después de ejecutarlo, si vemos la información que nos devuelve, en las últimas líneas, podemos copiar los parámetros que tenemos que utilizar para posteriores importaciones.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">...</span>
+<span class="linenos" data-linenos="2 "></span><span class="go">2021-12-15 19:10:59,348 INFO tool.ImportTool: Incremental import complete! To run another incremental import of all data following this import, supply the following arguments:</span>
+<span class="linenos" data-linenos="3 "></span><span class="go">2021-12-15 19:10:59,348 INFO tool.ImportTool:  --incremental append</span>
+<span class="linenos" data-linenos="4 "></span><span class="go">2021-12-15 19:10:59,348 INFO tool.ImportTool:   --check-column id</span>
+<span class="linenos" data-linenos="5 "></span><span class="go">2021-12-15 19:10:59,348 INFO tool.ImportTool:   --last-value 7</span>
+<span class="linenos" data-linenos="6 "></span><span class="go">2021-12-15 19:10:59,349 INFO tool.ImportTool: (Consider saving this with &#39;sqoop job --create&#39;)</span>
+</code></pre></div>
+<h3 id="trabajando-con-hive">Trabajando con Hive<a class="headerlink" href="#trabajando-con-hive" title="Permanent link">&para;</a></h3>
+<p>Podemos importar los datos en HDFS para que luego puedan ser consultables desde <em>Hive</em>. Para ello hemos de utilizar el parámetro <code>--hive-import</code> e indicar el nombre de la base de datos mediante <code>--hive-database</code> así como la opción de <code>--create-hive-table</code>para que cree la tabla indicada en el parámetro <code>hive-table</code>.</p>
+<p>Es importante destacar que ya no ponemos destino con <code>target-dir</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --hive-import --hive-database default <span class="se">\</span>
+<span class="linenos" data-linenos="5 "></span>    --create-hive-table --hive-table profesores_mariadb
+</code></pre></div>
+<p>Para comprobar el resultado, dentro de <em>Hive</em> ejecutaremos el comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">describe</span><span class="w"> </span><span class="n">formatted</span><span class="w"> </span><span class="n">profesores_mariadb</span><span class="w"></span>
+</code></pre></div>
+<p>Para exportar los datos, de forma similar haremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop <span class="nb">export</span> --connect jdbc:mysql://localhost/sqoopCaso2 <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --username<span class="o">=</span>iabd --password<span class="o">=</span>iabd <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    --table<span class="o">=</span>profesores2 --driver<span class="o">=</span>com.mysql.jdbc.Driver <span class="se">\</span>
+<span class="linenos" data-linenos="4 "></span>    --h-catalog-table profesores_mariadb
+</code></pre></div>
+<!--
+TODO: exportar datos a una tabla stage
+expotar datos con updates
+exportar columnas deseadas
+
+-->
+
+<h2 id="flume">Flume<a class="headerlink" href="#flume" title="Permanent link">&para;</a></h2>
+<figure style="float: right;">
+    <img src="images/05flume-logo.png">
+    <figcaption>Logo de Apache Flume</figcaption>
+</figure>
+
+<p>Allá por el año 2010 <em>Cloudera</em> presentó <strong><em>Flume</em></strong> que posteriormente pasó a formar parte de Apache (<a href="https://flume.apache.org/">https://flume.apache.org/</a>) como un software para tratamiento e ingesta de datos masivo. <em>Flume</em> permite crear desarrollos complejos que permiten el tratamiento en <em>streaming</em> de datos masivos.</p>
+<p><em>Flume</em> funciona como un buffer entre los productores de datos y el destino final. Al utilizar un buffer, evitamos que un productor sature a un consumidor, sin necesidad de preocuparnos de que algún destino esté inalcanzable o inoperable (por ejemplo, en el caso de que haya caído HDFS), etc...</p>
+<div class="admonition info">
+<p class="admonition-title">Instalación</p>
+<p>Aunque en la máquina virtual con la que trabajamos también tenemos instalado <em>Flume</em>, podemos descargar la última versión desde <a href="http://www.apache.org/dyn/closer.lua/flume/1.9.0/apache-flume-1.9.0-bin.tar.gz">http://www.apache.org/dyn/closer.lua/flume/1.9.0/apache-flume-1.9.0-bin.tar.gz</a>.</p>
+<p>A nivel de configuración sólo hemos definido la variable de entorno <code>$FLUME_HOME</code> que apunta a <code>/opt/flume-1.9.0</code>.</p>
+</div>
+<h3 id="arquitectura">Arquitectura<a class="headerlink" href="#arquitectura" title="Permanent link">&para;</a></h3>
+<p>Su arquitectura es sencilla, y se basa en el uso de agentes que se dividen en tres componentes los cuales podemos configurar:</p>
+<ul>
+<li><em>Source</em> (fuente): Fuente de origen de los datos, ya sea <em>Twitter</em>, <em>Kafka</em>, una petición <em>Http</em>, etc...<br />
+Las fuentes son un componente activo que recibe datos desde otra aplicación que produce datos (aunque también existen fuentes que pueden producir datos por sí mismos, cuyo objetivo es poder probar ciertos flujos de datos). Las fuentes puedes escuchar uno o más puertos de red para recibir o leer datos del sistema de archivos. Cada fuente debe conectar a al menos un canal. Una fuente puede escribir en varios canales, replicando los eventos a todos o algunos canales en base a algún criterio.</li>
+<li><em>Channel</em> (canal): la vía por donde se tratarán los datos.<br />
+Un canal es un componente pasivo que almacena los datos como un buffer. Se comportan como colas, donde las fuentes publican y los sumideros consumen los datos. Múltiples fuentes pueden escribir de forma segura en el mismo canal, y múltiples sumideros pueden leer desde el mismo canal. Sin embargo, cada sumidero sólo puede leer de un único canal. Si múltiples sumideros leen del mismo canal, sólo uno de ellos leerá el dato.</li>
+<li><em>Sink</em> (sumidero): persistencia/movimiento de los datos, a ficheros / base de datos.<br />
+Toma eventos del canal de manera continua leyendo y eliminando los eventos. A continuación, los transmite hacia el siguiente componente, ya sea a HDFS, Hive, etc... Una vez los datos han llegado al siguiente destino, el sumidero informa al canal mediante un <em>commit transaccional</em> para que elimine dichos eventos del canal.</li>
+</ul>
+<figure style="align: center">
+    <img src="images/05flume-arq2.png">
+    <figcaption>Arquitectura Flume - imagen extraída de https://www.diegocalvo.es/flume/</figcaption>
+</figure>
+
+<p>Es muy recomendable acceder a la <a href="https://flume.apache.org/FlumeUserGuide.html">guía de usuario</a> oficial para consultar todas las fuentes de datos, canales y sumideros disponibles en la actualidad. A continuación se nombran algunos de los más destacados:</p>
+<table>
+<thead>
+<tr>
+<th>Sources</th>
+<th>Channels</th>
+<th>Sinks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Avro Source</td>
+<td>Memory Channel</td>
+<td>HDFS Sink</td>
+</tr>
+<tr>
+<td>Thrift Source</td>
+<td>JDBC Channel</td>
+<td>Hive Sink</td>
+</tr>
+<tr>
+<td>Exec Source</td>
+<td>Kafka Channel</td>
+<td>Logger Sink</td>
+</tr>
+<tr>
+<td>JMS Source</td>
+<td>File Channel</td>
+<td>Avro Sink</td>
+</tr>
+<tr>
+<td>Spooling Directory Source</td>
+<td>Spillable Memory Channel</td>
+<td>Thrift Sink</td>
+</tr>
+<tr>
+<td>Twitter 1% firehose Source</td>
+<td>Pseudo Transaction Channel</td>
+<td>Kafka Sink</td>
+</tr>
+<tr>
+<td>Kafka Source</td>
+<td></td>
+<td>File Roll Sink</td>
+</tr>
+<tr>
+<td>NetCat Source</td>
+<td></td>
+<td>Null Sink</td>
+</tr>
+<tr>
+<td>Sequence Generator Source</td>
+<td></td>
+<td>HBaseSink</td>
+</tr>
+<tr>
+<td>Syslog Sources</td>
+<td></td>
+<td>AsyncHBaseSink</td>
+</tr>
+<tr>
+<td>HTTP Source</td>
+<td></td>
+<td>MorphlineSolrSink</td>
+</tr>
+<tr>
+<td>Multiport Syslog TCP Source</td>
+<td></td>
+<td>ElasticSearchSink</td>
+</tr>
+<tr>
+<td>Syslog UDP Source</td>
+<td></td>
+<td>Kite Dataset Sink</td>
+</tr>
+</tbody>
+</table>
+<p><em>Flume</em> se complica cuando queremos utilizarlo para obtener datos de manera paralela (o multiplexada) y/o necesitamos crear nuestros propios sumideros o interceptores. Pero por lo general, su uso es sencillo y se trata de una herramienta muy recomendada como ayuda/alternativa a herramientas como <em>Pentaho</em>.</p>
+<p>Algunas de sus características son:</p>
+<ul>
+<li>Diseño flexible basado en flujos de datos de transmisión.</li>
+<li>Resistente a fallos y robusto con múltiples conmutaciones por error y  mecanismos de recuperación.</li>
+<li>Lleva datos desde origen a destino: incluidos HDFS y <em>HBase</em>.</li>
+</ul>
+<h4 id="agentes">Agentes<a class="headerlink" href="#agentes" title="Permanent link">&para;</a></h4>
+<p>Un agente es la unidad más sencilla con la que trabaja <em>Flume</em>, permitiendo conectar un agente <em>Flume</em> a uno o más agentes, encandenándolos. Además, un agente puede recibir datos de uno o más agentes. Conectando múltiples agentes entre sí podemos crear un flujo de datos para mover datos de un lugar a otro, de aplicaciones que producen datos a HDFS, HBase o donde necesitemos.</p>
+<p>Para lanzar un tarea en <em>Flume</em>, debemos definir un agente, el cual funciona como un contenedor para alojar subcomponentes que permiten mover los datos.</p>
+<p>Estos agentes tienen cuatro partes bien diferenciadas asociadas a la arquitectura de Flume. En la primera parte, definiremos los componente del agente (<em>sources</em>, <em>channels</em> y <em>sinks</em>), y luego, para cada uno de ellos, configuraremos sus propiedades:</p>
+<ul>
+<li><code>sources</code>: responsables de colocar los eventos/datos en el agente</li>
+<li><code>channels</code>: <em>buffer</em> que almacena los eventos/datos recibidos por los <em>sources</em> hasta que un <em>sink</em> lo saca para enviarlo al siguiente destino.</li>
+<li><code>sinks</code>: responsable de sacar los eventos/datos del agente y reenviarlo al siguiente agente (HDFS, HBase, etc...)</li>
+</ul>
+<h4 id="evento">Evento<a class="headerlink" href="#evento" title="Permanent link">&para;</a></h4>
+<p>El evento es la unidad más pequeña del procesamiento de eventos de Flume. Cuando Flume lee una fuente de datos, envuelve una fila de datos (es decir, encuentra los saltos de línea) en un evento.</p>
+<p>Un evento es una estructura de datos que se compone de dos partes:</p>
+<ul>
+<li>Encabezado, se utiliza principalmente para registrar información mediante un mapa en forma de clave y valor. No transfieren datos, pero contienen información util para el enrutado y gestión de la prioridad o importancia de los mensajes.</li>
+<li>Cuerpo: array de bytes que almacena los datos reales.</li>
+</ul>
+<h3 id="probando-flume">Probando Flume<a class="headerlink" href="#probando-flume" title="Permanent link">&para;</a></h3>
+<p>Por ejemplo, vamos a crear un agente el cual llamaremos <code>ExecLoggerAgent</code> el cual va a ejecutar un comando y mostrará el resultado por el log de <em>Flume</em>.</p>
+<p>Para ello, creamos la configuración del agente en el fichero <code>agente.conf</code> (todas las propiedades comenzarán con el nombre del agente):</p>
+<div class="highlight"><span class="filename">agente.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c"># Nombramos los componentes del agente</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">ExecLoggerAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Exec</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">ExecLoggerAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">ExecLoggerAgent.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">LoggerSink</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c"># Describimos el tipo de origen</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">ExecLoggerAgent.sources.Exec.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">exec</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="na">ExecLoggerAgent.sources.Exec.command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">ls /home/iabd/</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="c"># Describimos el destino</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="na">ExecLoggerAgent.sinks.LoggerSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">logger</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span>
+<span class="linenos" data-linenos="13 "></span><span class="c"># Describimos la configuración del canal</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="na">ExecLoggerAgent.channels.MemChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="na">ExecLoggerAgent.channels.MemChannel.capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="na">ExecLoggerAgent.channels.MemChannel.transactionCapacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">100</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="c"># Unimos el origen y el destino a través del canal</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="na">ExecLoggerAgent.sources.Exec.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="na">ExecLoggerAgent.sinks.LoggerSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+</code></pre></div>
+<p>Antes de lanzar el agente Flume, recuerda que debes arrancar tanto <em>Hadoop</em> como <em>YARN</em>, por ejemplo, mediante el comando <code>start-all.sh</code>.</p>
+<p>A continuación ya podemos lanzar <em>Flume</em> con el agente mediante el comando (la opción <code>-n</code> sirve para indicar el nombre del agente, y con <code>-f</code> indicamos el nombre del archivo de configuración):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>flume-ng agent -n ExecLoggerAgent -f agente.conf 
+</code></pre></div>
+<h3 id="configurando-un-agente">Configurando un agente<a class="headerlink" href="#configurando-un-agente" title="Permanent link">&para;</a></h3>
+<p>Si te has fijado en el ejemplo anterior, los ficheros de configuración de los agentes siguen el mismo formato.
+Para definir un flujo dentro de un agente, necesitamos enlazar las fuentes y los sumideros con un canal. Para ello, listaremos las fuentes, sumideros y canales del agente, y entonces apuntaremos la fuente y el sumidero a un canal.</p>
+<div class="admonition important">
+<p class="admonition-title">1 - N - 1</p>
+<p>Una fuente puede indicar múltiples canales, pero un sumidero sólo puede indicar un único canal.</p>
+</div>
+<p>Así pues, el formato será similar al siguiente archivo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c"># Listamos las fuentes, sumideros y canales</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">&lt;Agent&gt;.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;Source&gt;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">&lt;Agent&gt;.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;Sink&gt;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">&lt;Agent&gt;.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;Channel1&gt; &lt;Channel2&gt;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c"># Configuramos los canales de la fuente</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">&lt;Agent&gt;.sources.&lt;Source&gt;.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;Channel1&gt; &lt;Channel2&gt; ...</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c"># Configuramos el canal para el sumidero</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="na">&lt;Agent&gt;.sinks.&lt;Sink&gt;.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;Channel1&gt;</span><span class="w"></span>
+</code></pre></div>
+<p>Además de definir el flujo, es necesario configurar las propiedades de cada fuente, sumidero y canal. Para elo se sigue la misma nomenclatura donde fijamos el tipo de componente (mediante la propiedad <code>type</code>) y el resto de propiedades específicas de cada componente:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c"># Propiedades de las fuentes</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="na">&lt;Agent&gt;.sources.&lt;Source&gt;.&lt;someProperty&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;someValue&gt;</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span>
+<span class="linenos" data-linenos="4 "></span><span class="c"># Propiedades de los canales</span><span class="w"></span>
+<span class="linenos" data-linenos="5 "></span><span class="na">&lt;Agent&gt;.channel.&lt;Channel&gt;.&lt;someProperty&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;someValue&gt;</span><span class="w"></span>
+<span class="linenos" data-linenos="6 "></span>
+<span class="linenos" data-linenos="7 "></span><span class="c"># Propiedades de los sumideros</span><span class="w"></span>
+<span class="linenos" data-linenos="8 "></span><span class="na">&lt;Agent&gt;.sources.&lt;Sink&gt;.&lt;someProperty&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;someValue&gt;</span><span class="w"></span>
+</code></pre></div>
+<p>Para cada tipo de <a href="https://flume.apache.org/FlumeUserGuide.html#flume-sources">fuente</a>, <a href="https://flume.apache.org/FlumeUserGuide.html#flume-channels">canal</a> y <a href="https://flume.apache.org/FlumeUserGuide.html#flume-sinks">sumidero</a> es recomendable revisar la documentación para validar todas las propiedades disponibles.</p>
+<h3 id="caso-3a-almacenando-en-hdfs">Caso 3a - Almacenando en HDFS<a class="headerlink" href="#caso-3a-almacenando-en-hdfs" title="Permanent link">&para;</a></h3>
+<p>En este caso de uso vamos <a href="https://flume.apache.org/FlumeUserGuide.html#sequence-generator-source">generar datos de forma secuencial</a> y los vamos a ingestar en <a href="https://flume.apache.org/FlumeUserGuide.html#hdfs-sink">HDFS</a>.</p>
+<p>Una buena práctica es colocar los archivos de configuración dentro de <code>$FLUME_HOME/conf</code>. Así pues, vamos a crear el agente <code>SeqGenAgent</code> y almacenar la configuración en el fichero <code>seqgen.conf</code>:</p>
+<div class="highlight"><span class="filename">seqgen.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c"># Nombramos a los componentes del agente</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">SeqGenAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">SeqSource</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">SeqGenAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">SeqGenAgent.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">HDFS</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c"># Describimos el tipo de origen</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">SeqGenAgent.sources.SeqSource.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">seq</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c"># Describimos el destino</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="na">SeqGenAgent.sinks.HDFS.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hdfs</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="na">SeqGenAgent.sinks.HDFS.hdfs.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hdfs://iabd-virtualbox:9000/user/iabd/flume/seqgen_data/</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="na">SeqGenAgent.sinks.HDFS.hdfs.filePrefix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">flume-caso3-seqgen</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="na">SeqGenAgent.sinks.HDFS.hdfs.rollInterval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="na">SeqGenAgent.sinks.HDFS.hdfs.rollCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="na">SeqGenAgent.sinks.HDFS.hdfs.fileType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">DataStream</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="c"># Describimos la configuración del canal</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="na">SeqGenAgent.channels.MemChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="na">SeqGenAgent.channels.MemChannel.capacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="na">SeqGenAgent.channels.MemChannel.transactionCapacity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">100</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span><span class="c"># Unimos el origen y el destino a través del canal</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="na">SeqGenAgent.sources.SeqSource.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span><span class="na">SeqGenAgent.sinks.HDFS.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+</code></pre></div>
+<p>Ejecutamos el siguiente comando desde <code>$FLUME_HOME</code> y a los pocos segundo lo paramos mediante <code>CTRL + C</code> para que detenga la generación de números, ya que si no seguirá generando archivos en HDFS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng agent --conf ./conf/ --conf-file conf/seqgen.conf <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --name SeqGenAgent <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -Dflume.root.logger<span class="o">=</span>INFO,console
+</code></pre></div>
+<div class="admonition caution">
+<p class="admonition-title">Vaciando HDFS</p>
+<p>Si queremos eliminar los ficheros generados en HDFS, recuerda que puedes realizar un borrado recursivo mediante el comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -rm -r /user/iabd/flume
+</code></pre></div>
+</div>
+<p>Si comprobamos por ejemplo el contenido de la carpeta (<code>hdfs dfs -ls /user/iabd/flume/seqgen_data</code>) veremos que se han generado múltiples archivos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>Found 10 items
+<span class="linenos" data-linenos=" 2 "></span>-rw-r--r--   1 iabd supergroup       1402 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740933
+<span class="linenos" data-linenos=" 3 "></span>-rw-r--r--   1 iabd supergroup       1368 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740934
+<span class="linenos" data-linenos=" 4 "></span>-rw-r--r--   1 iabd supergroup       1350 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740935
+<span class="linenos" data-linenos=" 5 "></span>-rw-r--r--   1 iabd supergroup       1280 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740936
+<span class="linenos" data-linenos=" 6 "></span>-rw-r--r--   1 iabd supergroup       1280 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740937
+<span class="linenos" data-linenos=" 7 "></span>-rw-r--r--   1 iabd supergroup       1280 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740938
+<span class="linenos" data-linenos=" 8 "></span>-rw-r--r--   1 iabd supergroup       1280 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740939
+<span class="linenos" data-linenos=" 9 "></span>-rw-r--r--   1 iabd supergroup       1280 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740940
+<span class="linenos" data-linenos="10 "></span>-rw-r--r--   1 iabd supergroup       1280 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740941
+<span class="linenos" data-linenos="11 "></span>-rw-r--r--   1 iabd supergroup       1280 2021-12-22 16:42 /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740942
+</code></pre></div>
+<p>Y si comprobamos el contenido del primero (<code>hdfs dfs -cat /user/iabd/flume/seqgen_data/flume-caso3-seqgen.1640187740933</code>) veremos como contiene la secuencia generada:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>0
+<span class="linenos" data-linenos="2 "></span>1
+<span class="linenos" data-linenos="3 "></span>2
+<span class="linenos" data-linenos="4 "></span>3
+<span class="linenos" data-linenos="5 "></span>...
+</code></pre></div>
+<h3 id="caso-3b-de-netcat-a-hdfs">Caso 3b - De Netcat a HDFS<a class="headerlink" href="#caso-3b-de-netcat-a-hdfs" title="Permanent link">&para;</a></h3>
+<p>Ahora vamos a crear otro ejemplo de generación de información, pero esta vez, en vez de utilizar la memoria del servidor como canal, vamos a utilizar el sistema de archivos. Además, para generar la información nos basamos en una fuente <a href="https://flume.apache.org/FlumeUserGuide.html#netcat-tcp-source">Netcat</a>, en la cual debemos especificar un puerto de escucha. Mediante esta fuente, <em>Flume</em> quedará a la escucha en dicho puerto y recibirá cada línea introducida como un evento individual que transferirá al canal especificado.</p>
+<p>En el mismo directorio <code>$FLUME_HOME\conf</code>, creamos un nuevo fichero con el nombre <code>netcat.conf</code> y creamos otro agente que se va a encargar de generar información:</p>
+<div class="highlight"><span class="filename">netcat.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c"># Nombramos a los componentes del agente</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">NetcatAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Netcat</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">NetcatAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">NetcatAgent.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">HdfsSink</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c"># Describimos el origen netcat en localhost:44444</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">NetcatAgent.sources.Netcat.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">netcat</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="na">NetcatAgent.sources.Netcat.bind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="na">NetcatAgent.sources.Netcat.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">44444</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="na">NetcatAgent.sources.Netcat.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="c"># Describimos el destino en HDFS</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="na">NetcatAgent.sinks.HdfsSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hdfs</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="na">NetcatAgent.sinks.HdfsSink.hdfs.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hdfs://iabd-virtualbox:9000/user/iabd/flume/net_data/</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="na">NetcatAgent.sinks.HdfsSink.hdfs.writeFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Text</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="na">NetcatAgent.sinks.HdfsSink.hdfs.fileType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">DataStream</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="na">NetcatAgent.sinks.HdfsSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span><span class="c"># Unimos el origen y el destino a través del canal de fichero</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="na">NetcatAgent.channels.FileChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="na">NetcatAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="na">NetcatAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span><span class="w"></span>
+</code></pre></div>
+<p>Lanzamos al agente:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng agent --conf ./conf/ --conf-file ./conf/netcat.conf <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --name NetcatAgent <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -Dflume.root.logger<span class="o">=</span>INFO,console
+</code></pre></div>
+<p>En una nueva pestaña introducimos el siguiente comando y escribimos</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl telnet://localhost:44444
+</code></pre></div>
+<p>Una vez conectados, escribimos varias frases con saltos de línea. Por cada vez que pulsamos <em>Enter</em>, nos aparecerá un <code>OK</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>Probando Netcat
+<span class="linenos" data-linenos="2 "></span>OK
+<span class="linenos" data-linenos="3 "></span>Esto parece que funciona más o menos
+<span class="linenos" data-linenos="4 "></span>OK
+</code></pre></div>
+<p>A continuación, nos vamos al navegador web de HDFS (<a href="http://iabd-virtualbox:9870/explorer.html#/user/iabd/flume/net_data">http://iabd-virtualbox:9870/explorer.html#/user/iabd/flume/net_data</a>) y comprobamos que se ha creado el fichero:</p>
+<figure style="align: center">
+    <img src="images/05flume-netcat.png">
+    <figcaption>Resultado del flujo Netcat-HDFS</figcaption>
+</figure>
+
+<h3 id="caso-4-flujos-encadenados">Caso 4 - Flujos encadenados<a class="headerlink" href="#caso-4-flujos-encadenados" title="Permanent link">&para;</a></h3>
+<p>Es muy común definir un pipeline de flujos encadenados, uniendo la salida de un agente a la entrada de otro. Para ello, utilizaremos como enlace un <a href="https://flume.apache.org/FlumeUserGuide.html#avro-sink">sink</a>-<a href="https://flume.apache.org/FlumeUserGuide.html#avro-source">source</a> de tipo <em>Avro</em>. Este diseño también se conoce como flujo <em>Multi-hop</em>:</p>
+<figure style="align: center">
+    <img src="images/05flume-multi-agent.png">
+    <figcaption>Encadenando flujos</figcaption>
+</figure>
+
+<p>En este caso, vamos a crear un primer agente (<code>NetcatAvroAgent</code>) que ingeste datos desde <em>Netcat</em> y los coloque en un <em>sink</em> de tipo <em>Avro</em>. Para ello, creamos el agente <code>netcat-avro.conf</code>:</p>
+<div class="highlight"><span class="filename">netcat-avro.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c"># Nombramos a los componentes del agente</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">NetcatAvroAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Netcat</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">NetcatAvroAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">NetcatAvroAgent.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">AvroSink</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c"># Describimos el origen netcat en localhost:44444</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">NetcatAvroAgent.sources.Netcat.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">netcat</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="na">NetcatAvroAgent.sources.Netcat.bind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="na">NetcatAvroAgent.sources.Netcat.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">44444</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="c"># Describimos el destino como Avro en localhost:10003</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="c"># Unimos el origen y el destino a través del canal de fichero</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="na">NetcatAvroAgent.sources.Netcat.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="na">NetcatAvroAgent.channels.FileChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="na">NetcatAvroAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="na">NetcatAvroAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span><span class="w"></span>
+</code></pre></div>
+<p>A continuación, creamos un segundo agente (<code>AvroHdfsAgent</code>) que utilice como fuente Avro y que almacene los eventos recibidos en HDFS. Para ello, creamos el agente <code>avro-hdfs.conf</code>:</p>
+<div class="highlight"><span class="filename">avro-hdfs.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c"># Nombramos a los componentes del agente</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">AvroHdfsAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">AvroSource</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">AvroHdfsAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">AvroHdfsAgent.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">HdfsSink</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c"># Describimos el origen como Avro en localhost:10003</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.bind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="c"># Describimos el destino HDFS </span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hdfs</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/user/iabd/flume/avro_data/</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.fileType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">DataStream</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.writeFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Text</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="c"># Unimos el origen y el destino</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="na">AvroHdfsAgent.channels.MemChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span><span class="w"></span>
+</code></pre></div>
+<p>Primero lanzamos este último agente, para que Flume quede a la espera de mensajes Avro en <code>localhost:10003</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng agent --conf ./conf/ --conf-file ./conf/avro-hdfs.conf <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --name AvroHdfsAgent <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -Dflume.root.logger<span class="o">=</span>INFO,console
+</code></pre></div>
+<p>Una vez ha arrancado, en nueva pestaña, lanzamos el primer agente:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng agent --conf ./conf/ --conf-file ./conf/netcat-avro.conf <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --name NetcatAvroAgent <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -Dflume.root.logger<span class="o">=</span>INFO,console
+</code></pre></div>
+<p>Finalmente, en otro terminal, escribimos mensajes Netcat accediendo a <code>curl telnet://localhost:44444</code>. Si accedéis a la carpeta <code>/user/iabd/flume/avro_data</code> en HDFS podremos comprobar cómo se van creando archivos que agrupan los mensajes enviados.</p>
+<h3 id="caso-5-flujo-multi-agente">Caso 5 - Flujo multi-agente<a class="headerlink" href="#caso-5-flujo-multi-agente" title="Permanent link">&para;</a></h3>
+<p>Para demostrar como varios agentes pueden conectarse entre sí, vamos a realizar un caso de uso donde vamos a leer información de tres fuentes distintas: una fuente de Netcat con un canal basado en ficheros, otra que realice <em>spooling</em> de una carpeta (vigile una carpeta y cuando haya algún archivo, lo ingeste y lo elimine) utilizando un canal en memoria y un tercero que ejecute un comando utilizando también un canal en memoria.</p>
+<p>Como agente de consolidación que una la información de las tres fuentes de datos, vamos a reutilizar el agente <em>AvroHdfsAgent</em> que hemos creado en el caso de uso anterior.</p>
+<figure style="align: center">
+    <img src="images/05flume-consolidation.png">
+    <figcaption>Consolidando flujos</figcaption>
+</figure>
+
+<p>Para ello, vamos a definir los agentes en  siguiente fichero de configuración <code>multiagent-avro.conf</code>):</p>
+<div class="highlight"><span class="filename">multiagent-avro.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c"># Nombramos las tres fuentes con sus tres sumideros</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">MultiAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Netcat Spooldir Exec</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">MultiAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel MemChannel1 MemChannel2</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">MultiAgent.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">AvroSink1 AvroSink2 AvroSink3</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c"># Describimos el primer agente</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">MultiAgent.sources.Netcat.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">netcat</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="na">MultiAgent.sources.Netcat.bind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="na">MultiAgent.sources.Netcat.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10004</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="c"># Describimos el segundo agente</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="na">MultiAgent.sources.Spooldir.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">spooldir</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="na">MultiAgent.sources.Spooldir.spoolDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/spoolDir</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="na">MultiAgent.sources.Spooldir.deletePolicy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">immediate</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="c"># Describimos el tercer agente</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="na">MultiAgent.sources.Exec.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">exec</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="na">MultiAgent.sources.Exec.command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">cat /home/iabd/datos/empleados.txt</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span>
+<span class="linenos" data-linenos="20 "></span><span class="c"># Describimos los tres destinos como Avro en localhost:10003</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="na">MultiAgent.sinks.AvroSink1.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="na">MultiAgent.sinks.AvroSink1.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="na">MultiAgent.sinks.AvroSink1.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span>
+<span class="linenos" data-linenos="25 "></span><span class="na">MultiAgent.sinks.AvroSink2.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span><span class="w"></span>
+<span class="linenos" data-linenos="26 "></span><span class="na">MultiAgent.sinks.AvroSink2.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos="27 "></span><span class="na">MultiAgent.sinks.AvroSink2.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span><span class="w"></span>
+<span class="linenos" data-linenos="28 "></span>
+<span class="linenos" data-linenos="29 "></span><span class="na">MultiAgent.sinks.AvroSink3.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span><span class="w"></span>
+<span class="linenos" data-linenos="30 "></span><span class="na">MultiAgent.sinks.AvroSink3.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span><span class="w"></span>
+<span class="linenos" data-linenos="31 "></span><span class="na">MultiAgent.sinks.AvroSink3.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span><span class="w"></span>
+<span class="linenos" data-linenos="32 "></span>
+<span class="linenos" data-linenos="33 "></span><span class="c"># Describimos los canales</span><span class="w"></span>
+<span class="linenos" data-linenos="34 "></span><span class="na">MultiAgent.channels.FileChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span><span class="w"></span>
+<span class="linenos" data-linenos="35 "></span><span class="na">MultiAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span><span class="w"></span>
+<span class="linenos" data-linenos="36 "></span><span class="na">MultiAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span><span class="w"></span>
+<span class="linenos" data-linenos="37 "></span><span class="na">MultiAgent.channels.MemChannel1.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span><span class="w"></span>
+<span class="linenos" data-linenos="38 "></span><span class="na">MultiAgent.channels.MemChannel2.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span><span class="w"></span>
+<span class="linenos" data-linenos="39 "></span>
+<span class="linenos" data-linenos="40 "></span><span class="c"># Unimos los orígenes y destinos</span><span class="w"></span>
+<span class="linenos" data-linenos="41 "></span><span class="na">MultiAgent.sources.Netcat.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="42 "></span><span class="na">MultiAgent.sources.Spooldir.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel1</span><span class="w"></span>
+<span class="linenos" data-linenos="43 "></span><span class="na">MultiAgent.sources.Exec.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel2</span><span class="w"></span>
+<span class="linenos" data-linenos="44 "></span><span class="na">MultiAgent.sinks.AvroSink1.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span><span class="w"></span>
+<span class="linenos" data-linenos="45 "></span><span class="na">MultiAgent.sinks.AvroSink2.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel1</span><span class="w"></span>
+<span class="linenos" data-linenos="46 "></span><span class="na">MultiAgent.sinks.AvroSink3.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel2</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Preparación</p>
+<p>Antes de arrancar los agentes, asegúrate de tener creada la carpeta <code>/home/iabd/flume/spoolDir</code> y disponible el recurso <code>/home/iabd/datos/empleados.txt</code>.</p>
+</div>
+<p>Igual que en el caso de uso anterior, primero lanzamos el agente consolidador para que <em>Flume</em> quede a la espera de mensajes <em>Avro</em> en <code>localhost:10003</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng agent --conf ./conf/ --conf-file ./conf/avro-hdfs.conf <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --name AvroHdfsAgent <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -Dflume.root.logger<span class="o">=</span>INFO,console
+</code></pre></div>
+<p>Una vez ha arrancado, en una nueva pestaña, lanzamos el multi agente:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng agent --conf ./conf/ --conf-file ./conf/multiagent-avro.conf <span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>    --name MultiAgent <span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>    -Dflume.root.logger<span class="o">=</span>INFO,console
+</code></pre></div>
+<div class="admonition help">
+<p class="admonition-title">Interceptores</p>
+<p>Podemos utilizar interceptores para modificar o borrar eventos al vuelo a partir del <em>timestamp</em>, nombre del <em>host</em>, <em>uuid</em>, etc... incluso mediante el uso de una expresión regular.
+Si quieres profundizar en el tema, el siguiente artículo detalla los diferentes tipos y configuraciones:
+<a href="https://data-flair.training/blogs/flume-interceptors/">https://data-flair.training/blogs/flume-interceptors/</a></p>
+</div>
+<p>En este caso, para poder probarlo, además de enviar comandos <em>Netstat</em> en <code>curl telnet://localhost:10004</code>, prueba a colocar un archivo de texto (por ejemplo, un documento CSV) en <code>/home/iabd/flume/spoolDir</code>.</p>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Página oficial de <a href="https://sqoop.apache.org">Sqoop</a></li>
+<li><a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html">Sqoop User Guide</a></li>
+<li><a href="https://www.tutorialspoint.com/sqoop/index.htm">Sqoop Tutorial</a> en <em>Tutorialspoint</em></li>
+<li><a href="https://www.oreilly.com/library/view/apache-sqoop-cookbook/9781449364618/">Apache Sqoop Cookbook</a>, de Kathleen Ting, Jarek Jarcec Cecho</li>
+<li>Página oficial de <a href="https://flume.apache.org/">Flume</a></li>
+<li><a href="https://flume.apache.org/FlumeUserGuide.html">Flume User Guide</a></li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<div class="admonition tip">
+<p class="admonition-title">Preparación MariaBD</p>
+<p>Para estos actividades y futuras sesiones, vamos a utilizar una base de datos (<em>retail_db</em>) que contiene información sobre un comercio (clientes, productos, pedidos, etc...).</p>
+<p>Para ello, descargaremos el archivo <a href="resources/create_db.sql">create_db.sql</a> con las sentencias para crear la base de datos y los datos como instrucciones SQL.</p>
+<p>Tras ello, si nos conectamos a <em>MariaDB</em> (<code>mariadb -u iabd -p</code>) desde la misma carpeta que hemos descargado el archivo, ejecutaremos los siguientes comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">retail_db</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="n">use</span><span class="w"> </span><span class="n">retail_db</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="k">source</span><span class="w"> </span><span class="n">create_db</span><span class="p">.</span><span class="k">sql</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="k">show</span><span class="w"> </span><span class="n">tables</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<ol>
+<li>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.">CE4.3a</abbr> y <abbr title="Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.">CE4.3b</abbr> / 1p) Haciendo uso de <em>Sqoop</em> y la base de datos <em>retail_db</em>, importa:</p>
+<ol>
+<li>
+<p>Todos los pedidos de la tabla <code>orders</code> cuyo campo <code>order_status</code> sea <code>COMPLETE</code>.</p>
+<p>Coloca los datos en <code>user/iabd/sqoop/orders/datos_parquet</code> en formato Parquet, utilizando el tabulador como delimitador de campos y utilizando la compresión Snappy. Deberás recuperar 22.899 (¿o 22.902?) registros.</p>
+</li>
+<li>
+<p>Todos los clientes de la tabla <code>customers</code> cuyo campo <code>state</code> sea <code>CA</code>.</p>
+<p>Coloca los datos en <code>user/iabd/sqoop/customers/datos_avro</code> en formato Avro,  utilizando la compresión bzip2. Deberás recuperar las columnas <code>customer_id, customer_fname, customer_lname, customer_state</code>. El resultado contendrá 2012 registros.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.">CE4.3a</abbr> y <abbr title="Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.">CE4.3b</abbr> / 2p) Mediante <em>Flume</em>, realiza los caso de uso 3, 4 y 5.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.">CE4.3a</abbr>, <abbr title="Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.">CE4.3b</abbr> y <abbr title="Se ha comprobado que la revolución digital exige poder almacenar y procesar ingentes cantidades de datos de distinto tipo y descubrir su valor.">CE4.3c</abbr> / 1p) Haciendo uso de Flume, recupera información de Twitter y almacénala en HDFS. Para ello, utiliza el <a href="https://flume.apache.org/FlumeUserGuide.html#twitter-1-firehose-source-experimental">Twitter 1% Firehouse source</a> y el <a href="https://flume.apache.org/FlumeUserGuide.html#hdfs-sink">HDFS sink</a>.</p>
+<p>Para ello, necesitaréis las claves de desarrollo de <em>Twitter</em>. Adjunta una captura de pantalla donde se visualice el contenido de uno de los bloques de HDFS.</p>
+<div class="admonition tip">
+<p class="admonition-title">Cuidado con el espacio de almacenamiento</p>
+<p>Una vez lances el agente, detenlo a los tres segundos para no llenar de datos HDFS.</p>
+</div>
+</li>
+</ol>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        ¿Ha sido útil está página?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Sí, ha sido util" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="La página es mejorable" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración!
+              
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+                Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+              
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input type="checkbox" class="md-toggle" id="__settings">
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      
+    
+  </body>
+</html>
