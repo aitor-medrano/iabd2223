@@ -6,16 +6,18 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Acceso a datos en S3 desde AWS Athena">
       
       
-        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/05emr.html">
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/07athena.html">
       
       <link rel="icon" href="../images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
-        <title>S44.- EMR - Inteligencia Artificial y Big Data</title>
+        <title>Acceso a datos en S3 desde AWS Athena - Inteligencia Artificial y Big Data</title>
       
     
     
@@ -62,11 +64,11 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="S44.- EMR - Inteligencia Artificial y Big Data" >
+        <meta  property="og:title"  content="Acceso a datos en S3 desde AWS Athena - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="None" >
+        <meta  property="og:description"  content="Acceso a datos en S3 desde AWS Athena" >
       
-        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/05emr.png" >
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/07athena.png" >
       
         <meta  property="og:image:type"  content="image/png" >
       
@@ -74,15 +76,15 @@
       
         <meta  property="og:image:height"  content="630" >
       
-        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/cloud/05emr.html" >
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/cloud/07athena.html" >
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="S44.- EMR - Inteligencia Artificial y Big Data" >
+        <meta  name="twitter:title"  content="Acceso a datos en S3 desde AWS Athena - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="None" >
+        <meta  name="twitter:description"  content="Acceso a datos en S3 desde AWS Athena" >
       
-        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/05emr.png" >
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/07athena.png" >
       
     
     
@@ -108,7 +110,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#aws-elastic-map-reduce" class="md-skip">
+        <a href="#aws-athena" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -140,7 +142,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              S44.- EMR
+              Acceso a datos en S3 desde AWS Athena
             
           </span>
         </div>
@@ -548,14 +550,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
       
       
       
@@ -656,114 +656,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          S44.- EMR
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="05emr.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="05emr.html" class="md-nav__link">
         S44.- EMR
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Tabla de contenidos
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#lanzando-emr" class="md-nav__link">
-    Lanzando EMR
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#preparando-al-cluster" class="md-nav__link">
-    Preparando al clúster
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#conectandonos-al-cluster" class="md-nav__link">
-    Conectándonos al clúster
-  </a>
-  
-    <nav class="md-nav" aria-label="Conectándonos al clúster">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#visualizando-hdfs" class="md-nav__link">
-    Visualizando HDFS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hue-y-hdfs" class="md-nav__link">
-    Hue y HDFS
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#escalando" class="md-nav__link">
-    Escalando
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#costes" class="md-nav__link">
-    Costes
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -817,70 +714,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#lanzando-emr" class="md-nav__link">
-    Lanzando EMR
+  <a href="#aws-glue" class="md-nav__link">
+    AWS Glue
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#preparando-al-cluster" class="md-nav__link">
-    Preparando al clúster
+  <a href="#creacion" class="md-nav__link">
+    Creación
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#conectandonos-al-cluster" class="md-nav__link">
-    Conectándonos al clúster
-  </a>
-  
-    <nav class="md-nav" aria-label="Conectándonos al clúster">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#visualizando-hdfs" class="md-nav__link">
-    Visualizando HDFS
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#hue-y-hdfs" class="md-nav__link">
-    Hue y HDFS
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#escalando" class="md-nav__link">
-    Escalando
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#costes" class="md-nav__link">
-    Costes
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
+  <a href="#ejecucion" class="md-nav__link">
+    Ejecución
   </a>
   
 </li>
@@ -900,196 +749,83 @@
                   
 
 
-<h1 id="aws-elastic-map-reduce">AWS Elastic Map Reduce<a class="headerlink" href="#aws-elastic-map-reduce" title="Permanent link">&para;</a></h1>
-<figure style="float: right;">
-    <img src="images/05emr-logo.png" width="100">
-    <figcaption>Logo de AWS EMR</figcaption>
-</figure>
-
-<p><a href="https://aws.amazon.com/es/emr/">Amazon EMR</a> es un servicio de <em>Amazon Web Services</em> que permite crear clusters <em>Hadoop</em> y <em>Spark</em>, mediante el cual podemos realizar analíticas sobre datos y cargas de BI, así como transformar y mover grandes volúmenes de datos, tanto cargando como almacenando datos en servicios de AWS como S3 y DynamoDB.</p>
-<p>Para ello, utiliza una distribución propia de AWS que permite seleccionar los componentes que van a lanzarse en el cluster (Hive, Spark, Presto, etc...)</p>
-<figure style="align: center;">
-    <img src="images/05emr-services.png">
-    <figcaption>Servicios Hadoop en EMR</figcaption>
-</figure>
-
-<p>Ofrece elasticidad sobre el cluster, pudiendo modificar dinámicamente el dimensionamiento del cluster según necesidades, tanto hacia arriba como hacia abajo de clúster que están en ejecución.</p>
-<p>Respecto al hardware, se ejecuta sobre máquinas EC2 (IaaS), las cuales podemos configurar según necesidades. Utiliza HDFS y S3 para el almacenamiento, de manera que podemos guardar los datos de entrada y los de salida en S3, mientras que los resultados intermedios los almacenamos en HDFS.</p>
-<p>Los cluster de EMR se componen de:</p>
-<ul>
-<li>un nodo maestro, encargado de gestionar el cluster y ejecutar los servicios de coordinación de datos.</li>
-<li>varios nodos principales, los cuales ejecutan las tareas y almacenan los datos en el clúster HDFS.</li>
-<li>nodos <em>tareas</em>, los cuales son opcionales, y no almacenan datos, y podemos añadir a un cluster para incrementar la capacidad de procesamiento (e eliminarlos una vez no los necesitamos para reducir costes).</li>
-</ul>
-<p>A nivel de servicios, podemos definir su arquitectura en cuatro capas:</p>
-<ul>
-<li>Almacenamiento: mediante HFDS, EMR FS o el sistema de archivos local (almacenamiento de las instancias EC2).</li>
-<li>Gestor de recursos del cluster: YARN</li>
-<li>Frameworks de procesamiento de datos: Hadoop MapReduce y Apache Spark</li>
-<li>Aplicaciones: Apache Spark, Apache Hive, etc...</li>
-</ul>
-<h2 id="lanzando-emr">Lanzando EMR<a class="headerlink" href="#lanzando-emr" title="Permanent link">&para;</a></h2>
-<p>Antes de lanzar EMR, necesitamos crear un repositorio de información donde guardar los datos de entrada y salida, así como los logs que EMR genere.</p>
-<p>Para ello, en S3 generaremos un bucket al que llamaremos <code>s3severo8a-emr</code>.</p>
-<p>Podemos lanzar un cluster de EMR de tres formas, mediante la consola, el CLI o con un API. Vamos a centrar en el uso de la consola.</p>
-<p>A continuación, accedemos al servicio de EMR, y creamos un cluster el cual hemos llamado <code>ClusterEMRs8a</code> y le indicamos la carpeta en S3 que acabamos de crear, así como en el modo de lanzamiento elegimos <em>Clúster</em>:</p>
-<figure style="align: center;">
-    <img src="images/05emr-create.png">
-    <figcaption>Creando un clúster en EMR</figcaption>
-</figure>
-
-<p>A continuación, elegimos como tipo de instancia <code>m4.large</code> (2 CPU y 8 GiB RAM) y como par de claves <code>vockey</code>, las cuales podemos descargar desde <em>AWS Details</em> al lanzar nuestro <em>Learner Lab</em>:</p>
-<figure style="align: center;">
-    <img src="images/05emr-ec2.png">
-    <figcaption>Eligiendo instancias y clave SSH</figcaption>
-</figure>
-
-<p>Tras darle a crear, a los 10 minutos aproximadamente, nuestro clúster estará listo para trabajar con él.</p>
-<div class="admonition info">
-<p class="admonition-title">Modos de lanzamiento</p>
-<p>Normalmente, cuando utilizamos un clúster para procesar analíticas, interactuar con aplicaciones de big data o procesamiento de <em>datasets</em> de forma periódica, el clúster está siempre corriendo, a no ser que lo detengamos nosotros de forma explícita.
-Pero si queremos que sólo exista durante la ejecución de uno o más trabajos, el cual se le conoce como clúster <em>transient</em> o de ejecución por pasos, al terminar de ejecutar los pasos indicados, el clúster se detendrá.</p>
-</div>
-<h2 id="preparando-al-cluster">Preparando al clúster<a class="headerlink" href="#preparando-al-cluster" title="Permanent link">&para;</a></h2>
-<p>En un cluster EMR, el nodo maestro es una instancia EC2 que coordina al resto de instancias EC2 que corren los nodos principales y de tareas. Este nodo expone un DNS público el cual podemos utilizar para conectarnos.</p>
-<p>Por defecto, EMR crea un grupo de seguridad para el nodo maestro el cual determina el acceso. De inicio, es grupo de seguridad no permite las conexiones SSH. Por ello, antes de poder conectarnos al cluster, necesitamos modificar el grupo de seguridad del nodo principal para permitir todo el tráfico TCP y el SSH.</p>
-<figure style="align: center;">
-    <img src="images/05emr-security-group.png">
-    <figcaption>Permitiendo todas las conexiones de entrada</figcaption>
-</figure>
-
-<p>De forma paralela, por defecto, EMR bloquea el arranque de los clúster que permitan las conexiones del exterior (esto nos puede pasar si al crear el clúster le asignamos un grupo de seguridad que ya teníamos creado y que permitía el tráfico entrante).</p>
-<p>Para permitir el acceso desde el exterior, podemos arrancar un clúster con el trafico cerrado, y una vez ya ha arrancado cambiar su grupo de seguridad, o en la opción de <em>Bloquear el acceso público</em> de EMR, desactivarlo:</p>
-<figure style="align: center;">
-    <img src="images/05emr-public-access.png">
-    <figcaption>Desactivando el bloqueo del acceso público</figcaption>
-</figure>
-
-<h2 id="conectandonos-al-cluster">Conectándonos al clúster<a class="headerlink" href="#conectandonos-al-cluster" title="Permanent link">&para;</a></h2>
-<p>Una vez arrancado, nos podemos conectar al nodo principal.</p>
-<figure style="float: right;">
-    <img src="images/05emr-cluster-started.png">
-    <figcaption>Cluster arrancado</figcaption>
-</figure>
-
-<p>Por ejemplo, podemos conectarnos a:</p>
-<ul>
-<li>El namenode de HDFS</li>
-<li>Hue (mal traducido a Tonalidad)</li>
-<li>El interfaz de Tez</li>
-<li>O la de YARN</li>
-</ul>
-<div class="admonition caution">
-<p class="admonition-title">Parece que funciona pero...</p>
-<p>Una vez arrancado, a día de hoy tenemos un par de propiedades que modificar, ya que el acceso web a HDFS está bloqueado, y la ruta de HDFS en Hue está mal configurada.</p>
-</div>
-<p>Así pues, vamos a conectarnos vía SSH para activar el navegador web de HDFS. Con nuestras claves <code>labsuser.pem</code> descargadas, nos conectamos al clúster (recuerda poner <code>hadoop@</code> delante de la URL del namenode):</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ssh -i labsuser.pem hadoop@ec2-34-232-48-47.compute-1.amazonaws.com
-</code></pre></div>
-<p>Al conectarnos, tanto EC2 como EMR nos darán la bienvenida:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>       __|  __|_  )
-<span class="linenos" data-linenos=" 2 "></span>       _|  (     /   Amazon Linux 2 AMI
-<span class="linenos" data-linenos=" 3 "></span>      ___|\___|___|
-<span class="linenos" data-linenos=" 4 "></span>
-<span class="linenos" data-linenos=" 5 "></span>https://aws.amazon.com/amazon-linux-2/
-<span class="linenos" data-linenos=" 6 "></span>22 package(s) needed for security, out of 32 available
-<span class="linenos" data-linenos=" 7 "></span>Run &quot;sudo yum update&quot; to apply all updates.
-<span class="linenos" data-linenos=" 8 "></span>
-<span class="linenos" data-linenos=" 9 "></span>EEEEEEEEEEEEEEEEEEEE MMMMMMMM           MMMMMMMM RRRRRRRRRRRRRRR    
-<span class="linenos" data-linenos="10 "></span>E::::::::::::::::::E M:::::::M         M:::::::M R::::::::::::::R   
-<span class="linenos" data-linenos="11 "></span>EE:::::EEEEEEEEE:::E M::::::::M       M::::::::M R:::::RRRRRR:::::R 
-<span class="linenos" data-linenos="12 "></span>  E::::E       EEEEE M:::::::::M     M:::::::::M RR::::R      R::::R
-<span class="linenos" data-linenos="13 "></span>  E::::E             M::::::M:::M   M:::M::::::M   R:::R      R::::R
-<span class="linenos" data-linenos="14 "></span>  E:::::EEEEEEEEEE   M:::::M M:::M M:::M M:::::M   R:::RRRRRR:::::R 
-<span class="linenos" data-linenos="15 "></span>  E::::::::::::::E   M:::::M  M:::M:::M  M:::::M   R:::::::::::RR   
-<span class="linenos" data-linenos="16 "></span>  E:::::EEEEEEEEEE   M:::::M   M:::::M   M:::::M   R:::RRRRRR::::R  
-<span class="linenos" data-linenos="17 "></span>  E::::E             M:::::M    M:::M    M:::::M   R:::R      R::::R
-<span class="linenos" data-linenos="18 "></span>  E::::E       EEEEE M:::::M     MMM     M:::::M   R:::R      R::::R
-<span class="linenos" data-linenos="19 "></span>EE:::::EEEEEEEE::::E M:::::M             M:::::M   R:::R      R::::R
-<span class="linenos" data-linenos="20 "></span>E::::::::::::::::::E M:::::M             M:::::M RR::::R      R::::R
-<span class="linenos" data-linenos="21 "></span>EEEEEEEEEEEEEEEEEEEE MMMMMMM             MMMMMMM RRRRRRR      RRRRRR
-<span class="linenos" data-linenos="22 "></span>
-<span class="linenos" data-linenos="23 "></span>[hadoop@ip-172-31-15-67 ~]$
-</code></pre></div>
-<h3 id="visualizando-hdfs">Visualizando HDFS<a class="headerlink" href="#visualizando-hdfs" title="Permanent link">&para;</a></h3>
-<p>Para poder visualizar el sistema de archivos de HDFS, primero le cambiamos los permisos al <code>hdfs-site.xml</code> para poder editarlo sin problemas:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo chmod <span class="m">777</span> /etc/hadoop/conf/hdfs-site.xml
-<span class="linenos" data-linenos="2 "></span>nano /etc/hadoop/conf/hdfs-site.xml
-</code></pre></div>
-<p>Editamos la propiedad <code>dfs.webhdfs.enabled</code> y la ponemos a <code>true</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;property&gt;</span>
-<span class="linenos" data-linenos="2 "></span>    <span class="nt">&lt;name&gt;</span>dfs.webhdfs.enabled<span class="nt">&lt;/name&gt;</span>
-<span class="linenos" data-linenos="3 "></span>    <span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
-<span class="linenos" data-linenos="4 "></span><span class="nt">&lt;/property&gt;</span>
-</code></pre></div>
-<p>Sólo nos queda reiniciar el servicio de HDFS:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo systemctl restart hadoop-hdfs-namenode
-</code></pre></div>
-<p>Y ahora desde el interfaz de HDFS ya podemos navegar por las carpetas y ver el contenido:</p>
-<figure style="align: center;">
-    <img src="images/05emr-hdfs-ui.png">
-    <figcaption>Interfaz de HDFS</figcaption>
-</figure>
-
-<h3 id="hue-y-hdfs">Hue y HDFS<a class="headerlink" href="#hue-y-hdfs" title="Permanent link">&para;</a></h3>
-<p>Cuando arranca Hue, la primera vez nos pide crear un usuario (en nuestro caso, hemos creado el usuario <code>iabd</code> con contraseña <code>IABDiabd1.</code>)</p>
-<figure style="align: center;">
-    <img src="images/05emr-hue-login.png">
-    <figcaption>Login de acceso a Hue</figcaption>
-</figure>
-
-<p>Si intentamos visualizar los archivos, de igual modo, Hue no tiene bien configurado el acceso a HDFS:</p>
-<figure style="align: center;">
-    <img src="images/05emr-hue-error.png">
-    <figcaption>Error al mostrar los archivos en Hue</figcaption>
-</figure>
-
-<p>Para ello, igual que hemos realizado antes, cambiamos los permisos y editamos el fichero de configuración:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo chmod <span class="m">777</span> /etc/hue/conf/hue.ini
-<span class="linenos" data-linenos="2 "></span>nano /etc/hue/conf/hue.ini
-</code></pre></div>
-<p>Y configuramos bien el puerto de acceso (debe ser 50070), dentro del grupo <code>[[hdfs_clusters]]</code> de <code>[hadoop]</code> editamos la propiedad <code>webhdfs_url</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">webhdfs_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">http://ip-172-31-15-67.ec2.internal:50070/webhdfs/v1</span><span class="w"></span>
-</code></pre></div>
-<p>Y reiniciamos el servicio:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo systemctl restart hue
-</code></pre></div>
-<p>Sólo nos queda crear un carpeta para nuestro usuario en HDFS:ç</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -mkdir /user/iabd
-</code></pre></div>
-<p>Y ya podemos trabajar con Hue.</p>
-<figure style="align: center;">
-    <img src="images/05emr-hue-files.png">
-    <figcaption>Visualizando HDFS desde Hue</figcaption>
-</figure>
-
-<h2 id="escalando">Escalando<a class="headerlink" href="#escalando" title="Permanent link">&para;</a></h2>
-<p>Podemos ajustar el número de instancias EC2 con las que trabaja nuestro clúster de EMR, ya sea manualmente o de forma automática en respuesta a la demanda que reciba.</p>
-<figure style="align: center;">
-    <img src="images/05emr-cluster-scaling.png">
-    <figcaption>Escalando un clúster EMR</figcaption>
-</figure>
-
-<p>Para ello, podemos activar el escalado gestionado mediante EMR o crear una política de escalado a medida. Independiente del modo, hemos de considerar que siempre hemos de tener de uno a tres nodos maestros, y que una vez creado el clúster, este número no lo podemos cambiar. Lo que sí que podemos es añadir y eliminar nodos principales o de tareas.</p>
-<figure style="align: center;">
-    <img src="images/05emr-cluster-add.png">
-    <figcaption>Añadiendo un nodo de tipo tarea</figcaption>
-</figure>
-
-<p>Conviene destacar que no podemos reconfigurar y redimensionar el clúster al mismo tiempo, de manera que hasta que no acabe la reconfiguración de un grupo de instancias no se puede iniciar el redimensionado.</p>
-<h2 id="costes">Costes<a class="headerlink" href="#costes" title="Permanent link">&para;</a></h2>
-<p>Es muy importante ser conscientes de los <a href="https://aws.amazon.com/es/emr/pricing/">costes</a> que lleva utilizar EMR. <em>A grosso modo</em>, EMR supone un 25% de sobrecoste a las instancias ECS, es decir, pagaremos el coste del alquiler de las máquinas EC2 más un sobre un incremento del 25%.</p>
-<p>Por ejemplo, para 20 nodos con 122 Gb RAM, 16 vCPU, pagaríamos unos 32 €/h.</p>
-<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="https://docs.aws.amazon.com/es_es/emr/latest/ManagementGuide/emr-gs.html">Tutorial de EMR en AWS</a></li>
-<li><a href="https://www.youtube.com/watch?v=v9nk6mVxJDU">AWS EMR Tutorial - Johnny Chivers - Youtube</a></li>
-</ul>
-<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<h1 id="aws-athena">AWS Athena<a class="headerlink" href="#aws-athena" title="Permanent link">&para;</a></h1>
+<p>Athena es una herramienta <em>serverless</em> que permite agregar datos en S3 que provienen de fuentes dispares como bases de datos, un flujo de datos, contenido web desestructurado, etc..</p>
+<p>Amazon Athena is an interactive query service that makes it easy for you to
+analyze data directly in Amazon S3 using standard SQL. With a few actions in
+the AWS Management Console, you can use Athena directly against data assets
+stored in the data lake and begin using standard SQL to run ad hoc queries and
+get results in a matter of seconds.
+Athena is serverless, so there is no infrastructure to set up or manage, and you
+only pay for the volume of data assets scanned during the queries you run.
+Athena scales automatically—executing queries in parallel—so results are fast,
+even with large datasets and complex queries. You can use Athena to process
+unstructured, semi-structured, and structured data sets. Supported data asset
+formats include CSV, JSON, or columnar data formats such as Apache Parquet
+and Apache ORC. Athena integrates with Amazon QuickSight for easy
+visualization. It can also be used with third-party reporting and business
+intelligence tools by connecting these tools to Athena with a JDBC driver.</p>
+<p>En el siguiente supuesto, vamos a crear una aplicación <em>Athena</em>, definiremos una base de datos, crearemos una tabla con sus columnas y tipos de datos, y ejecutaremos consultas sencillas y compuestas.</p>
+<p>Amazon Athena es un servicio de consulta interactivo que se puede utilizar para extraer información de datos almacenados en S3. Athena almacena metadatos sobre las fuentes de datos, así como las consultas para poder reutilizarlas o compartirlas con otros usuarios.</p>
+<p>Athena is serverless, so there is no infrastructure to set up or manage, and you pay only for the queries you run. Athena scales automatically—running queries in parallel—so results are fast, even with large datasets and complex queries.</p>
+<p>Amazon Athena is a fast, cost-effective, interactive query service that makes it easy to analyze petabytes of data in S3 with no data warehouses or clusters to manage.</p>
 <ol>
-<li>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 1p) Arranca un clúster EMR con 3 máquinas y modifica las configuraciones de HDFS y Hue para poder visualizar los archivos.</li>
-<li>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha visualizado que el sistema puede crecer fácilmente añadiendo módulos.">CE5.2e</abbr> / 1p) A continuación, añade un cuarto nodo al clúster y sube un archivo a HDFS. Tras ello, reescala el clúster para que quede en tres nodos. Vuelve a acceder a HDFS y comprueba que el archivo sigue estando disponible.</li>
+<li>Seleccionar el <em>data set</em>, identificando en S3 donde están los datos. Athena permite consultar los datos CSV, TSV, JSON, Parquet y formato ORC.</li>
+<li>Crear la tabla, mediante el asistente de crear tabla o utilizanos la sintaxis DDL de Hive.</li>
+<li>Consultar los datos, mediante SQL.</li>
 </ol>
+<p>Antes de empezar con <em>Athena</em>, necesitamos crear un <em>bucket</em> donde almacenar los resultados de nuestras consultas. Así pues, vamos a crear un <em>bucket</em> que llamaremos <em>severo2122athena</em>.</p>
+<p>Una vez creado, ya podemos acceder a Athena, y en la pestaña de <em>Settings</em> indicar el bucket donde vamos a guardar los resultados:</p>
+<figure style="align: center;">
+    <img src="../imagenes/etl/01athenaSettings.png">
+    <figcaption>Athena - Configuración inicial</figcaption>
+</figure>
+
+<p>A continuación, entramos al <em>Query editor</em>, y a lado de la sección <em>Tables and vies</em>, desplegamos el menú <em>Create</em> y creamos una tabla a partir de datos S3:</p>
+<figure style="align: center;">
+    <img src="../imagenes/etl/01athenaCreateTable0.png">
+    <figcaption>Athena - Opción para crear la tabla a partir de S3</figcaption>
+</figure>
+
+<p>En la siguiente pantalla, crearemos la tabla <code>yellow</code> en una nueva base de datos que denominamos <code>taxidata</code> y le indicamos que coja los datos S3 de <code>s3://aws-tc-largeobjects/CUR-TF-200-ACBDFO-1/Lab2/yellow/</code>. El formato de los datos es <code>CSV</code>. El siguiente paso es mediante <code>Bulk add columns</code> indicar los nombre y tipos de las columnas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">vendor</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">pickup</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">dropoff</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="k">count</span><span class="w"> </span><span class="nb">int</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">distance</span><span class="w"> </span><span class="nb">int</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">ratecode</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">storeflag</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">pulocid</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">dolocid</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="n">paytype</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="n">fare</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="n">extra</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="n">mta_tax</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="n">tip</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="n">tolls</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="n">surcharge</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="n">total</span><span class="w"> </span><span class="nb">decimal</span><span class="w"></span>
+</code></pre></div>
+<p>Finalmente, veremos a modo de resumen una instrucción <code>create table</code> similar a la siguiente y ya podemos pulsar sobre <em>Create table</em>:</p>
+<p><code>`` sql
+CREATE EXTERNAL TABLE IF NOT EXISTS</code>taxidata<code>.</code>yellow<code>(</code>vendor<code>string,</code>pickup<code>timestamp,</code>dropoff<code>timestamp,</code>count<code>int,</code>distance<code>int,</code>ratecode<code>string,</code>storeflag<code>string</code>pulocid<code>string,</code>dolocid<code>string,</code>paytype<code>string,</code>fare<code>decimal,</code>extra<code>decimal,</code>mta_tax<code>decimal,</code>tip<code>decimal,</code>tolls<code>decimal,</code>surcharge<code>decimal,</code>total` decimal
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
+WITH SERDEPROPERTIES (
+'serialization.format' = ',',
+'field.delim' = ','
+) LOCATION 's3://aws-tc-largeobjects/CUR-TF-200-ACBDFO-1/Lab2/yellow/'
+TBLPROPERTIES ('has_encrypted_data'='false');</p>
+<p>FIXME: mirar y hacer https://docs.aws.amazon.com/athena/latest/ug/getting-started.html</p>
+<h3 id="aws-glue">AWS Glue<a class="headerlink" href="#aws-glue" title="Permanent link">&para;</a></h3>
+<p>Es la herramienta ETL completamente administrado que ofrece Amazon Web Services.</p>
+<p>Cuando el esquema de los datos es desconocido, <em>AWS Glue</em> permite inferirlo. Para ello, hemos de construir un rastreador (<em>crawler</em>) para descubrir su estructura.</p>
+<p>. AWS Glue builds a catalog that contains metadata about the various data sources. AWS Glue is similar to Amazon Athena in that the actual data you analyze remains in the data source. The key difference is that you can build a crawler with AWS Glue to discover the schema.</p>
+<h3 id="creacion">Creación<a class="headerlink" href="#creacion" title="Permanent link">&para;</a></h3>
+<h3 id="ejecucion">Ejecución<a class="headerlink" href="#ejecucion" title="Permanent link">&para;</a></h3>
+<p>Se puede ejecutar bajo demanda o planificar su ejecución de forma diaria, por horas, etc... Una vez lanzado, al cabo de un minuto, veremos que ha finalizado y en <code>Base de Datos --&gt; Tablas</code> podremos ver la tabla que ha creado (en nuestro caso la tabla <code>csv</code>), junto con la estructura que ha inferido respecto a los datos cargados.</p>
+<p>El siguiente paso es editar el esquema y ponerle nombres significativos a los campos:</p>
+<p>Una vez los datos están cargados, ya podemos realizar consular con AWS Athena.</p>
 
 
   
@@ -1156,27 +892,6 @@ Pero si queremos que sólo exista durante la ejecución de uno o más trabajos, 
       </main>
       
         <footer class="md-footer">
-  
-    
-    <nav class="md-footer__inner md-grid" aria-label="Pie" >
-      
-        
-        <a href="04computacion.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S44.- EC2" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Anterior
-              </span>
-              S44.- EC2
-            </div>
-          </div>
-        </a>
-      
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
