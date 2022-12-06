@@ -1,6 +1,6 @@
 ---
 title: Sqoop y Flume. Herramientas de ingesta de datos en y desde Hadoop.
-description: Uso de Sqoop para leer y escribir datos en HDFS y MariaDB, con formatos de datos tanto Avro como Parquet. Mediante Flume estudiamos el uso de agentes, sources y sinks para conectar diferentes agentes y realizar un proceso de ingesta de datos en streaming.
+description: Apuntes sobre el uso de Sqoop para leer y escribir datos en HDFS y MariaDB, con formatos de datos tanto Avro como Parquet. Mediante Flume estudiamos el uso de agentes, sources y sinks para conectar diferentes agentes y realizar un proceso de ingesta de datos en streaming.
 ---
 
 # Sqoop / Flume
@@ -43,10 +43,10 @@ Por defecto, todos los trabajos *Sqoop* ejecutan cuatro mapas de trabajo, de man
 
 ### Importando datos
 
-La sintaxis básica de *Sqoop* para importar datos en HDFS es la siguiente:
+La sintaxis básica de *Sqoop* para importar datos en HDFS es mediantel comando [`sqoop import`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal):
 
 ``` bash
-sqoop import -connect jdbc:mysql://host/nombredb -table <nombreTabla> \
+sqoop import --connect jdbc:mysql://host/nombredb --table <nombreTabla> \
     --username <usuarioMariaDB> --password <passwordMariaDB> -m 2
 ```
 
@@ -129,9 +129,9 @@ En la tercera línea, indicamos la tabla que vamos a leer (`profesores`) y el dr
 En la cuarta línea configuramos el destino HDFS donde se van a importar los datos.
 Finalmente, en la última línea, indicamos el separador de los campos y el carácter para separar las líneas.
 
-Si queremos que en el caso de que ya existe la carpeta de destino la borre previamente, añadiremos la opción `--delete-target-dir`.
+Si queremos que en el caso de que ya exista la carpeta de destino la borre previamente, añadiremos la opción `--delete-target-dir`.
 
-!!! caution "Unhealthy node"
+!!! danger "Unhealthy node"
     Nuestra máquina virtual tiene el espacio limitado a 30GB, y es probable que en algún momento se llene el disco. Además de eliminar archivos no necesarios, una opción es configurar YARN mediante el archivo `yarn-site.xml` y configurar las siguientes propiedades para ser más permisivos con la falta de espacio:
 
     ```  xml
@@ -241,7 +241,7 @@ Si accedemos al interfaz gráfico de YARN (en `http://iabd-virtualbox:8088/clust
     <figcaption>Estado de YARN tras la importación</figcaption>
 </figure>
 
-Si accedemos al interfaz gráfico de Hadoop (recuerda que puedes acceder a él mediante `http://localhost:9870`) podremos comprobar en el directorio `/user/iabd/sqoop` que ha creado el directorio que hemos especificado junto con los siguientes archivos:
+Si accedemos al interfaz gráfico de *Hadoop* (recuerda que puedes acceder a él mediante `http://iabd-virtualbox:9870`) podremos comprobar en el directorio `/user/iabd/sqoop` que ha creado el directorio que hemos especificado junto con los siguientes archivos:
 
 <figure style="align: center;">
     <img src="images/05sqoop-caso1a.png">
@@ -255,9 +255,23 @@ Si entramos a ver los datos, podemos visualizar el contenido del primer fragment
     <figcaption>Contenido de part-m-0000</figcaption>
 </figure>
 
+!!! tip "Importándolo todo"
+    Si queremos importar todas las tablas de una base de datos, podemos emplear el comando [`sqoop import-all-tables`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_all_tables_literal), en el cual ya no indicamos la tabla a importar:
+
+    ``` bash
+    sqoop import-all-tables --connect jdbc:mysql://localhost/mi_bd \
+        --username=iabd --password=iabd \
+        --driver=com.mysql.jdbc.Driver \
+        --warehouse-dir=/user/iabd/sqoop \
+        --fields-terminated-by=',' --lines-terminated-by '\n'
+    ```
+
 ### Caso 2 - Exportando datos a MariaDB
 
-Ahora vamos a hacer el paso contrario, desde HDFS vamos a exportar los ficheros a otra tabla. Así pues, primero vamos a crear la nueva tabla en una nueva base de datos (aunque podíamos haber reutilizado la base de datos):
+!!! inline end failure "Tabla no existente"
+    Si la tabla no existe previamente, recibiremos un error.
+
+Ahora vamos a hacer el paso contrario, desde HDFS vamos a exportar los ficheros a otra tabla mediante el comando [`sqoop export`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_export_literal). Así pues, primero vamos a crear la nueva tabla en una nueva base de datos (aunque podíamos haber reutilizado la base de datos):
 
 ``` sql
 create database sqoopCaso2;
@@ -286,7 +300,7 @@ Sqoop permite trabajar con diferentes formatos, tanto *Avro* como *Parquet*.
 
 *Parquet* a su vez es un formato de almacenamiento binario basado en columnas que puede almacenar estructuras de datos anidados.
 
-!!! warning "Avro y Hadoop"
+!!! bug "Avro y Hadoop"
     Para que funcione la serialización con *Avro* hay que copiar el fichero `.jar` que viene en el directorio de `Sqoop` para *Avro* como librería de *Hadoop*, mediante el siguiente comando:
 
     ``` bash
@@ -298,7 +312,7 @@ Sqoop permite trabajar con diferentes formatos, tanto *Avro* como *Parquet*.
 
 Para importar los datos en formato **Avro**, añadiremos la opción `--as-avrodatafile`:
 
-``` bash
+``` bash hl_lines="4"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1    \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver   \
@@ -307,7 +321,7 @@ sqoop import --connect jdbc:mysql://localhost/sqoopCaso1    \
 
 Si en vez de *Avro*, queremos importar los datos en formato **Parquet** cambiamos el último parámetro por `--as-parquetfile`:
 
-``` bash
+``` bash hl_lines="4"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1    \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver   \
@@ -383,9 +397,9 @@ Más información sobre *parquet-tools* en <https://pypi.org/project/parquet-too
 
 En un principio, vamos a trabajar siempre con los datos sin comprimir. Cuando tengamos datos que vamos a utilizar durante mucho tiempo (del orden de varios años) es cuando nos plantearemos comprimir los datos.
 
-Por defecto, podemos comprimir mediante el formato **gzip**:
+Por defecto, podemos comprimir mediante el formato **gzip** utilizando el parámetro `--compress`:
 
-``` bash
+``` bash hl_lines="5"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver \
@@ -393,9 +407,9 @@ sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --compress
 ```
 
-Si en cambio queremos comprimirlo con formato **bzip2**:
+Si en cambio queremos comprimirlo con formato **bzip2**, hemos de añadir también el parámetro `--compression-codec bzip2`:
 
-``` bash
+``` bash hl_lines="5"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver \
@@ -409,7 +423,7 @@ sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
 
 **Snappy** es una biblioteca de compresión y descompresión de datos de gran rendimiento que se utiliza con frecuencia en proyectos Big Data. Así pues, para utilizarlo lo indicaremos mediante el codec `snappy`:
 
-``` bash
+``` bash hl_lines="5"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver \
@@ -425,7 +439,7 @@ sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
 
 Además de poder importar todos los datos de una tabla, podemos filtrar los datos. Por ejemplo, podemos indicar mediante la opción `--where` el filtro a ejecutar en la consulta:
 
-``` bash
+``` bash hl_lines="5"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver \
@@ -435,7 +449,7 @@ sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
 
 También podemos restringir las columnas que queremos recuperar mediante la opción `--columns`:
 
-``` bash
+``` bash hl_lines="5"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver \
@@ -445,7 +459,7 @@ sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
 
 Finalmente, podemos especificar una consulta con clave de particionado (en este caso, ya no indicamos el nombre de la tabla):
 
-``` bash
+``` bash hl_lines="5 6"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --driver=com.mysql.jdbc.Driver \
@@ -460,7 +474,7 @@ En la consulta, hemos de añadir el token `\$CONDITIONS`, el cual Hadoop substit
 
 Si utilizamos procesos *batch*, es muy común realizar importaciones incrementales tras una carga de datos. Para ello, utilizaremos las opciones `--incremental append` junto con la columna a comprobar mediante `--check-column` y el último registro cargado mediante `--last-value`:
 
-``` bash
+``` bash hl_lines="5-7"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver \
@@ -487,7 +501,7 @@ Podemos importar los datos en HDFS para que luego puedan ser consultables desde 
 
 Es importante destacar que ya no ponemos destino con `target-dir`:
 
-``` bash
+``` bash hl_lines="4 5"
 sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --username=iabd --password=iabd \
     --table=profesores --driver=com.mysql.jdbc.Driver \
@@ -503,12 +517,17 @@ describe formatted profesores_mariadb
 
 Para exportar los datos, de forma similar haremos:
 
-``` bash
+``` bash hl_lines="4"
 sqoop export --connect jdbc:mysql://localhost/sqoopCaso2 \
     --username=iabd --password=iabd \
     --table=profesores2 --driver=com.mysql.jdbc.Driver \
     --h-catalog-table profesores_mariadb
 ```
+
+<!--
+TODO: exportar datos a una tabla stage
+Exportar datos con updates
+-->
 
 ## Flume
 
@@ -531,7 +550,7 @@ Allá por el año 2010 *Cloudera* presentó ***Flume*** que posteriormente pasó
 Su arquitectura es sencilla, y se basa en el uso de agentes que se dividen en tres componentes los cuales podemos configurar:
 
 * *Source* (fuente): Fuente de origen de los datos, ya sea *Twitter*, *Kafka*, una petición *Http*, etc...  
-Las fuentes son un componente activo que recibe datos desde otra aplicación que produce datos (aunque también existen fuentes que pueden producir datos por sí mismos, cuyo objetivo es poder probar ciertos flujos de datos). Las fuentes puedes escuchar uno o más puertos de red para recibir o leer datos del sistema de arhcivos. Cada fuente debe conectar a al menos un canal. Una fuente puede escribir en varios canales, replicando los eventos a todos o algunos canales en base a algún criterio.
+Las fuentes son un componente activo que recibe datos desde otra aplicación que produce datos (aunque también existen fuentes que pueden producir datos por sí mismos, cuyo objetivo es poder probar ciertos flujos de datos). Las fuentes puedes escuchar uno o más puertos de red para recibir o leer datos del sistema de archivos. Cada fuente debe conectar a al menos un canal. Una fuente puede escribir en varios canales, replicando los eventos a todos o algunos canales en base a algún criterio.
 * *Channel* (canal): la vía por donde se tratarán los datos.  
 Un canal es un componente pasivo que almacena los datos como un buffer. Se comportan como colas, donde las fuentes publican y los sumideros consumen los datos. Múltiples fuentes pueden escribir de forma segura en el mismo canal, y múltiples sumideros pueden leer desde el mismo canal. Sin embargo, cada sumidero sólo puede leer de un único canal. Si múltiples sumideros leen del mismo canal, sólo uno de ellos leerá el dato.
 * *Sink* (sumidero): persistencia/movimiento de los datos, a ficheros / base de datos.  
@@ -740,7 +759,7 @@ Y si comprobamos el contenido del primero (`hdfs dfs -cat /user/iabd/flume/seqge
 
 ### Caso 3b - De Netcat a HDFS
 
-Ahora vamos a crear otro ejemplo de generación de información, pero esta vez, en vez que utilizar la memoria del servidor como canal, vamos a utilizar el sistema de archivos. Además, para generar la información nos basamos en una fuente [Netcat](https://flume.apache.org/FlumeUserGuide.html#netcat-tcp-source), en la cual debemos especificar un puerto de escucha. Mediante esta fuente, *Flume* quedará a la escucha en dicho puerto y recibirá cada línea introducida como un evento individual que transferirá al canal especificado.
+Ahora vamos a crear otro ejemplo de generación de información, pero esta vez, en vez de utilizar la memoria del servidor como canal, vamos a utilizar el sistema de archivos. Además, para generar la información nos basamos en una fuente [Netcat](https://flume.apache.org/FlumeUserGuide.html#netcat-tcp-source), en la cual debemos especificar un puerto de escucha. Mediante esta fuente, *Flume* quedará a la escucha en dicho puerto y recibirá cada línea introducida como un evento individual que transferirá al canal especificado.
 
 En el mismo directorio `$FLUME_HOME\conf`, creamos un nuevo fichero con el nombre `netcat.conf` y creamos otro agente que se va a encargar de generar información:
 
@@ -971,6 +990,7 @@ En este caso, para poder probarlo, además de enviar comandos *Netstat* en `curl
 * Página oficial de [Sqoop](https://sqoop.apache.org)
 * [Sqoop User Guide](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html)
 * [Sqoop Tutorial](https://www.tutorialspoint.com/sqoop/index.htm) en *Tutorialspoint*
+* [Apache Sqoop Cookbook](https://www.oreilly.com/library/view/apache-sqoop-cookbook/9781449364618/), de Kathleen Ting, Jarek Jarcec Cecho
 * Página oficial de [Flume](https://flume.apache.org/)
 * [Flume User Guide](https://flume.apache.org/FlumeUserGuide.html)
 
