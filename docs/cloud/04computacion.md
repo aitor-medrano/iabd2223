@@ -9,7 +9,7 @@ description: Repaso a los servicios de computación que ofrece AWS, centrándono
 
 Los servicios de máquinas virtuales fueron los primeros servicios tanto de AWS como de Azure, los cuales proporcionan infraestructura como servicio (*IaaS*). Posteriormente se añadieron otros servicios como tecnología sin servidor (*serverless*), tecnología basada en contenedores y plataforma como servicio (*PaaS*).
 
-Ya hemos comentado el coste de ejecutar servidores in-house (compra, mantenimiento del centro de datos, personal, etc...) además de la posibilidad de que la capacidad del servidor podría permanecer sin uso e inactiva durante gran parte del tiempo de ejecución de los servidores, lo que implica un desperdicio.
+Ya hemos comentado el coste de ejecutar servidores *in-house* (compra, mantenimiento del centro de datos, personal, etc...) además de la posibilidad de que la capacidad del servidor podría permanecer sin uso e inactiva durante gran parte del tiempo de ejecución de los servidores, lo que implica un desperdicio.
 
 ## Amazon EC2
 
@@ -51,7 +51,11 @@ Puede elegir entre los siguientes tipos de AMI:
 El segundo paso es seleccionar un tipo de instancia, según nuestro caso de uso.
 Los tipos de instancia incluyen diversas combinaciones de capacidad de CPU, memoria, almacenamiento y red.
 
-![Paso 2 - Tipo de instancia](images/042tipoinstancia.png)
+<figure style="align: center;">
+    <img src="images/042tipoinstancia.png">
+    <figcaption>Paso 3 - Eligiendo el tipo de instancia</figcaption>
+</figure>
+
 
 Cada tipo de instancia se ofrece en uno o más tamaños, lo cual permite escalar los recursos en función de los requisitos de la carga de trabajo de destino.
 
@@ -62,8 +66,8 @@ Las categorías de tipos de instancia incluyen instancias de uso general, optimi
 | Categoría     | Tipo de instancia     | Caso de uso   |
 | -----         | -----                 | -----         |
 | Uso general   | a1, m4, m5, t2, **t3**    | Amplio    |
-| Computación   | c4, **c5**                | Alto rendimiento  |
-| Memoria       | r4, **r5**, x1, z1        | *Big Data* |
+| Computación   | c5, **c6**                | Alto rendimiento  |
+| Memoria       | r5, **r6**, x1, z1        | *Big Data* |
 | Informática acelerada | f1, g3, g4, p2, p3    | *Machine Learning* |
 | Almacenamiento    | d2, h1, i3        | Sistemas de archivos distribuidos |
 
@@ -80,13 +84,69 @@ También se debe tener en cuenta que el ancho de banda de red también está vin
 
 A la hora de elegir un tipo de instancia, nos centraremos en la cantidad de núcleos, el tamaño de la memoria, el rendimiento de la red y las tecnologías de la propia CPU (si tiene habilitada GPU y FPGA)
 
-### Paso 3: Configuración de la instancia / red
+### Paso 3: Par de claves
+
+Para poner conectarnos a la instancia vía SSH y poder configurarla, necesitaremos hacerlo a través de un par de claves SSH. Así pues, el siguiente paso es elegir un **par de claves** existente (formato X.509), continuar sin un par de claves o crear un par de claves nuevo antes de crear y lanzar la instancia EC2.
+
+<figure style="align: center;">
+    <img src="images/043parClaves.png">
+    <figcaption>Paso 3 - Eligiendo el par de claves</figcaption>
+</figure>
+
+Amazon EC2 utiliza la criptografía de clave pública para cifrar y descifrar la información de inicio de sesión. La clave pública la almacena AWS, mientras que la clave privada la almacenamos nosotros.
+
+!!! importante "Guarda tus claves"
+    Si creamos una par de claves nuevas, hemos de descargarlas y guardarlas en un lugar seguro. Esta es la única oportunidad de guardar el archivo de clave privada. Si perdemos las claves, tendremos que destruir la instancia y volver a crearla.
+
+Para conectarnos a la instancia desde nuestra máquina local, necesitamos hacerlo via un cliente SSH / Putty adjuntando el par de claves descargado. Si la AMI es de Windows, utilizaremos la clave privada para obtener la contraseña de administrador que necesita para iniciar sesión en la instancia. En cambio, si la AMI es de Linux, lo haremos mediante ssh:
+
+``` bash
+ssh -i /path/miParClaves.pem miNombreUsuarioInstancia@miPublicDNSInstancia
+```
+
+Por ejemplo, si utilizamos la *Amazon Linux AMI* y descargamos las claves de *AWS Academy* (suponiendo que la ip pública de la máquina que hemos creado es `3.83.80.52`) nos conectaríamos mediante:
+
+``` bash
+ssh -i labsuser.pem ec2-user@3.83.80.52
+```
+
+!!! info "Claves en AWS Academy"
+    Nuestro usuario tiene creado por defecto un par de claves que se conocen como `vockey`. Esta claves se pueden descargar desde la opción *AWS Details* del laboratorio de *Learner Lab*. Más adelante, en esta misma sesión, veremos cómo utilizarlas.
+
+Más información en: <https://docs.aws.amazon.com/es_es/AWSEC2/latest/UserGuide/AccessingInstances.html>
+
+### Paso 4: Configuración de la red
 
 El siguiente paso es especificar la ubicación de red en la que se implementará la instancia EC2, teniendo en cuenta la región donde nos encontramos antes de lanzar la instancia. En este paso, elegiremos la **VPC** y la **subred** dentro de la misma, ya sea de las que tenemos creadas o pudiendo crear los recursos en este paso.
 
-![Paso 3 - Configuración de la instancia](images/043configuracion.png)
+<figure style="align: center;">
+    <img src="images/044configuracion.png">
+    <figcaption>Paso 4 - Configurando la red</figcaption>
+</figure>
 
 Respecto a la asignación pública de ip sobre esta instancia, cuando se lanza una instancia en una VPC predeterminada, AWS le asigna una dirección IP pública de forma predeterminada. En caso contrario, si la VPC no es la predeterminada, AWS no asignará una dirección IP pública, a no ser que lo indiquemos de forma explícita.
+
+#### Grupo de seguridad
+
+Un grupo de seguridad es un conjunto de reglas de firewall que controlan el tráfico de red de una o más instancias, por lo que se encuentra fuera del sistema operativo de la instancia, formando parte de la VPC.
+
+<figure style="align: center;">
+    <img src="images/046gruposeguridad.png">
+    <figcaption>Grupo de seguridad</figcaption>
+</figure>
+
+Dentro del grupo, agregaremos reglas para habilitar el tráfico hacia o desde nuestras instancias asociadas. Para cada una de estas reglas especificaremos el puerto, el protocolo (TCP, UDP, ICMP), así como el origen (por ejemplo, una dirección IP u otro grupo de seguridad) que tiene permiso para utilizar la regla.
+
+De forma predeterminada, se incluye una regla de salida que permite todo el tráfico saliente. Es posible quitar esta regla y agregar reglas de salida que solo permitan tráfico saliente específico.
+
+!!! info "Servidor Web"
+    Si hemos seguido el ejemplo anterior y hemos añadido en los datos de usuario el *script* para instalar Apache, debemos habilitar las peticiones entrantes en el puerto 80. Para ello crearemos una regla que permita el tráfico HTTP.
+
+    ![Regla HTTP](images/04reglaHttp.png)
+
+AWS evalúa las reglas de todos los grupos de seguridad asociados a una instancia para decidir si permite que el tráfico llegue a ella. Si desea lanzar una instancia en una nube virtual privada (VPC), debe crear un grupo de seguridad nuevo o utilizar uno que ya exista en esa VPC.
+
+Las reglas de un grupo de seguridad se pueden modificar en cualquier momento, y las reglas nuevas se aplicarán automáticamente a todas las instancias que estén asociadas al grupo de seguridad.
 
 #### Asociar un rol de IAM
 
@@ -99,6 +159,29 @@ El rol de IAM asociado a una instancia EC2 se almacena en un **perfil de instanc
 Cuando definimos un rol que una instancia EC2 puede utilizar, estamos configurando qué cuentas o servicios de AWS pueden asumir dicho rol, así como qué acciones y recursos de la API puede utilizar la aplicación después de asumir el rol. Si cambia un rol, el cambio se extiende a todas las instancias que tengan el rol asociado.
 
 La asociación del rol no está limitada al momento del lanzamiento de la instancia, también se puede asociar un rol a una instancia que ya exista.
+
+### Paso 5: Almacenamiento
+
+Al lanzar la instancia EC2 configuraremos las opciones de almacenamiento. Por ejemplo el tamaño del volumen raíz en el que está instalado el sistema operativo invitado o volúmenes de almacenamiento adicionales cuando lance la instancia.
+
+Algunas AMI están configuradas para lanzar más de un volumen de almacenamiento de forma predeterminada y, de esa manera, proporcionar almacenamiento independiente del volumen raíz. Para cada volumen que tenga la instancia, podemos indicar el tamaño de los discos, los tipos de volumen, si el almacenamiento se conservará en el caso de terminación de la instancia y si se debe utilizar el cifrado.
+
+<figure style="align: center;">
+    <img src="images/045datos.png">
+    <figcaption>Paso 5 - Almacenamiento</figcaption>
+</figure>
+
+En la sesión anterior ya comentamos algunos de los servicios de almacenamiento como pueden ser *Amazon EBS* (almacenamiento por bloques de alto rendimiento) o *Amazon EFS* (almacenamiento elástico compartido entre diferentes instancias).
+
+### Paso 6: Detalles avanzados
+
+Las etiquetas son marcas que se asignan a los recursos de AWS. Cada etiqueta está formada por una clave y un valor opcional, siendo ambos campos *case sensitive*.
+
+![Paso 5 - Etiquetas](images/045etiquetas.png)
+
+El etiquetado es la forma en que asocia metadatos a una instancia EC2. De esta manera podemos clasificar los recursos de AWS, como las instancias EC2, de diferentes maneras. Por ejemplo, en función de la finalidad, el propietario o el entorno.
+
+Los beneficios potenciales del etiquetado son la capacidad de filtrado, la automatización, la asignación de costes y el control de acceso.
 
 #### Script de datos de usuario
 
@@ -122,79 +205,23 @@ echo '<html><h1>Hola Mundo desde el Severo!</h1></html>' > /var/www/html/index.h
 
 De forma predeterminada, los datos de usuario sólo se ejecutan la primera vez que se inicia la instancia.
 
-### Paso 4: Almacenamiento
+### Paso 7: Resumen
 
-Al lanzar la instancia EC2 configuraremos las opciones de almacenamiento. Por ejemplo el tamaño del volumen raíz en el que está instalado el sistema operativo invitado o volúmenes de almacenamiento adicionales cuando lance la instancia.
+El paso final es una página resumen con todos los datos introducidos. A la derecha se nos muestra todas las características seleccionadas, pudiendo indicar cuantas instancias del mismo tipo queremos crear.
 
-Algunas AMI están configuradas para lanzar más de un volumen de almacenamiento de forma predeterminada y, de esa manera, proporcionar almacenamiento independiente del volumen raíz. Para cada volumen que tenga la instancia, podemos indicar el tamaño de los discos, los tipos de volumen, si el almacenamiento se conservará en el caso de terminación de la instancia y si se debe utilizar el cifrado.
+<figure style="align: center;">
+    <img src="images/047resumen.png">
+    <figcaption>Paso 7 - Resumen</figcaption>
+</figure>
 
-![Paso 4 - Almacenamiento](images/044datos.png)
+Por último, una vez lanzada la instancia, podemos observar la información disponible sobre la misma: dirección IP y la dirección DNS, el tipo de instancia, el ID de instancia único asignado a la instancia, el ID de la AMI que utilizó para lanzar la instancia, el ID de la VPC, el ID de la subred, etc...
 
-En la sesión anterior ya comentamos algunos de los servicios de almacenamiento que estudiaremos en profundidad en la siguiente sesión, como pueden ser *Amazon EBS* (almacenamiento por bloques de alto rendimiento) o *Amazon EFS* (almacenamiento elástico compartido entre diferentes instancias).
-
-### Paso 5: Etiquetas
-
-Las etiquetas son marcas que se asignan a los recursos de AWS. Cada etiqueta está formada por una clave y un valor opcional, siendo ambos campos *case sensitive*.
-
-![Paso 5 - Etiquetas](images/045etiquetas.png)
-
-El etiquetado es la forma en que asocia metadatos a una instancia EC2. De esta manera podemos clasificar los recursos de AWS, como las instancias EC2, de diferentes maneras. Por ejemplo, en función de la finalidad, el propietario o el entorno.
-
-Los beneficios potenciales del etiquetado son la capacidad de filtrado, la automatización, la asignación de costes y el control de acceso.
-
-### Paso 6: Grupo de seguridad
-
-Un grupo de seguridad es un conjunto de reglas de firewall que controlan el tráfico de red de una o más instancias, por lo que se encuentra fuera del sistema operativo de la instancia, formando parte de la VPC.
-
-![Paso 6 - Grupo de seguridad](images/046gruposeguridad.png)
-
-Dentro del grupo, agregaremos reglas para habilitar el tráfico hacia o desde nuestras instancias asociadas. Para cada una de estas reglas especificaremos el puerto, el protocolo (TCP, UDP, ICMP), así como el origen (por ejemplo, una dirección IP u otro grupo de seguridad) que tiene permiso para utilizar la regla.
-
-De forma predeterminada, se incluye una regla de salida que permite todo el tráfico saliente. Es posible quitar esta regla y agregar reglas de salida que solo permitan tráfico saliente específico.
-
-!!! info "Servidor Web"
-    Si hemos seguido el ejemplo anterior y hemos añadido en los datos de usuario el *script* para instalar Apache, debemos habilitar las peticiones entrantes en el puerto 80. Para ello crearemos una regla que permita el tráfico HTTP.
-
-    ![Regla HTTP](images/04reglaHttp.png)
-
-AWS evalúa las reglas de todos los grupos de seguridad asociados a una instancia para decidir si permite que el tráfico llegue a ella. Si desea lanzar una instancia en una nube virtual privada (VPC), debe crear un grupo de seguridad nuevo o utilizar uno que ya exista en esa VPC.
-
-Las reglas de un grupo de seguridad se pueden modificar en cualquier momento, y las reglas nuevas se aplicarán automáticamente a todas las instancias que estén asociadas al grupo de seguridad.
-
-### Paso 7: Análisis e identificación
-
-El paso final es una página resumen con todos los datos introducidos. Cuando le damos a lanzar la nueva instancia configurada, nos aparecerá un cuadro de diálogo donde se solicita que elijamos un **par de claves** existente (formato X.509), continuar sin un par de claves o crear un par de claves nuevo antes de crear y lanzar la instancia EC2.
-
-Amazon EC2 utiliza la criptografía de clave pública para cifrar y descifrar la información de inicio de sesión. La clave pública la almacena AWS, mientras que la clave privada la almacenamos nosotros.
-
-!!! importante "Guarda tus claves"
-    Si creamos una par de claves nuevas, hemos de descargarlas y guardarlas en un lugar seguro. Esta es la única oportunidad de guardar el archivo de clave privada. Si perdemos las claves, tendremos que destruir la instancia y volver a crearla.
-
-Para conectarnos a la instancia desde nuestra máquina local, necesitamos hacerlo via un cliente SSH / Putty adjuntando el par de claves descargado. Si la AMI es de Windows, utilizaremos la clave privada para obtener la contraseña de administrador que necesita para iniciar sesión en la instancia. En cambio, si la AMI es de Linux, lo haremos mediante ssh:
-
-``` bash
-ssh -i /path/miParClaves.pem miNombreUsuarioInstancia@miPublicDNSInstancia
-```
-
-Por ejemplo, si utilizamos la *Amazon Linux AMI* y descargamos las claves de *AWS Academy* (suponiendo que la ip pública de la máquina que hemos creado es `3.83.80.52`) nos conectaríamos mediante:
-
-``` bash
-ssh -i labsuser.pem ec2-user@3.83.80.52
-```
-
-Más información en: <https://docs.aws.amazon.com/es_es/AWSEC2/latest/UserGuide/AccessingInstances.html>
-
-Por último, una vez lanzada la instancia, podemos observar la informacion disponible sobre la misma: dirección IP y la dirección DNS, el tipo de instancia, el ID de instancia único asignado a la instancia, el ID de la AMI que utilizó para lanzar la instancia, el ID de la VPC, el ID de la subred, etc...
-
-!!! tip "IAM"
-    Recuerda que en el caso de otros recursos cloud, como el almacenamiento masivo, bases de datos, serverless, etc, lo normal será controlar el acceso mediante la estructura de permisos IAM, que permite establecer políticas definidas y el uso de roles.
-
-![Paso 7 - Resumen](images/047resumen.png)
+<figure style="align: center;">
+    <img src="images/047resumen2.png">
+    <figcaption>Características de la instancia creada</figcaption>
+</figure>
 
 En resumen, las instancias EC2 se lanzan desde una plantilla de AMI en una VPC de nuestra cuenta. Podemos elegir entre muchos tipos de instancias, con diferentes combinaciones de CPU, RAM, almacenamiento y redes. Además, podemos configurar grupos de seguridad para controlar el acceso a las instancias (especificar el origen y los puertos permitidos). Al crear una instancia, mediante los datos de usuario, podemos especificar un script que se ejecutará la primera vez que se lance una instancia.
-
-!!! info "Claves en AWS Academy"
-    Nuestro usuario tiene creado por defecto un par de claves que se conocen como *vockey*. Esta claves se pueden descargar desde la opción *AWS Details* del laboratorio de *Learner Lab*. Más adelante, en esta misma sesión, veremos cómo utilizarlas.
 
 ### Uso de la consola
 
@@ -297,7 +324,7 @@ Una vez descargada la clave, ya sea mediante *Download PEM* o *Download PPK*, no
 
 === "SSH mediante Linux / Mac"
 
-    Si nos situamos sobre la carpeta que contiene en el archivo descargado
+    Si nos situamos sobre la carpeta que contiene en el archivo descargado, cambiamos los permisos para que la clave sólo tenga permisos de lectura:
 
     ```
     chmod 400 labsuser.pem
@@ -377,7 +404,7 @@ posibilidades económicas y previsión (de 12 a 36 meses), hasta de un 75% segú
     <figcaption>Modelos de pago de las instancias reservadas</figcaption>
 </figure>
 
-El planteamiento ideal es utilizar instancias reservadas para la carga mínima de base de nuestro sistema, bajo demanda para autoescalar según necesidades y quizá las instancias *spot*  para cargas opcionales que se contemplarán sólo si el coste es bajo.
+El planteamiento ideal es utilizar instancias reservadas para la carga mínima de base de nuestro sistema, bajo demanda para autoescalar según necesidades y quizás las instancias *spot* para cargas opcionales que se contemplarán sólo si el coste es bajo.
 
 Puedes consultar el coste de las diferentes instancias en <https://aws.amazon.com/es/ec2/pricing/reserved_instances>, y consultar precios en <https://aws.amazon.com/es/ec2/pricing/reserved-instances/pricing/>
 
@@ -439,13 +466,17 @@ Es compatible con Java, .NET, PHP, Node.js, Python, Ruby, Go y Docker, y se desp
 
 No se aplican cargos por utilizar *ElasticBeanstalk*, solo se paga por los recursos que AWS utilice (instancia, base de datos, almacenamiento S3, etc...)
 
-## Actividades
-
-1. Realizar el módulo 6 (Informática) del curso [ACF de AWS](https://awsacademy.instructure.com/courses/2243/).
-2. (opcional) Crea una instancia ec2 mediante *AWS CLI*, siguiendo todos los pasos del apartado [Uso de la consola](#uso-de-la-consola). Adjunta una captura con todos los comandos empleados y el resultado que aparece en la consola. Además, conéctate mediante SSH a la máquina creada, y realiza una nueva captura.
-3. (opcional) Mediante AWS Lambda, realiza una función que reciba del evento dos números (por ejemplo, `a` y `b`) y devuelva un objeto JSON con el `total` de la suma. Adjunta captura del código fuente, del evento de prueba y de las métricas capturadas tras probar la función 10 veces.
-
 ## Referencias
 
 * [Amazon EC2](https://aws.amazon.com/es/ec2/)
 * [Funciones Lambda en AWS](https://aws.amazon.com/es/lambda/)
+
+## Actividades
+
+1. (RA5075.2 / CE5.2b / 1p) Realizar el módulo 6 (Informática) del curso [ACF de AWS](https://awsacademy.instructure.com/courses/2243/).
+2. (RA5075.2 / CE5.2b / 1p) Crea una instancia ec2 mediante *AWS CLI*, siguiendo todos los pasos del apartado [Uso de la consola](#uso-de-la-consola). Adjunta una captura con todos los comandos empleados y el resultado que aparece en la consola. Además, conéctate mediante SSH a la máquina creada, y realiza una nueva captura.
+
+*[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
+*[CE5.2a]: Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.
+*[CE5.2b]: Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.
+*[CE5.2d]: Se ha determinado que se pueden almacenar tantos datos como se desee y decidir cómo utilizarlos más tarde.
