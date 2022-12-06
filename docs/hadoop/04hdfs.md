@@ -1,6 +1,6 @@
 ---
 title: HDFS, acceso y gestión. HDFS y Python. Formatos de datos Avro y Parquet.
-description: Funcionamiento de HDFS, estudiando los procesos de lectura y escritura, los comandos de administración y el uso de Snapshots. Almacenamiento de datos en formatos Avro y Parquet mediante Python.
+description: Apuntes sobre el funcionamiento de HDFS, estudiando los procesos de lectura y escritura, los comandos de administración y el uso de Snapshots. Acceso a HDFS desde Python.
 ---
 
 # HDFS

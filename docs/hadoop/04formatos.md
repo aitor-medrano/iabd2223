@@ -1,6 +1,6 @@
 ---
 title: Formatos de datos en Big Data
-description: Formatos de datos en Big Data
+description: Apuntes sobre formatos de datos en Big Data, como son Avro, Parquet y ORC. Acceso y tranformación de Avro, Parquet y ORC desde Python mediante PyArrow y Pandas.
 ---
 
 En la primera unidad de trabajo ya vimos una pequeña introducción a los diferentes [formatos de datos](https://manoli-iborra.github.io/bigdata2122/apuntes04.html#formato-de-datos_1).
