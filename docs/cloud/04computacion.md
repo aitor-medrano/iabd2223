@@ -473,7 +473,7 @@ No se aplican cargos por utilizar *ElasticBeanstalk*, solo se paga por los recur
 
 ## Actividades
 
-1. (RA5075.2 / CE5.2b / 1p) Realizar el módulo 6 (Informática) del curso [ACF de AWS](https://awsacademy.instructure.com/courses/2243/).
+1. (RA5075.2 / CE5.2b / 1p) Realizar el módulo 6 (Informática) del curso [ACF de AWS](https://awsacademy.instructure.com/courses/30530/).
 2. (RA5075.2 / CE5.2b / 1p) Crea una instancia ec2 mediante *AWS CLI*, siguiendo todos los pasos del apartado [Uso de la consola](#uso-de-la-consola). Adjunta una captura con todos los comandos empleados y el resultado que aparece en la consola. Además, conéctate mediante SSH a la máquina creada, y realiza una nueva captura.
 
 *[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
