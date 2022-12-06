@@ -18,9 +18,6 @@ Ofrece elasticidad sobre el cluster, pudiendo modificar dinámicamente el dimens
 
 Respecto al hardware, se ejecuta sobre máquinas EC2 (IaaS), las cuales podemos configurar según necesidades. Utiliza HDFS y S3 para el almacenamiento, de manera que podemos guardar los datos de entrada y los de salida en S3, mientras que los resultados intermedios los almacenamos en HDFS.
 
-FIXME: Pago por uso: el coste asociado es el alquiler de las máquinas por horas más un sobrecoste de
-aproximadamente el 25%.
-
 Los cluster de EMR se componen de:
 
 * un nodo maestro, encargado de gestionar el cluster y ejecutar los servicios de coordinación de datos.
@@ -63,12 +60,11 @@ Tras darle a crear, a los 10 minutos aproximadamente, nuestro clúster estará l
     Normalmente, cuando utilizamos un clúster para procesar analíticas, interactuar con aplicaciones de big data o procesamiento de *datasets* de forma periódica, el clúster está siempre corriendo, a no ser que lo detengamos nosotros de forma explícita.
     Pero si queremos que sólo exista durante la ejecución de uno o más trabajos, el cual se le conoce como clúster *transient* o de ejecución por pasos, al terminar de ejecutar los pasos indicados, el clúster se detendrá.
 
-
 ## Preparando al clúster
 
 En un cluster EMR, el nodo maestro es una instancia EC2 que coordina al resto de instancias EC2 que corren los nodos principales y de tareas. Este nodo expone un DNS público el cual podemos utilizar para conectarnos.
 
-Por defecto, EMR crea un grupo de seguridad para el nodo maestro el cual determina el acceso. De inicio, es grupo de seguridad no permite las conexiones SSH. Por ello, antes de poder conectarnos al cluster, necesitamos modificar el grupo de seguridad del nodo principal para permitir todo el tráfico TCP y el SSH. 
+Por defecto, EMR crea un grupo de seguridad para el nodo maestro el cual determina el acceso. De inicio, es grupo de seguridad no permite las conexiones SSH. Por ello, antes de poder conectarnos al cluster, necesitamos modificar el grupo de seguridad del nodo principal para permitir todo el tráfico TCP y el SSH.
 
 <figure style="align: center;">
     <img src="images/05emr-security-group.png">
@@ -173,7 +169,12 @@ Y ahora desde el interfaz de HDFS ya podemos navegar por las carpetas y ver el c
 
 Cuando arranca Hue, la primera vez nos pide crear un usuario (en nuestro caso, hemos creado el usuario `iabd` con contraseña `IABDiabd1.`)
 
-Si intentamos visualizar los archivosDe igual modo, Hue no tiene bien configurado el acceso a HDFS:
+<figure style="align: center;">
+    <img src="images/05emr-hue-login.png">
+    <figcaption>Login de acceso a Hue</figcaption>
+</figure>
+
+Si intentamos visualizar los archivos, de igual modo, Hue no tiene bien configurado el acceso a HDFS:
 
 <figure style="align: center;">
     <img src="images/05emr-hue-error.png">
@@ -187,7 +188,7 @@ sudo chmod 777 /etc/hue/conf/hue.ini
 nano /etc/hue/conf/hue.ini
 ```
 
-Y configuramos bien el puerto de acceso (debe ser 50070)
+Y configuramos bien el puerto de acceso (debe ser 50070), dentro del grupo `[[hdfs_clusters]]` de `[hadoop]` editamos la propiedad `webhdfs_url`:
 
 ``` ini
 webhdfs_url = http://ip-172-31-15-67.ec2.internal:50070/webhdfs/v1
@@ -199,21 +200,40 @@ Y reiniciamos el servicio:
 sudo systemctl restart hue
 ```
 
+Sólo nos queda crear un carpeta para nuestro usuario en HDFS:ç
+
+``` bash
+hdfs dfs -mkdir /user/iabd
+```
+
 Y ya podemos trabajar con Hue.
+
+<figure style="align: center;">
+    <img src="images/05emr-hue-files.png">
+    <figcaption>Visualizando HDFS desde Hue</figcaption>
+</figure>
 
 ## Escalando
 
 Podemos ajustar el número de instancias EC2 con las que trabaja nuestro clúster de EMR, ya sea manualmente o de forma automática en respuesta a la demanda que reciba.
 
-Para ello, podemos activar el escalado gestionado mediante EMR o crear una politica de escalado a medida. Independiente del modo, hemos de considerar que siempre hemos de tener de uno a tres nodos maestros, y que una vez creado el clúster, este número no lo podemos cambiar. Lo que sí que podemos es añadir y eliminar nodos principales o de tareas.
+<figure style="align: center;">
+    <img src="images/05emr-cluster-scaling.png">
+    <figcaption>Escalando un clúster EMR</figcaption>
+</figure>
 
-Conviene destacar que no podemos reconfigurar y redimensionar el clúster al mismo timpo, de manera que hasta que no acabe la reconfiguración de un grupo de instancias no se puede iniciar el redimensionado.
+Para ello, podemos activar el escalado gestionado mediante EMR o crear una política de escalado a medida. Independiente del modo, hemos de considerar que siempre hemos de tener de uno a tres nodos maestros, y que una vez creado el clúster, este número no lo podemos cambiar. Lo que sí que podemos es añadir y eliminar nodos principales o de tareas.
 
+<figure style="align: center;">
+    <img src="images/05emr-cluster-add.png">
+    <figcaption>Añadiendo un nodo de tipo tarea</figcaption>
+</figure>
 
+Conviene destacar que no podemos reconfigurar y redimensionar el clúster al mismo tiempo, de manera que hasta que no acabe la reconfiguración de un grupo de instancias no se puede iniciar el redimensionado.
 
 ## Costes
 
-Es muy importante ser conscientes de los [costes](https://aws.amazon.com/es/emr/pricing/) que lleva utilizar EMR. A grosso modo, EMR supone un 25% de sobrecoste a las instancias ECS.
+Es muy importante ser conscientes de los [costes](https://aws.amazon.com/es/emr/pricing/) que lleva utilizar EMR. *A grosso modo*, EMR supone un 25% de sobrecoste a las instancias ECS, es decir, pagaremos el coste del alquiler de las máquinas EC2 más un sobre un incremento del 25%.
 
 Por ejemplo, para 20 nodos con 122 Gb RAM, 16 vCPU, pagaríamos unos 32 €/h.
 
@@ -224,5 +244,11 @@ Por ejemplo, para 20 nodos con 122 Gb RAM, 16 vCPU, pagaríamos unos 32 €/h.
 
 ## Actividades
 
-1. Arranca un clúster EMR con 3 máquinas y modifica las configuraciones de HDFS y Hue para poder visualizar los archivos.
-2. Sube un cuarto nodo al clúster, un sube un archivo a HDFS. A continuación, reescala el clúster para que quede en tres nodos. Vuelve a acceder a HDFS y comprueba que el archivo sigue estando disponible.
+1. (RA5075.2 / CE5.2b / 1p) Arranca un clúster EMR con 3 máquinas y modifica las configuraciones de HDFS y Hue para poder visualizar los archivos.
+2. (RA5075.2 / CE5.2e / 1p) A continuación, añade un cuarto nodo al clúster y sube un archivo a HDFS. Tras ello, reescala el clúster para que quede en tres nodos. Vuelve a acceder a HDFS y comprueba que el archivo sigue estando disponible.
+
+*[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
+*[CE5.2a]: Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.
+*[CE5.2b]: Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.
+*[CE5.2d]: Se ha determinado que se pueden almacenar tantos datos como se desee y decidir cómo utilizarlos más tarde.
+*[CE5.2e]: Se ha visualizado que el sistema puede crecer fácilmente añadiendo módulos.
