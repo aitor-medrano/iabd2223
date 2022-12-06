@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/cloud/06datos.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.975780f9.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
         
       
       
@@ -153,6 +153,7 @@
         
           
           
+          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -160,6 +161,7 @@
             </label>
           
         
+          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -432,6 +434,8 @@
         
           
         
+          
+        
       
       
         
@@ -538,6 +542,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/06hive.html" class="md-nav__link">
+        S45.- Hive
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -550,18 +568,22 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       
       
         
           
             
+          
+        
           
         
           
@@ -661,6 +683,212 @@
       <a href="05emr.html" class="md-nav__link">
         S44.- EMR
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S46.- RDS y DynamoDB
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="06datos.html" class="md-nav__link md-nav__link--active">
+        S46.- RDS y DynamoDB
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#datos-relacionales-amazon-rds" class="md-nav__link">
+    Datos relacionales - Amazon RDS
+  </a>
+  
+    <nav class="md-nav" aria-label="Datos relacionales - Amazon RDS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instancias-de-bases-de-datos" class="md-nav__link">
+    Instancias de bases de datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alta-disponibilidad" class="md-nav__link">
+    Alta disponibilidad
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#casos-de-uso" class="md-nav__link">
+    Casos de uso
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#costes" class="md-nav__link">
+    Costes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-rds" class="md-nav__link">
+    Ejemplo RDS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amazon-aurora" class="md-nav__link">
+    Amazon Aurora
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datos-nosql-dynamodb" class="md-nav__link">
+    Datos NoSQL - DynamoDB
+  </a>
+  
+    <nav class="md-nav" aria-label="Datos NoSQL - DynamoDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#componentes-y-particiones" class="md-nav__link">
+    Componentes y particiones
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#infraestructura" class="md-nav__link">
+    Infraestructura
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#costes_1" class="md-nav__link">
+    Costes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ejemplo-dynamodb" class="md-nav__link">
+    Ejemplo DynamoDB
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interaccion-con-python" class="md-nav__link">
+    Interacción con Python
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacción con Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-1-cargar-datos-en-dynamodb" class="md-nav__link">
+    Caso de uso 1: Cargar datos en DynamoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faker" class="md-nav__link">
+    Faker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-2-consultar-datos-en-dynamodb" class="md-nav__link">
+    Caso de uso 2 - Consultar datos en DynamoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-3-de-s3-a-dynamodb" class="md-nav__link">
+    Caso de uso 3 - De S3 a DynamoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-4-desde-rds" class="md-nav__link">
+    Caso de uso 4 - Desde RDS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -810,15 +1038,63 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
+  <a href="#interaccion-con-python" class="md-nav__link">
+    Interacción con Python
   </a>
+  
+    <nav class="md-nav" aria-label="Interacción con Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-1-cargar-datos-en-dynamodb" class="md-nav__link">
+    Caso de uso 1: Cargar datos en DynamoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faker" class="md-nav__link">
+    Faker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-2-consultar-datos-en-dynamodb" class="md-nav__link">
+    Caso de uso 2 - Consultar datos en DynamoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-3-de-s3-a-dynamodb" class="md-nav__link">
+    Caso de uso 3 - De S3 a DynamoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caso-de-uso-4-desde-rds" class="md-nav__link">
+    Caso de uso 4 - Desde RDS
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#referencias" class="md-nav__link">
     Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
   </a>
   
 </li>
@@ -918,14 +1194,19 @@
 </figure>
 
 <p>Así pues, desde la consola de AWS, crearemos nuestra base de datos a la que llamaremos <code>instituto</code>.</p>
-<p>En nuestro caso hemos seguido la creación estándar con una plantilla de la capa gratuita (utiliza una instancia <code>db.t2.micro</code>). Una vez configurado el usuario <code>admin</code> y la contraseña <code>adminadmin</code> (al menos debe tener ocho caracteres), debemos configurar la conectividad.</p>
+<p>En nuestro caso hemos seguido la creación estándar con una plantilla de la capa gratuita (utiliza una instancia <code>db.t4g.micro</code>). Una vez configurado el usuario <code>admin</code> y la contraseña <code>adminadmin</code> (al menos debe tener ocho caracteres), debemos configurar la conectividad.</p>
+<figure style="align: center;">
+    <img src="images/06rds-instituto2a.png">
+    <figcaption>Configuración de la conectividad en RDS</figcaption>
+</figure>
+
 <div class="admonition caution">
 <p class="admonition-title">Instancias permitidas en AWS Academy</p>
-<p>Si queréis crear bases de datos con máquinas más potentes, podéis utilizar instancias hasta nivel <em>medium</em>, y a ser posible a ráfagas (instancias <em>t</em>). Dentro de la <em>Configuración adicional</em>, es importante deshabilitar la monitorización mejorada (no tenemos permiso para su uso en <em>AWS Academy</em>).</p>
+<p>Si queréis crear bases de datos con máquinas más potentes, podéis utilizar instancias hasta nivel <em>large</em>, y a ser posible a ráfagas (instancias <em>t</em>). Dentro de la <em>Configuración adicional</em>, es importante deshabilitar la monitorización mejorada (no tenemos permiso para su uso en <em>AWS Academy</em>).</p>
 </div>
 <p>Como vamos a querer acceder a nuestro servidor de MariaDB desde fuera de una VPC de EC2, necesitamos configurar el acceso público. Al hacerlo, no quiere decir que ya sea accesible desde fuera de internet, ya que necesitamos configurar su grupo de seguridad (recordad que funciona a modo de <em>firewall</em>). Así pues, es recomendable crear un nuevo grupo de seguridad para que permitamos las conexiones del puerto 3306 a nuestra IP.</p>
 <figure style="align: center;">
-    <img src="images/06rds-instituto2.png">
+    <img src="images/06rds-instituto2b.png">
     <figcaption>Configuración de la conectividad en RDS</figcaption>
 </figure>
 
@@ -935,26 +1216,26 @@
     <figcaption>Resumen de instancia en RDS</figcaption>
 </figure>
 
-<p>Así pues, si copiamos la información del punto de enlace y creamos una conexión en <em>HeidiSQL</em>, veremos que nos conectamos correctamente (si no hemos creado un nuevo grupo de seguridad, deberemos editar el grupo de seguridad por defecto, y añadir una regla de entrada para el protocolo TCP para el puerto 3306, y por ejemplo para todo internet - <code>0.0.0.0/0</code>).</p>
+<p>Así pues, si copiamos la información del punto de enlace y creamos una conexión en <em>DBeaver</em>, veremos que nos conectamos correctamente (si no hemos creado un nuevo grupo de seguridad, deberemos editar el grupo de seguridad por defecto, y añadir una regla de entrada para el protocolo TCP para el puerto 3306, y por ejemplo para todo internet - <code>0.0.0.0/0</code>).</p>
 <figure style="align: center;">
     <img src="images/06rds-instituto4.png" width="600">
-    <figcaption>Configuración en HeidiSQL</figcaption>
+    <figcaption>Configuración en DBeaver</figcaption>
 </figure>
 
-<p>Una vez conectado, ya procedemos de la misma manera que hemos trabajado en el módulo de repaso de SQL.</p>
+<p>Una vez conectado, ya procedemos de la misma manera que si tuviéramos la base de datos en un entorno local.</p>
 <h2 id="amazon-aurora">Amazon Aurora<a class="headerlink" href="#amazon-aurora" title="Permanent link">&para;</a></h2>
-<p>Amazon Aurora es una base de datos relacional compatible con <em>MySQL</em> y <em>PostgreSQL</em> optimizada para la nube. Combina el rendimiento y la disponibilidad de las bases de datos comerciales de alta gama con la simplicidad y la rentabilidad de las bases de datos de código abierto. Ofrece dos modelos, el clásico basado en instancias y un <a href="https://aws.amazon.com/es/rds/aurora/serverless/">modelo <em>serverless</em></a> en el cual se contratan unidades de computación (ACU). Cabe destacar que si creamos una base de datos serverless, Amazon no permite hacerla pública, de manera que únicamente se puede acceder desde otro servicio de AWS.</p>
+<p><em>Amazon Aurora</em> es una base de datos relacional compatible con <em>MySQL</em> y <em>PostgreSQL</em> optimizada para la nube. Combina el rendimiento y la disponibilidad de las bases de datos comerciales de alta gama con la simplicidad y la rentabilidad de las bases de datos de código abierto. Ofrece dos modelos, el clásico basado en instancias y un <a href="https://aws.amazon.com/es/rds/aurora/serverless/">modelo <em>serverless</em></a> en el cual se contratan unidades de computación (ACU).</p>
 <p>Al estar desarrollado de forma nativa por Amazon se adapta mejor a su infraestructura en coste, rendimiento y alta disponibilidad. Está pensado como un subsistema de almacenamiento distribuido de alto rendimiento, ofreciendo automatización de las tareas que requieren mucho tiempo, como el aprovisionamiento, la implementación de parches, las copias ​de seguridad, la recuperación, la detección de errores y su reparación.</p>
 <figure style="float: right;">
     <img src="images/06aurora.png">
     <figcaption>Alta disponibles con Aurora</figcaption>
 </figure>
 
-<p>Aurora replica varias copias de los datos en múltiples zonas de disponibilidad y realiza copias de seguridad continuas de los datos en <em>S3</em>.</p>
+<p><em>Aurora</em> replica varias copias de los datos en múltiples zonas de disponibilidad y realiza copias de seguridad continuas de los datos en <em>S3</em>.</p>
 <p>Respecto a la seguridad, hay varios niveles disponibles, incluidos el aislamiento de la red con <em>VPC</em>, el cifrado en reposo por medio de claves creadas y controladas con <em>AWS KMS</em> y el cifrado de los datos en tránsito mediante SSL.</p>
 <p>Respecto al coste, si cogemos el mismo ejemplo anterior de una instancia de Aurora compatible con MySQL con dos procesadores y 8GB de RAM, en este caso, la <code>db.t4g.large</code>, el precio se queda en 106$ mensuales.</p>
 <h2 id="datos-nosql-dynamodb">Datos NoSQL - <em>DynamoDB</em><a class="headerlink" href="#datos-nosql-dynamodb" title="Permanent link">&para;</a></h2>
-<p>DynamoDB (<a href="https://aws.amazon.com/es/dynamodb/">https://aws.amazon.com/es/dynamodb/</a>) es un servicio administrado de base de datos NoSQL clave-valor y documental, rápido y flexible para todas las aplicaciones que requieren una latencia uniforme de un solo dígito de milisegundos a cualquier escala y una capacidad de almacenamiento prácticamente ilimitado.</p>
+<p><em>DynamoDB</em> (<a href="https://aws.amazon.com/es/dynamodb/">https://aws.amazon.com/es/dynamodb/</a>) es un servicio administrado de base de datos NoSQL clave-valor y documental, rápido y flexible para todas las aplicaciones que requieren una latencia uniforme de un solo dígito de milisegundos a cualquier escala y una capacidad de almacenamiento prácticamente ilimitado.</p>
 <p>Así pues, es un almacén de claves/valor (similar a <a href="https://redis.io/">Redis</a> y <a href="https://www.mongodb.com/es">MongoDB</a> a la vez), flexible y sin estructura fija (los elementos pueden tener atributos diferentes), diseñado para garantizar un determinado rendimiento así como una determinada disponibilidad para cada tabla (en NoSQL suele haber pocas tablas), es decir, se definen elementos por tabla y se paga según lo exigido en cada una.</p>
 <h3 id="componentes-y-particiones">Componentes y particiones<a class="headerlink" href="#componentes-y-particiones" title="Permanent link">&para;</a></h3>
 <p>Los componentes principales son:</p>
@@ -963,7 +1244,7 @@
 <li>los <strong>elementos</strong>: grupo de atributos que se puede identificar de forma exclusiva entre todos los demás elementos</li>
 <li>los <strong>atributos</strong>: elemento de datos fundamental que no es preciso seguir dividiendo.</li>
 </ul>
-<p>DynamoDB soporta dos tipos de claves principales:</p>
+<p><em>DynamoDB</em> soporta dos tipos de claves principales:</p>
 <ul>
 <li>La <strong>clave de partición</strong> es una clave principal simple.</li>
 <li>La <strong>clave de partición y de ordenamiento</strong>, también conocidas como clave principal compuesta, ya que está formada por dos atributos.</li>
@@ -979,13 +1260,13 @@
     <figcaption>Consultas por clave o escaneo</figcaption>
 </figure>
 
-<p>Para aprovechar al máximo las operaciones de consulta, es importante que la clave utilizada identifique de forma unívoca los elementos de la tabla de DynamoDB. Podemos configurar una clave principal simple basada en un único atributo de los valores de los datos con una distribución uniforme. De forma alternativa, podemos especificar una clave compuesta, que incluye una clave de partición y una clave secundaria.</p>
+<p>Para aprovechar al máximo las operaciones de consulta, es importante que la clave utilizada identifique de forma unívoca los elementos de la tabla de <em>DynamoDB</em>. Podemos configurar una clave principal simple basada en un único atributo de los valores de los datos con una distribución uniforme. De forma alternativa, podemos especificar una clave compuesta, que incluye una clave de partición y una clave secundaria.</p>
 <p>Además, <em>DynamoDB</em> permite crear índices para optimizar las consultas que realicemos sobre atributos que no forman parte de la clave de partición u ordenamiento.</p>
 <h3 id="infraestructura">Infraestructura<a class="headerlink" href="#infraestructura" title="Permanent link">&para;</a></h3>
-<p>Amazon administra toda la infraestructura subyacente de datos y los almacena de manera redundante en varias instalaciones dentro de una región, como parte de la arquitectura tolerante a errores.</p>
+<p>AWS administra toda la infraestructura subyacente de datos y los almacena de manera redundante en varias instalaciones dentro de una región, como parte de la arquitectura tolerante a errores.</p>
 <p>El sistema particiona los datos automáticamente, distribuyendo los datos entre diferentes dispositivos de almacenamiento. No existe ningún límite práctico respecto de la cantidad de elementos que se pueden almacenar en una tabla. Por ejemplo, algunos clientes tienen tablas de producción con miles de millones de elementos.</p>
 <p>Todos los datos de <em>DynamoDB</em> se almacenan en unidades SSD, y su lenguaje de consulta simple (<a href="https://partiql.org/">PartiQL</a>) permite un rendimiento de las consultas uniforme y de baja latencia. Además de escalar el almacenamiento, <em>DynamoDB</em> permite aprovisionar el volumen del rendimiento de lectura o escritura que necesita para cada tabla.</p>
-<p>También permite habilitar el escalado automático, monitorizando la carga de la tabla e incrementando o disminuyendo el rendimiento aprovisionado de manera automática. Otras características clave son las tablas globales que permiten generar réplicas de manera automática en las regiones de AWS que elijamos, el cifrado en reposo y la visibilidad del tiempo de vida (TTL) de los elementos.</p>
+<p>También facilita el escalado automático, monitorizando la carga de la tabla e incrementando o disminuyendo el rendimiento aprovisionado de manera automática. Otras características clave son las tablas globales que permiten generar réplicas de manera automática en las regiones de AWS que elijamos, el cifrado en reposo y la visibilidad del tiempo de vida (TTL) de los elementos.</p>
 <h3 id="costes_1">Costes<a class="headerlink" href="#costes_1" title="Permanent link">&para;</a></h3>
 <p>Con <em>DynamoDB</em> se cobran las operaciones de lectura, escritura y almacenamiento de datos en sus tablas, junto con las características opcionales que decidamos habilitar. Ofrece dos modos de capacidad con opciones de facturación:</p>
 <ul>
@@ -1005,7 +1286,7 @@
 </ul>
 </li>
 </ul>
-<p>Por ejemplo, una tabla donde especificamos un rendimiento garantizado de 1000  millones lecturas y 1 millón de escrituras al mes, con una coherencia eventual (es decir, que permite desorden de peticiones ) nos costará $67,17 al mes.</p>
+<p>Por ejemplo, una tabla donde especificamos un rendimiento garantizado de 1000 millones lecturas y 1 millón de escrituras al mes, con una coherencia eventual (es decir, que permite desorden de peticiones ) nos costará $67,17 al mes.</p>
 <h3 id="ejemplo-dynamodb">Ejemplo DynamoDB<a class="headerlink" href="#ejemplo-dynamodb" title="Permanent link">&para;</a></h3>
 <p>A continuación vamos a crear un ejemplo donde tras crear una tabla, la cargaremos con datos para posteriormente realizar alguna consulta.</p>
 <p>Supongamos que tenemos datos relativos a un catálogo de productos, almacenados en el archivo <a href="resources/ProductCatalog.json">ProductCatalog.json</a>, el cual queremos poder consultar.</p>
@@ -1074,6 +1355,14 @@
 </code></pre></div>
 <p>Una vez ejecutado tendremos un mensaje de <code>UnprocessedItems: {}</code>.</p>
 </li>
+<li>
+<p>También podemos cargar los datos en S3, y realizar una <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataImport.HowItWorks.html">importación desde S3</a>, pero el formato del documento es diferente, admitiendo datos en CSV, un formato de JSON multilínea específico de DynamoDB (compuestos de documentos <code>Item</code>) o un formato propietario como <a href="https://amzn.github.io/ion-docs/">Amazon Ion</a>. Así pues, primero cargaremos <a href="resources/ProductCatalogS3.json">ProductCatalogS3.json</a> en S3, y a continuación realizamos la importación.</p>
+<p><figure style="align: center;">
+    <img src="images/06ddb-import-s3.png" width="600">
+    <figcaption>Importación en DynamoDB desde S3</figcaption>
+</figure></p>
+<p>Tras indicar el archivo, deberemos indicar los datos de creación de la nueva tabla (es decir, no permite importar datos sobre una tabla ya existente previamente).</p>
+</li>
 </ul>
 <p>Si volvemos a la consola web, tras entrar en la tabla y pulsar en <em>Ver elementos</em> veremos los datos ya introducidos.</p>
 <figure style="align: center;">
@@ -1081,7 +1370,7 @@
     <figcaption>Ver elementos</figcaption>
 </figure>
 
-<p>Si queremos consultar información de la tabla mediante el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/describe-table.html">describe-table</a> de AWS CLi, ejecutaremos:</p>
+<p>Si queremos consultar información de la tabla mediante el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/describe-table.html">describe-table</a> de AWS CLI, ejecutaremos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>aws dynamodb describe-table --table-name ProductCatalog
 </code></pre></div>
 <p>Si queremos hacer la consulta de la tabla para ver los datos que contiene desde el comando <a href="https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/scan.html">scan</a> de AWS CLI, ejecutaremos:</p>
@@ -1134,31 +1423,648 @@
 <span class="linenos" data-linenos="2 "></span><span class="k">select</span><span class="w"> </span><span class="n">Title</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ProductCatalog</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">ProductCategory</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Book&#39;</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">ProductCatalog</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">Price</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">300</span><span class="w"></span>
 </code></pre></div>
-<div class="admonition info">
-<p class="admonition-title">Consultas <em>PartiQL</em> mediante <em>Python</em></p>
-<p>Más adelante mediante <em>Python</em>, accederemos a <em>DynamoDB</em> y realizaremos consultas con <em>PartiQL</em>, además de operaciones de inserción, modificación y borrado de datos.</p>
-</div>
-<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<h2 id="interaccion-con-python">Interacción con Python<a class="headerlink" href="#interaccion-con-python" title="Permanent link">&para;</a></h2>
+<h3 id="caso-de-uso-1-cargar-datos-en-dynamodb">Caso de uso 1: Cargar datos en DynamoDB<a class="headerlink" href="#caso-de-uso-1-cargar-datos-en-dynamodb" title="Permanent link">&para;</a></h3>
+<p>Vamos a cargar un listado de películas en <em>DynamoDB</em>. El primer paso es elegir las claves de particionado y ordenación. El archivo <a href="resources/datosPeliculas.json">datosPeliculas.json</a> contiene el siguiente contenido:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">&quot;year&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2013</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Rush&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="nt">&quot;info&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">            </span><span class="nt">&quot;directors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Ron Howard&quot;</span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">&quot;release_date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2013-09-02T00:00:00Z&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">&quot;rating&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">8.3</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">&quot;genres&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">                </span><span class="s2">&quot;Action&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">                </span><span class="s2">&quot;Biography&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">                </span><span class="s2">&quot;Drama&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">                </span><span class="s2">&quot;Sport&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">            </span><span class="nt">&quot;image_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://ia.media-imdb.com/images/M/MV5BMTQyMDE0MTY0OV5BMl5BanBnXkFtZTcwMjI2OTI0OQ@@._V1_SX400_.jpg&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="16 "></span><span class="w">            </span><span class="nt">&quot;plot&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;A re-creation of the merciless 1970s rivalry between Formula One rivals James Hunt and Niki Lauda.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="17 "></span><span class="w">            </span><span class="nt">&quot;rank&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="18 "></span><span class="w">            </span><span class="nt">&quot;running_time_secs&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7380</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="19 "></span><span class="w">            </span><span class="nt">&quot;actors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos="20 "></span><span class="w">                </span><span class="s2">&quot;Daniel Bruhl&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="21 "></span><span class="w">                </span><span class="s2">&quot;Chris Hemsworth&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="22 "></span><span class="w">                </span><span class="s2">&quot;Olivia Wilde&quot;</span><span class="w"></span>
+<span class="linenos" data-linenos="23 "></span><span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="linenos" data-linenos="24 "></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="25 "></span><span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="26 "></span><span class="p">]</span><span class="w"></span>
+</code></pre></div>
+<p>Como los años de las películas permiten particionar de manera más o menos equilibrada los datos, en la mejor candidata para clave de particionado. Como sí que habrá varias películas en el mismo año, elegimos el título como clave de ordenación, provocando que los documentos tengan una clave compuesta.</p>
+<p>Así pues, vamos a nombrar nuestra tabla como <code>SeveroPeliculas</code> y ponemos como clave de partición el atributo <code>year</code> de tipo numérico, y como clave de ordenación <code>title</code> de tipo cadena.</p>
+<figure style="align: center;">
+    <img src="images/06ddCrearTabla.png">
+    <figcaption>Creación de la tabla SeveroPeliculas</figcaption>
+</figure>
+
+<p>Una vez creada la tabla, vamos a ver cómo podemos cargar los datos. Haciendo uso de la librería <em>boto3</em> vamos a crear el archivo <code>cargarDatosPeliculas.py</code>:</p>
+<div class="highlight"><span class="filename">cargarDatosPeliculas.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">decimal</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span> <span class="c1"># (1)</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroPeliculas&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;datosPeliculas.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ficheroJSON</span><span class="p">:</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="n">peliculas</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">ficheroJSON</span><span class="p">,</span> <span class="n">parse_float</span><span class="o">=</span><span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="k">for</span> <span class="n">pelicula</span> <span class="ow">in</span> <span class="n">peliculas</span><span class="p">:</span>
+<span class="linenos" data-linenos="12 "></span>        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pelicula</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="13 "></span>        <span class="n">title</span> <span class="o">=</span> <span class="n">pelicula</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span>
+<span class="linenos" data-linenos="14 "></span>        <span class="n">info</span> <span class="o">=</span> <span class="n">pelicula</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">]</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Añadida película:&quot;</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">title</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span>        <span class="n">tabla</span><span class="o">.</span><span class="n">put_item</span><span class="p">(</span>
+<span class="linenos" data-linenos="19 "></span>            <span class="n">Item</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos" data-linenos="20 "></span>                <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+<span class="linenos" data-linenos="21 "></span>                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+<span class="linenos" data-linenos="22 "></span>                <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="n">info</span><span class="p">,</span>
+<span class="linenos" data-linenos="23 "></span>            <span class="p">}</span>
+<span class="linenos" data-linenos="24 "></span>        <span class="p">)</span>
+</code></pre></div>
 <ol>
-<li>
-<p>Realizar el módulo 8 (Bases de Datos) del curso <a href="https://awsacademy.instructure.com/courses/2243/">ACF de AWS</a>.</p>
-</li>
-<li>
-<p>Siguiendo el ejemplo de RDS, crea una instancia (<code>instituto</code>) de una base de datos de tipo <em>MariaDB</em> y cárgala con todos los datos de las sesiones de repaso de SQL (las tablas iniciales y las de inserción).</p>
-</li>
-<li>
-<p>(opcional) A partir de la instancia del ejercicio anterior, crea una instantánea de forma manual. A continuación, restaura esta instantánea en una nueva instancia (por ejemplo, <code>instituto2</code>) de tipo <code>db.t4g.medium</code>, y tras conectarte mediante <em>HeidiSQL</em>, comprueba que tiene los datos ya cargados. Adjunta una captura de pantalla donde se vean las características de las dos instancias.</p>
-</li>
-<li>
-<p>Siguiendo el ejemplo de <em>DynamoDB</em>, crea la tabla (<code>ProductCatalog</code>), cárgala con los datos del ejemplo y realiza un consulta para obtener bicicletas híbridas. Exporta el resultado a CSV.</p>
-</li>
+<li>Nos conectamos a la región e indicamos que vamos a utilizar el servicio de <em>DynamoDB</em></li>
 </ol>
+<p>Si lo ejecutamos desde nuestro ordenador, nos aparecerá por la consola cada una de las películas insertadas.</p>
+<div class="admonition caution">
+<p class="admonition-title">Float y boto3</p>
+<p>Mucho cuidado con boto3 y <em>DynamoDB</em>, ya que los tipos <code>Float</code> no están soportados, y en cambio, hemos de utilizar el tipo <code>Decimal</code>.</p>
+</div>
+<h3 id="faker">Faker<a class="headerlink" href="#faker" title="Permanent link">&para;</a></h3>
+<p>Si necesitamos escribir muchos datos, es muy útil emplear una librería como <a href="https://faker.readthedocs.io/en/master/">Faker</a> para generar datos sintéticos.</p>
+<p>Primero hemos de instalarla mediante pip:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip3 install faker
+</code></pre></div>
+<p>Vamos a realizar un ejemplo para mostrar algunos datos aleatorios y comprobar su funcionamiento:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Código</label><label for="__tabbed_1_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">holaFaker.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">(</span><span class="s1">&#39;es_ES&#39;</span><span class="p">)</span>   <span class="c1"># cambiamos el locale a español</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nombre:&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dirección:&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">address</span><span class="p">())</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Nombre de hombre:&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">first_name_male</span><span class="p">())</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Número de teléfono:&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">phone_number</span><span class="p">())</span>
+<span class="linenos" data-linenos="10 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Color:&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">color_name</span><span class="p">())</span>
+<span class="linenos" data-linenos="11 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Fecha:&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">date</span><span class="p">())</span>
+<span class="linenos" data-linenos="12 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Email:&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">email</span><span class="p">())</span>
+<span class="linenos" data-linenos="13 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Frase de 10 palabras&quot;</span><span class="p">,</span> <span class="n">fake</span><span class="o">.</span><span class="n">sentence</span><span class="p">(</span><span class="n">nb_words</span><span class="o">=</span><span class="mi">10</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="go">Nombre: Dani Pla Chico</span>
+<span class="linenos" data-linenos="2 "></span><span class="go">Dirección: Cuesta de Emiliano Milla 66</span>
+<span class="linenos" data-linenos="3 "></span><span class="go">Albacete, 83227</span>
+<span class="linenos" data-linenos="4 "></span><span class="go">Nombre de hombre: Matías</span>
+<span class="linenos" data-linenos="5 "></span><span class="go">Número de teléfono: +34 818 779 827</span>
+<span class="linenos" data-linenos="6 "></span><span class="go">Color: Salmón oscuro</span>
+<span class="linenos" data-linenos="7 "></span><span class="go">Fecha: 1984-09-29</span>
+<span class="linenos" data-linenos="8 "></span><span class="go">Email: btome@example.net</span>
+<span class="linenos" data-linenos="9 "></span><span class="go">Frase de 10 palabras Perferendis saepe consequatur saepe sapiente est impedit eaque omnis temporibus excepturi repellat ducimus.</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Los diferentes grupos de datos que genera se agrupan en <em>Providers</em>: de dirección, fechas, relacionados con internet, bancarios, códigos de barra, isbn, etc... Se recomienda consultar la documentación en <a href="https://faker.readthedocs.io/en/master/providers.html">https://faker.readthedocs.io/en/master/providers.html</a>.</p>
+<div class="admonition caution">
+<p class="admonition-title">Locale ES</p>
+<p>Al trabajar con el idioma en español, puede que algunos métodos no funcionen (más que no funcionar, posiblemente tengan otro nombre). Es recomendable comprobar las opciones disponibles en <a href="https://faker.readthedocs.io/en/master/locales/es_ES.html">https://faker.readthedocs.io/en/master/locales/es_ES.html</a></p>
+</div>
+<h4 id="generando-csv">Generando CSV<a class="headerlink" href="#generando-csv" title="Permanent link">&para;</a></h4>
+<p>Vamos a generar un CSV con datos de 1000 personas. Primero creamos una lista con los encabezados y los escribimos en el fichero, para posteriormente, línea a línea, generar los datos de cada persona:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Código</label><label for="__tabbed_2_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">generaCSV.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">csv</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;datosFaker.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">(</span><span class="s1">&#39;es_ES&#39;</span><span class="p">)</span>   <span class="c1"># cambiamos el locale a español</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;nombre&#39;</span><span class="p">,</span> <span class="s1">&#39;edad&#39;</span><span class="p">,</span> <span class="s1">&#39;calle&#39;</span><span class="p">,</span> <span class="s1">&#39;ciudad&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="s1">&#39;provincia&#39;</span><span class="p">,</span> <span class="s1">&#39;cp&#39;</span><span class="p">,</span> <span class="s1">&#39;longitud&#39;</span><span class="p">,</span> <span class="s1">&#39;latitud&#39;</span><span class="p">]</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">mywriter</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">mywriter</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">mywriter</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span>
+<span class="linenos" data-linenos="14 "></span>                    <span class="n">fake</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="linenos" data-linenos="15 "></span>                    <span class="n">fake</span><span class="o">.</span><span class="n">street_address</span><span class="p">(),</span>
+<span class="linenos" data-linenos="16 "></span>                    <span class="n">fake</span><span class="o">.</span><span class="n">city</span><span class="p">(),</span>
+<span class="linenos" data-linenos="17 "></span>                    <span class="n">fake</span><span class="o">.</span><span class="n">state</span><span class="p">(),</span>
+<span class="linenos" data-linenos="18 "></span>                    <span class="n">fake</span><span class="o">.</span><span class="n">postcode</span><span class="p">(),</span>
+<span class="linenos" data-linenos="19 "></span>                    <span class="n">fake</span><span class="o">.</span><span class="n">longitude</span><span class="p">(),</span>
+<span class="linenos" data-linenos="20 "></span>                    <span class="n">fake</span><span class="o">.</span><span class="n">latitude</span><span class="p">()])</span>
+<span class="linenos" data-linenos="21 "></span><span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">datosFaker.csv</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span>nombre,edad,calle,ciudad,provincia,cp,longitud,latitud
+<span class="linenos" data-linenos="2 "></span>Jenaro Verdú Suarez,26,Urbanización Mohamed Vallés 122,Sevilla,Guipúzcoa,73198,2.657719,-69.679293
+<span class="linenos" data-linenos="3 "></span>Eugenio Calzada Revilla,57,Camino Vanesa Amor 36 Piso 9 ,Huesca,Álava,75590,34.041399,-52.924628
+<span class="linenos" data-linenos="4 "></span>Flavio del Lumbreras,76,Avenida de Beatriz Amaya 92,Ciudad,Murcia,86420,58.248903,-17.924926
+</code></pre></div>
+</div>
+</div>
+</div>
+<h4 id="generando-json">Generando JSON<a class="headerlink" href="#generando-json" title="Permanent link">&para;</a></h4>
+<p>Y a continuación repetimos el mismo ejemplo, pero ahora generando un documento JSON. La principal diferencia es que primero vamos a rellenar un diccionario con toda la información, y luego persistimos el diccionario:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Código</label><label for="__tabbed_3_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">generaJSON.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">(</span><span class="s1">&#39;es_ES&#39;</span><span class="p">)</span>   <span class="c1"># cambiamos el locale a español</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># Preparamos los datos</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">datos</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">datos</span><span class="p">[</span><span class="s1">&#39;registros&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="n">persona</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;datos&quot;</span><span class="p">:</span> <span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span>
+<span class="linenos" data-linenos="12 "></span>            <span class="s2">&quot;edad&quot;</span><span class="p">:</span> <span class="n">fake</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="linenos" data-linenos="13 "></span>            <span class="s2">&quot;calle&quot;</span><span class="p">:</span> <span class="n">fake</span><span class="o">.</span><span class="n">street_address</span><span class="p">(),</span>
+<span class="linenos" data-linenos="14 "></span>            <span class="s2">&quot;ciudad&quot;</span><span class="p">:</span> <span class="n">fake</span><span class="o">.</span><span class="n">city</span><span class="p">(),</span>
+<span class="linenos" data-linenos="15 "></span>            <span class="s2">&quot;provincia&quot;</span><span class="p">:</span> <span class="n">fake</span><span class="o">.</span><span class="n">state</span><span class="p">(),</span>
+<span class="linenos" data-linenos="16 "></span>            <span class="s2">&quot;cp&quot;</span><span class="p">:</span> <span class="n">fake</span><span class="o">.</span><span class="n">postcode</span><span class="p">(),</span>
+<span class="linenos" data-linenos="17 "></span>            <span class="s2">&quot;longitud&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">fake</span><span class="o">.</span><span class="n">longitude</span><span class="p">()),</span>
+<span class="linenos" data-linenos="18 "></span>            <span class="s2">&quot;latitud&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">fake</span><span class="o">.</span><span class="n">latitude</span><span class="p">())}</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="n">datos</span><span class="p">[</span><span class="s1">&#39;registros&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">persona</span><span class="p">)</span>
+<span class="linenos" data-linenos="20 "></span>
+<span class="linenos" data-linenos="21 "></span><span class="c1"># Los metemos en el fichero</span>
+<span class="linenos" data-linenos="22 "></span><span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;datosFaker.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="23 "></span><span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">datos</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">datosFaker.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">&quot;registros&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="nt">&quot;datos&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Merche Moreno Roman&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">            </span><span class="nt">&quot;edad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">            </span><span class="nt">&quot;calle&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Paseo Amelia Folch 967&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">&quot;ciudad&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Segovia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">&quot;provincia&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;M\u00e1laga&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">&quot;cp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71721&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="nt">&quot;longitud&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">84.603801</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="w">            </span><span class="nt">&quot;latitud&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">58.941349</span><span class="w"></span>
+<span class="linenos" data-linenos="12 "></span><span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="14 "></span><span class="w">            </span><span class="nt">&quot;datos&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Miguel Abascal Sanz&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="15 "></span><span class="w">            </span><span class="nt">&quot;edad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="caso-de-uso-2-consultar-datos-en-dynamodb">Caso de uso 2 - Consultar datos en DynamoDB<a class="headerlink" href="#caso-de-uso-2-consultar-datos-en-dynamodb" title="Permanent link">&para;</a></h3>
+<p>Una vez tenemos nuestra tabla de <em>DynamoDB</em> cargada con datos, llega el momento de recuperar los datos, ya sea un registro en concreto o la posibilidad de realizar una consulta, ya sea por su índice o su clave de ordenación (o ambas).</p>
+<p>En el apartado anterior hemos estudiado que podemos realizar consultas sobre <em>DynamoDB</em> haciendo uso de un subconjunto de SQL conocido como PartiQL. En los siguientes ejemplos vamos a mostrar cómo realizar las operaciones vía el API de <em>DynamoDb</em> y mediante <em>PartiQL</em>.</p>
+<p>Si queremos recuperar la película <em>Interstellar</em> de 2014 haremos:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Mediante <code>get_item</code></label><label for="__tabbed_4_2">Mediante <code>get_item</code> con excepciones</label><label for="__tabbed_4_3">Mediante PartiQL</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">dynamodb_getitem.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroPeliculas&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Interstellar&quot;</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">year</span> <span class="o">=</span> <span class="mi">2014</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">response</span> <span class="o">=</span> <span class="n">tabla</span><span class="o">.</span><span class="n">get_item</span><span class="p">(</span>
+<span class="linenos" data-linenos="10 "></span>        <span class="n">Key</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos" data-linenos="11 "></span>            <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+<span class="linenos" data-linenos="12 "></span>            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span>
+<span class="linenos" data-linenos="13 "></span>        <span class="p">},</span>
+<span class="linenos" data-linenos="14 "></span>        <span class="n">ProjectionExpression</span><span class="o">=</span><span class="s2">&quot;title, info.plot&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span><span class="n">item</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Item&#39;</span><span class="p">]</span>
+<span class="linenos" data-linenos="16 "></span><span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">dynamodb_getitem_exc.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">botocore.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroPeliculas&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Interstellar&quot;</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">year</span> <span class="o">=</span> <span class="mi">2014</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># Recupera una película</span>
+<span class="linenos" data-linenos="11 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------ Datos de Interstellar&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span><span class="k">try</span><span class="p">:</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">response</span> <span class="o">=</span> <span class="n">tabla</span><span class="o">.</span><span class="n">get_item</span><span class="p">(</span>
+<span class="linenos" data-linenos="14 "></span>        <span class="n">Key</span><span class="o">=</span><span class="p">{</span>
+<span class="linenos" data-linenos="15 "></span>            <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+<span class="linenos" data-linenos="16 "></span>            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">title</span>
+<span class="linenos" data-linenos="17 "></span>        <span class="p">},</span>
+<span class="linenos" data-linenos="18 "></span>        <span class="n">ProjectionExpression</span><span class="o">=</span><span class="s2">&quot;title, info.plot&quot;</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="p">)</span>
+<span class="linenos" data-linenos="20 "></span><span class="k">except</span> <span class="n">ClientError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;Error&#39;</span><span class="p">][</span><span class="s1">&#39;Message&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="22 "></span><span class="k">else</span><span class="p">:</span>
+<span class="linenos" data-linenos="23 "></span>    <span class="n">item</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;Item&#39;</span><span class="p">]</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">dynamodb_select.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">clientDDB</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># Recupera una película con PartiQL</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------ Datos de Interstellar mediante PartiQL&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">clientDDB</span><span class="o">.</span><span class="n">execute_statement</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="n">Statement</span><span class="o">=</span><span class="s2">&quot;SELECT title, info.plot FROM SeveroPeliculas WHERE year = 2014 and title=&#39;Interstellar&#39;&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">item</span> <span class="o">=</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos" data-linenos="10 "></span><span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Interstellar&quot;</span>
+<span class="linenos" data-linenos="13 "></span><span class="n">year</span> <span class="o">=</span> <span class="mi">2014</span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># Recupera una película con PartiQL con parámetros indicados mediante ?</span>
+<span class="linenos" data-linenos="15 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------ Datos de Interstellar mediante PartiQL con parámetros&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">clientDDB</span><span class="o">.</span><span class="n">execute_statement</span><span class="p">(</span><span class="n">Statement</span><span class="o">=</span><span class="s1">&#39;SELECT * FROM SeveroPeliculas WHERE year = ? AND title = ?&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="17 "></span>                                    <span class="n">Parameters</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)},</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">}])</span>
+<span class="linenos" data-linenos="18 "></span><span class="n">item</span> <span class="o">=</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos" data-linenos="19 "></span><span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>En el caso de las <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html#DynamoDB.Client.execute_statement">consultas mediante PartiQL haciendo uso de <code>execute_statement</code></a> conviene destacar que:</p>
+<ul>
+<li>Las consultas son <em>case sensitive</em>.</li>
+<li>Los parámetros se indican mediante <code>?</code></li>
+<li>Los contenidos de los parámetros se indican mediante una lista con un diccionario por cada parámetro donde la clave es el tipo del parámetro, y el valor es el dato a pasar (el dato se pasa siempre como un <code>string</code>)</li>
+<li>Las consultas siempre devuelven un diccionario con una propiedad <code>Items</code> que contiene los resultados devueltos.</li>
+</ul>
+<p>Destacar que es diferente la estructura del resultado de realizar una consulta mediante el API de <em>DynamoDB</em> (respeta la estructura definida en la base de datos) o mediante <em>PartiQL</em> (crea un atributo por columna recuperada cuyo valor contiene el tipo del dato):</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Resultado de <code>get-item</code></label><label for="__tabbed_5_2">Resultado de <em>PartiQL</em></label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span><span class="err">&#39;i</span><span class="kc">nf</span><span class="err">o&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;plo</span><span class="kc">t</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;A</span><span class="w"> </span><span class="err">group</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="err">explorers</span><span class="w"> </span><span class="err">make</span><span class="w"> </span><span class="err">use</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="kc">ne</span><span class="err">wly</span><span class="w"> </span><span class="err">discovered</span><span class="w"> </span><span class="err">wormhole</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">surpass</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">limi</span><span class="kc">tat</span><span class="err">io</span><span class="kc">ns</span><span class="w"> </span><span class="err">o</span><span class="kc">n</span><span class="w"> </span><span class="err">huma</span><span class="kc">n</span><span class="w"> </span><span class="err">space</span><span class="w"> </span><span class="kc">tra</span><span class="err">vel</span><span class="w"> </span><span class="err">a</span><span class="kc">n</span><span class="err">d</span><span class="w"> </span><span class="err">co</span><span class="kc">n</span><span class="err">quer</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">vas</span><span class="kc">t</span><span class="w"> </span><span class="err">dis</span><span class="kc">tan</span><span class="err">ces</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="err">volved</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">n</span><span class="w"> </span><span class="err">i</span><span class="kc">nterstellar</span><span class="w"> </span><span class="err">voyage.&#39;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">i</span><span class="kc">tle</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;I</span><span class="kc">nterstellar</span><span class="err">&#39;</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span><span class="err">&#39;</span><span class="kc">t</span><span class="err">i</span><span class="kc">tle</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;S&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;I</span><span class="kc">nterstellar</span><span class="err">&#39;</span><span class="p">},</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="err">&#39;plo</span><span class="kc">t</span><span class="err">&#39;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="err">&#39;S&#39;</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;A</span><span class="w"> </span><span class="err">group</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="err">explorers</span><span class="w"> </span><span class="err">make</span><span class="w"> </span><span class="err">use</span><span class="w"> </span><span class="err">o</span><span class="kc">f</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="kc">ne</span><span class="err">wly</span><span class="w"> </span><span class="err">discovered</span><span class="w"> </span><span class="err">wormhole</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">surpass</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">limi</span><span class="kc">tat</span><span class="err">io</span><span class="kc">ns</span><span class="w"> </span><span class="err">o</span><span class="kc">n</span><span class="w"> </span><span class="err">huma</span><span class="kc">n</span><span class="w"> </span><span class="err">space</span><span class="w"> </span><span class="kc">tra</span><span class="err">vel</span><span class="w"> </span><span class="err">a</span><span class="kc">n</span><span class="err">d</span><span class="w"> </span><span class="err">co</span><span class="kc">n</span><span class="err">quer</span><span class="w"> </span><span class="kc">t</span><span class="err">he</span><span class="w"> </span><span class="err">vas</span><span class="kc">t</span><span class="w"> </span><span class="err">dis</span><span class="kc">tan</span><span class="err">ces</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="err">volved</span><span class="w"> </span><span class="err">i</span><span class="kc">n</span><span class="w"> </span><span class="err">a</span><span class="kc">n</span><span class="w"> </span><span class="err">i</span><span class="kc">nterstellar</span><span class="w"> </span><span class="err">voyage.&#39;</span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>También podemos realizar otro tipo de consultas:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">Películas de 2016 mediante <code>query</code></label><label for="__tabbed_6_2">Películas cuyo título esté entre la A y la L</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">boto3.dynamodb.conditions</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># Mediante query</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroPeliculas&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----Películas de 2016&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">tabla</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">KeyConditionExpression</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="mi">2016</span><span class="p">))</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">],</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># Mediante PartiQL</span>
+<span class="linenos" data-linenos="13 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----Películas de 2016 con PartiQL&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span><span class="n">clientDDB</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">clientDDB</span><span class="o">.</span><span class="n">execute_statement</span><span class="p">(</span>
+<span class="linenos" data-linenos="16 "></span>    <span class="n">Statement</span><span class="o">=</span><span class="s2">&quot;SELECT title, year FROM SeveroPeliculas WHERE year = 2016&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="18 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">][</span><span class="s1">&#39;N&#39;</span><span class="p">],</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">][</span><span class="s1">&#39;S&#39;</span><span class="p">])</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">decimal</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">boto3.dynamodb.conditions</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="k">class</span> <span class="nc">DecimalEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+<span class="linenos" data-linenos=" 9 "></span>            <span class="k">if</span> <span class="n">o</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos" data-linenos="10 "></span>                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span>            <span class="k">else</span><span class="p">:</span>
+<span class="linenos" data-linenos="12 "></span>                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span>        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DecimalEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span>
+<span class="linenos" data-linenos="15 "></span><span class="n">anyo</span> <span class="o">=</span> <span class="mi">2016</span>
+<span class="linenos" data-linenos="16 "></span><span class="n">letraInicial</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
+<span class="linenos" data-linenos="17 "></span><span class="n">letraFinal</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroPeliculas&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----Películas de 2016 cuyo título empieza desde A hasta L&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="23 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">tabla</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="n">ProjectionExpression</span><span class="o">=</span><span class="s2">&quot;#yr, title, info.genres, info.actors[0]&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="c1"># year es una palabra clave, por tanto necesitamos crear un alias</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="n">ExpressionAttributeNames</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;#yr&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">},</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="n">KeyConditionExpression</span><span class="o">=</span><span class="n">Key</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">anyo</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Key</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">between</span><span class="p">(</span><span class="n">letraInicial</span><span class="p">,</span> <span class="n">letraFinal</span><span class="p">)</span>
+<span class="linenos" data-linenos="28 "></span><span class="p">)</span>
+<span class="linenos" data-linenos="29 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="30 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos" data-linenos="31 "></span>    <span class="c1"># {&#39;info&#39;: {&#39;actors&#39;: [&#39;Zoe Saldana&#39;], &#39;genres&#39;: [&#39;Action&#39;, &#39;Adventure&#39;, &#39;Fantasy&#39;, &#39;Sci-Fi&#39;]}, &#39;year&#39;: Decimal(&#39;2016&#39;), &#39;title&#39;: &#39;Avatar 2&#39;}</span>
+<span class="linenos" data-linenos="32 "></span>    <span class="c1"># Transforma los valores numéricos de Decimal a Number</span>
+<span class="linenos" data-linenos="33 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DecimalEncoder</span><span class="p">))</span>
+<span class="linenos" data-linenos="34 "></span>    <span class="c1"># {&quot;info&quot;: {&quot;actors&quot;: [&quot;Zoe Saldana&quot;], &quot;genres&quot;: [&quot;Action&quot;, &quot;Adventure&quot;, &quot;Fantasy&quot;, &quot;Sci-Fi&quot;]}, &quot;year&quot;: 2016, &quot;title&quot;: &quot;Avatar 2&quot;}</span>
+<span class="linenos" data-linenos="35 "></span>    <span class="k">for</span> <span class="n">genero</span> <span class="ow">in</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;info&#39;</span><span class="p">][</span><span class="s1">&#39;genres&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="36 "></span>        <span class="nb">print</span><span class="p">(</span><span class="n">genero</span><span class="p">)</span>
+<span class="linenos" data-linenos="37 "></span>
+<span class="linenos" data-linenos="38 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----Películas de 2016 cuyo título empieza desde A hasta L con PartiQL&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="39 "></span><span class="n">clientDDB</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="40 "></span><span class="n">consulta</span> <span class="o">=</span> <span class="s1">&#39;SELECT year, title, info.genres, info.actors[0] FROM SeveroPeliculas WHERE year = ? AND title between ? and ?&#39;</span>
+<span class="linenos" data-linenos="41 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">clientDDB</span><span class="o">.</span><span class="n">execute_statement</span><span class="p">(</span><span class="n">Statement</span><span class="o">=</span><span class="n">consulta</span><span class="p">,</span>
+<span class="linenos" data-linenos="42 "></span>                                <span class="n">Parameters</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">anyo</span><span class="p">)},</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="n">letraInicial</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="n">letraFinal</span><span class="p">}])</span>
+<span class="linenos" data-linenos="43 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="44 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="linenos" data-linenos="45 "></span>    <span class="c1"># [{&#39;year&#39;: {&#39;N&#39;: &#39;2016&#39;}, &#39;title&#39;: {&#39;S&#39;: &#39;Avatar 2&#39;}, &#39;actors[0]&#39;: {&#39;S&#39;: &#39;Zoe Saldana&#39;}, &#39;genres&#39;: {&#39;L&#39;: [{&#39;S&#39;: &#39;Action&#39;}, {&#39;S&#39;: &#39;Adventure&#39;}, {&#39;S&#39;: &#39;Fantasy&#39;}, {&#39;S&#39;: &#39;Sci-Fi&#39;}]}}]</span>
+<span class="linenos" data-linenos="46 "></span>    <span class="k">for</span> <span class="n">genero</span> <span class="ow">in</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;genres&#39;</span><span class="p">][</span><span class="s1">&#39;L&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="47 "></span>        <span class="nb">print</span><span class="p">(</span><span class="n">genero</span><span class="p">[</span><span class="s1">&#39;S&#39;</span><span class="p">])</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>La clase <code>DecimalEncoder</code> se utiliza para transformar los campos <code>Decimal</code> que utiliza <em>DynamoDB</em> para almacenar contenido numérico a tipo entero o flotante según necesite.</p>
+<h4 id="full-scan">Full scan<a class="headerlink" href="#full-scan" title="Permanent link">&para;</a></h4>
+<p>Cuando en <em>PartiQL</em> no le indicamos en la condición una expresión que busque por una de las claves, se realizará un <em>full scan</em> sobre toda la tabla, lo que puede implicar unos costes inesperados, tanto económicos como a nivel rendimiento.</p>
+<p>El método <code>scan</code> lee cada elemento de la tabla y devuelve todos los datos de la tabla. Se le puede pasar una <code>filter_expression</code> opcional para que sólo devuelva los elementos que cumplan el criterio. Sin embargo, el filtrado se aplica tras escanear toda la tabla.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:2"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">Ejemplo scan</label><label for="__tabbed_7_2">Full scan con PartiQL</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">decimal</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">boto3.dynamodb.conditions</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="k">class</span> <span class="nc">DecimalEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">decimal</span><span class="o">.</span><span class="n">Decimal</span><span class="p">):</span>
+<span class="linenos" data-linenos=" 9 "></span>            <span class="k">if</span> <span class="n">o</span> <span class="o">%</span> <span class="mi">1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos" data-linenos="10 "></span>                <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span>            <span class="k">else</span><span class="p">:</span>
+<span class="linenos" data-linenos="12 "></span>                <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span>        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DecimalEncoder</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span>
+<span class="linenos" data-linenos="15 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroPeliculas&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----Películas de sobresaliente mediante full scan&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="19 "></span><span class="c1"># Escaneo y filtrado</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">fe</span> <span class="o">=</span> <span class="n">Key</span><span class="p">(</span><span class="s1">&#39;info.rating&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gte</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="linenos" data-linenos="21 "></span><span class="n">pe</span> <span class="o">=</span> <span class="s2">&quot;#yr, title, info.rating&quot;</span>
+<span class="linenos" data-linenos="22 "></span><span class="n">ean</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;#yr&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">}</span>
+<span class="linenos" data-linenos="23 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">tabla</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="n">FilterExpression</span><span class="o">=</span><span class="n">fe</span><span class="p">,</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="n">ProjectionExpression</span><span class="o">=</span><span class="n">pe</span><span class="p">,</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="n">ExpressionAttributeNames</span><span class="o">=</span><span class="n">ean</span>
+<span class="linenos" data-linenos="27 "></span><span class="p">)</span>
+<span class="linenos" data-linenos="28 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="29 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="n">DecimalEncoder</span><span class="p">))</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos="2 "></span><span class="kn">from</span> <span class="nn">boto3.dynamodb.conditions</span> <span class="kn">import</span> <span class="n">Key</span>
+<span class="linenos" data-linenos="3 "></span>
+<span class="linenos" data-linenos="4 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-----Películas de 2016 con PartiQL&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">clientDDB</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">clientDDB</span><span class="o">.</span><span class="n">execute_statement</span><span class="p">(</span>
+<span class="linenos" data-linenos="7 "></span>    <span class="n">Statement</span><span class="o">=</span><span class="s2">&quot;SELECT title, year, info.rating FROM SeveroPeliculas WHERE info.rating &gt;= 9&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="8 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;Items&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="9 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">][</span><span class="s1">&#39;N&#39;</span><span class="p">],</span> <span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">][</span><span class="s1">&#39;S&#39;</span><span class="p">])</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="caso-de-uso-3-de-s3-a-dynamodb">Caso de uso 3 - De S3 a DynamoDB<a class="headerlink" href="#caso-de-uso-3-de-s3-a-dynamodb" title="Permanent link">&para;</a></h3>
+<p>En la sesión de S3 trabajamos con Python con un dataset de películas, el cual filtramos mediante <a href="03s3.html#s3-select">S3Select</a> y nos quedamos con el título, la nota media y la trama siempre y cuando hayan recibido al menos 10.000 votos, el cual almacenamos en <code>TMDb_filtered.csv</code>.</p>
+<p>Una vez creado el fichero en S3, vamos cargar los datos en DynamoDB. Como el dataset no contenía la fecha de la película, en nuestro caso le vamos a poner a todas las películas que son del 2022:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">decimal</span> <span class="kn">import</span> <span class="n">Decimal</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># 1.- Leemos el fichero desde S3 y lo metemos en un DataFrame</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">s3c</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">bucketNombre</span> <span class="o">=</span> <span class="s2">&quot;s3severo2122python&quot;</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">ficheroNombre</span> <span class="o">=</span> <span class="s2">&quot;TMDb_filtered.csv&quot;</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">response</span> <span class="o">=</span> <span class="n">s3c</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="n">bucketNombre</span><span class="p">,</span> <span class="n">Key</span><span class="o">=</span><span class="n">ficheroNombre</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">movies_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="s1">&#39;Body&#39;</span><span class="p">],</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># 2.- Nos conectamos a DynamoDB</span>
+<span class="linenos" data-linenos="13 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroPeliculas&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># 3.- Lo metemos en DynamoDB mediante un batch</span>
+<span class="linenos" data-linenos="17 "></span><span class="k">with</span> <span class="n">tabla</span><span class="o">.</span><span class="n">batch_writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+<span class="linenos" data-linenos="18 "></span>    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">movies_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+<span class="linenos" data-linenos="19 "></span>        <span class="n">Item</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="20 "></span>            <span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="mi">2022</span><span class="p">,</span>
+<span class="linenos" data-linenos="21 "></span>            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fila</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]),</span>
+<span class="linenos" data-linenos="22 "></span>            <span class="s1">&#39;info&#39;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos" data-linenos="23 "></span>                <span class="s1">&#39;plot&#39;</span> <span class="p">:</span> <span class="n">fila</span><span class="p">[</span><span class="s1">&#39;overview&#39;</span><span class="p">],</span>
+<span class="linenos" data-linenos="24 "></span>                <span class="s1">&#39;rating&#39;</span> <span class="p">:</span> <span class="n">Decimal</span><span class="p">(</span><span class="n">fila</span><span class="p">[</span><span class="s1">&#39;vote_average&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">quantize</span><span class="p">(</span><span class="n">Decimal</span><span class="p">(</span><span class="s1">&#39;1.00&#39;</span><span class="p">))</span>
+<span class="linenos" data-linenos="25 "></span>            <span class="p">}</span>
+<span class="linenos" data-linenos="26 "></span>        <span class="p">}</span>
+<span class="linenos" data-linenos="27 "></span>        <span class="n">batch</span><span class="o">.</span><span class="n">put_item</span><span class="p">(</span><span class="n">Item</span><span class="o">=</span><span class="n">Item</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="caso-de-uso-4-desde-rds">Caso de uso 4 - Desde RDS<a class="headerlink" href="#caso-de-uso-4-desde-rds" title="Permanent link">&para;</a></h3>
+<div class="admonition tip">
+<p class="admonition-title">Preparación MariaBD</p>
+<p>Para estos actividades y futuras sesiones, vamos a utilizar una base de datos (<em>retail_db</em>) que contiene información sobre un comercio (clientes, productos, pedidos, etc...).</p>
+<p>Para ello, descargaremos el archivo <a href="resources/create_db.sql">create_db.sql</a> con las sentencias para crear la base de datos y los datos como instrucciones SQL.</p>
+<p>Tras ello, bien sea mediante <em>DBeaver</em> o si nos conectamos a <em>MariaDB</em> (<code>mariadb -u iabd -p</code>) desde la misma carpeta que hemos descargado el archivo, ejecutaremos los siguientes comando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">retail_db</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="n">use</span><span class="w"> </span><span class="n">retail_db</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="k">source</span><span class="w"> </span><span class="n">create_db</span><span class="p">.</span><span class="k">sql</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="k">show</span><span class="w"> </span><span class="n">tables</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<p>Vamos a utilizar la instancia de base de datos iabd que tenemos en RDS con la base de datos <code>retail_db</code>.</p>
+<h4 id="mariadbmysql-y-python">MariaDB/MySQL y Python<a class="headerlink" href="#mariadbmysql-y-python" title="Permanent link">&para;</a></h4>
+<p>Para acceder a la base de datos desde Python necesitamos instalar la librería correspondiente:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip3 install mariadb
+<span class="linenos" data-linenos="2 "></span>pip3 install mysql-connector-python
+</code></pre></div>
+<p>Todo el código a continuación se basa en <em>MariaDB</em> como sistema gestor de base de datos. Si queremos conectarnos, debemos indicar los datos de conexion:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">mariadb</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="k">try</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="n">conn</span> <span class="o">=</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 6 "></span>        <span class="n">user</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span>        <span class="n">password</span><span class="o">=</span><span class="s2">&quot;adminadmin&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="n">host</span><span class="o">=</span><span class="s2">&quot;iabd.cllw9xnmy9av.us-east-1.rds.amazonaws.com&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span>        <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span>        <span class="n">database</span><span class="o">=</span><span class="s2">&quot;retail_db&quot;</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span><span class="k">except</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error conectando a MariaD: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># Obtenemos el cursor</span>
+<span class="linenos" data-linenos="17 "></span><span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+</code></pre></div>
+<p>Una vez nos hemos conectado y tenemos abierto un cursor, ya podemos hacer consultas y recuperar datos.</p>
+<p>Por ejemplo, para recuperar toda la información de los clientes almacenada en la tabla <code>customers</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select * from customers&quot;</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">resultado</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchAll</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># Cerramos el cursor y la conexión</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># Mostramos el resultado</span>
+<span class="linenos" data-linenos="10 "></span><span class="nb">print</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span>
+</code></pre></div>
+<h4 id="de-rds-a-s3">De RDS a S3<a class="headerlink" href="#de-rds-a-s3" title="Permanent link">&para;</a></h4>
+<p>Vamos a realizar otro ejemplo sencillo que recupere el nombre, apellido y email de los clientes mediante una consulta que reibe un parámetro:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">mariadb</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="k">try</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="n">conn</span> <span class="o">=</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="n">user</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span>        <span class="n">password</span><span class="o">=</span><span class="s2">&quot;adminadmin&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span>        <span class="n">host</span><span class="o">=</span><span class="s2">&quot;iabd.cllw9xnmy9av.us-east-1.rds.amazonaws.com&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span>        <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span>
+<span class="linenos" data-linenos="12 "></span>        <span class="n">database</span><span class="o">=</span><span class="s2">&quot;retail_db&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span><span class="k">except</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error conectando a MariaDB: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="n">ciudad</span> <span class="o">=</span> <span class="s2">&quot;Brownsville&quot;</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span><span class="c1"># Obtenemos el cursor</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="linenos" data-linenos="21 "></span><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select customer_fname, customer_lname, customer_zipcode from customers where customer_city=?&quot;</span>
+<span class="linenos" data-linenos="22 "></span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">ciudad</span><span class="p">,</span> <span class="p">))</span>
+<span class="linenos" data-linenos="23 "></span>
+<span class="linenos" data-linenos="24 "></span><span class="c1"># Generamos un JSON con los datos</span>
+<span class="linenos" data-linenos="25 "></span><span class="n">row_headers</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cur</span><span class="o">.</span><span class="n">description</span><span class="p">]</span> 
+<span class="linenos" data-linenos="26 "></span><span class="n">clientes</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="linenos" data-linenos="27 "></span><span class="n">json_data</span><span class="o">=</span><span class="p">[]</span>
+<span class="linenos" data-linenos="28 "></span><span class="k">for</span> <span class="n">cliente</span> <span class="ow">in</span> <span class="n">clientes</span><span class="p">:</span>
+<span class="linenos" data-linenos="29 "></span>    <span class="n">json_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">row_headers</span><span class="p">,</span><span class="n">cliente</span><span class="p">)))</span>
+<span class="linenos" data-linenos="30 "></span>
+<span class="linenos" data-linenos="31 "></span><span class="c1"># Cerramos el cursor y la conexión</span>
+<span class="linenos" data-linenos="32 "></span><span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos" data-linenos="33 "></span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos" data-linenos="34 "></span>
+<span class="linenos" data-linenos="35 "></span><span class="c1"># Persistimos el JSON en S3</span>
+<span class="linenos" data-linenos="36 "></span><span class="n">s3r</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="37 "></span><span class="nb">object</span> <span class="o">=</span> <span class="n">s3r</span><span class="o">.</span><span class="n">Object</span><span class="p">(</span><span class="s1">&#39;s3severo2122python&#39;</span><span class="p">,</span> <span class="s1">&#39;clientesRDS.json&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="38 "></span><span class="nb">object</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">Body</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_data</span><span class="p">))</span>
+</code></pre></div>
+<h4 id="de-rds-a-dynamodb">De RDS a DynamoDB<a class="headerlink" href="#de-rds-a-dynamodb" title="Permanent link">&para;</a></h4>
+<p>Para este caso de uso, vamos a crear una nueva tabla en DynamoDB a la que llamaremos <code>SeveroClientes</code> y le pondremos como clave de particionado el campo <code>Id</code> de tipo numérico y como clave de ordenamiento el <code>Zip</code> de tipo texto.</p>
+<figure style="align: center;">
+    <img src="images/06ddSeveroClientes.png">
+    <figcaption>Creación de la tabla SeveroClientes</figcaption>
+</figure>
+
+<p>Vamos a modificar el ejemplo anterior para que, una vez recuperado los datos de la base de datos, los almacene directamente en DynamoDB:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">mariadb</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="k">try</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 6 "></span>    <span class="n">conn</span> <span class="o">=</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 7 "></span>        <span class="n">user</span><span class="o">=</span><span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>        <span class="n">password</span><span class="o">=</span><span class="s2">&quot;adminadmin&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span>        <span class="n">host</span><span class="o">=</span><span class="s2">&quot;iabd.cllw9xnmy9av.us-east-1.rds.amazonaws.com&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span>        <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span>        <span class="n">database</span><span class="o">=</span><span class="s2">&quot;retail_db&quot;</span>
+<span class="linenos" data-linenos="12 "></span>    <span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span><span class="k">except</span> <span class="n">mariadb</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error conectando a MariaDB: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="n">ciudad</span> <span class="o">=</span> <span class="s2">&quot;Brownsville&quot;</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span><span class="c1"># Obtenemos el cursor</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+<span class="linenos" data-linenos="21 "></span><span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;select customer_id, customer_fname, customer_lname, customer_zipcode from customers where customer_city=?&quot;</span>
+<span class="linenos" data-linenos="22 "></span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="p">(</span><span class="n">ciudad</span><span class="p">,</span> <span class="p">))</span>
+<span class="linenos" data-linenos="23 "></span>
+<span class="linenos" data-linenos="24 "></span><span class="c1"># Recorremos el cursor e insertamos en DynamoDB</span>
+<span class="linenos" data-linenos="25 "></span><span class="n">dynamodb</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;dynamodb&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="26 "></span><span class="n">tabla</span> <span class="o">=</span> <span class="n">dynamodb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s1">&#39;SeveroClientes&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="27 "></span><span class="k">with</span> <span class="n">tabla</span><span class="o">.</span><span class="n">batch_writer</span><span class="p">()</span> <span class="k">as</span> <span class="n">batch</span><span class="p">:</span>
+<span class="linenos" data-linenos="28 "></span>    <span class="k">for</span> <span class="n">customer_id</span><span class="p">,</span> <span class="n">customer_fname</span><span class="p">,</span> <span class="n">customer_lname</span><span class="p">,</span> <span class="n">customer_zipcode</span> <span class="ow">in</span> <span class="n">cur</span><span class="p">:</span> 
+<span class="linenos" data-linenos="29 "></span>        <span class="n">Item</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="30 "></span>            <span class="s1">&#39;Id&#39;</span><span class="p">:</span> <span class="n">customer_id</span><span class="p">,</span>
+<span class="linenos" data-linenos="31 "></span>            <span class="s1">&#39;Zip&#39;</span><span class="p">:</span> <span class="n">customer_zipcode</span><span class="p">,</span>
+<span class="linenos" data-linenos="32 "></span>            <span class="s1">&#39;Nombre&#39;</span><span class="p">:</span> <span class="n">customer_fname</span><span class="p">,</span>
+<span class="linenos" data-linenos="33 "></span>            <span class="s1">&#39;Apellidos&#39;</span><span class="p">:</span> <span class="n">customer_lname</span><span class="p">,</span>
+<span class="linenos" data-linenos="34 "></span>        <span class="p">}</span>
+<span class="linenos" data-linenos="35 "></span>    <span class="n">batch</span><span class="o">.</span><span class="n">put_item</span><span class="p">(</span><span class="n">Item</span><span class="o">=</span><span class="n">Item</span><span class="p">)</span>
+<span class="linenos" data-linenos="36 "></span>
+<span class="linenos" data-linenos="37 "></span><span class="c1"># Cerramos el cursor y la conexión</span>
+<span class="linenos" data-linenos="38 "></span><span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="linenos" data-linenos="39 "></span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Bases de datos y Pandas</p>
+<p>Si estás interesado en colocar dentro de <em>Pandas</em> los datos que recuperas desde una base de datos, es muy común utilizar <a href="https://www.sqlalchemy.org/">SQLAlchemy</a> el cual ofrece una capa por encima de los <em>drivers</em> (además de ofrecer un framework ORM).</p>
+<p>Un fragmento de código que utiliza <em>Pandas</em> y <em>SQLAlchemy</em> sería similar a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<span class="linenos" data-linenos="2 "></span><span class="kn">import</span> <span class="nn">pymysql</span>
+<span class="linenos" data-linenos="3 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos" data-linenos="4 "></span>
+<span class="linenos" data-linenos="5 "></span><span class="n">sqlEngine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;mysql+pymysql://iabd:@127.0.0.1&#39;</span><span class="p">,</span> <span class="n">pool_recycle</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">dbConnection</span> <span class="o">=</span> <span class="n">sqlEngine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="linenos" data-linenos="7 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select * from retail_db.customers&quot;</span><span class="p">,</span> <span class="n">dbConnection</span><span class="p">);</span>
+</code></pre></div>
+</div>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://docs.aws.amazon.com/es_es/AmazonRDS/latest/UserGuide/Welcome.html">Guía de usuario de Amazon RDS</a></li>
 <li><a href="https://docs.aws.amazon.com/es_es/amazondynamodb/latest/developerguide/Introduction.html">Guía de referencias de Amazon DynamoDB</a></li>
 <li><a href="https://amazon-dynamodb-labs.com/index.html">Laboratorios con ejemplos y modelado con Amazon DynamoDB</a></li>
+<li><a href="https://highlandsolutions.com/blog/hands-on-examples-for-working-with-dynamodb-boto3-and-python">DynamoDB mediante Python</a></li>
+<li><a href="https://www.fernandomc.com/posts/ten-examples-of-getting-data-from-dynamodb-with-python-and-boto3/">Ten Examples of Getting Data from DynamoDB with Python and Boto3</a></li>
+<li><a href="https://medium.com/skyline-ai/dynamodb-insert-performance-basics-in-python-boto3-5bc01919c79f">DynamoDB Insert: Performance Basics in Python/Boto3</a></li>
 </ul>
+<!--
+TODO: Curso DynamoDB desde AWS: https://www.aws.training/Details/Curriculum?id=65583&redirect=false
+-->
+
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 1p) Realizar el módulo 8 (Bases de Datos) del curso <a href="https://awsacademy.instructure.com/courses/30530/">ACF de AWS</a>.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 1p) Siguiendo el ejemplo de RDS, crea una instancia (<code>instituto</code>) de una base de datos de tipo <em>MariaDB</em> y cárgala con todos los datos de las sesiones de repaso de SQL (las tablas iniciales y las de inserción).</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 1p) (opcional) A partir de la instancia del ejercicio anterior, crea una instantánea de forma manual. A continuación, restaura esta instantánea en una nueva instancia (por ejemplo, <code>instituto2</code>) de tipo <code>db.t4g.medium</code>, y tras conectarte mediante <em>HeidiSQL</em>, comprueba que tiene los datos ya cargados. Adjunta una captura de pantalla donde se vean las características de las dos instancias.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.">CE5.2b</abbr> / 1p) Siguiendo el ejemplo de <em>DynamoDB</em>, crea la tabla (<code>ProductCatalog</code>), cárgala con los datos del ejemplo y realiza un consulta para obtener bicicletas híbridas. Exporta el resultado a CSV.</p>
+</li>
+</ol>
 
 
   
@@ -1226,6 +2132,27 @@
       
         <footer class="md-footer">
   
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="05emr.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S44.- EMR" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              S44.- EMR
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -1250,13 +2177,13 @@
       
     
     <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
     </a>
   
     
     
     <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
     </a>
   
 </div>
@@ -1285,12 +2212,14 @@
 
   
 
+
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input type="checkbox" class="md-toggle" id="__settings">
+<input class="md-toggle" type="checkbox" id="__settings" >
 <div class="md-consent__settings">
   <ul class="task-list">
     
+      
       
         
         
@@ -1323,13 +2252,14 @@
           </form>
         </aside>
       </div>
-      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
+      <script src="../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
       
+    
     
   </body>
 </html>
