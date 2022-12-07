@@ -6,14 +6,14 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Uso de Apache Hive tanto con tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos.">
+        <meta name="description" content="Apuntes sobre Apache Hive, utilizando tanto tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos.">
       
       
       
         <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/hadoop/06hive.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.0, mkdocs-material-8.5.6">
     
     
       
@@ -21,10 +21,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.975780f9.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -66,7 +66,7 @@
       
         <meta  property="og:title"  content="Apache Hive. Acceso a HDFS con un interfaz similar a tablas relacionales mediante SQL. - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="Uso de Apache Hive tanto con tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos." >
+        <meta  property="og:description"  content="Apuntes sobre Apache Hive, utilizando tanto tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/06hive.png" >
       
@@ -82,7 +82,7 @@
       
         <meta  name="twitter:title"  content="Apache Hive. Acceso a HDFS con un interfaz similar a tablas relacionales mediante SQL. - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="Uso de Apache Hive tanto con tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos." >
+        <meta  name="twitter:description"  content="Apuntes sobre Apache Hive, utilizando tanto tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/hadoop/06hive.png" >
       
@@ -153,7 +153,6 @@
         
           
           
-          
           <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
@@ -161,7 +160,6 @@
             </label>
           
         
-          
           
           
           <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
@@ -1333,10 +1331,10 @@
 </figure>
 
 <h3 id="caracteristicas">Características<a class="headerlink" href="#caracteristicas" title="Permanent link">&para;</a></h3>
-<p>Hive impone una estructura sobre los datos almacenados en HDFS. Esta estructura se conoce como <strong><em>Schema</em></strong>, y Hive la almacena en su propia base de datos (<em>metastore</em>). Gracias a ella, optimiza de forma automática el plan de ejecución y usa particionado de tablas en determinadas consultas. También soporta diferentes formatos de ficheros, codificaciones y fuentes de datos como <em>HBase</em>.</p>
-<p>Para interactuar con <em>Hive</em> utilizaremos <em>HiveQL</em>, el cual es un dialecto de SQL (recuerda que <em>SQL</em> no es sensible a las mayúsculas, excepto en la comparación de cadenas).</p>
-<p>Hive amplía el paradigma de <em>SQL</em> incluyendo formatos de serialización. También podemos personalizar el procesamiento de consultas creando un esquema de tabla acorde con nuestros datos, pero sin tocar los datos. Aunque SQL solo es compatible con tipos de valor primitivos (como fechas, números y cadenas), los valores de las tablas de Hive son elementos estructurados, por ejemplo, objetos JSON o cualquier tipo de datos definido por el usuario o cualquier función escrita en Java.</p>
-<p>Una consulta típica en Hive se ejecuta en varios <em>datanodes</em> en paralelo, con varios trabajos <em>MapReduce</em> asociados. Estas operaciones son de tipo <em>batch</em>, por lo que la latencia es más alta que en otros tipos de bases de datos. Además, hay que considerar el retardo producido por la inicialización de los trabajos, sobre todo en el caso de consultar pequeños datasets.</p>
+<p><em>Hive</em> impone una estructura sobre los datos almacenados en HDFS. Esta estructura se conoce como <strong><em>Schema</em></strong>, y <em>Hive</em> la almacena en su propia base de datos (<em>metastore</em>). Gracias a ella, optimiza de forma automática el plan de ejecución y usa particionado de tablas en determinadas consultas. También soporta diferentes formatos de ficheros, codificaciones y fuentes de datos como <em>HBase</em>.</p>
+<p>Para interactuar con <em>Hive</em> utilizaremos <em>HiveQL</em>, el cual es un dialecto de <em>SQL</em> (recuerda que <em>SQL</em> no es sensible a las mayúsculas, excepto en la comparación de cadenas).</p>
+<p><em>Hive</em> amplía el paradigma de <em>SQL</em> incluyendo formatos de serialización. También podemos personalizar el procesamiento de consultas creando un esquema de tabla acorde con nuestros datos, pero sin tocar los datos. Aunque SQL solo es compatible con tipos de valor primitivos (como fechas, números y cadenas), los valores de las tablas de <em>Hive</em> son elementos estructurados, por ejemplo, objetos JSON o cualquier tipo de datos definido por el usuario o cualquier función escrita en Java.</p>
+<p>Una consulta típica en <em>Hive</em> se ejecuta en varios <em>datanodes</em> en paralelo, con varios trabajos <em>MapReduce</em> asociados. Estas operaciones son de tipo <em>batch</em>, por lo que la latencia es más alta que en otros tipos de bases de datos. Además, hay que considerar el retardo producido por la inicialización de los trabajos, sobre todo en el caso de consultar pequeños <em>datasets</em>.</p>
 <h4 id="ventajas">Ventajas<a class="headerlink" href="#ventajas" title="Permanent link">&para;</a></h4>
 <p>Las ventajas de utilizar <em>Hive</em> son:</p>
 <ul>
@@ -1347,11 +1345,16 @@
 </ul>
 <p>En cambio, <em>Hive</em> no es la mejor opción para consultas en tiempo real o de tipo transaccional. Además, no está diseñado para usarse con actualizaciones de valores al nivel de registro, y el soporte de SQL es limitado.</p>
 <h4 id="alternativas">Alternativas<a class="headerlink" href="#alternativas" title="Permanent link">&para;</a></h4>
-<p>Una de las alternativas más populares es <a href="http://impala.io/">Cloudera Impala</a>, el cual utiliza un demonio dedicado en cada <em>datanode</em> del clúster, de manera que hay un coordinador que reenvía a cada <em>datanode</em> la consulta a realizar y luego se encarga de unir los datos en el resultado final. <em>Impala</em> utiliza el <em>metastore</em> de <em>Hive</em> y soporta la mayoría de construcciones de <em>Hive</em>, con lo que la migración de un sistema a otro es sencilla.</p>
+<p>Una de las alternativas más populares es <a href="https://impala.apache.org/">Apache Impala</a>, originalmente creado por Cloudera, el cual utiliza un demonio dedicado en cada <em>datanode</em> del clúster, de manera que hay un coordinador que reenvía a cada <em>datanode</em> la consulta a realizar y luego se encarga de unir los datos en el resultado final. <em>Impala</em> utiliza el <em>metastore</em> de <em>Hive</em> y soporta la mayoría de construcciones de <em>Hive</em>, con lo que la migración de un sistema a otro es sencilla.</p>
+<p>En lugar de utilizar MapReduce, aprovecha un motor de procesamiento masivo en paralelo (MPP) como el que existe en los sistemas gestores de bases de datos relacionales (RDBMS). Esta arquitectura hace que Impala sea adecuado para análisis interactivos y de baja latencia.</p>
+<!--
+https://aws.amazon.com/es/emr/faqs/#Using_Impala
+-->
+
 <p>Otras alternativas <em>open source</em> son :</p>
 <ul>
 <li><a href="http://prestodb.io/">Presto de Facebook</a> y <a href="http://drill.apache.org/">Apache Drill</a>, con arquitecturas muy similares a <em>Impala</em>.</li>
-<li><a href="https://spark.apache.org/sql/">Spark SQL</a>: utiliza <em>Spark</em> como motor de ejecución y permite utilizar consultas SQL embebidas. La estudiaremos en el último bloque del curso.</li>
+<li><a href="https://spark.apache.org/sql/">Spark SQL</a>: utiliza <em>Spark</em> como motor de ejecución y permite utilizar consultas SQL embebidas. La estudiaremos m,en sesiones futuras.</li>
 </ul>
 <div class="admonition info">
 <p class="admonition-title">Pig</p>
@@ -1367,8 +1370,8 @@ Actualmente ha perdido uso en detrimento de <em>Hive</em>/<em>Impala</em> y de <
 </figure>
 
 <h4 id="hive-server">Hive Server<a class="headerlink" href="#hive-server" title="Permanent link">&para;</a></h4>
-<p><em>HiveServer 2</em> (HS2) es la última versión del servicio. Se compone de una interfaz que permite a clientes externos ejecutar consultas contra <em>Apache Hive</em> y obtener los resultados. Está basado en <em>Thrift RPC</em> y soporta clientes concurrentes. Para arrancar el servidor, ejecutaremos el comando <code>hiveserver2</code>.</p>
-<p>A este servidor nos conectaremos mediante la herramienta <em>Beeline</em> (Beeline CLI) con el comando <code>beeline</code>.</p>
+<p><em>HiveServer 2</em> (HS2) es la última versión del servicio. Se compone de una interfaz que permite a clientes externos ejecutar consultas contra <em>Apache Hive</em> y obtener los resultados. Está basado en <em>Thrift RPC</em> y soporta clientes concurrentes. Para arrancar el servidor, ejecutaremos el comando <code>hiveserver2</code>, el cual quedará a la escucha en el puerto <code>10000.</code></p>
+<p>A este servidor nos conectaremos mediante la herramienta <em>Beeline</em> (Beeline CLI).</p>
 <h4 id="hive-metastore">Hive Metastore<a class="headerlink" href="#hive-metastore" title="Permanent link">&para;</a></h4>
 <p>Es el repositorio central para los metatados de <em>Hive</em>, y se almacena en una base de datos relacional como <em>MySQL</em>, <em>PostgreSQL</em> o <em>Apache Derby</em> (embebida). Mantiene los metadatos, las tablas y sus tipos mediante <em>Hive DDL</em> (<em>Data Definition Language</em>). Además, el sistema se puede configurar para que también almacene estadísticas de las operaciones y registros de autorización para optimizar las consultas.</p>
 <p>En las últimas versiones de <em>Hive</em>, este componente se puede desplegar de forma remota e independiente, para no compartir la misma JVM con <em>HiveServer</em>. Dentro del <em>metastore</em> podemos encontrar el <em>Hive Catalog</em> (<em>HCatalog</em>), que permite acceder a sus metadatos, actuando como una API. Al poder desplegarse de forma aislada e independiente, permite que otras aplicaciones hagan uso del <em>schema</em> sin tener que desplegar el motor de consultas de Hive.</p>
@@ -1399,7 +1402,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <h2 id="instalacion-y-configuracion">Instalación y configuración<a class="headerlink" href="#instalacion-y-configuracion" title="Permanent link">&para;</a></h2>
 <div class="admonition important">
 <p class="admonition-title">Máquina virtual</p>
-<p>Los siguientes pasos no son necesarios ya que nuestra máquina virtual ya tiene Hive instalado y configurado correctamente. Si quieres hacer tu propia instalación sigue los siguientes pasos de la documentación oficial.</p>
+<p>Los siguientes pasos no son necesarios ya que nuestra máquina virtual ya tiene <em>Hive</em> instalado y configurado correctamente. Si quieres hacer tu propia instalación sigue los siguientes pasos de la <a href="https://cwiki.apache.org/confluence/display/Hive//GettingStarted">documentación oficial</a>.</p>
 </div>
 <p>Una vez instalado, vamos a configurarlo. Para ello, debemos crear los ficheros de configuración a partir de las plantilla que ofrece <em>Hive</em>. Para ello, desde la carpeta <code>$HIVE_HOME/conf</code>, ejecutaremos los siguientes comandos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>cp hive-default.xml.template hive-site.xml
@@ -1407,7 +1410,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="3 "></span>cp hive-exec-log4j2.properties.template hive-exec-log4j2.properties
 <span class="linenos" data-linenos="4 "></span>cp hive-log4j2.properties.template hive-log4j2.properties
 </code></pre></div>
-<p>Modificamos el fichero <code>hive.env.sh</code> para incluir dos variables de entorno con las rutas de Hadoop y la configuración de Hive</p>
+<p>Modificamos el fichero <code>hive.env.sh</code> para incluir dos variables de entorno con las rutas de <em>Hadoop</em> y la configuración de <em>Hive</em></p>
 <div class="highlight"><span class="filename">hive.env.sh</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">export</span> <span class="nv">HADOOP_HOME</span><span class="o">=</span>/opt/hadoop-3.3.1
 <span class="linenos" data-linenos="2 "></span><span class="nb">export</span> <span class="nv">HIVE_CONF_DIR</span><span class="o">=</span>/opt/hive-3.1.2/conf
 </code></pre></div>
@@ -1476,8 +1479,8 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hive -e <span class="err">&#39;</span><span class="k">select</span> * from tablaEjemplo<span class="sb">`</span>
 </code></pre></div>
 <h3 id="acceso-remoto">Acceso remoto<a class="headerlink" href="#acceso-remoto" title="Permanent link">&para;</a></h3>
-<p><em>HiveServer2</em> (desde Hive 0.11) tiene su propio cliente conocido como <em>Beeline</em>. En entornos reales, el cliente <em>Hive</em> está en desuso a favor de <em>Beeline</em>, por la falta de múltiples usuarios, seguridad y otras características de HiveServer2.</p>
-<p>Arrancamos <em>HiveServer2</em> y <em>Beeline</em> en dos pestañas diferentes mediante los comandos <code>hiveserver2</code> y <code>beeline</code>. Una vez dentro de <em>Beeline</em>, nos conectamos al servidor:</p>
+<p><em>HiveServer2</em> (desde Hive 0.11) tiene su propio cliente conocido como <em>Beeline</em>. En entornos reales, el cliente <em>Hive</em> está en desuso a favor de <em>Beeline</em>, por la falta de múltiples usuarios, seguridad y otras características de <em>HiveServer2</em>.</p>
+<p>Arrancamos <em>HiveServer2</em> (lo hará en el puerto <code>10000</code>) y <em>Beeline</em> en dos pestañas diferentes mediante los comandos <code>hiveserver2</code> y <code>beeline</code>. Una vez dentro de <em>Beeline</em>, tras esperar unos segundo a que <em>HiveServer2</em> haya arrancando completamente, nos conectamos al servidor:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>!connect jdbc:hive2://iabd-virtualbox:10000
 </code></pre></div>
 <p>Al conectarnos, tras introducir <code>iabd</code> como usuario y contraseña, obtendremos un interfaz similar al siguiente:</p>
@@ -1501,8 +1504,8 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="7 "></span>!batch              Start or execute a batch of statements
 <span class="linenos" data-linenos="8 "></span>...
 </code></pre></div>
-<p>Otra forma de trabajar, para arrancar en el mismo proceso <em>Beeline</em> y <em>HiveServer2</em> para pruebas/desarrollo y tener una experiencia similar al cliente <em>Hive</em> accediendo de forma local, podemos ejecutar el siguiente comando:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>beeline -u jdbc:hive2://
+<p>Otra forma de trabajar, para arrancar en el mismo proceso <em>Beeline</em> y <em>HiveServer2</em> para pruebas/desarrollo y tener una experiencia similar al cliente <em>Hive</em> accediendo de forma local, podemos ejecutar el siguiente comando donde indicamos tanto el usuario (<code>-n</code>) como la contraseña (<code>-p</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>beeline -u jdbc:hive2://iabd-virtualbox:10000 -n iabd -p iabd
 </code></pre></div>
 <p>Mediante la interfaz gráfica de <em>Hive Server UI</em> a la cual podemos acceder mediante <a href="http://localhost:10002">http://localhost:10002</a> podemos monitorizar los procesos ejecutados por <em>HiveServer2</em>:</p>
 <figure style="align: center;">
@@ -1537,15 +1540,30 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="n">lName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="n">city</span><span class="w"> </span><span class="n">STRING</span><span class="w"></span>
 <span class="linenos" data-linenos=" 7 "></span><span class="p">)</span><span class="w"></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="k">ROW</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">DELIMITED</span><span class="w"></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="n">FIELDS</span><span class="w"> </span><span class="n">TERMINATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"></span>
-<span class="linenos" data-linenos="10 "></span><span class="n">STORED</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">TEXTFILE</span><span class="w"></span>
-<span class="linenos" data-linenos="11 "></span><span class="k">LOCATION</span><span class="w"> </span><span class="s1">&#39;/user/iabd/hive/customer&#39;</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="k">ROW</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">DELIMITED</span><span class="w">  </span><span class="c1">-- (1)!</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">FIELDS</span><span class="w"> </span><span class="n">TERMINATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w">  </span><span class="c1">-- (2)!</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">STORED</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">TEXTFILE</span><span class="w">  </span><span class="c1">-- (3)!</span>
+<span class="linenos" data-linenos="11 "></span><span class="k">LOCATION</span><span class="w"> </span><span class="s1">&#39;/user/iabd/hive/customer&#39;</span><span class="p">;</span><span class="w">  </span><span class="c1">-- (4)!</span>
 </code></pre></div>
+<ol>
+<li>Indica el formato de cada fila como delimitado (con un salto del línea)</li>
+<li>Los campos están separados por el caràcter <code>|</code> (es el mismo que habíamos indicado en Sqoop)</li>
+<li>El contenido está almacenado en HDFS en  formato texto</li>
+<li>Ruta de HDFS donde se encuentran los datos</li>
+</ol>
 <p>Y ya podemos realizar algunas consultas:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="k">select</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Utilizando Hue</p>
+<p>Si no queremos conectarnos mediante <em>Beeline</em>, siempre podemos utilizar <em>Hue</em> como un entorno más amigable. Recuerda que para acceder desde la máquina virtual necesitas arrancarlo previamente mediante <code>/opt/hue-4.10.0/build/env/bin/hue runserver</code>.</p>
+<p>Una vez dentro, podemos realizar las consultas u operaciones de creación de tablas, etc...</p>
+<p><figure style="align: center;">
+    <img src="images/06hue-select.png">
+    <figcaption>Consultas Hive desde Hue</figcaption>
+</figure></p>
+</div>
 <p>En ocasiones necesitamos almacenar la salida de una consulta <em>Hive</em> en una nueva tabla. Las definiciones de las columnas de la nueva tabla se deriva de las columnas recuperadas en la consulta. Para ello, usaremos el comando <em>create table-as select</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers_new</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
@@ -1557,7 +1575,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">describe</span><span class="w"> </span><span class="n">customers_new</span><span class="p">;</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="k">describe</span><span class="w"> </span><span class="n">formatted</span><span class="w"> </span><span class="n">customers_new</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
-<p>Si empleamos la forma larga, obtendremos mucha más información. Por ejemplo, si nos fijamos, vemos que la localización de la nueva tabla ya no es <code>/user/iabd/hive/customer</code> sino <code>hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db/customers_new</code>. Esto se debe a que en vez de crear una tabla enlazada a un recurso de HDFS ya existente, ha creado una copia de los datos en el propio almacén de Hive (hemos pasado de una tabla externa a una interna).</p>
+<p>Si empleamos la forma larga, obtendremos mucha más información. Por ejemplo, si nos fijamos, vemos que la localización de la nueva tabla ya no es <code>/user/iabd/hive/customer</code> sino <code>hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db/customers_new</code>. Esto se debe a que en vez de crear una tabla enlazada a un recurso de HDFS ya existente, ha creado una copia de los datos en el propio almacén de <em>Hive</em> (hemos pasado de una tabla externa a una interna).</p>
 <p>Igual que las creamos, las podemos eliminar:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">drop</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">customers_new</span><span class="p">;</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="k">drop</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">customers2</span><span class="p">;</span><span class="w"></span>
@@ -1638,23 +1656,23 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <p class="admonition-title">¿Y usar <em>INSERT LOCAL</em>?</p>
 <p>Mediante <code>INSERT LOCAL</code> podemos escribir el resultado de una consulta en nuestro sistema de archivos, fuera de HDFS. El problema es que si hay muchos datos creará múltiples ficheros y necesitaremos concatenarlos para tener un único resultado:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">insert</span><span class="w"> </span><span class="n">overwrite</span><span class="w"> </span><span class="k">local</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="s1">&#39;/home/iabd/datos&#39;</span><span class="w"></span>
-<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="k">row</span><span class="w"> </span><span class="n">format</span><span class="w"></span>
-<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="n">delimited</span><span class="w"> </span><span class="n">field</span><span class="w"> </span><span class="n">terminated</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="k">row</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="n">delimited</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="n">fields</span><span class="w"> </span><span class="n">terminated</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"></span>
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 </div>
 <h2 id="caso-de-uso-3-consultas-con-join">Caso de uso 3: Consultas con <em>join</em><a class="headerlink" href="#caso-de-uso-3-consultas-con-join" title="Permanent link">&para;</a></h2>
 <p>En este caso de uso vamos a trabajar con los datos de clientes que hemos cargado en los dos casos anteriores, tanto en <code>customers</code> como en <code>orders</code>.</p>
 <p>Si queremos relacionar los datos de ambas tablas, tenemos que hacer un <em>join</em> entre la clave ajena de <code>orders</code> (<code>order_customer_id</code>) y la clave primaria de <code>customers</code> (<code>custid</code>):</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">hive</span><span class="o">&gt;</span><span class="w"> </span><span class="k">describe</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span><span class="w"></span>
-<span class="linenos" data-linenos=" 2 "></span><span class="n">OK</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="linenos" data-linenos=" 1 "></span><span class="n">hive</span><span class="o">&gt;</span><span class="w"> </span><span class="k">describe</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 2 "></span><span class="n">OK</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="n">custid</span><span class="w">                  </span><span class="nb">int</span><span class="w">                                         </span>
 <span class="linenos" data-linenos=" 4 "></span><span class="n">fname</span><span class="w">                   </span><span class="n">string</span><span class="w">                                      </span>
 <span class="linenos" data-linenos=" 5 "></span><span class="n">lname</span><span class="w">                   </span><span class="n">string</span><span class="w">                                      </span>
 <span class="linenos" data-linenos=" 6 "></span><span class="n">city</span><span class="w">                    </span><span class="n">string</span><span class="w">                                      </span>
 <span class="linenos" data-linenos=" 7 "></span><span class="k">Time</span><span class="w"> </span><span class="n">taken</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">426</span><span class="w"> </span><span class="n">seconds</span><span class="p">,</span><span class="w"> </span><span class="n">Fetched</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">row</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="w"></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="n">hive</span><span class="o">&gt;</span><span class="w"> </span><span class="k">describe</span><span class="w"> </span><span class="n">orders</span><span class="p">;</span><span class="w"></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="n">OK</span><span class="w"></span>
+<span class="hll"><span class="linenos" data-linenos=" 8 "></span><span class="n">hive</span><span class="o">&gt;</span><span class="w"> </span><span class="k">describe</span><span class="w"> </span><span class="n">orders</span><span class="p">;</span><span class="w"></span>
+</span><span class="linenos" data-linenos=" 9 "></span><span class="n">OK</span><span class="w"></span>
 <span class="linenos" data-linenos="10 "></span><span class="n">order_id</span><span class="w">                </span><span class="nb">int</span><span class="w">                                         </span>
 <span class="linenos" data-linenos="11 "></span><span class="n">order_date</span><span class="w">              </span><span class="n">string</span><span class="w">                                      </span>
 <span class="linenos" data-linenos="12 "></span><span class="n">order_customer_id</span><span class="w">       </span><span class="nb">int</span><span class="w">                                         </span>
@@ -2560,25 +2578,23 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Página oficial de <a href="https://hive.apache.org">Hive</a></li>
-<li><a href="https://www.packtpub.com/product/apache-hive-essentials-second-edition/9781788995092">Apache Hive Essentials - Second Edition</a> de Dayong Du.</li>
+<li><a href="https://www.packtpub.com/product/apache-hive-essentials-second-edition/9781788995092">Apache Hive Essentials - Second Edition</a> de <em>Dayong Du</em>.</li>
+<li><a href="http://hortonworks.com/wp-content/uploads/2016/05/Hortonworks.CheatSheet.SQLtoHive.pdf">Hive Cheatsheet</a></li>
 <li><a href="https://www.tutorialspoint.com/hive/index.htm">Tutorial de Hive</a> de TutorialsPoint.</li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
-<p>Realiza los casos de uso del 1 al 5. En la entrega debes adjuntar un una captura de pantalla donde se vea la ejecución de las diferentes instrucciones.</p>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han desarrollado sistemas de gestión, almacenamiento y procesamiento de grandes volúmenes de datos de manera eficiente y segura, teniendo en cuenta la normativa existente.">CE4.3d</abbr> / 2,5p) Realiza los casos de uso del 1 al 5. En la entrega debes adjuntar una captura de pantalla donde se vea la ejecución de las diferentes instrucciones.</p>
 </li>
 <li>
-<p>(opcional) Realiza el caso de uso 6.</p>
-</li>
-<li>
-<p>(opcional) A partir de la base de datos <code>retail_db</code>, importa las tablas <code>orders</code> y <code>order_items</code>, en las cuales puedes obtener la cantidad de productos que contiene un pedido. Utilizando todas las tablas que ya hemos importado en los casos anteriores, crea una tabla externa en <em>Hive</em> llamada <code>pedidos</code> utilizando 8 <em>buckets</em> con el código del cliente, que contenga:</p>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.">CE4.3b</abbr> y <abbr title="Se han desarrollado sistemas de gestión, almacenamiento y procesamiento de grandes volúmenes de datos de manera eficiente y segura, teniendo en cuenta la normativa existente.">CE4.3d</abbr> / 1p) A partir de la base de datos <code>retail_db</code>, importa las tablas <code>orders</code> y <code>order_items</code>, en las cuales puedes obtener la cantidad de productos que contiene un pedido. Utilizando todas las tablas que ya hemos importado en los casos anteriores, crea una tabla externa en <em>Hive</em> llamada <code>pedidos</code> utilizando 8 <em>buckets</em> con el código del cliente, que contenga:</p>
 <ul>
 <li>Código y fecha del pedido.</li>
 <li>Precio del pedido (sumando las líneas de pedido).</li>
 <li>Código, nombre y apellidos del cliente.</li>
 </ul>
-<p>Adjunta scripts y capturas de:</p>
+<p>Adjunta <em>scripts</em> y capturas de:</p>
 <ul>
 <li>la importación, creación y carga de datos de las tablas que necesites.</li>
 <li>la definición de la tabla: <code>describe formatted pedidos;</code></li>
@@ -2586,7 +2602,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 </ul>
 </li>
 <li>
-<p>(opcional) Investiga la creación de vistas en Hive y crea una vista con los datos de los clientes y sus pedidos siempre y cuando superen los 200$.</p>
+<p>(<abbr title="Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.">RA5074.3</abbr> / <abbr title="Se han desarrollado sistemas de gestión, almacenamiento y procesamiento de grandes volúmenes de datos de manera eficiente y segura, teniendo en cuenta la normativa existente.">CE4.3d</abbr> / 0,5p) Investiga la creación de vistas en <em>Hive</em> y crea una vista con los datos de los clientes y sus pedidos siempre y cuando superen los 200$.</p>
 </li>
 </ol>
 <!--
@@ -2600,7 +2616,8 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
   Vistas
   tablesample
   Transformación map/reduce ... ejemplo para rellenar tipos de datos complejos
-  Ejercicio dataset clima - Hadoop definitive guide
+  Anaban -> Ejercicio dataset clima - Hadoop definitive guide
+  Investigar Tez
 --->
 
 
@@ -2729,13 +2746,13 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
       
     
     <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
     </a>
   
     
     
     <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
     </a>
   
 </div>
@@ -2764,14 +2781,12 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 
   
 
-
 <h4>Consentimiento de cookie</h4>
 <p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
-<input class="md-toggle" type="checkbox" id="__settings" >
+<input type="checkbox" class="md-toggle" id="__settings">
 <div class="md-consent__settings">
   <ul class="task-list">
     
-      
       
         
         
@@ -2804,14 +2819,13 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
           </form>
         </aside>
       </div>
-      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);console.log(new FormData(form)),__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow"], "search": "../assets/javascripts/workers/search.5bf1dace.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "B\u00fasqueda", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version.title": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      <script src="../assets/javascripts/bundle.078830c0.min.js"></script>
       
-    
     
   </body>
 </html>
