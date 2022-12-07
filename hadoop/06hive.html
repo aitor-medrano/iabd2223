@@ -797,7 +797,14 @@
     Caso de uso 6: Particionado y Bucketing
   </a>
   
-    <nav class="md-nav" aria-label="Caso de uso 6: Particionado y Bucketing">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funciones-ventana" class="md-nav__link">
+    Funciones ventana
+  </a>
+  
+    <nav class="md-nav" aria-label="Funciones ventana">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1256,7 +1263,14 @@
     Caso de uso 6: Particionado y Bucketing
   </a>
   
-    <nav class="md-nav" aria-label="Caso de uso 6: Particionado y Bucketing">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funciones-ventana" class="md-nav__link">
+    Funciones ventana
+  </a>
+  
+    <nav class="md-nav" aria-label="Funciones ventana">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1754,14 +1768,14 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <li>Destreza y puntuación</li>
 <li>Departamento y cargo</li>
 </ul>
-<p>Creamos la siguiente tabla interna en Hive mediante el siguiente comando:</p>
+<p>Creamos la siguiente tabla interna en <em>Hive</em> mediante el siguiente comando:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">empleados_interna</span><span class="w"></span>
 <span class="linenos" data-linenos=" 2 "></span><span class="p">(</span><span class="w"></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="n">work_place</span><span class="w"> </span><span class="nb">ARRAY</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="n">sex_age</span><span class="w"> </span><span class="n">STRUCT</span><span class="o">&lt;</span><span class="n">sex</span><span class="p">:</span><span class="n">string</span><span class="p">,</span><span class="n">age</span><span class="p">:</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="n">skills_score</span><span class="w"> </span><span class="k">MAP</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="nb">int</span><span class="o">&gt;</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 7 "></span><span class="w">  </span><span class="n">depart_title</span><span class="w"> </span><span class="k">MAP</span><span class="o">&lt;</span><span class="n">STRING</span><span class="p">,</span><span class="nb">ARRAY</span><span class="o">&lt;</span><span class="n">STRING</span><span class="o">&gt;&gt;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">  </span><span class="n">depart_title</span><span class="w"> </span><span class="k">MAP</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="nb">ARRAY</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span><span class="w"></span>
 <span class="linenos" data-linenos=" 8 "></span><span class="p">)</span><span class="w"> </span><span class="k">COMMENT</span><span class="w"> </span><span class="s1">&#39;Esto es una tabla interna&#39;</span><span class="w"></span>
 <span class="linenos" data-linenos=" 9 "></span><span class="k">ROW</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">DELIMITED</span><span class="w"></span>
 <span class="linenos" data-linenos="10 "></span><span class="n">FIELDS</span><span class="w"> </span><span class="n">TERMINATED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"></span>
@@ -1857,7 +1871,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Los dos primeros puestos de trabajo:</p>
+<p>Utilizamos la notación de array para mostrar los dos primeros puestos de trabajo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">work_place</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">lugar1</span><span class="p">,</span><span class="w"> </span><span class="n">work_place</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">lugar2</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="k">from</span><span class="w"> </span><span class="n">empleados_interna</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
@@ -1873,7 +1887,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Cantidad de lugares de trabajo:</p>
+<p>Mediante la función <code>size</code> obtenemos la cantidad de lugares de trabajo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="k">size</span><span class="p">(</span><span class="n">work_place</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">cantLugares</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="k">from</span><span class="w"> </span><span class="n">empleados_interna</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
@@ -1889,7 +1903,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Empleados y lugares de trabajo mostrados uno por fila:</p>
+<p>Para obtener los empleados y lugares de trabajo mostrados uno por fila, hemos de realizar un <em>explode</em> sobre el array:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">lugar</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="k">from</span><span class="w"> </span><span class="n">empleados_interna</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="k">lateral</span><span class="w"> </span><span class="k">view</span><span class="w"> </span><span class="n">explode</span><span class="w"> </span><span class="p">(</span><span class="n">work_place</span><span class="p">)</span><span class="w"> </span><span class="n">e2</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">lugar</span><span class="p">;</span><span class="w"></span>
@@ -1927,7 +1941,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Sexo y edad por separado</p>
+<p>Utilizando la notación <code>.</code> podemos obtener el sexo y edad por separado</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">sex_age</span><span class="p">.</span><span class="n">sex</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sexo</span><span class="p">,</span><span class="w"> </span><span class="n">sex_age</span><span class="p">.</span><span class="n">age</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">edad</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="k">from</span><span class="w"> </span><span class="n">empleados_interna</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
@@ -1963,7 +1977,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Nombre y puntuación de las habilidades:</p>
+<p>Utilizando la notación array con claves, obtenemos el nombre y puntuación de las habilidades:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">skills_score</span><span class="p">[</span><span class="ss">&quot;DB&quot;</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">db</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="n">skills_score</span><span class="p">[</span><span class="ss">&quot;Perl&quot;</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">perl</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="n">skills_score</span><span class="p">[</span><span class="ss">&quot;Python&quot;</span><span class="p">]</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">python</span><span class="p">,</span><span class="w"></span>
@@ -2289,7 +2303,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="n">PARTITION</span><span class="w"> </span><span class="p">(</span><span class="n">categoria</span><span class="p">)</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_id</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_name</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="n">product_price</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">precio</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">category_name</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">categoria</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">products</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">categories</span><span class="w"> </span><span class="k">c</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">product_category_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">category_id</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
-<p>Si queremos comprobar como se han creado las particiones y los buckets, desde un terminal podemos acceder a HDFS y mostrar su contenido:</p>
+<p>Si queremos comprobar cómo se han creado las particiones y los buckets, desde un terminal podemos acceder a HDFS y mostrar su contenido:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs dfs -ls hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db/productos
 <span class="linenos" data-linenos="2 "></span>hdfs dfs -ls hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db/productos/categoria<span class="o">=</span>Accessories
 </code></pre></div>
@@ -2299,6 +2313,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <p>Y vemos cómo aparecen 5 elementos que pertenecen a la primera partición. Si quisiéramos, por ejemplo, 10 elementos de particiones diferentes deberíamos ordenarlos de manera aleatoria:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">productos</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="k">limit</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
+<h2 id="funciones-ventana">Funciones ventana<a class="headerlink" href="#funciones-ventana" title="Permanent link">&para;</a></h2>
 <p>A continuación vamos a realizar diversas consultas utilizando las funciones ventana que soporta <em>Hive</em>. Más información en <a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics">https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics</a>.</p>
 <h3 id="consultas-con-enteros-que-cuentanordenan">Consultas con enteros que cuentan/ordenan<a class="headerlink" href="#consultas-con-enteros-que-cuentanordenan" title="Permanent link">&para;</a></h3>
 <div class="admonition warning">
@@ -2306,7 +2321,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <p>Las siguientes consultas las vamos a realizar sobre sólo dos categorías para acotar los resultados obtenidos.</p>
 <p>Además, hemos recortado el nombre del producto a 20 caracteres para facilitar la legibilidad de los resultados.</p>
 </div>
-<p>Las funciones <code>rank</code> y <code>dense_rank</code> permite obtener la posición que ocupan los datos. Se diferencia en que <code>rank</code> cuenta los elementos repetidos/empatados, mientras que <code>dense_rank</code> no.</p>
+<p>Las funciones <strong><code>rank</code></strong> y <strong><code>dense_rank</code></strong> permite obtener la posición que ocupan los datos. Se diferencia en que <code>rank</code> cuenta los elementos repetidos/empatados, mientras que <code>dense_rank</code> no.</p>
 <p>Por ejemplo, vamos a obtener la posición que ocupan los productos respecto al precio agrupados por su categoría:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">substr</span><span class="p">(</span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="n">categoria</span><span class="p">,</span><span class="w"> </span><span class="n">precio</span><span class="p">,</span><span class="w"> </span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="n">rank</span><span class="p">()</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">categoria</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">precio</span><span class="w"> </span><span class="k">desc</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">rank</span><span class="p">,</span><span class="w"></span>
@@ -2349,7 +2364,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <span class="linenos" data-linenos="32 "></span>| Callaway X Hot Drive  | Bike &amp; Skate Shop  | 0.0      | 5     | 4          |
 <span class="linenos" data-linenos="33 "></span>+-----------------------+--------------------+----------+-------+------------+
 </code></pre></div>
-<p>La función <code>row_number</code> permite numerar los resultados:</p>
+<p>La función <strong><code>row_number</code></strong> permite numerar los resultados:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">substr</span><span class="p">(</span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="n">categoria</span><span class="p">,</span><span class="w"> </span><span class="n">precio</span><span class="p">,</span><span class="w"> </span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="n">row_number</span><span class="p">()</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">categoria</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">precio</span><span class="w"> </span><span class="k">desc</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">numfila</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="k">from</span><span class="w"> </span><span class="n">productos</span><span class="w"></span>
@@ -2391,7 +2406,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <span class="linenos" data-linenos="33 "></span>+-----------------------+--------------------+----------+----------+
 </code></pre></div>
 <h3 id="consultas-por-posicion">Consultas por posición<a class="headerlink" href="#consultas-por-posicion" title="Permanent link">&para;</a></h3>
-<p>A continuación vamos a ver las funciones <strong><em>lead</em></strong> y <strong><em>lag</em></strong>. Estas funciones se encargan de obtener el valor posterior y anterior respecto a un valor.</p>
+<p>A continuación vamos a ver las funciones <strong><code>lead</code></strong> y <strong><code>lag</code></strong>. Estas funciones se encargan de obtener el valor posterior y anterior respecto a un valor.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">substr</span><span class="p">(</span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="n">categoria</span><span class="p">,</span><span class="w"> </span><span class="n">precio</span><span class="p">,</span><span class="w"> </span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="n">lead</span><span class="p">(</span><span class="n">precio</span><span class="p">)</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">categoria</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">precio</span><span class="w"> </span><span class="k">desc</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sig</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="n">lag</span><span class="p">(</span><span class="n">precio</span><span class="p">)</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">categoria</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">precio</span><span class="w"> </span><span class="k">desc</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">ant</span><span class="w"></span>
@@ -2434,7 +2449,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <span class="linenos" data-linenos="33 "></span>+-----------------------+--------------------+----------+---------+----------+
 </code></pre></div>
 <h3 id="consultas-de-agregacion">Consultas de agregación<a class="headerlink" href="#consultas-de-agregacion" title="Permanent link">&para;</a></h3>
-<p>Las funciones de agregación que ya conocemos como <code>count</code>, <code>sum</code>, <code>min</code> y <code>max</code> también las podemos aplicar sobre particiones de datos y así poder mostrar los datos agregados para cada elemento:</p>
+<p>Las funciones de agregación que ya conocemos como <strong><code>count</code></strong>, <strong><code>sum</code></strong>, <strong><code>min</code></strong> y <strong><code>max</code></strong> también las podemos aplicar sobre particiones de datos y así poder mostrar los datos agregados para cada elemento:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">substr</span><span class="p">(</span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">nombre</span><span class="p">,</span><span class="w"> </span><span class="n">categoria</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="k">count</span><span class="p">(</span><span class="n">precio</span><span class="p">)</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">cantidad</span><span class="p">,</span><span class="w"></span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="k">min</span><span class="p">(</span><span class="n">precio</span><span class="p">)</span><span class="w"> </span><span class="n">over</span><span class="w"> </span><span class="p">(</span><span class="n">partition</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">categoria</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">menor</span><span class="p">,</span><span class="w"></span>
