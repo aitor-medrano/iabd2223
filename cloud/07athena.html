@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Acceso a datos en S3 desde AWS Athena">
+        <meta name="description" content="AWS Athena para acceder a datos en S3">
       
       
       
@@ -17,7 +17,7 @@
     
     
       
-        <title>Acceso a datos en S3 desde AWS Athena - Inteligencia Artificial y Big Data</title>
+        <title>AWS Athena para acceder a datos en S3 - Inteligencia Artificial y Big Data</title>
       
     
     
@@ -64,9 +64,9 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Acceso a datos en S3 desde AWS Athena - Inteligencia Artificial y Big Data" >
+        <meta  property="og:title"  content="AWS Athena para acceder a datos en S3 - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="Acceso a datos en S3 desde AWS Athena" >
+        <meta  property="og:description"  content="AWS Athena para acceder a datos en S3" >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/07athena.png" >
       
@@ -80,9 +80,9 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Acceso a datos en S3 desde AWS Athena - Inteligencia Artificial y Big Data" >
+        <meta  name="twitter:title"  content="AWS Athena para acceder a datos en S3 - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="Acceso a datos en S3 desde AWS Athena" >
+        <meta  name="twitter:description"  content="AWS Athena para acceder a datos en S3" >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/cloud/07athena.png" >
       
@@ -142,7 +142,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Acceso a datos en S3 desde AWS Athena
+              AWS Athena para acceder a datos en S3
             
           </span>
         </div>
@@ -566,18 +566,22 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       
       
         
           
             
+          
+        
           
         
           
@@ -698,6 +702,82 @@
 
             
           
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S46.- Athena
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="07athena.html" class="md-nav__link md-nav__link--active">
+        S46.- Athena
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#preparando-athena" class="md-nav__link">
+    Preparando Athena
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creando-la-estructura" class="md-nav__link">
+    Creando la estructura
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#realizando-consultas" class="md-nav__link">
+    Realizando consultas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -746,22 +826,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#aws-glue" class="md-nav__link">
-    AWS Glue
+  <a href="#preparando-athena" class="md-nav__link">
+    Preparando Athena
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#creacion" class="md-nav__link">
-    Creación
+  <a href="#creando-la-estructura" class="md-nav__link">
+    Creando la estructura
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#ejecucion" class="md-nav__link">
-    Ejecución
+  <a href="#realizando-consultas" class="md-nav__link">
+    Realizando consultas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
   </a>
   
 </li>
@@ -782,8 +869,9 @@
 
 
 <h1 id="aws-athena">AWS Athena<a class="headerlink" href="#aws-athena" title="Permanent link">&para;</a></h1>
-<p>Athena es una herramienta <em>serverless</em> que permite agregar datos en S3 que provienen de fuentes dispares como bases de datos, un flujo de datos, contenido web desestructurado, etc..</p>
-<p>Amazon Athena is an interactive query service that makes it easy for you to
+<p>Athena es una herramienta <em>serverless</em> que permite realizar consultas sobre datos los cuales están directamente en S3 y que provienen de fuentes dispares como bases de datos, un flujo de datos, contenido web desestructurado, etc.. Athena almacena metadatos sobre las fuentes de datos, así como las consultas para poder reutilizarlas o compartirlas con otros usuarios.</p>
+<!--
+Amazon Athena is an interactive query service that makes it easy for you to
 analyze data directly in Amazon S3 using standard SQL. With a few actions in
 the AWS Management Console, you can use Athena directly against data assets
 stored in the data lake and begin using standard SQL to run ad hoc queries and
@@ -796,68 +884,115 @@ unstructured, semi-structured, and structured data sets. Supported data asset
 formats include CSV, JSON, or columnar data formats such as Apache Parquet
 and Apache ORC. Athena integrates with Amazon QuickSight for easy
 visualization. It can also be used with third-party reporting and business
-intelligence tools by connecting these tools to Athena with a JDBC driver.</p>
+intelligence tools by connecting these tools to Athena with a JDBC driver.
+
+Athena is serverless, so there is no infrastructure to set up or manage, and you pay only for the queries you run. Athena scales automatically—running queries in parallel—so results are fast, even with large datasets and complex queries.
+
+Amazon Athena is a fast, cost-effective, interactive query service that makes it easy to analyze petabytes of data in S3 with no data warehouses or clusters to manage.
+
+-->
+
 <p>En el siguiente supuesto, vamos a crear una aplicación <em>Athena</em>, definiremos una base de datos, crearemos una tabla con sus columnas y tipos de datos, y ejecutaremos consultas sencillas y compuestas.</p>
-<p>Amazon Athena es un servicio de consulta interactivo que se puede utilizar para extraer información de datos almacenados en S3. Athena almacena metadatos sobre las fuentes de datos, así como las consultas para poder reutilizarlas o compartirlas con otros usuarios.</p>
-<p>Athena is serverless, so there is no infrastructure to set up or manage, and you pay only for the queries you run. Athena scales automatically—running queries in parallel—so results are fast, even with large datasets and complex queries.</p>
-<p>Amazon Athena is a fast, cost-effective, interactive query service that makes it easy to analyze petabytes of data in S3 with no data warehouses or clusters to manage.</p>
+<p>Los pasos a realizar son:</p>
 <ol>
 <li>Seleccionar el <em>data set</em>, identificando en S3 donde están los datos. Athena permite consultar los datos CSV, TSV, JSON, Parquet y formato ORC.</li>
-<li>Crear la tabla, mediante el asistente de crear tabla o utilizanos la sintaxis DDL de Hive.</li>
+<li>Crear la tabla, mediante el asistente de crear tabla o utilizamos la sintaxis DDL de Hive.</li>
 <li>Consultar los datos, mediante SQL.</li>
 </ol>
-<p>Antes de empezar con <em>Athena</em>, necesitamos crear un <em>bucket</em> donde almacenar los resultados de nuestras consultas. Así pues, vamos a crear un <em>bucket</em> que llamaremos <em>severo2122athena</em>.</p>
-<p>Una vez creado, ya podemos acceder a Athena, y en la pestaña de <em>Settings</em> indicar el bucket donde vamos a guardar los resultados:</p>
+<h2 id="preparando-athena">Preparando Athena<a class="headerlink" href="#preparando-athena" title="Permanent link">&para;</a></h2>
+<p>Antes de empezar con <em>Athena</em>, necesitamos indicar un <em>bucket</em> donde almacenar los resultados de nuestras consultas. Así pues, vamos a utilizar uno de los buckets que hemos creado en sesiones anteriores.</p>
+<p>Tras acceder a <em>Athena</em>, en la pestaña de <em>Settings</em> del <em>Query Editor</em>, configuramos donde vamos a guardar los resultados:</p>
 <figure style="align: center;">
-    <img src="../imagenes/etl/01athenaSettings.png">
+    <img src="images/07athenaSettings.png">
     <figcaption>Athena - Configuración inicial</figcaption>
 </figure>
 
-<p>A continuación, entramos al <em>Query editor</em>, y a lado de la sección <em>Tables and vies</em>, desplegamos el menú <em>Create</em> y creamos una tabla a partir de datos S3:</p>
+<div class="admonition info">
+<p class="admonition-title">Preparando los datos</p>
+<p>Los datos que vamos a consultar son los datos de los clientes de la base de datos <code>retail_db</code> que hemos utilizando en la sesión de <a href="../hadoop/06hive.html">Hive</a>, los cuales hemos exportado al archivo <a href="resources/customers.csv">customers.csv</a>.</p>
+<p>Para poder leer estos datos, primero hemos de colocarlos en S3. En nuestro caso, hemos decidido crear una carpeta llamada <code>customers</code> dentro del <em>bucket</em> <code>s3severo8a</code>, y dentro de ella, hemos dejado el archivo con los datos:</p>
+<p><figure style="align: center;">
+    <img src="images/07s3customers.png">
+    <figcaption>Archivo de customers.csv en S3</figcaption>
+</figure></p>
+</div>
+<h2 id="creando-la-estructura">Creando la estructura<a class="headerlink" href="#creando-la-estructura" title="Permanent link">&para;</a></h2>
+<p>En AWS Glue, o directamente en <em>Athena</em>, vamos a crear una base de datos y una tabla de forma similar a como se hace mediante <em>Hive</em>.</p>
+<p>A continuación, entramos al <em>Query editor</em>, y a lado de la sección <em>Tables and views</em>, desplegamos el menú <em>Create</em> y creamos una tabla a partir de datos S3, indicándole un nombre para la tabla, otro para la base de datos (o elegimos una existente), así como la localización en S3 de la carpeta donde se encuentren nuestros datos:</p>
 <figure style="align: center;">
-    <img src="../imagenes/etl/01athenaCreateTable0.png">
+    <img src="images/07athenaCreateTable1.png">
     <figcaption>Athena - Opción para crear la tabla a partir de S3</figcaption>
 </figure>
 
-<p>En la siguiente pantalla, crearemos la tabla <code>yellow</code> en una nueva base de datos que denominamos <code>taxidata</code> y le indicamos que coja los datos S3 de <code>s3://aws-tc-largeobjects/CUR-TF-200-ACBDFO-1/Lab2/yellow/</code>. El formato de los datos es <code>CSV</code>. El siguiente paso es mediante <code>Bulk add columns</code> indicar los nombre y tipos de las columnas:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">vendor</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 2 "></span><span class="n">pickup</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 3 "></span><span class="n">dropoff</span><span class="w"> </span><span class="k">timestamp</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 4 "></span><span class="k">count</span><span class="w"> </span><span class="nb">int</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 5 "></span><span class="n">distance</span><span class="w"> </span><span class="nb">int</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 6 "></span><span class="n">ratecode</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 7 "></span><span class="n">storeflag</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="n">pulocid</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="n">dolocid</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="10 "></span><span class="n">paytype</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="11 "></span><span class="n">fare</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="12 "></span><span class="n">extra</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="13 "></span><span class="n">mta_tax</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="14 "></span><span class="n">tip</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="15 "></span><span class="n">tolls</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="16 "></span><span class="n">surcharge</span><span class="w"> </span><span class="nb">decimal</span><span class="p">,</span><span class="w"></span>
-<span class="linenos" data-linenos="17 "></span><span class="n">total</span><span class="w"> </span><span class="nb">decimal</span><span class="w"></span>
+<p>A continuación, le indicamos que vamos a cargar los datos en una tabla de tipo Hive en formato CSV, utilizando la coma como separador de campos:</p>
+<figure style="align: center;">
+    <img src="images/07athenaCreateTable2.png">
+    <figcaption>Athena - Configuración del formato</figcaption>
+</figure>
+
+<p>Una vez tenemos el formato, debemos indicar la estructura de la tabla. </p>
+<figure style="float: right;">
+    <img src="images/07athenaCreateTable3.png" width="400">
+    <figcaption>Athena - Definición de las columnas</figcaption>
+</figure>
+
+<p>Para ello, podemos añadir cada columna de una en una, indicando su nombre y su tipo, o mediante la opción <em>Bulk add columns</em>, y le pegamos el nombre y el tipo de las columnas, que en nuestro caso son:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">custId</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="2 "></span><span class="n">fName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">lName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos="4 "></span><span class="n">city</span><span class="w"> </span><span class="n">STRING</span><span class="w"></span>
 </code></pre></div>
+<p>Cuando los hayamos introducido, veremos como se han creado dichas columnas:</p>
+<figure style="align: center;">
+    <img src="images/07athenaCreateTable4.png">
+    <figcaption>Athena - Configuración del formato</figcaption>
+</figure>
+
 <p>Finalmente, veremos a modo de resumen una instrucción <code>create table</code> similar a la siguiente y ya podemos pulsar sobre <em>Create table</em>:</p>
-<p><code>`` sql
-CREATE EXTERNAL TABLE IF NOT EXISTS</code>taxidata<code>.</code>yellow<code>(</code>vendor<code>string,</code>pickup<code>timestamp,</code>dropoff<code>timestamp,</code>count<code>int,</code>distance<code>int,</code>ratecode<code>string,</code>storeflag<code>string</code>pulocid<code>string,</code>dolocid<code>string,</code>paytype<code>string,</code>fare<code>decimal,</code>extra<code>decimal,</code>mta_tax<code>decimal,</code>tip<code>decimal,</code>tolls<code>decimal,</code>surcharge<code>decimal,</code>total` decimal
-)
-ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe'
-WITH SERDEPROPERTIES (
-'serialization.format' = ',',
-'field.delim' = ','
-) LOCATION 's3://aws-tc-largeobjects/CUR-TF-200-ACBDFO-1/Lab2/yellow/'
-TBLPROPERTIES ('has_encrypted_data'='false');</p>
-<p>FIXME: mirar y hacer https://docs.aws.amazon.com/athena/latest/ug/getting-started.html</p>
-<h3 id="aws-glue">AWS Glue<a class="headerlink" href="#aws-glue" title="Permanent link">&para;</a></h3>
-<p>Es la herramienta ETL completamente administrado que ofrece Amazon Web Services.</p>
-<p>Cuando el esquema de los datos es desconocido, <em>AWS Glue</em> permite inferirlo. Para ello, hemos de construir un rastreador (<em>crawler</em>) para descubrir su estructura.</p>
-<p>. AWS Glue builds a catalog that contains metadata about the various data sources. AWS Glue is similar to Amazon Athena in that the actual data you analyze remains in the data source. The key difference is that you can build a crawler with AWS Glue to discover the schema.</p>
-<h3 id="creacion">Creación<a class="headerlink" href="#creacion" title="Permanent link">&para;</a></h3>
-<h3 id="ejecucion">Ejecución<a class="headerlink" href="#ejecucion" title="Permanent link">&para;</a></h3>
-<p>Se puede ejecutar bajo demanda o planificar su ejecución de forma diaria, por horas, etc... Una vez lanzado, al cabo de un minuto, veremos que ha finalizado y en <code>Base de Datos --&gt; Tablas</code> podremos ver la tabla que ha creado (en nuestro caso la tabla <code>csv</code>), junto con la estructura que ha inferido respecto a los datos cargados.</p>
-<p>El siguiente paso es editar el esquema y ponerle nombres significativos a los campos:</p>
-<p>Una vez los datos están cargados, ya podemos realizar consular con AWS Athena.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTERNAL</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">s8a</span><span class="o">-</span><span class="n">retail</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">customers</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="o">`</span><span class="n">custid</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="o">`</span><span class="n">fname</span><span class="o">`</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="o">`</span><span class="n">lname</span><span class="o">`</span><span class="w"> </span><span class="n">string</span><span class="p">,</span><span class="w"></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="o">`</span><span class="n">city</span><span class="o">`</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="p">)</span><span class="w"></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="k">ROW</span><span class="w"> </span><span class="n">FORMAT</span><span class="w"> </span><span class="n">SERDE</span><span class="w"> </span><span class="s1">&#39;org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe&#39;</span><span class="w"></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="k">WITH</span><span class="w"> </span><span class="n">SERDEPROPERTIES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;field.delim&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">STORED</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">INPUTFORMAT</span><span class="w"> </span><span class="s1">&#39;org.apache.hadoop.mapred.TextInputFormat&#39;</span><span class="w"> </span><span class="n">OUTPUTFORMAT</span><span class="w"> </span><span class="s1">&#39;org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat&#39;</span><span class="w"></span>
+<span class="linenos" data-linenos="10 "></span><span class="k">LOCATION</span><span class="w"> </span><span class="s1">&#39;s3://s3severo8a/customers/&#39;</span><span class="w"></span>
+<span class="linenos" data-linenos="11 "></span><span class="n">TBLPROPERTIES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;classification&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;csv&#39;</span><span class="p">);</span><span class="w"></span>
+</code></pre></div>
+<h2 id="realizando-consultas">Realizando consultas<a class="headerlink" href="#realizando-consultas" title="Permanent link">&para;</a></h2>
+<p>Si volvemos a la pantalla de <em>Query Editor</em>, si pinchamos sobre los tres puntos de la tabla <code>customers</code>, podemos hacer un preview de la tabla, y veremos que automáticamente realiza una consulta de tipo <em><code>select * from customers</code></em></p>
+<figure style="align: center;">
+    <img src="images/07athenaSelect.png">
+    <figcaption>Athena - Realización de una consulta</figcaption>
+</figure>
+
+<!--
+## AWS Glue
+
+Es la herramienta ETL completamente administrado que ofrece Amazon Web Services.
+
+Cuando el esquema de los datos es desconocido, *AWS Glue* permite inferirlo. Para ello, hemos de construir un rastreador (*crawler*) para descubrir su estructura.
+
+. AWS Glue builds a catalog that contains metadata about the various data sources. AWS Glue is similar to Amazon Athena in that the actual data you analyze remains in the data source. The key difference is that you can build a crawler with AWS Glue to discover the schema.
+
+### Creación
+
+### Ejecución
+
+Se puede ejecutar bajo demanda o planificar su ejecución de forma diaria, por horas, etc... Una vez lanzado, al cabo de un minuto, veremos que ha finalizado y en Base de Datos - > Tablas podremos ver la tabla que ha creado (en nuestro caso la tabla `csv`), junto con la estructura que ha inferido respecto a los datos cargados.
+
+El siguiente paso es editar el esquema y ponerle nombres significativos a los campos:
+
+Una vez los datos están cargados, ya podemos realizar consular con AWS Athena.
+-->
+
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/athena/latest/ug/what-is.html">Guía de usuario</a></li>
+<li><a href="https://docs.aws.amazon.com/athena/latest/ug/getting-started.html">Getting started with AWS Athena</a></li>
+</ul>
 
 
   
@@ -924,6 +1059,27 @@ TBLPROPERTIES ('has_encrypted_data'='false');</p>
       </main>
       
         <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Pie" >
+      
+        
+        <a href="06datos.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S46.- RDS y DynamoDB" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              S46.- RDS y DynamoDB
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
