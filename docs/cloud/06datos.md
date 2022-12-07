@@ -162,7 +162,7 @@ Respecto al coste, si cogemos el mismo ejemplo anterior de una instancia de Auro
 
 ## Datos NoSQL - *DynamoDB*
 
-DynamoDB (<https://aws.amazon.com/es/dynamodb/>) es un servicio administrado de base de datos NoSQL clave-valor y documental, rápido y flexible para todas las aplicaciones que requieren una latencia uniforme de un solo dígito de milisegundos a cualquier escala y una capacidad de almacenamiento prácticamente ilimitado.
+*DynamoDB* (<https://aws.amazon.com/es/dynamodb/>) es un servicio administrado de base de datos NoSQL clave-valor y documental, rápido y flexible para todas las aplicaciones que requieren una latencia uniforme de un solo dígito de milisegundos a cualquier escala y una capacidad de almacenamiento prácticamente ilimitado.
 
 Así pues, es un almacén de claves/valor (similar a [Redis](https://redis.io/) y [MongoDB](https://www.mongodb.com/es) a la vez), flexible y sin estructura fija (los elementos pueden tener atributos diferentes), diseñado para garantizar un determinado rendimiento así como una determinada disponibilidad para cada tabla (en NoSQL suele haber pocas tablas), es decir, se definen elementos por tabla y se paga según lo exigido en cada una.
 
@@ -174,7 +174,7 @@ Los componentes principales son:
 * los **elementos**: grupo de atributos que se puede identificar de forma exclusiva entre todos los demás elementos
 * los **atributos**: elemento de datos fundamental que no es preciso seguir dividiendo.
 
-DynamoDB soporta dos tipos de claves principales:
+*DynamoDB* soporta dos tipos de claves principales:
 
 * La **clave de partición** es una clave principal simple.
 * La **clave de partición y de ordenamiento**, también conocidas como clave principal compuesta, ya que está formada por dos atributos.
@@ -191,19 +191,19 @@ A medida que aumenta el volumen de datos, la clave principal particiona e indexa
     <figcaption>Consultas por clave o escaneo</figcaption>
 </figure>
 
-Para aprovechar al máximo las operaciones de consulta, es importante que la clave utilizada identifique de forma unívoca los elementos de la tabla de DynamoDB. Podemos configurar una clave principal simple basada en un único atributo de los valores de los datos con una distribución uniforme. De forma alternativa, podemos especificar una clave compuesta, que incluye una clave de partición y una clave secundaria.
+Para aprovechar al máximo las operaciones de consulta, es importante que la clave utilizada identifique de forma unívoca los elementos de la tabla de *DynamoDB*. Podemos configurar una clave principal simple basada en un único atributo de los valores de los datos con una distribución uniforme. De forma alternativa, podemos especificar una clave compuesta, que incluye una clave de partición y una clave secundaria.
 
 Además, *DynamoDB* permite crear índices para optimizar las consultas que realicemos sobre atributos que no forman parte de la clave de partición u ordenamiento.
 
 ### Infraestructura
 
-Amazon administra toda la infraestructura subyacente de datos y los almacena de manera redundante en varias instalaciones dentro de una región, como parte de la arquitectura tolerante a errores.
+AWS administra toda la infraestructura subyacente de datos y los almacena de manera redundante en varias instalaciones dentro de una región, como parte de la arquitectura tolerante a errores.
 
 El sistema particiona los datos automáticamente, distribuyendo los datos entre diferentes dispositivos de almacenamiento. No existe ningún límite práctico respecto de la cantidad de elementos que se pueden almacenar en una tabla. Por ejemplo, algunos clientes tienen tablas de producción con miles de millones de elementos.
 
 Todos los datos de *DynamoDB* se almacenan en unidades SSD, y su lenguaje de consulta simple ([PartiQL](https://partiql.org/)) permite un rendimiento de las consultas uniforme y de baja latencia. Además de escalar el almacenamiento, *DynamoDB* permite aprovisionar el volumen del rendimiento de lectura o escritura que necesita para cada tabla.
 
-También permite habilitar el escalado automático, monitorizando la carga de la tabla e incrementando o disminuyendo el rendimiento aprovisionado de manera automática. Otras características clave son las tablas globales que permiten generar réplicas de manera automática en las regiones de AWS que elijamos, el cifrado en reposo y la visibilidad del tiempo de vida (TTL) de los elementos.
+También facilita el escalado automático, monitorizando la carga de la tabla e incrementando o disminuyendo el rendimiento aprovisionado de manera automática. Otras características clave son las tablas globales que permiten generar réplicas de manera automática en las regiones de AWS que elijamos, el cifrado en reposo y la visibilidad del tiempo de vida (TTL) de los elementos.
 
 ### Costes
 
@@ -220,7 +220,7 @@ Con *DynamoDB* se cobran las operaciones de lectura, escritura y almacenamiento 
     * Las aplicaciones tienen un tráfico uniforme o aumenta gradualmente.
     * Los requisitos de capacidad se pueden predecir para controlar los costos
 
-Por ejemplo, una tabla donde especificamos un rendimiento garantizado de 1000  millones lecturas y 1 millón de escrituras al mes, con una coherencia eventual (es decir, que permite desorden de peticiones ) nos costará $67,17 al mes.
+Por ejemplo, una tabla donde especificamos un rendimiento garantizado de 1000 millones lecturas y 1 millón de escrituras al mes, con una coherencia eventual (es decir, que permite desorden de peticiones ) nos costará $67,17 al mes.
 
 ### Ejemplo DynamoDB
 
@@ -304,6 +304,15 @@ Para introducir los datos, podemos hacerlo de varias maneras.
 
     Una vez ejecutado tendremos un mensaje de `UnprocessedItems: {}`.
 
+* También podemos cargar los datos en S3, y realizar una [importación desde S3](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/S3DataImport.HowItWorks.html), pero el formato del documento es diferente, admitiendo datos en CSV, un formato de JSON multilínea específico de DynamoDB (compuestos de documentos `Item`) o un formato propietario como [Amazon Ion](https://amzn.github.io/ion-docs/). Así pues, primero cargaremos [ProductCatalogS3.json](resources/ProductCatalogS3.json) en S3, y a continuación realizamos la importación.
+
+    <figure style="align: center;">
+        <img src="images/06ddb-import-s3.png" width="600">
+        <figcaption>Importación en DynamoDB desde S3</figcaption>
+    </figure>
+
+    Tras indicar el archivo, deberemos indicar los datos de creación de la nueva tabla (es decir, no permite importar datos sobre una tabla ya existente previamente).
+
 Si volvemos a la consola web, tras entrar en la tabla y pulsar en *Ver elementos* veremos los datos ya introducidos.
 
 <figure style="align: center;">
@@ -311,7 +320,7 @@ Si volvemos a la consola web, tras entrar en la tabla y pulsar en *Ver elementos
     <figcaption>Ver elementos</figcaption>
 </figure>
 
-Si queremos consultar información de la tabla mediante el comando [describe-table](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/describe-table.html) de AWS CLi, ejecutaremos:
+Si queremos consultar información de la tabla mediante el comando [describe-table](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/dynamodb/describe-table.html) de AWS CLI, ejecutaremos:
 
 ``` bash
 aws dynamodb describe-table --table-name ProductCatalog
@@ -436,9 +445,9 @@ tabla = dynamodb.Table('SeveroPeliculas')
 with open("datosPeliculas.json") as ficheroJSON:
     peliculas = json.load(ficheroJSON, parse_float=decimal.Decimal)
     for pelicula in peliculas:
-        year = int(movie['year'])
-        title = movie['title']
-        info = movie['info']
+        year = int(pelicula['year'])
+        title = pelicula['title']
+        info = pelicula['info']
 
         print("Añadida película:", year, title)
 
@@ -460,7 +469,7 @@ Si lo ejecutamos desde nuestro ordenador, nos aparecerá por la consola cada una
 
 ### Faker
 
-Si necesitamos escribir muchos datos, es muy útil emplear una librería como [Faker](https://faker.readthedocs.io/en/master/) para generar los datos.
+Si necesitamos escribir muchos datos, es muy útil emplear una librería como [Faker](https://faker.readthedocs.io/en/master/) para generar datos sintéticos.
 
 Primero hemos de instalarla mediante pip:
 
@@ -600,9 +609,9 @@ Y a continuación repetimos el mismo ejemplo, pero ahora generando un documento 
 
 ### Caso de uso 2 - Consultar datos en DynamoDB
 
-Una vez tenemos nuestra tabla de DynamoDB cargada con datos, llega el momento de recuperar los datos, ya sea un registro en concreto o la posibilidad de realizar una consulta, ya sea por su índice o su clave de ordenación (o ambas).
+Una vez tenemos nuestra tabla de *DynamoDB* cargada con datos, llega el momento de recuperar los datos, ya sea un registro en concreto o la posibilidad de realizar una consulta, ya sea por su índice o su clave de ordenación (o ambas).
 
-En la sesión que trabajamos con DynamoDB estudiamos que podíamos realizar consultas sobre el almacén NoSQL haciendo uso de un subconjunto de SQL conocido como [PartiQL](https://aitor-medrano.github.io/bigdata2122/apuntes/nube05datos.html#infraestructura). En los siguientes ejemplos vamos a mostrar cómo realizar las operaciones vía el API de DynamoDb y mediante PartiQL.
+En el apartado anterior hemos estudiado que podemos realizar consultas sobre *DynamoDB* haciendo uso de un subconjunto de SQL conocido como PartiQL. En los siguientes ejemplos vamos a mostrar cómo realizar las operaciones vía el API de *DynamoDb* y mediante *PartiQL*.
 
 Si queremos recuperar la película *Interstellar* de 2014 haremos:
 
@@ -687,7 +696,7 @@ En el caso de las [consultas mediante PartiQL haciendo uso de `execute_statement
 * Los contenidos de los parámetros se indican mediante una lista con un diccionario por cada parámetro donde la clave es el tipo del parámetro, y el valor es el dato a pasar (el dato se pasa siempre como un `string`)
 * Las consultas siempre devuelven un diccionario con una propiedad `Items` que contiene los resultados devueltos.
 
-Destacar que es diferente la estructura del resultado de realizar una consulta mediante el API de DynamoDB (respeta la estructura definida en la base de datos) o mediante PartiQL (crea un atributo por columna recuperada cuyo valor contiene el tipo del dato):
+Destacar que es diferente la estructura del resultado de realizar una consulta mediante el API de *DynamoDB* (respeta la estructura definida en la base de datos) o mediante *PartiQL* (crea un atributo por columna recuperada cuyo valor contiene el tipo del dato):
 
 === "Resultado de `get-item`"
 
@@ -784,11 +793,11 @@ También podemos realizar otro tipo de consultas:
             print(genero['S'])
     ```
 
-La clase `DecimalEncoder` se utiliza para transformar los campos Decimal que utiliza DynamoDB para almacenar contenido numérico a tipo entero o flotante según necesite.
+La clase `DecimalEncoder` se utiliza para transformar los campos `Decimal` que utiliza *DynamoDB* para almacenar contenido numérico a tipo entero o flotante según necesite.
 
 #### Full scan
 
-Cuando en *PartiQL* no le indicamos en la condición una expresión que busque por una de las claves, se realizará un *full scan* sobre toda la tabla, lo que puede implicar unos costes inesperados, tanto económicos como a nivel rendimiento provisionado.
+Cuando en *PartiQL* no le indicamos en la condición una expresión que busque por una de las claves, se realizará un *full scan* sobre toda la tabla, lo que puede implicar unos costes inesperados, tanto económicos como a nivel rendimiento.
 
 El método `scan` lee cada elemento de la tabla y devuelve todos los datos de la tabla. Se le puede pasar una `filter_expression` opcional para que sólo devuelva los elementos que cumplan el criterio. Sin embargo, el filtrado se aplica tras escanear toda la tabla.
 
@@ -842,18 +851,7 @@ El método `scan` lee cada elemento de la tabla y devuelve todos los datos de la
 
 ### Caso de uso 3 - De S3 a DynamoDB
 
-En este caso, vamos a coger datos de películas de un dataset público disponible en <https://www.kaggle.com/sankha1998/tmdb-top-10000-popular-movies-dataset>
-
-El contenido del dataset es similar a:
-
-``` csv title="TMDb_updated.CSV"
-,title,overview,original_language,vote_count,vote_average
-0,Ad Astra,"The near future...",en,2853,5.9
-1,Bloodshot,"After he ...",en,1349,7.2
-2,Bad Boys for Life,"Marcus and Mike ...",en,2530,7.1
-```
-
-Una vez descargado [TMDb_updated.csv](resources/TMDb_updated.csv), vamos a cargar la información en S3 dentro del bucket. Para este caso, en vez de cargar todos los datos desde el dataset en nuestra tabla NoSQL, vamos a meter en DynamoDB el título, la nota media y la trama siempre y cuando hayan recibido al menos 10.000 votos.
+En la sesión de S3 trabajamos con Python con un dataset de películas, el cual filtramos mediante [S3Select](03s3.md#s3-select) y nos quedamos con el título, la nota media y la trama siempre y cuando hayan recibido al menos 10.000 votos, el cual almacenamos en `TMDb_filtered.csv`.
 
 Una vez creado el fichero en S3, vamos cargar los datos en DynamoDB. Como el dataset no contenía la fecha de la película, en nuestro caso le vamos a poner a todas las películas que son del 2022:
 
@@ -865,7 +863,7 @@ from decimal import Decimal
 # 1.- Leemos el fichero desde S3 y lo metemos en un DataFrame
 s3c = boto3.client('s3')
 bucketNombre = "s3severo2122python"
-ficheroNombre = "TMDb_filtered.CSV"
+ficheroNombre = "TMDb_filtered.csv"
 response = s3c.get_object(Bucket=bucketNombre, Key=ficheroNombre)
 movies_df = pd.read_csv(response['Body'], delimiter = ',')
 
@@ -1076,15 +1074,21 @@ conn.close()
 * [Ten Examples of Getting Data from DynamoDB with Python and Boto3](https://www.fernandomc.com/posts/ten-examples-of-getting-data-from-dynamodb-with-python-and-boto3/)
 * [DynamoDB Insert: Performance Basics in Python/Boto3](https://medium.com/skyline-ai/dynamodb-insert-performance-basics-in-python-boto3-5bc01919c79f)
 
+<!--
+TODO: Curso DynamoDB desde AWS: https://www.aws.training/Details/Curriculum?id=65583&redirect=false
+-->
+
 ## Actividades
 
-1. (RA5075.2 / CE5.2b / 1p) Realizar el módulo 8 (Bases de Datos) del curso [ACF de AWS](https://awsacademy.instructure.com/courses/30530/).
+1. (RA5075.2 / CE5.2a / 1p) Realizar el módulo 8 (Bases de Datos) del curso [ACF de AWS](https://awsacademy.instructure.com/courses/30530/).
 
-2. (RA5075.2 / CE5.2b / 1p) Siguiendo el ejemplo de RDS, crea una instancia (`instituto`) de una base de datos de tipo *MariaDB* y cárgala con todos los datos de las sesiones de repaso de SQL (las tablas iniciales y las de inserción).
+2. (RA5075.2 / CE5.2a / 1p) Siguiendo el ejemplo de RDS, crea una instancia (`instituto`) de una base de datos de tipo *MariaDB* y cárgala con los datos de `retail_db`.
 
-3. (RA5075.2 / CE5.2b / 1p) (opcional) A partir de la instancia del ejercicio anterior, crea una instantánea de forma manual. A continuación, restaura esta instantánea en una nueva instancia (por ejemplo, `instituto2`) de tipo `db.t4g.medium`, y tras conectarte mediante *HeidiSQL*, comprueba que tiene los datos ya cargados. Adjunta una captura de pantalla donde se vean las características de las dos instancias.
+    A partir de esta instancia, crea una instantánea de forma manual. A continuación, restaura esta instantánea en una nueva instancia (por ejemplo, `instituto2`) de tipo `db.t4g.small`, y tras conectarte mediante *DBeaver*, comprueba que tiene los datos ya cargados. Adjunta una captura de pantalla donde se vean las características de las dos instancias.
 
-4. (RA5075.2 / CE5.2b / 1p) Siguiendo el ejemplo de *DynamoDB*, crea la tabla (`ProductCatalog`), cárgala con los datos del ejemplo y realiza un consulta para obtener bicicletas híbridas. Exporta el resultado a CSV.
+3. (RA5075.2 / CE5.2a / 1p) Siguiendo el ejemplo de *DynamoDB*, crea la tabla (`ProductCatalog`), cárgala con los datos del ejemplo y realiza un consulta para obtener las bicicletas híbridas. Exporta el resultado a CSV.
+
+4. (RA5075.2 / CE5.2a / 1p) Realiza los casos de uso 1 y 2 de interacción desde *Python* con *DynamoDB*.
 
 *[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
 *[CE5.2a]: Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.
