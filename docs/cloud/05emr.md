@@ -200,7 +200,7 @@ Y reiniciamos el servicio:
 sudo systemctl restart hue
 ```
 
-Sólo nos queda crear un carpeta para nuestro usuario en HDFS:ç
+Sólo nos queda crear un carpeta para nuestro usuario en HDFS:
 
 ``` bash
 hdfs dfs -mkdir /user/iabd
