@@ -20,6 +20,7 @@ nav:
       - "S39.- HDFS": "hadoop/04hdfs.md"
       - "S39.- Formatos de datos": "hadoop/04formatos.md"
       - "S43.- Sqoop y Flume": "hadoop/05flume.md"
+      - "S45.- Hive": "hadoop/06hive.md"
   - "UT6.- Datos en el cloud":
       - "cloud/index.md"
       - "S33.- Cloud": "cloud/01cloud.md"
@@ -27,6 +28,8 @@ nav:
       - "S40.- S3": "cloud/03s3.md"
       - "S44.- EC2": "cloud/04computacion.md"
       - "S44.- EMR": "cloud/05emr.md"
+      - "S46.- RDS y DynamoDB": "cloud/06datos.md"
+      - "S46.- Athena": "cloud/07athena.md"
   - "UT7.- PIAFP Lara": "https://aitor-medrano.github.io/pia2223/"
 
 theme:
@@ -81,18 +84,18 @@ extra:
     provider: google
     property: G-MFP4QLMMV7
     feedback:
-      title: ¿Ha sido útil está página?
+      title: <a href='https://ko-fi.com/T6T8GWT9N' title='Invítame a un café en ko-fi.com' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Invítame a un café en ko-fi.com' /></a>
       ratings:
         - icon: material/emoticon-happy-outline
-          name: Sí, ha sido util
+          name: Me encantan estos apuntes
           data: 1
           note: >-
-            Gracias por tu colaboración!
+            Gracias por tu tiempo. Si quieres me puedes <a href='https://ko-fi.com/T6T8GWT9N'>invitar a un café en ko-fi</a>.
         - icon: material/emoticon-sad-outline
-          name: La página es mejorable
+          name: Los apuntes son mejorables
           data: 0
           note: >-
-            Gracias por tu colaboración! Ayúdame a mejorarla enviandome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+            ¡Gracias por tu colaboración! Ayúdame a mejorar los apuntes enviándome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
 
 plugins:
   - search
