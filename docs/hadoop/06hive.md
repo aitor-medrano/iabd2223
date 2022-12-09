@@ -1,6 +1,6 @@
 ---
 title: Apache Hive. Acceso a HDFS con un interfaz similar a tablas relacionales mediante SQL.
-description: Uso de Apache Hive tanto con tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos.
+description: Apuntes sobre Apache Hive, utilizando tanto tablas internas como externas, realizando joins entre diferentes archivos HDFS. Particionado y bucketing de los datos.
 ---
 
 # Hive
@@ -27,13 +27,13 @@ Aunque en principio estaba diseñado para el procesamiento *batch*, ahora se int
 
 ### Características
 
-Hive impone una estructura sobre los datos almacenados en HDFS. Esta estructura se conoce como ***Schema***, y Hive la almacena en su propia base de datos (*metastore*). Gracias a ella, optimiza de forma automática el plan de ejecución y usa particionado de tablas en determinadas consultas. También soporta diferentes formatos de ficheros, codificaciones y fuentes de datos como *HBase*.
+*Hive* impone una estructura sobre los datos almacenados en HDFS. Esta estructura se conoce como ***Schema***, y *Hive* la almacena en su propia base de datos (*metastore*). Gracias a ella, optimiza de forma automática el plan de ejecución y usa particionado de tablas en determinadas consultas. También soporta diferentes formatos de ficheros, codificaciones y fuentes de datos como *HBase*.
 
-Para interactuar con *Hive* utilizaremos *HiveQL*, el cual es un dialecto de SQL (recuerda que *SQL* no es sensible a las mayúsculas, excepto en la comparación de cadenas).
+Para interactuar con *Hive* utilizaremos *HiveQL*, el cual es un dialecto de *SQL* (recuerda que *SQL* no es sensible a las mayúsculas, excepto en la comparación de cadenas).
 
-Hive amplía el paradigma de *SQL* incluyendo formatos de serialización. También podemos personalizar el procesamiento de consultas creando un esquema de tabla acorde con nuestros datos, pero sin tocar los datos. Aunque SQL solo es compatible con tipos de valor primitivos (como fechas, números y cadenas), los valores de las tablas de Hive son elementos estructurados, por ejemplo, objetos JSON o cualquier tipo de datos definido por el usuario o cualquier función escrita en Java.
+*Hive* amplía el paradigma de *SQL* incluyendo formatos de serialización. También podemos personalizar el procesamiento de consultas creando un esquema de tabla acorde con nuestros datos, pero sin tocar los datos. Aunque SQL solo es compatible con tipos de valor primitivos (como fechas, números y cadenas), los valores de las tablas de *Hive* son elementos estructurados, por ejemplo, objetos JSON o cualquier tipo de datos definido por el usuario o cualquier función escrita en Java.
 
-Una consulta típica en Hive se ejecuta en varios *datanodes* en paralelo, con varios trabajos *MapReduce* asociados. Estas operaciones son de tipo *batch*, por lo que la latencia es más alta que en otros tipos de bases de datos. Además, hay que considerar el retardo producido por la inicialización de los trabajos, sobre todo en el caso de consultar pequeños datasets.
+Una consulta típica en *Hive* se ejecuta en varios *datanodes* en paralelo, con varios trabajos *MapReduce* asociados. Estas operaciones son de tipo *batch*, por lo que la latencia es más alta que en otros tipos de bases de datos. Además, hay que considerar el retardo producido por la inicialización de los trabajos, sobre todo en el caso de consultar pequeños *datasets*.
 
 #### Ventajas
 
@@ -48,12 +48,18 @@ En cambio, *Hive* no es la mejor opción para consultas en tiempo real o de tipo
 
 #### Alternativas
 
-Una de las alternativas más populares es [Cloudera Impala](http://impala.io/), el cual utiliza un demonio dedicado en cada *datanode* del clúster, de manera que hay un coordinador que reenvía a cada *datanode* la consulta a realizar y luego se encarga de unir los datos en el resultado final. *Impala* utiliza el *metastore* de *Hive* y soporta la mayoría de construcciones de *Hive*, con lo que la migración de un sistema a otro es sencilla.
+Una de las alternativas más populares es [Apache Impala](https://impala.apache.org/), originalmente creado por Cloudera, el cual utiliza un demonio dedicado en cada *datanode* del clúster, de manera que hay un coordinador que reenvía a cada *datanode* la consulta a realizar y luego se encarga de unir los datos en el resultado final. *Impala* utiliza el *metastore* de *Hive* y soporta la mayoría de construcciones de *Hive*, con lo que la migración de un sistema a otro es sencilla.
+
+En lugar de utilizar MapReduce, aprovecha un motor de procesamiento masivo en paralelo (MPP) como el que existe en los sistemas gestores de bases de datos relacionales (RDBMS). Esta arquitectura hace que Impala sea adecuado para análisis interactivos y de baja latencia.
+
+<!--
+https://aws.amazon.com/es/emr/faqs/#Using_Impala
+-->
 
 Otras alternativas *open source* son :
 
 * [Presto de Facebook](http://prestodb.io/) y [Apache Drill](http://drill.apache.org/), con arquitecturas muy similares a *Impala*.
-* [Spark SQL](https://spark.apache.org/sql/): utiliza *Spark* como motor de ejecución y permite utilizar consultas SQL embebidas. La estudiaremos en el último bloque del curso.
+* [Spark SQL](https://spark.apache.org/sql/): utiliza *Spark* como motor de ejecución y permite utilizar consultas SQL embebidas. La estudiaremos m,en sesiones futuras.
 
 !!! info "Pig"
     [Apache Pig](https://pig.apache.org) es una herramienta que abstrae el acceso a *MapReduce* de forma similar a como lo realiza *Hive*, pero en vez de SQL, utiliza su propio lenguaje de *scripting* (*PigLatin*) para expresar los flujos de datos.
@@ -72,9 +78,9 @@ A continuación podemos ver un gráfico que relaciona los diferentes componentes
 
 #### Hive Server
 
-*HiveServer 2* (HS2) es la última versión del servicio. Se compone de una interfaz que permite a clientes externos ejecutar consultas contra *Apache Hive* y obtener los resultados. Está basado en *Thrift RPC* y soporta clientes concurrentes. Para arrancar el servidor, ejecutaremos el comando `hiveserver2`.
+*HiveServer 2* (HS2) es la última versión del servicio. Se compone de una interfaz que permite a clientes externos ejecutar consultas contra *Apache Hive* y obtener los resultados. Está basado en *Thrift RPC* y soporta clientes concurrentes. Para arrancar el servidor, ejecutaremos el comando `hiveserver2`, el cual quedará a la escucha en el puerto `10000.`
 
-A este servidor nos conectaremos mediante la herramienta *Beeline* (Beeline CLI) con el comando `beeline`.
+A este servidor nos conectaremos mediante la herramienta *Beeline* (Beeline CLI).
 
 #### Hive Metastore
 
@@ -121,7 +127,7 @@ Respecto a los tipos compuestos, tenemos tres tipos:
 ## Instalación y configuración
 
 !!! important "Máquina virtual"
-    Los siguientes pasos no son necesarios ya que nuestra máquina virtual ya tiene Hive instalado y configurado correctamente. Si quieres hacer tu propia instalación sigue los siguientes pasos de la documentación oficial.
+    Los siguientes pasos no son necesarios ya que nuestra máquina virtual ya tiene *Hive* instalado y configurado correctamente. Si quieres hacer tu propia instalación sigue los siguientes pasos de la [documentación oficial](https://cwiki.apache.org/confluence/display/Hive//GettingStarted).
 
 Una vez instalado, vamos a configurarlo. Para ello, debemos crear los ficheros de configuración a partir de las plantilla que ofrece *Hive*. Para ello, desde la carpeta `$HIVE_HOME/conf`, ejecutaremos los siguientes comandos:
 
@@ -132,7 +138,7 @@ cp hive-exec-log4j2.properties.template hive-exec-log4j2.properties
 cp hive-log4j2.properties.template hive-log4j2.properties
 ```
 
-Modificamos el fichero `hive.env.sh` para incluir dos variables de entorno con las rutas de Hadoop y la configuración de Hive
+Modificamos el fichero `hive.env.sh` para incluir dos variables de entorno con las rutas de *Hadoop* y la configuración de *Hive*
 
 ``` sh title="hive.env.sh"
 export HADOOP_HOME=/opt/hadoop-3.3.1
@@ -230,9 +236,9 @@ hive -e 'select * from tablaEjemplo`
 
 ### Acceso remoto
 
-*HiveServer2* (desde Hive 0.11) tiene su propio cliente conocido como *Beeline*. En entornos reales, el cliente *Hive* está en desuso a favor de *Beeline*, por la falta de múltiples usuarios, seguridad y otras características de HiveServer2.
+*HiveServer2* (desde Hive 0.11) tiene su propio cliente conocido como *Beeline*. En entornos reales, el cliente *Hive* está en desuso a favor de *Beeline*, por la falta de múltiples usuarios, seguridad y otras características de *HiveServer2*.
 
-Arrancamos *HiveServer2* y *Beeline* en dos pestañas diferentes mediante los comandos `hiveserver2` y `beeline`. Una vez dentro de *Beeline*, nos conectamos al servidor:
+Arrancamos *HiveServer2* (lo hará en el puerto `10000`) y *Beeline* en dos pestañas diferentes mediante los comandos `hiveserver2` y `beeline`. Una vez dentro de *Beeline*, tras esperar unos segundo a que *HiveServer2* haya arrancando completamente, nos conectamos al servidor:
 
 ``` hive
 !connect jdbc:hive2://iabd-virtualbox:10000
@@ -265,10 +271,10 @@ Dentro de *Beeline*, en cualquier momento podemos ejecutar el comando `help` que
 ...
 ```
 
-Otra forma de trabajar, para arrancar en el mismo proceso *Beeline* y *HiveServer2* para pruebas/desarrollo y tener una experiencia similar al cliente *Hive* accediendo de forma local, podemos ejecutar el siguiente comando:
+Otra forma de trabajar, para arrancar en el mismo proceso *Beeline* y *HiveServer2* para pruebas/desarrollo y tener una experiencia similar al cliente *Hive* accediendo de forma local, podemos ejecutar el siguiente comando donde indicamos tanto el usuario (`-n`) como la contraseña (`-p`):
 
 ``` bash
-beeline -u jdbc:hive2://
+beeline -u jdbc:hive2://iabd-virtualbox:10000 -n iabd -p iabd
 ```
 
 Mediante la interfaz gráfica de *Hive Server UI* a la cual podemos acceder mediante <http://localhost:10002> podemos monitorizar los procesos ejecutados por *HiveServer2*:
@@ -317,11 +323,16 @@ CREATE TABLE customers
   lName STRING,
   city STRING
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY '|'
-STORED AS TEXTFILE
-LOCATION '/user/iabd/hive/customer';
+ROW FORMAT DELIMITED  -- (1)!
+FIELDS TERMINATED BY '|'  -- (2)!
+STORED AS TEXTFILE  -- (3)!
+LOCATION '/user/iabd/hive/customer';  -- (4)!
 ```
+
+1. Indica el formato de cada fila como delimitado (con un salto del línea)
+2. Los campos están separados por el caràcter `|` (es el mismo que habíamos indicado en Sqoop)
+3. El contenido está almacenado en HDFS en  formato texto
+4. Ruta de HDFS donde se encuentran los datos
 
 Y ya podemos realizar algunas consultas:
 
@@ -329,6 +340,16 @@ Y ya podemos realizar algunas consultas:
 select * from customers limit 5;
 select count(*) from customers;
 ```
+
+!!! info "Utilizando Hue"
+    Si no queremos conectarnos mediante *Beeline*, siempre podemos utilizar *Hue* como un entorno más amigable. Recuerda que para acceder desde la máquina virtual necesitas arrancarlo previamente mediante `/opt/hue-4.10.0/build/env/bin/hue runserver`.
+
+    Una vez dentro, podemos realizar las consultas u operaciones de creación de tablas, etc...
+
+    <figure style="align: center;">
+        <img src="images/06hue-select.png">
+        <figcaption>Consultas Hive desde Hue</figcaption>
+    </figure>
 
 En ocasiones necesitamos almacenar la salida de una consulta *Hive* en una nueva tabla. Las definiciones de las columnas de la nueva tabla se deriva de las columnas recuperadas en la consulta. Para ello, usaremos el comando *create table-as select*:
 
@@ -351,7 +372,7 @@ describe customers_new;
 describe formatted customers_new;
 ```
 
-Si empleamos la forma larga, obtendremos mucha más información. Por ejemplo, si nos fijamos, vemos que la localización de la nueva tabla ya no es `/user/iabd/hive/customer` sino `hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db/customers_new`. Esto se debe a que en vez de crear una tabla enlazada a un recurso de HDFS ya existente, ha creado una copia de los datos en el propio almacén de Hive (hemos pasado de una tabla externa a una interna).
+Si empleamos la forma larga, obtendremos mucha más información. Por ejemplo, si nos fijamos, vemos que la localización de la nueva tabla ya no es `/user/iabd/hive/customer` sino `hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db/customers_new`. Esto se debe a que en vez de crear una tabla enlazada a un recurso de HDFS ya existente, ha creado una copia de los datos en el propio almacén de *Hive* (hemos pasado de una tabla externa a una interna).
 
 Igual que las creamos, las podemos eliminar:
 
@@ -479,8 +500,8 @@ hive -e 'use iabd; set hive.cli.print.header=true; select * from customers' | \
 
     ``` sql
     insert overwrite local directory '/home/iabd/datos'
-      row format
-      delimited field terminated by ','
+      row format delimited
+      fields terminated by ','
       select * from customers;
     ```
 
@@ -490,7 +511,7 @@ En este caso de uso vamos a trabajar con los datos de clientes que hemos cargado
 
 Si queremos relacionar los datos de ambas tablas, tenemos que hacer un *join* entre la clave ajena de `orders` (`order_customer_id`) y la clave primaria de `customers` (`custid`):
 
-``` sql
+``` sql hl_lines="1 8"
 hive> describe customers;
 OK
 custid                  int                                         
@@ -622,7 +643,7 @@ Podemos observar como se utiliza `|` como separador de campos. Analizando los da
 * Destreza y puntuación
 * Departamento y cargo
 
-Creamos la siguiente tabla interna en Hive mediante el siguiente comando:
+Creamos la siguiente tabla interna en *Hive* mediante el siguiente comando:
 
 ``` sql
 CREATE TABLE IF NOT EXISTS empleados_interna
@@ -631,7 +652,7 @@ CREATE TABLE IF NOT EXISTS empleados_interna
   work_place ARRAY<string>,
   sex_age STRUCT<sex:string,age:int>,
   skills_score MAP<string,int>,
-  depart_title MAP<STRING,ARRAY<STRING>>
+  depart_title MAP<string,ARRAY<string>>
 ) COMMENT 'Esto es una tabla interna'
 ROW FORMAT DELIMITED
 FIELDS TERMINATED BY '|'
@@ -753,7 +774,7 @@ Si queremos obtener los datos del **array**, podemos realizar las siguientes con
 
 === "Elementos individuales"
 
-    Los dos primeros puestos de trabajo:
+    Utilizamos la notación de array para mostrar los dos primeros puestos de trabajo:
 
     ``` sql
     select work_place[0] as lugar1, work_place[1] as lugar2
@@ -775,7 +796,7 @@ Si queremos obtener los datos del **array**, podemos realizar las siguientes con
 
 === "Cantidad de elementos"
 
-    Cantidad de lugares de trabajo:
+    Mediante la función `size` obtenemos la cantidad de lugares de trabajo:
 
     ``` sql
     select size(work_place) as cantLugares
@@ -797,7 +818,7 @@ Si queremos obtener los datos del **array**, podemos realizar las siguientes con
 
 === "Explode array"
 
-    Empleados y lugares de trabajo mostrados uno por fila:
+    Para obtener los empleados y lugares de trabajo mostrados uno por fila, hemos de realizar un *explode* sobre el array:
 
     ``` sql
     select name, lugar
@@ -844,7 +865,7 @@ En el caso de la **estructura** con el sexo y la edad podemos realizar las sigui
 
 === "Elementos individuales"
 
-    Sexo y edad por separado
+    Utilizando la notación `.` podemos obtener el sexo y edad por separado
 
     ``` sql
     select sex_age.sex as sexo, sex_age.age as edad
@@ -889,7 +910,7 @@ Respecto al **mapa** con las habilidades y sus puntuaciones:
 
 === "Elementos individuales"
 
-    Nombre y puntuación de las habilidades:
+    Utilizando la notación array con claves, obtenemos el nombre y puntuación de las habilidades:
 
     ``` sql
     select name, skills_score["DB"] as db,
@@ -1269,7 +1290,7 @@ INSERT OVERWRITE TABLE productos
   SELECT p.product_id as id, p.product_name as nombre, p.product_price as precio, c.category_name as categoria FROM products p join categories c on (p.product_category_id = c.category_id);
 ```
 
-Si queremos comprobar como se han creado las particiones y los buckets, desde un terminal podemos acceder a HDFS y mostrar su contenido:
+Si queremos comprobar cómo se han creado las particiones y los buckets, desde un terminal podemos acceder a HDFS y mostrar su contenido:
 
 ``` bash
 hdfs dfs -ls hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db/productos
@@ -1288,6 +1309,8 @@ Y vemos cómo aparecen 5 elementos que pertenecen a la primera partición. Si qu
 select * from productos order by rand() limit 10;
 ```
 
+## Funciones ventana
+
 A continuación vamos a realizar diversas consultas utilizando las funciones ventana que soporta *Hive*. Más información en [https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+WindowingAndAnalytics).
 
 ### Consultas con enteros que cuentan/ordenan
@@ -1297,7 +1320,7 @@ A continuación vamos a realizar diversas consultas utilizando las funciones ven
 
     Además, hemos recortado el nombre del producto a 20 caracteres para facilitar la legibilidad de los resultados.
 
-Las funciones `rank` y `dense_rank` permite obtener la posición que ocupan los datos. Se diferencia en que `rank` cuenta los elementos repetidos/empatados, mientras que `dense_rank` no.
+Las funciones **`rank`** y **`dense_rank`** permite obtener la posición que ocupan los datos. Se diferencia en que `rank` cuenta los elementos repetidos/empatados, mientras que `dense_rank` no.
 
 Por ejemplo, vamos a obtener la posición que ocupan los productos respecto al precio agrupados por su categoría:
 
@@ -1347,7 +1370,7 @@ Resultado:
 +-----------------------+--------------------+----------+-------+------------+
 ```
 
-La función `row_number` permite numerar los resultados:
+La función **`row_number`** permite numerar los resultados:
 
 ``` sql
 select substr(nombre, 1, 20) as nombre, categoria, precio, 
@@ -1397,7 +1420,7 @@ Resultado:
 
 ### Consultas por posición
 
-A continuación vamos a ver las funciones ***lead*** y ***lag***. Estas funciones se encargan de obtener el valor posterior y anterior respecto a un valor.
+A continuación vamos a ver las funciones **`lead`** y **`lag`**. Estas funciones se encargan de obtener el valor posterior y anterior respecto a un valor.
 
 ``` sql
 select substr(nombre, 1, 20) as nombre, categoria, precio, 
@@ -1447,7 +1470,7 @@ Resultado:
 
 ### Consultas de agregación
 
-Las funciones de agregación que ya conocemos como `count`, `sum`, `min` y `max` también las podemos aplicar sobre particiones de datos y así poder mostrar los datos agregados para cada elemento:
+Las funciones de agregación que ya conocemos como **`count`**, **`sum`**, **`min`** y **`max`** también las podemos aplicar sobre particiones de datos y así poder mostrar los datos agregados para cada elemento:
 
 ``` sql
 select substr(nombre, 1, 20) as nombre, categoria,
@@ -1610,28 +1633,32 @@ Resultado:
 ## Referencias
 
 * Página oficial de [Hive](https://hive.apache.org)
-* [Apache Hive Essentials - Second Edition](https://www.packtpub.com/product/apache-hive-essentials-second-edition/9781788995092) de Dayong Du.
+* [Apache Hive Essentials - Second Edition](https://www.packtpub.com/product/apache-hive-essentials-second-edition/9781788995092) de *Dayong Du*.
+* [Hive Cheatsheet](http://hortonworks.com/wp-content/uploads/2016/05/Hortonworks.CheatSheet.SQLtoHive.pdf)
 * [Tutorial de Hive](https://www.tutorialspoint.com/hive/index.htm) de TutorialsPoint.
 
 ## Actividades
 
-1. Realiza los casos de uso del 1 al 5. En la entrega debes adjuntar un una captura de pantalla donde se vea la ejecución de las diferentes instrucciones.
+1. (RA5074.3 / CE4.3d / 2,5p) Realiza los casos de uso del 1 al 5. En la entrega debes adjuntar una captura de pantalla donde se vea la ejecución de las diferentes instrucciones.
 
-2. (opcional) Realiza el caso de uso 6.
-
-3. (opcional) A partir de la base de datos `retail_db`, importa las tablas `orders` y `order_items`, en las cuales puedes obtener la cantidad de productos que contiene un pedido. Utilizando todas las tablas que ya hemos importado en los casos anteriores, crea una tabla externa en *Hive* llamada `pedidos` utilizando 8 *buckets* con el código del cliente, que contenga:
+2. (RA5074.3 / CE4.3b y CE4.3d / 1p) A partir de la base de datos `retail_db`, importa las tablas `orders` y `order_items`, en las cuales puedes obtener la cantidad de productos que contiene un pedido. Utilizando todas las tablas que ya hemos importado en los casos anteriores, crea una tabla externa en *Hive* llamada `pedidos` utilizando 8 *buckets* con el código del cliente, que contenga:
 
     * Código y fecha del pedido.
     * Precio del pedido (sumando las líneas de pedido).
     * Código, nombre y apellidos del cliente.
 
-    Adjunta scripts y capturas de:
+    Adjunta *scripts* y capturas de:
 
     * la importación, creación y carga de datos de las tablas que necesites.
     * la definición de la tabla: `describe formatted pedidos;`
     * contenido de HDFS que demuestre la creación de los *buckets*.
 
-4. (opcional) Investiga la creación de vistas en Hive y crea una vista con los datos de los clientes y sus pedidos siempre y cuando superen los 200$.
+3. (RA5074.3 / CE4.3d / 0,5p) Investiga la creación de vistas en *Hive* y crea una vista con los datos de los clientes y sus pedidos siempre y cuando superen los 200$.
+
+*[RA5074.3]: Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.
+*[CE4.3b]: Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes. 
+*[CE4.3d]: Se han desarrollado sistemas de gestión, almacenamiento y procesamiento de grandes volúmenes de datos de manera eficiente y segura, teniendo en cuenta la normativa existente.
+
 
 <!--
 <https://www.analyticsvidhya.com/blog/2020/10/getting-started-with-apache-hive/>
@@ -1644,5 +1671,6 @@ Resultado:
   Vistas
   tablesample
   Transformación map/reduce ... ejemplo para rellenar tipos de datos complejos
-  Ejercicio dataset clima - Hadoop definitive guide
+  Anaban -> Ejercicio dataset clima - Hadoop definitive guide
+  Investigar Tez
 --->
