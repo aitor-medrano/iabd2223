@@ -16,5 +16,5 @@
 | 40.- [Almacenamiento en AWS](03s3.md)         | Miércoles 30 Nov  | 2p + 2o       |
 | 44.- [Computación en AWS](04computacion.md)   | Lunes 5 Dic       | 1p + 1o   |
 | 44.- [Hadoop en AWS (EMR)](05emr.md)          | Lunes 5 Dic       | 1p + 1o   |
-| 46.- [Datos en AWS](06datos.md)               | Miércoles 5 Dic   | 1p + 1o   |
-| 46.- Servicios de datos en AWS (Glue y Athena)    | Miércoles 7 Dic   | 1p + 1o   |
+| 46.- [Datos en AWS](06datos.md)               | Miércoles 7 Dic   | 2p + 2o   |
+| 46.- [AWS Athena](07athena.md)                    | Miércoles 7 Dic   ||
