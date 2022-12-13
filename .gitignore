@@ -1,11 +1,6 @@
 /.DS_Store
 /site/
+/draft/
 /.cache/
 *planning.md*
 *.DS_Store
-docs/sa/planning.md
-docs/sa/09pymodm.md
-docs/sa/10changeStreams.md
-docs/sa/08indices.md
-docs/sa/mflix.md
-docs/hadoop/salida-hdfs.txt
