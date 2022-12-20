@@ -1332,9 +1332,11 @@ from productos
 where categoria = "Bike & Skate Shop" or categoria = "Basketball";
 ```
 
+En el caso de que tengamos más de un elemento con el mismo valor, tanto en **`rank`** como con **`dense_rank`**, todos los elementos ocuparán la misma posición.
+
 Resultado:
 
-``` txt
+``` txt hl_lines="8 9 14 15 24 25"
 +-----------------------+--------------------+----------+-------+------------+
 |        nombre         |     categoria      |  precio  | rank  | denserank  |
 +-----------------------+--------------------+----------+-------+------------+
@@ -1370,7 +1372,7 @@ Resultado:
 +-----------------------+--------------------+----------+-------+------------+
 ```
 
-La función **`row_number`** permite numerar los resultados:
+La función **`row_number`** permite numerar los resultados, da igual que tengamos elementos que repiten valor:
 
 ``` sql
 select substr(nombre, 1, 20) as nombre, categoria, precio, 
@@ -1381,7 +1383,7 @@ where categoria = "Bike & Skate Shop" or categoria = "Basketball";
 
 Resultado:
 
-``` txt
+``` txt hl_lines="8 9"
 +-----------------------+--------------------+----------+----------+
 |        nombre         |     categoria      |  precio  | numfila  |
 +-----------------------+--------------------+----------+----------+
