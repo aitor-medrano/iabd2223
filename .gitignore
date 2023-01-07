@@ -4,3 +4,5 @@
 /.cache/
 *planning.md*
 *.DS_Store
+docs/spark/resources/jupyter/
+docs/spark/resources/ejercicios/
