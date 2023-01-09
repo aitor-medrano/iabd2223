@@ -1,0 +1,10 @@
+DEBUG | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:10) - Log4jExample: A Sample Debug Message
+INFO  | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:11) - Log4jExample: A Sample Info  Message
+WARN  | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:12) - Log4jExample: A Sample Warn  Message
+ERROR | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:13) - Log4jExample: A Sample Error Message
+FATAL | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:14) - Log4jExample: A Sample Fatal Message
+DEBUG | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:10) - Log4jExample: A Sample Debug Message
+INFO  | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:11) - Log4jExample: A Sample Info  Message
+WARN  | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:12) - Log4jExample: A Sample Warn  Message
+ERROR | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:13) - Log4jExample: A Sample Error Message
+FATAL | 2017-11-13 21:02:58 | [main] example.Log4jExample (Log4jExample.java:14) - Log4jExample: A Sample Fatal Message
