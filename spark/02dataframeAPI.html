@@ -1,0 +1,2374 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Analítica de datos con Spark DataFrames y Spark SQL. Creación de vistas en Spark SQL. Uso de Databricks Community Edition, acceso a archivos y creación de cuadros de mandos.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/spark/02dataframeAPI.html">
+      
+      
+        <link rel="prev" href="01rdd.html">
+      
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>Analítica de datos con Spark DataFrames / SQL - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Analítica de datos con Spark DataFrames / SQL - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Analítica de datos con Spark DataFrames y Spark SQL. Creación de vistas en Spark SQL. Uso de Databricks Community Edition, acceso a archivos y creación de cuadros de mandos." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/02dataframeAPI.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/spark/02dataframeAPI.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Analítica de datos con Spark DataFrames / SQL - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Analítica de datos con Spark DataFrames y Spark SQL. Creación de vistas en Spark SQL. Uso de Databricks Community Edition, acceso a archivos y creación de cuadros de mandos." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/02dataframeAPI.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spark-dataframes-sql" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Analítica de datos con Spark DataFrames / SQL
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Sistemas de almacenamiento" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../hadoop/index.html">Ecosistema Hadoop</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Ecosistema Hadoop" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/03hadoop.html" class="md-nav__link">
+        S38.- Hadoop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04hdfs.html" class="md-nav__link">
+        S39.- HDFS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04formatos.html" class="md-nav__link">
+        S39.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/05flume.html" class="md-nav__link">
+        S43.- Sqoop y Flume
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/06hive.html" class="md-nav__link">
+        S45.- Hive
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">Datos en el cloud</a>
+          
+            <label for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Datos en el cloud" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/03s3.html" class="md-nav__link">
+        S40.- S3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/04computacion.html" class="md-nav__link">
+        S44.- EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/05emr.html" class="md-nav__link">
+        S44.- EMR
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/06datos.html" class="md-nav__link">
+        S46.- RDS y DynamoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/07athena.html" class="md-nav__link">
+        S46.- Athena
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">Spark</a>
+          
+            <label for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Spark" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Spark
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01spark.html" class="md-nav__link">
+        S56.- Ecosistema
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01rdd.html" class="md-nav__link">
+        S60.- RDD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S62.- DataFrames API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="02dataframeAPI.html" class="md-nav__link md-nav__link--active">
+        S62.- DataFrames API
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dataframes" class="md-nav__link">
+    DataFrames
+  </a>
+  
+    <nav class="md-nav" aria-label="DataFrames">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creando-dataframes" class="md-nav__link">
+    Creando Dataframes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mostrando-los-datos" class="md-nav__link">
+    Mostrando los datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cargando-diferentes-formatos" class="md-nav__link">
+    Cargando diferentes formatos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprimiendo-los-datos" class="md-nav__link">
+    Comprimiendo los datos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datos-y-esquemas" class="md-nav__link">
+    Datos y Esquemas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataframe-api" class="md-nav__link">
+    DataFrame API
+  </a>
+  
+    <nav class="md-nav" aria-label="DataFrame API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proyectando" class="md-nav__link">
+    Proyectando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trabajando-con-columnas" class="md-nav__link">
+    Trabajando con columnas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtrando" class="md-nav__link">
+    Filtrando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordenando" class="md-nav__link">
+    Ordenando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anadiendo-filas" class="md-nav__link">
+    Añadiendo filas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cogiendo-muestras" class="md-nav__link">
+    Cogiendo muestras
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trabajando-con-datos-sucios" class="md-nav__link">
+    Trabajando con datos sucios
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usando-sql" class="md-nav__link">
+    Usando SQL
+  </a>
+  
+    <nav class="md-nav" aria-label="Usando SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vistas-temporales" class="md-nav__link">
+    Vistas temporales
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vistas-globales" class="md-nav__link">
+    Vistas globales
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eliminando-vistas" class="md-nav__link">
+    Eliminando vistas
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trabajando-con-databricks" class="md-nav__link">
+    Trabajando con Databricks
+  </a>
+  
+    <nav class="md-nav" aria-label="Trabajando con Databricks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datos-visuales" class="md-nav__link">
+    Datos visuales
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuadro-de-mandos" class="md-nav__link">
+    Cuadro de mandos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        PIA FP
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#dataframes" class="md-nav__link">
+    DataFrames
+  </a>
+  
+    <nav class="md-nav" aria-label="DataFrames">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creando-dataframes" class="md-nav__link">
+    Creando Dataframes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mostrando-los-datos" class="md-nav__link">
+    Mostrando los datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cargando-diferentes-formatos" class="md-nav__link">
+    Cargando diferentes formatos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comprimiendo-los-datos" class="md-nav__link">
+    Comprimiendo los datos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#datos-y-esquemas" class="md-nav__link">
+    Datos y Esquemas
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataframe-api" class="md-nav__link">
+    DataFrame API
+  </a>
+  
+    <nav class="md-nav" aria-label="DataFrame API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#proyectando" class="md-nav__link">
+    Proyectando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trabajando-con-columnas" class="md-nav__link">
+    Trabajando con columnas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filtrando" class="md-nav__link">
+    Filtrando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ordenando" class="md-nav__link">
+    Ordenando
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anadiendo-filas" class="md-nav__link">
+    Añadiendo filas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cogiendo-muestras" class="md-nav__link">
+    Cogiendo muestras
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trabajando-con-datos-sucios" class="md-nav__link">
+    Trabajando con datos sucios
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usando-sql" class="md-nav__link">
+    Usando SQL
+  </a>
+  
+    <nav class="md-nav" aria-label="Usando SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vistas-temporales" class="md-nav__link">
+    Vistas temporales
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vistas-globales" class="md-nav__link">
+    Vistas globales
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eliminando-vistas" class="md-nav__link">
+    Eliminando vistas
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trabajando-con-databricks" class="md-nav__link">
+    Trabajando con Databricks
+  </a>
+  
+    <nav class="md-nav" aria-label="Trabajando con Databricks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#datos-visuales" class="md-nav__link">
+    Datos visuales
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cuadro-de-mandos" class="md-nav__link">
+    Cuadro de mandos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="spark-dataframes-sql">Spark DataFrames / SQL<a class="headerlink" href="#spark-dataframes-sql" title="Permanent link">&para;</a></h1>
+<p>En la sesiones anteriores hemos introducido Spark y el uso de RDD para interactuar con los datos. Tal como comentamos, los RDD permiten trabajar a bajo nivel, siendo más cómodo y eficiente hacer uso de <em>DataFrames</em> y el lenguaje SQL.</p>
+<h2 id="dataframes">DataFrames<a class="headerlink" href="#dataframes" title="Permanent link">&para;</a></h2>
+<p>Un <em>DataFrame</em> es una estructura equivalente a una tabla de base de datos relacional, con un motor bien optimizado para el trabajo en un clúster. Los datos se almacenan en filas y columnas y ofrece un conjunto de operaciones para manipular los datos.</p>
+<p>El trabajo con <em>DataFrames</em> es más sencillo y eficiente que el procesamiento con RDD, por eso su uso es predominante en los nuevos desarrollos con <em>Spark</em>.</p>
+<p>A continuación veremos cómo podemos obtener y persistir <em>DataFrames</em> desde diferentes fuentes y formatos de datos</p>
+<h3 id="creando-dataframes">Creando Dataframes<a class="headerlink" href="#creando-dataframes" title="Permanent link">&para;</a></h3>
+<p>El caso más básico es crear un <em>DataFrame</em> a partir de un RDD mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.toDF.html"><code>toDF</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span> <span class="c1"># SparkSession de forma programativa</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># Creamos un RDD</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">datos</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;Aitor&quot;</span><span class="p">,</span> <span class="mi">182</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Pedro&quot;</span><span class="p">,</span> <span class="mi">178</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Marina&quot;</span><span class="p">,</span> <span class="mi">161</span><span class="p">)]</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">rdd</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="n">datos</span><span class="p">)</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># Creamos un DataFrame y mostramos su esquema</span>
+<span class="linenos" data-linenos="8 "></span><span class="n">dfRDD</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">toDF</span><span class="p">()</span>
+<span class="linenos" data-linenos="9 "></span><span class="n">dfRDD</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<p>Y mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.printSchema.html"><code>printSchema</code></a> obtenemos un resumen del esquema del <em>DataFrame</em> , donde para cada columna se indica el nombre, el tipo y si admite valores nulos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>root
+<span class="linenos" data-linenos="2 "></span> |-- _1: string (nullable = true)
+<span class="linenos" data-linenos="3 "></span> |-- _2: long (nullable = true)
+</code></pre></div>
+<p>Podemos ver como los nombres de las columnas son <code>_1</code> y <code>_2</code>. Para asignarle un nombre adecuado podemos pasarle una lista con los nombres a la hora de crear el <em>DataFrame</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">columnas</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span><span class="s2">&quot;altura&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfRDD</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="n">columnas</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfRDD</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<p>Y ahora obtenemos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>root
+<span class="linenos" data-linenos="2 "></span> |-- nombre: string (nullable = true)
+<span class="linenos" data-linenos="3 "></span> |-- altura: long (nullable = true)
+</code></pre></div>
+<p>Si queremos mostrar sus datos, haremos uso del método <code>show</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>df.show<span class="o">()</span>
+</code></pre></div>
+<p>Obteniendo una vista de los datos en forma de tabla:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>+------+------+
+<span class="linenos" data-linenos="2 "></span>|nombre|altura|
+<span class="linenos" data-linenos="3 "></span>+------+------+
+<span class="linenos" data-linenos="4 "></span>| Aitor|   182|
+<span class="linenos" data-linenos="5 "></span>| Pedro|   178|
+<span class="linenos" data-linenos="6 "></span>|Marina|   161|
+<span class="linenos" data-linenos="7 "></span>+------+------+
+</code></pre></div>
+<p>También podemos crear un <em>DataFrame</em> directamente desde una <em>SparkSession</em> sin crear un RDD previamente mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.createDataFrame.html"><code>createDataFrame</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># También podemos crear un DF desde SparkSession</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfDesdeDatos</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">datos</span><span class="p">)</span><span class="o">.</span><span class="n">toDF</span><span class="p">(</span><span class="o">*</span><span class="n">columnas</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfDesdeDatos</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="mostrando-los-datos">Mostrando los datos<a class="headerlink" href="#mostrando-los-datos" title="Permanent link">&para;</a></h3>
+<p>Para los siguientes apartados, supongamos que queremos almacenar ciertos datos de clientes, como son su nombre y apellidos, ciudad y sueldo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">clientes</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">(</span><span class="s2">&quot;Aitor&quot;</span><span class="p">,</span> <span class="s2">&quot;Medrano&quot;</span><span class="p">,</span> <span class="s2">&quot;Elche&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">(</span><span class="s2">&quot;Pedro&quot;</span><span class="p">,</span> <span class="s2">&quot;Casas&quot;</span><span class="p">,</span> <span class="s2">&quot;Elche&quot;</span><span class="p">,</span> <span class="mi">4000</span><span class="p">),</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="p">(</span><span class="s2">&quot;Laura&quot;</span><span class="p">,</span> <span class="s2">&quot;García&quot;</span><span class="p">,</span> <span class="s2">&quot;Elche&quot;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span> 
+<span class="linenos" data-linenos="5 "></span>    <span class="p">(</span><span class="s2">&quot;Miguel&quot;</span><span class="p">,</span> <span class="s2">&quot;Ruiz&quot;</span><span class="p">,</span> <span class="s2">&quot;Torrellano&quot;</span><span class="p">,</span> <span class="mi">6000</span><span class="p">),</span>
+<span class="linenos" data-linenos="6 "></span>    <span class="p">(</span><span class="s2">&quot;Isabel&quot;</span><span class="p">,</span> <span class="s2">&quot;Guillén&quot;</span><span class="p">,</span> <span class="s2">&quot;Alicante&quot;</span><span class="p">,</span> <span class="mi">7000</span><span class="p">)</span>
+<span class="linenos" data-linenos="7 "></span><span class="p">]</span>
+<span class="linenos" data-linenos="8 "></span><span class="n">columnas</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span><span class="s2">&quot;apellidos&quot;</span><span class="p">,</span> <span class="s2">&quot;ciudad&quot;</span><span class="p">,</span> <span class="s2">&quot;sueldo&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="9 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">clientes</span><span class="p">,</span> <span class="n">columnas</span><span class="p">)</span>
+</code></pre></div>
+<p>Para mostrar los datos, ya hemos visto que podemos utilizar el método <code>show</code>, al cual le podemos indicar o no la cantidad de registros a recuperar, así como si queremos que los datos se trunquen o no, o si los queremos mostrar en vertical:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="c1"># +------+---------+------+------+</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># |nombre|apellidos|ciudad|sueldo|</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># +------+---------+------+------+</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># | Aitor|  Medrano| Elche|  3000|</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># | Pedro|    Casas| Elche|  4000|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># +------+---------+------+------+</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># only showing top 2 rows</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +------+---------+----------+------+</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># |nombre|apellidos|ciudad    |sueldo|</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># +------+---------+----------+------+</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># |Aitor |Medrano  |Elche     |3000  |</span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># |Pedro |Casas    |Elche     |4000  |</span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># |Laura |García   |Elche     |5000  |</span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># |Miguel|Ruiz     |Torrellano|6000  |</span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># |Isabel|Guillén  |Alicante  |7000  |</span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># +------+---------+----------+------+</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">vertical</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos" data-linenos="20 "></span><span class="c1"># -RECORD 0------------</span>
+<span class="linenos" data-linenos="21 "></span><span class="c1">#  nombre    | Aitor   </span>
+<span class="linenos" data-linenos="22 "></span><span class="c1">#  apellidos | Medrano </span>
+<span class="linenos" data-linenos="23 "></span><span class="c1">#  ciudad    | Elche   </span>
+<span class="linenos" data-linenos="24 "></span><span class="c1">#  sueldo    | 3000    </span>
+<span class="linenos" data-linenos="25 "></span><span class="c1"># -RECORD 1------------</span>
+<span class="linenos" data-linenos="26 "></span><span class="c1">#  nombre    | Pedro   </span>
+<span class="linenos" data-linenos="27 "></span><span class="c1">#  apellidos | Casas   </span>
+<span class="linenos" data-linenos="28 "></span><span class="c1">#  ciudad    | Elche   </span>
+<span class="linenos" data-linenos="29 "></span><span class="c1">#  sueldo    | 4000    </span>
+<span class="linenos" data-linenos="30 "></span><span class="c1"># -RECORD 2------------</span>
+<span class="linenos" data-linenos="31 "></span><span class="c1">#  nombre    | Laura   </span>
+<span class="linenos" data-linenos="32 "></span><span class="c1">#  apellidos | García  </span>
+<span class="linenos" data-linenos="33 "></span><span class="c1">#  ciudad    | Elche   </span>
+<span class="linenos" data-linenos="34 "></span><span class="c1">#  sueldo    | 5000    </span>
+<span class="linenos" data-linenos="35 "></span><span class="c1"># only showing top 3 rows</span>
+</code></pre></div>
+<p>Si sólo queremos recuperar unos pocos datos, podemos hacer uso de <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.head.html">head</a> o <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.first.html">first</a> los cuales devuelven objetos <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Row.html">Row</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># Row(nombre=&#39;Aitor&#39;, apellidos=&#39;Medrano&#39;, ciudad=&#39;Elche&#39;, sueldo=3000)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># Row(nombre=&#39;Aitor&#39;, apellidos=&#39;Medrano&#39;, ciudad=&#39;Elche&#39;, sueldo=3000)</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># [Row(nombre=&#39;Aitor&#39;, apellidos=&#39;Medrano&#39;, ciudad=&#39;Elche&#39;, sueldo=3000),</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1">#  Row(nombre=&#39;Pedro&#39;, apellidos=&#39;Casas&#39;, ciudad=&#39;Elche&#39;, sueldo=4000),</span>
+<span class="linenos" data-linenos="8 "></span><span class="c1">#  Row(nombre=&#39;Laura&#39;, apellidos=&#39;García&#39;, ciudad=&#39;Elche&#39;, sueldo=5000)]</span>
+</code></pre></div>
+<p>Si queremos obtener un valor en concreto, una vez recuperada una fila, podemos acceder a sus columnas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">nom1</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">first</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>           <span class="c1"># &#39;Aitor&#39;</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">nom2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">first</span><span class="p">()[</span><span class="s2">&quot;nombre&quot;</span><span class="p">]</span>    <span class="c1"># &#39;Aitor&#39;</span>
+</code></pre></div>
+<p>También podemos obtener un sumario de los datos (igual que con <em>Pandas</em>) mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.describe.html">describe</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="c1"># +-------+------+---------+----------+------------------+</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># |summary|nombre|apellidos|    ciudad|            sueldo|</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># +-------+------+---------+----------+------------------+</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># |  count|     5|        5|         5|                 5|</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |   mean|  null|     null|      null|            5000.0|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># | stddev|  null|     null|      null|1581.1388300841897|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |    min| Aitor|    Casas|  Alicante|              3000|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |    max| Pedro|     Ruiz|Torrellano|              7000|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +-------+------+---------+----------+------------------+</span>
+</code></pre></div>
+<p>Si únicamente nos interesa saber cuantas filas tiene nuestro <em>DataFrame</em>, podemos hacer uso de <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.count.html">count</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>  <span class="c1"># 5</span>
+</code></pre></div>
+<p>Por último, como un <em>DataFrame</em> por debajo es un RDD, podemos usar <code>collect</code> y <code>take</code> conforme necesitemos y recuperar objetos de tipo <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Row.html">Row</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="c1"># [Row(nombre=&#39;Aitor&#39;, apellidos=&#39;Medrano&#39;, ciudad=&#39;Elche&#39;, sueldo=3000),</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1">#  Row(nombre=&#39;Pedro&#39;, apellidos=&#39;Casas&#39;, ciudad=&#39;Elche&#39;, sueldo=4000),</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1">#  Row(nombre=&#39;Laura&#39;, apellidos=&#39;García&#39;, ciudad=&#39;Elche&#39;, sueldo=5000),</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1">#  Row(nombre=&#39;Miguel&#39;, apellidos=&#39;Ruiz&#39;, ciudad=&#39;Torrellano&#39;, sueldo=6000),</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1">#  Row(nombre=&#39;Isabel&#39;, apellidos=&#39;Guillén&#39;, ciudad=&#39;Alicante&#39;, sueldo=7000)]</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">df</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># [Row(nombre=&#39;Aitor&#39;, apellidos=&#39;Medrano&#39;, ciudad=&#39;Elche&#39;, sueldo=3000),</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1">#  Row(nombre=&#39;Pedro&#39;, apellidos=&#39;Casas&#39;, ciudad=&#39;Elche&#39;, sueldo=4000)]</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">nom</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">collect</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>        <span class="c1"># &#39;Aitor&#39;</span>
+</code></pre></div>
+<h3 id="cargando-diferentes-formatos">Cargando diferentes formatos<a class="headerlink" href="#cargando-diferentes-formatos" title="Permanent link">&para;</a></h3>
+<p>Lo más usual es cargar los datos desde una archivo externo. Para ello, mediante el API de <em>DataFrameReader</em> cargaremos los datos directamente en un <em>Dataframe</em> mediante diferentes métodos dependiendo del formato (admite tanto el nombre de un recurso como una ruta de una carpeta).</p>
+<p>Para cada formato, existe un método corto que se llama como el formato en sí, y un método general donde mediante <code>format</code> indicamos el formato y que finaliza con el método <code>load</code> siempre dentro de <code>spark.read</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">CSV</label><label for="__tabbed_1_2">TXT</label><label for="__tabbed_1_3">JSON</label><label for="__tabbed_1_4">Parquet</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="linenos" data-linenos="1 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+</span><span class="linenos" data-linenos="2 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;datos/*.csv&quot;</span><span class="p">)</span>   <span class="c1"># Una carpeta entera</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;sep&quot;</span><span class="p">,</span> <span class="s2">&quot;;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;inferSchema&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;pdi_sales.csv&quot;</span><span class="p">)</span>
+<span class="hll"><span class="linenos" data-linenos="7 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span> 
+</span><span class="linenos" data-linenos="8 "></span><span class="n">dfCSV</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;csv&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="n">inferSchema</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-csv.html">documentación oficial</a></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfTXT</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;datos.txt&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># cada fichero se lee entero como un registro</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfTXT</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;wholetext&quot;</span><span class="p">,</span> <span class="n">true</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;datos/&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span>
+<span class="linenos" data-linenos="5 "></span><span class="n">dfTXT</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;txt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;datos.txt&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-text.html">documentación oficial</a></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfJSON</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">&quot;datos.json&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfJSON</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;datos.json&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-json.html">documentación oficial</a></p>
+<div class="admonition caution">
+<p class="admonition-title">DataFrames desde JSON</p>
+<p><em>Spark</em> espera que cada documento JSON ocupe una única línea. Si cada documento ocupa más de una línea, se lo indicamos mediante la opción <code>multiline</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;multiline&quot;</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;inferSchema&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">&quot;datos.json&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfParquet</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;datos.parquet&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfParquet</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;parquet&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;datos.parquet&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-parquet.html">documentación oficial</a></p>
+</div>
+</div>
+</div>
+<p>Si lo que queremos es persistir los datos, en vez de <code>read</code>, utilizaremos <code>write</code> y si usamos la forma general usaremos el método <code>save</code>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">CSV</label><label for="__tabbed_2_2">TXT</label><label for="__tabbed_2_3">JSON</label><label for="__tabbed_2_4">Parquet</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfCSV</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfCSV</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfCSV</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;datos.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-csv.html">documentación oficial</a></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfTXT</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;datos.txt&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfTXT</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;lineSep&quot;</span><span class="p">,</span><span class="s2">&quot;;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;datos.txt&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfTXT</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;txt&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;datos.txt&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-text.html">documentación oficial</a></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfJSON</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">&quot;datos.json&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfJSON</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;datos.json&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-json.html">documentación oficial</a></p>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfParquet</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;datos.parquet&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfParquet</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;datos.parquet&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-parquet.html">documentación oficial</a></p>
+</div>
+</div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Un único archivo de salida</p>
+<p>Por cada partición, Spark generará un archivo de salida. Recuerda que podemos <a href="01rdd.html#modificando-las-particiones">reducir el número de particiones</a> mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.RDD.coalesce.html">coalesce</a> o <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.RDD.repartition.html">repartition</a>.</p>
+</div>
+<p>Una vez vista la sintaxis, vamos a ver un ejemplo completo de lectura de un archivo CSV (el archivo <a href="resources/pdi_sales.csv"><code>pdi_sales.csv</code></a> que hemos utilizado durante todo el curso) que está almacenado en HDFS y que tras leerlo, lo guardamos como JSON de nuevo en HDFS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;s8a-dataframe-csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># Lectura de CSV con el ; como separador de columnas y con encabezado</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">,</span><span class="s2">&quot;;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/pdi_sales.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># df.printSchema()</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/pdi_sales_json&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Es conveniente destacar que para acceder a HDFS, únicamente hemos de indicar la URL del recurso con el prefijo <code>hdfs://</code> más el host del <em>namenode</em>.</p>
+<h3 id="comprimiendo-los-datos">Comprimiendo los datos<a class="headerlink" href="#comprimiendo-los-datos" title="Permanent link">&para;</a></h3>
+<p>Para configurar el algoritmo de compresión, si los datos está en Parquet o Avro, a nivel de la sesión de Spark, podemos realizar su configuración:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">setConf</span><span class="p">(</span><span class="s2">&quot;spark.sql.parquet.compression.codec&quot;</span><span class="p">,</span><span class="s2">&quot;snappy&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">spark</span><span class="o">.</span><span class="n">setConf</span><span class="p">(</span><span class="s2">&quot;spark.sql.parquet.compression.codec&quot;</span><span class="p">,</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">spark</span><span class="o">.</span><span class="n">setConf</span><span class="p">(</span><span class="s2">&quot;spark.sql.avro.compression.codec&quot;</span><span class="p">,</span><span class="s2">&quot;snappy&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Si sólo queremos hacerlo para una operación en particular, para cada lectura/escritura le añadimos <code>.option("compression", "algoritmo")</code>. Por ejemplo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfVentas</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="s2">&quot;snappy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;delimiter&quot;</span><span class="p">,</span><span class="s2">&quot;;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;pdi_sales.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfClientes</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="s2">&quot;snappy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;clientes.parquet&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfVentas</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="s2">&quot;snappy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;avro&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;ventas.avro&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="datos-y-esquemas">Datos y Esquemas<a class="headerlink" href="#datos-y-esquemas" title="Permanent link">&para;</a></h2>
+<p>El esquema completo de un <em>DataFrame</em> se modela mediante un <code>StructType</code>, el cual contiene una colección de objetos <code>StructField</code>.
+Así pues, cada columna de un <em>DataFrame</em> de <em>Spark</em> se modela mediante un objeto <code>StructField</code> indicando su nombre, tipo y gestión de los nulos.</p>
+<p>Hemos visto que al crear un <em>DataFrame</em> desde un archivo externo, podemos inferir el esquema. Si queremos crear un <em>DataFrame</em> desde un esquema propio utilizaremos los tipos <code>StructType</code>, <code>StructField</code>, así como <code>StringType</code>, <code>IntegerType</code> o el tipo necesario para cada columna. Para ello, primero hemos de importarlos (como puedes observar, estas clases pertenecen a las librerías SQL de <em>PySpark</em>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos="2 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructType</span><span class="p">,</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">IntegerType</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Tipos</p>
+<p>Además de cadenas y enteros, flotantes (<code>FloatType</code>) o dobles (<code>DoubleType</code>), tenemos tipos booleanos (<code>BooleanType</code>), de fecha (DateType y TimestampType), así como tipos complejos como <code>ArrayType</code>, <code>MapType</code> y <code>StructType</code>.
+Para más información, consultar la <a href="https://spark.apache.org/docs/latest/sql-ref-datatypes.html">documentación oficial</a>.</p>
+</div>
+<p>Volvamos al ejemplo anterior donde tenemos ciertos datos de clientes, como son su nombre y apellidos, ciudad y sueldo:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">clientes</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">(</span><span class="s2">&quot;Aitor&quot;</span><span class="p">,</span> <span class="s2">&quot;Medrano&quot;</span><span class="p">,</span> <span class="s2">&quot;Elche&quot;</span><span class="p">,</span> <span class="mi">3000</span><span class="p">),</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">(</span><span class="s2">&quot;Pedro&quot;</span><span class="p">,</span> <span class="s2">&quot;Casas&quot;</span><span class="p">,</span> <span class="s2">&quot;Elche&quot;</span><span class="p">,</span> <span class="mi">4000</span><span class="p">),</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="p">(</span><span class="s2">&quot;Laura&quot;</span><span class="p">,</span> <span class="s2">&quot;García&quot;</span><span class="p">,</span> <span class="s2">&quot;Elche&quot;</span><span class="p">,</span> <span class="mi">5000</span><span class="p">),</span> 
+<span class="linenos" data-linenos="5 "></span>    <span class="p">(</span><span class="s2">&quot;Miguel&quot;</span><span class="p">,</span> <span class="s2">&quot;Ruiz&quot;</span><span class="p">,</span> <span class="s2">&quot;Torrellano&quot;</span><span class="p">,</span> <span class="mi">6000</span><span class="p">),</span>
+<span class="linenos" data-linenos="6 "></span>    <span class="p">(</span><span class="s2">&quot;Isabel&quot;</span><span class="p">,</span> <span class="s2">&quot;Guillén&quot;</span><span class="p">,</span> <span class="s2">&quot;Alicante&quot;</span><span class="p">,</span> <span class="mi">7000</span><span class="p">)</span>
+<span class="linenos" data-linenos="7 "></span><span class="p">]</span>
+</code></pre></div>
+<p>Para esta estructura, definiremos un esquema con los campos, indicando para cada uno de ellos su nombre, tipo y si admite valores nulos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">esquema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;apellidos&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">),</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;ciudad&quot;</span><span class="p">,</span> <span class="n">StringType</span><span class="p">(),</span> <span class="kc">True</span><span class="p">),</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;sueldo&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">)</span>
+<span class="linenos" data-linenos="6 "></span><span class="p">])</span>
+</code></pre></div>
+<p>A continuación ya podemos crear un <em>DataFrame</em> con datos propios que cumplen un esquema haciendo uso del método <code>createDataFrame</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">clientes</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">esquema</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># root</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1">#  |-- nombre: string (nullable = false)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1">#  |-- apellidos: string (nullable = false)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1">#  |-- ciudad: string (nullable = true)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1">#  |-- sueldo: integer (nullable = false)</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">truncate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># +------+---------+----------+------+</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># |nombre|apellidos|ciudad    |sueldo|</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># +------+---------+----------+------+</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># |Aitor |Medrano  |Elche     |3000  |</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># |Pedro |Casas    |Elche     |4000  |</span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># |Laura |García   |Elche     |5000  |</span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># |Miguel|Ruiz     |Torrellano|6000  |</span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># |Isabel|Guillén  |Alicante  |7000  |</span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># +------+---------+----------+------+</span>
+</code></pre></div>
+<p>Si lo que queremos es asignarle un esquema a un <em>DataFrame</em> que vamos a leer desde una fuente de datos externa, hemos de emplear el método <code>schema</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfClientes</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">schema</span><span class="p">(</span><span class="n">esquema</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;clientes.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Rendimiento y esquema</p>
+<p>La inferencia de los tipos de los datos es un proceso computacionalmente costoso. Por ello, si nuestro conjunto de datos es grande, es muy recomendable crear el esquema de forma programativa y configurarlo en la carga de datos.</p>
+<p>Se recomienda la lectura del artículo <a href="https://t-redactyl.io/blog/2020/08/using-schemas-to-speed-up-reading-into-spark-dataframes.html">Using schemas to speed up reading into Spark DataFrames</a>.</p>
+</div>
+<p>Respecto al esquema, tenemos diferentes propiedades como <code>columns</code>, <code>dtypes</code> y <code>schema</code> con las que obtener su información:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># [&#39;nombre&#39;, &#39;apellidos&#39;, &#39;ciudad&#39;, &#39;sueldo&#39;]</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># [(&#39;nombre&#39;, &#39;string&#39;),</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1">#  (&#39;apellidos&#39;, &#39;string&#39;),</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1">#  (&#39;ciudad&#39;, &#39;string&#39;),</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1">#  (&#39;sueldo&#39;, &#39;int&#39;)]</span>
+<span class="linenos" data-linenos="8 "></span><span class="n">df</span><span class="o">.</span><span class="n">schema</span>
+<span class="linenos" data-linenos="9 "></span><span class="c1"># StructType(List(StructField(nombre,StringType,false),StructField(apellidos,StringType,false),StructField(ciudad,StringType,true),StructField(sueldo,IntegerType,false)))</span>
+</code></pre></div>
+<p>Si una vez hemos cargado un <em>DataFrame</em> queremos cambiar el tipo de una de sus columnas, podemos hacer uso del método <code>withColumn</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Forma larga</span>
+<span class="linenos" data-linenos="2 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">DoubleType</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;sueldo&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">sueldo</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DoubleType</span><span class="p">())</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># Forma corta</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;sueldo&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">sueldo</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;double&quot;</span><span class="p">))</span>
+<span class="linenos" data-linenos="6 "></span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># df = df.withColumn(&quot;fnac&quot;, to_date(df.Date, &quot;M/d/yyy&quot;))</span>
+</code></pre></div>
+<h2 id="dataframe-api">DataFrame API<a class="headerlink" href="#dataframe-api" title="Permanent link">&para;</a></h2>
+<p>Una vez tenemos un <em>DataFrame</em> podemos trabajar con los datos mediante un conjunto de operaciones estructuradas, muy similares al lenguaje relacional. Estas operaciones también se clasifican en transformaciones y acciones, recordando que las transformaciones utilizan una evaluación perezosa.</p>
+<p>Es muy importante tener en cuenta que todas las operaciones que vamos a realizar a continuación son immutables, es decir, nunca van a modificar el <em>DataFrame</em> sobre el que realizamos la transformación. Así pues, realizaremos encadenamiento de transformaciones (<em>transformation chaining</em>) o asignaremos el resultado a un nuevo <em>DataFrame</em>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Preparación</p>
+<p>Para los siguientes apartados, vamos a trabajar sobre el siguiente <em>DataFrame</em> con el fichero de <a href="resources/pdi_sales_small.csv">ventas</a> que hemos utilizado a lo largo del curso:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;s8a-dataframes-api&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># Lectura de CSV con el ; como separador de columnas y con encabezado</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;sep&quot;</span><span class="p">,</span><span class="s2">&quot;;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;header&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;inferSchema&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;pdi_sales_small.csv&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</code></pre></div>
+<p>El esquema generado es:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>root
+<span class="linenos" data-linenos="2 "></span>|-- ProductID: integer (nullable = true)
+<span class="linenos" data-linenos="3 "></span>|-- Date: string (nullable = true)
+<span class="linenos" data-linenos="4 "></span>|-- Zip: string (nullable = true)
+<span class="linenos" data-linenos="5 "></span>|-- Units: integer (nullable = true)
+<span class="linenos" data-linenos="6 "></span>|-- Revenue: double (nullable = true)
+<span class="linenos" data-linenos="7 "></span>|-- Country: string (nullable = true)
+</code></pre></div>
+</div>
+<h3 id="proyectando">Proyectando<a class="headerlink" href="#proyectando" title="Permanent link">&para;</a></h3>
+<p>La operación <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.select.html">select</a> permite indicar las columnas a recuperar pasándolas como parámetros:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Consulta de columnas</label><label for="__tabbed_3_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span><span class="s2">&quot;Revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>+---------+-------+
+<span class="linenos" data-linenos="2 "></span>|ProductID|Revenue|
+<span class="linenos" data-linenos="3 "></span>+---------+-------+
+<span class="linenos" data-linenos="4 "></span>|      725|  115.5|
+<span class="linenos" data-linenos="5 "></span>|      787|  314.9|
+<span class="linenos" data-linenos="6 "></span>|      788|  314.9|
+<span class="linenos" data-linenos="7 "></span>+---------+-------+
+<span class="linenos" data-linenos="8 "></span>only showing top 3 rows
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>También podemos realizar cálculos (referenciando a los campos con <code>nombreDataframe.nombreColumna</code>) sobre las columnas y crear un alias (operación asociada a un campo):</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">Cálculos y creación de alias</label><label for="__tabbed_4_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ProductID</span><span class="p">,(</span><span class="n">df</span><span class="o">.</span><span class="n">Revenue</span><span class="o">+</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;VentasMas10&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>+---------+-----------+
+<span class="linenos" data-linenos="2 "></span>|ProductID|VentasMas10|
+<span class="linenos" data-linenos="3 "></span>+---------+-----------+
+<span class="linenos" data-linenos="4 "></span>|      725|      125.5|
+<span class="linenos" data-linenos="5 "></span>|      787|      324.9|
+<span class="linenos" data-linenos="6 "></span>|      788|      324.9|
+<span class="linenos" data-linenos="7 "></span>+---------+-----------+
+<span class="linenos" data-linenos="8 "></span>only showing top 3 rows
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Si tenemos un <em>DataFrame</em> con un gran número de columnas y queremos recuperarlas todas a excepción de unas pocas, es más cómodo utilizar la transformación <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.drop.html">drop</a>, la cual funciona de manera opuesta a <code>select</code>, es decir, indicando las columnas que queremos quitar del resultado:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Obtenemos el mismo resultado</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;Zip&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Units&quot;</span><span class="p">,</span> <span class="s2">&quot;Revenue&quot;</span><span class="p">,</span> <span class="s2">&quot;Country&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="trabajando-con-columnas">Trabajando con columnas<a class="headerlink" href="#trabajando-con-columnas" title="Permanent link">&para;</a></h3>
+<p>Para acceder a las columnas, debemos crear objetos <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/column.html">Column</a>. Para ello, podemos seleccionarlos a partir de un <em>DataFrame</em> como una propiedad o mediante la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.col.html">col</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">nomCliente</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">nombre</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">nomCliente</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ProductID&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">nomCliente</span> <span class="o">=</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Así pues, podemos recuperar ciertas columnas de un DataFrame con cualquier de las siguientes expresiones:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span> <span class="s2">&quot;Revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ProductID</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">Revenue</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ProductID&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Revenue&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.join.html</p>
+<h4 id="col-vs-expr">col vs expr<a class="headerlink" href="#col-vs-expr" title="Permanent link">&para;</a></h4>
+<p>En ocasiones se confunde el uso de la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.col.html"><code>col</code></a> con <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.expr.html"><code>expr</code></a>. Aunque podemos referenciar a una columna haciendo uso de <code>expr</code>, su uso provoca que se parseé la cadena recibida para interpretarla.</p>
+<p>Para el siguiente ejemplo, supongamos que tenemos un <em>DataFrame</em> con datos de clientes. Utilizaremos también la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.concat_ws.html">concat_ws</a> para concatenar textos utilizado un separador.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span><span class="n">expr</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">concat_ws</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;nombre&quot;</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;apellidos&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;nombreCompleto&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos="4 "></span>          <span class="s2">&quot;sueldo&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="5 "></span>          <span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;sueldo&quot;</span><span class="p">)</span><span class="o">*</span><span class="mf">1.1</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;nuevoSueldo&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+<span class="linenos" data-linenos="6 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">concat_ws</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;nombre&quot;</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;apellidos&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;nombreCompleto&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos="7 "></span>          <span class="s2">&quot;sueldo&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="8 "></span>          <span class="n">expr</span><span class="p">(</span><span class="s2">&quot;sueldo*1.1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;nuevoSueldo&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> 
+</code></pre></div>
+<h4 id="anadiendo-columnas">Añadiendo columnas<a class="headerlink" href="#anadiendo-columnas" title="Permanent link">&para;</a></h4>
+<p>Una vez tenemos un <em>DataFrame</em>, podemos añadir columnas mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.withColumn.html">withColumn</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">dfNuevo</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">Units</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">Revenue</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">dfNuevo</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+------+</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># |ProductID|      Date|            Zip|Units|Revenue|Country| total|</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+------+</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |      725|1999-01-15|41540          |    1|  115.5|Germany| 115.5|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |      787|2002-06-06|41540          |    1|  314.9|Germany| 314.9|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |      788|2002-06-06|41540          |    1|  314.9|Germany| 314.9|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |      901|1999-02-15|13587          |    2|  818.9|Germany|1637.8|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># ...</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">withColumn</p>
+<p>Anteriormente hemos utilizado el método <code>withColumn</code> para cambiarle el tipo a un campo ya existente. Así pues, si referenciamos a una columna que ya existe, en vez de crearla, la sustituirá.</p>
+</div>
+<p>Otra forma de añadir una columna con una expresión es mediante la transformación <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.selectExpr.html"><code>selectExpr</code></a>. Por ejemplo, podemos conseguir el mismo resultado que en el ejemplo anterior de la siguiente manera:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">selectExpr</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;Units * Revenue as total&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span><span class="err">`</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># |ProductID|      Date|            Zip|Units|Revenue|Country| total|</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># |      725|1999-01-15|41540          |    1|  115.5|Germany| 115.5|</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># |      787|2002-06-06|41540          |    1|  314.9|Germany| 314.9|</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># |      788|2002-06-06|41540          |    1|  314.9|Germany| 314.9|</span>
+<span class="linenos" data-linenos="8 "></span><span class="c1"># |      901|1999-02-15|13587          |    2|  818.9|Germany|1637.8|</span>
+<span class="linenos" data-linenos="9 "></span><span class="c1"># ...</span>
+</code></pre></div>
+<p>Aunque más adelante veremos como realizar transformaciones con agregaciones, mediante <code>selectExpr</code> también podemos realizar analítica de datos aprovechando la potencia de SQL:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">selectExpr</span><span class="p">(</span><span class="s2">&quot;count(distinct(ProductID)) as productos&quot;</span><span class="p">,</span><span class="s2">&quot;count(distinct(Country)) as paises&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># +---------+------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># |productos|paises|</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># +---------+------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># |      799|     4|</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># +---------+------+</span>
+</code></pre></div>
+<h4 id="cambiando-el-nombre">Cambiando el nombre<a class="headerlink" href="#cambiando-el-nombre" title="Permanent link">&para;</a></h4>
+<p>Si por algún extraño motivo necesitamos cambiarle el nombre a una columna (por ejemplo, vamos a unir dos <em>DataFrames</em> que tienen columnas con el mismo nombre pero en posiciones diferentes, o que al inferir el esquema tenga un nombre críptico o demasiado largo y queremos que sea más legible) podemos utilizar la transformación <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.withColumnRenamed.html">withColumnRenamed</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s2">&quot;Zip&quot;</span><span class="p">,</span> <span class="s2">&quot;PostalCode&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># |ProductID|      Date|     PostalCode|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># |      725|1999-01-15|41540          |    1|  115.5|Germany|</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |      787|2002-06-06|41540          |    1|  314.9|Germany|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |      788|2002-06-06|41540          |    1|  314.9|Germany|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |      940|1999-01-15|22587          |    1|  687.7|Germany|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |      396|1999-01-15|22587          |    1|  857.1|Germany|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># only showing top 5 rows</span>
+</code></pre></div>
+<h3 id="filtrando">Filtrando<a class="headerlink" href="#filtrando" title="Permanent link">&para;</a></h3>
+<p>Si queremos eliminar filas, usaremos el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.filter.html">filter</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Country</span><span class="o">==</span><span class="s2">&quot;Germany&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># |ProductID|      Date|            Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># |      725|1999-01-15|41540          |    1|  115.5|Germany|</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># |      787|2002-06-06|41540          |    1|  314.9|Germany|</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># |      788|2002-06-06|41540          |    1|  314.9|Germany|</span>
+<span class="linenos" data-linenos="8 "></span><span class="c1"># |      940|1999-01-15|22587          |    1|  687.7|Germany|</span>
+</code></pre></div>
+<p>Por similitud con SQL, podemos utilizar también <code>where</code> como un alias de <code>filter</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Units</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># |ProductID|      Date|            Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># |      495|1999-03-15|75213 CEDEX 16 |   77|43194.1| France|</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |     2091|1999-05-15|9739           |   24| 3652.7| Mexico|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |     2091|1999-06-15|40213          |   41| 6240.1|Germany|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |     2091|1999-10-15|40213          |   41| 6347.7|Germany|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |     2091|1999-12-15|40213          |   23| 3560.9|Germany|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+</code></pre></div>
+<p>Podemos utilizar los operadores lógicos (<code>&amp;</code> para conjunción y <code>|</code> para la disyunción) para crear condiciones compuestas (recordad rodear cada condición entre paréntesis):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">Country</span><span class="o">==</span><span class="s2">&quot;Germany&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Units</span><span class="o">&gt;</span><span class="mi">20</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># |ProductID|      Date|            Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># |     2091|1999-06-15|40213          |   41| 6240.1|Germany|</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |     2091|1999-10-15|40213          |   41| 6347.7|Germany|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |     2091|1999-12-15|40213          |   23| 3560.9|Germany|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">ProductID</span><span class="o">==</span><span class="mi">2314</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">ProductID</span><span class="o">==</span><span class="mi">1322</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># |ProductID|      Date|            Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># |     2314|1999-05-15|46045          |    1|   13.9|Germany|</span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># |     1322|2000-01-06|75593 CEDEX 12 |    1|  254.5| France|</span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># +---------+----------+---------------+-----+-------+-------+</span>
+</code></pre></div>
+<p>Un caso particular de filtrado es la eliminación de los registros repetidos, lo cual lo podemos hacer de dos maneras:</p>
+<ul>
+<li>Haciendo uso del método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.distinct.html">distinct</a> tras haber realizado alguna transformación</li>
+<li>Utilizando <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.dropDuplicates.html">dropDuplicates</a> sobre un <em>DataFrame</em>:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">dropDuplicates</span><span class="p">([</span><span class="s2">&quot;Country&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># +-------+</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># |Country|</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +-------+</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |Germany|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># | France|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># | Mexico|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># | Canada|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +-------+</span>
+</code></pre></div>
+<h3 id="ordenando">Ordenando<a class="headerlink" href="#ordenando" title="Permanent link">&para;</a></h3>
+<p>Una vez recuperados los datos deseados, podemos ordenarlos mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.sort.html">sort</a> u <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.orderBy.html">orderBy</a> (son operaciones totalmente equivalentes):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span><span class="s2">&quot;Revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Revenue</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># Ordenación descendiente</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Revenue</span><span class="o">.</span><span class="n">desc</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">desc</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># Ordenación diferente en cada columna</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Revenue</span><span class="o">.</span><span class="n">desc</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">Units</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">([</span><span class="s2">&quot;Revenue&quot;</span><span class="p">,</span><span class="s2">&quot;Units&quot;</span><span class="p">],</span> <span class="n">ascending</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>Por ejemplo, con la última operación obtendríamos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>+---------+----------+---------------+-----+-------+-------+
+<span class="linenos" data-linenos=" 2 "></span>|ProductID|      Date|            Zip|Units|Revenue|Country|
+<span class="linenos" data-linenos=" 3 "></span>+---------+----------+---------------+-----+-------+-------+
+<span class="linenos" data-linenos=" 4 "></span>|      495|1999-03-15|75213 CEDEX 16 |   77|43194.1| France|
+<span class="linenos" data-linenos=" 5 "></span>|      495|2000-03-01|75391 CEDEX 08 |   18|10395.0| France|
+<span class="linenos" data-linenos=" 6 "></span>|      464|2003-06-11|75213 CEDEX 16 |   16|10075.8| France|
+<span class="linenos" data-linenos=" 7 "></span>|      464|2000-08-01|22397          |   17| 9817.5|Germany|
+<span class="linenos" data-linenos=" 8 "></span>|      495|2000-03-01|06175 CEDEX 2  |   16| 9240.0| France|
+<span class="linenos" data-linenos=" 9 "></span>+---------+----------+---------------+-----+-------+-------+
+<span class="linenos" data-linenos="10 "></span>only showing top 5 rows
+</code></pre></div>
+<p>Normalmente, tras realizar una ordenación, es habitual quedarse con un subconjunto de los datos. Para ello, podemos utilizar la transformación <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.limit.html">limit</a>.</p>
+<p>Por ejemplo, la siguiente transformación es similar al ejemplo anterior, sólo que ahora al driver únicamente le llegan 5 registros, en vez de traerlos todos y sólo mostrar 5:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Revenue</span><span class="o">.</span><span class="n">desc</span><span class="p">(),</span> <span class="n">df</span><span class="o">.</span><span class="n">Units</span><span class="o">.</span><span class="n">asc</span><span class="p">())</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="anadiendo-filas">Añadiendo filas<a class="headerlink" href="#anadiendo-filas" title="Permanent link">&para;</a></h3>
+<p>La única manera de añadir filas a un <em>DataFrame</em> es creando uno nuevo que sea el resultado de unir dos <em>DataFrames</em> que compartan el mismo esquema (mismo nombres de columnas y en el mismo orden). Para ello, utilizaremos la transformación <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.union.html">union</a> que realiza la unión por el orden de las columnas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">nuevasVenta</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="p">(</span><span class="mi">6666</span><span class="p">,</span> <span class="s2">&quot;2022-03-24&quot;</span><span class="p">,</span> <span class="s2">&quot;03206&quot;</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mf">3333.33</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="p">(</span><span class="mi">6666</span><span class="p">,</span> <span class="s2">&quot;2022-03-25&quot;</span><span class="p">,</span> <span class="s2">&quot;03206&quot;</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mf">2222.22</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos="4 "></span><span class="p">]</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># Creamos un nuevo DataFrame con las nuevas Ventas</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">nvDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">nuevasVenta</span><span class="p">)</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># Unimos los dos DataFrames</span>
+<span class="linenos" data-linenos="8 "></span><span class="n">dfUpdated</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">nvDF</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="cogiendo-muestras">Cogiendo muestras<a class="headerlink" href="#cogiendo-muestras" title="Permanent link">&para;</a></h3>
+<p>Si necesitamos recoger un subconjunto de los datos, ya sea para preparar los datos para algún modelo de <em>machine learning</em> como para una muestra aleatoria de los mismos, podemos utilizar las siguientes transformaciones:</p>
+<ul>
+<li>
+<p><a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.sample.html">sample</a> permite obtener una muestra a partir de un porcentaje (no tiene porqué obtener una cantidad exacta). También admite un semilla e indicar si queremos que pueda repetir los datos.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>                  <span class="c1"># 120239</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">muestra</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mf">0.10</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">muestra</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>             <span class="c1"># 11876</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">muestraConRepetidos</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mf">0.10</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">muestraConRepetidos</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="c1"># 11923</span>
+</code></pre></div>
+</li>
+<li>
+<p><a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.randomSplit.html">randomSplit</a> recupera diferentes <em>DataFrames</em> cuyos tamaños en porcentaje se indican como parámetros (si no suman uno, los parámetros se normalizan):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">randomSplit</span><span class="p">([</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfEntrenamiento</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfPrueba</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">dfEntrenamiento</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>     <span class="c1"># 96194</span>
+<span class="linenos" data-linenos="5 "></span><span class="n">dfPrueba</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>            <span class="c1"># 24045</span>
+</code></pre></div>
+</li>
+</ul>
+<!--
+* [sampleBy](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.sampleBy.html)
+-->
+
+<h2 id="trabajando-con-datos-sucios">Trabajando con datos sucios<a class="headerlink" href="#trabajando-con-datos-sucios" title="Permanent link">&para;</a></h2>
+<p>Hay tres formas de gestionar la suciedad de los datos o la omisión completa de los mismos:</p>
+<ol>
+<li>Eliminar las filas que tienen valores vacíos en una o más columnas.</li>
+<li>Rellenar los valores nulos con valores que definimos nosotros.</li>
+<li>Sustituir los datos erróneos por algún valor que sepamos como gestionarlo.</li>
+</ol>
+<p>Vamos a ver cada uno de estos casos a partir del siguiente <em>dataset</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">malasVentas</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos=" 2 "></span>    <span class="p">(</span><span class="mi">6666</span><span class="p">,</span> <span class="s2">&quot;2022-03-22&quot;</span><span class="p">,</span> <span class="s2">&quot;03206&quot;</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mf">3333.33</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos=" 3 "></span>    <span class="p">(</span><span class="mi">6666</span><span class="p">,</span> <span class="s2">&quot;2022-03-22&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mf">3333.33</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos=" 4 "></span>    <span class="p">(</span><span class="mi">6666</span><span class="p">,</span> <span class="s2">&quot;2022-03-23&quot;</span><span class="p">,</span> <span class="s2">&quot;03206&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mf">2222.22</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="p">(</span><span class="mi">6666</span><span class="p">,</span> <span class="s2">&quot;2022-03-24&quot;</span><span class="p">,</span> <span class="s2">&quot;03206&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Espain&quot;</span><span class="p">),</span>
+<span class="linenos" data-linenos=" 6 "></span>    <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="p">]</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">malDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">malasVentas</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;ProductID&quot;</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;Zip&quot;</span><span class="p">,</span> <span class="s2">&quot;Units&quot;</span><span class="p">,</span> <span class="s2">&quot;Revenue&quot;</span> <span class="p">,</span> <span class="s2">&quot;Country&quot;</span><span class="p">])</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># |     6666|2022-03-22| null|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># |     6666|2022-03-25|03206| null|2222.22|   null|</span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+</code></pre></div>
+<p>Si queremos saber si una columna contiene nulos, podemos hacer un filtrado utilizando el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Column.isNull.html">isNull</a> sobre los campos deseados (también podemos utilizar <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Column.isNotNull.html">isNotNull</a> si queremos el caso contrario):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">malDF</span><span class="o">.</span><span class="n">Zip</span><span class="o">.</span><span class="n">isNull</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># +---------+----------+----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># |ProductID|      Date| Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># +---------+----------+----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># |     6666|2022-03-22|null|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># +---------+----------+----+-----+-------+-------+</span>
+</code></pre></div>
+<p>Para trabajar con las filas que contengan algún dato nulo, podemos acceder a la propiedad <code>na</code>, la cual devuelve un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameNaFunctions.html">DataFrameNaFunctions</a> sobre la que podemos indicarle:</p>
+<ul>
+<li>
+<p>que la elimine mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameNaFunctions.drop.html"><code>drop</code></a> / <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.dropna.html"><code>dropna</code></a>. Puede recibir <code>"any"</code> (borrará las filas que contengan algún nulo) o <code>"all"</code> (borrará las filas que todas sus columnas contengan nulos) y una lista con las columnas a considerar:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Elimina todos los nulos</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># Elimina las filas que todas sus columnas son nulas</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;all&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="14 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># |     6666|2022-03-22| null|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="19 "></span>
+<span class="linenos" data-linenos="20 "></span><span class="c1"># Elimina las filas que tienen el Zip nulo</span>
+<span class="linenos" data-linenos="21 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Zip&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="22 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="23 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos="24 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="25 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos="26 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
+<span class="linenos" data-linenos="27 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
+<span class="linenos" data-linenos="28 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+</code></pre></div>
+<p>También podemos indicar la cantidad de nulos que ha de contener cada fila para eliminarla mediante el parámetro <code>thresh</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Elimina las filas con 3 o más nulos</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">thresh</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p>que la rellene mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameNaFunctions.fill.html"><code>fill</code></a> / <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.fillna.html"><code>fillna</code></a>, indicando el valor y si queremos, sobre qué columnas aplicar la modificación:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Rellenamos los zips vacíos por 99999</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="s2">&quot;99999&quot;</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Zip&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># malDF.na.fill(&quot;99999&quot;, [&quot;Zip&quot;]).show()</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># malDF.fillna({&quot;Zip&quot;: &quot;99999&quot;})</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |     6666|2022-03-22|99999|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># |     null|      null|99999| null|   null|   null|</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+</code></pre></div>
+</li>
+<li>
+<p>que la sustituya mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameNaFunctions.replace.html"><code>replace</code></a></p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Cambiamos Espain por Spain</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">na</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Espain&quot;</span><span class="p">,</span> <span class="s2">&quot;Spain&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |     6666|2022-03-22| null|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null|  Spain|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># |     null|      null| null| null|   null|   null|</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+</code></pre></div>
+</li>
+</ul>
+<p>Otro caso muy común es realizar una operación sobre una columna para transformar su valor, por ejemplo, pasar todo el texto a minúsculas o dividir una columna entre 100 para cambiar la escala.</p>
+<p>En nuestro caso, vamos a modificar las columnas <em>Zip</em> y <em>Country</em> para realizar un <code>trim</code> y borrar los espacios en blanco:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span><span class="p">,</span> <span class="n">trim</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="n">trim</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;Zip&quot;</span><span class="p">,</span> <span class="n">trim</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;Zip&quot;</span><span class="p">)))</span>
+</code></pre></div>
+<h2 id="usando-sql">Usando SQL<a class="headerlink" href="#usando-sql" title="Permanent link">&para;</a></h2>
+<p>En la era del big data SQL es la lengua franca, permitiendo a perfiles con pocos conocimientos de programación trabajar de forma eficiente con los datos (siempre poniendo el foco en la analítica de datos, no en el procesamiento transaccional).</p>
+<p><em>Spark</em> soporta el ANSI SQL 2003, ampliamente establecido en el mundo de las bases de datos.</p>
+<p>Para correr SQL en <em>Spark</em> podemos hacerlo a través de:</p>
+<ul>
+<li>El cliente SQL, es cual se ofrece como un comando en <code>./bin/spark-sql</code></li>
+<li>Mediante un servidor ODBC/JDBC</li>
+<li>De forma programativa mediante aplicaciones <em>Spark</em>.</li>
+</ul>
+<p>Las dos primeras opciones se integran con <em>Apache Hive</em> para utilizar su <em>metastore</em>. Ahora nos vamos a centrar en la última.</p>
+<h3 id="vistas-temporales">Vistas temporales<a class="headerlink" href="#vistas-temporales" title="Permanent link">&para;</a></h3>
+<p>Ya hemos visto que los <em>DataFrames</em> tienen una estructura similar a una tabla de una base de datos relacional. Para poder realizar consultas, necesitaremos crear vistas temporales mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.createTempView.html"><code>createTempView</code></a> o <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.createOrReplaceTempView.html"><code>createOrReplaceTempView</code></a> para posteriormente realizar una consulta sobre la vista creada a través de <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.sql.html"><code>spark.sql</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># 1. definimos la vista</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;ventas&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># 2. realizamos la consulta</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">ventasCanada</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;select * from ventas where trim(Country)=&#39;Canada&#39;&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">ventasCanada</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># +---------+---------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |ProductID|     Date|            Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># +---------+---------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |      725|1/15/1999|H1B            |    1|  115.4|Canada |</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># |     2235|1/15/1999|H1B            |    2|  131.1|Canada |</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># |      713|1/15/1999|H1B            |    1|  160.1|Canada |</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># +---------+---------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># only showing top 3 rows</span>
+</code></pre></div>
+<h3 id="vistas-globales">Vistas globales<a class="headerlink" href="#vistas-globales" title="Permanent link">&para;</a></h3>
+<p>Las vistas temporales tienen un alcance de <em>SparkSession</em>, de manera que desaparecen una vez finalice la sesión que ha creado la vista. Si necesitamos tener una vista que se comparta entre todas las sesiones y que permanezca viva hasta que la aplicación <em>Spark</em> finalice, podemos crear una vista temporal global mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.createOrReplaceGlobalTempView.html"><code>createOrReplaceGlobalTempView</code></a></p>
+<p>Estas vistas se almacenan en la base de datos <code>global_temp</code> y en las consultas es necesario poner el prefijo <code>global_temp</code> para acceder a sus vistas.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># 1. definimos la vista global</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">createOrReplaceGlobalTempView</span><span class="p">(</span><span class="s2">&quot;ventasg&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># 2. realizamos la consulta</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">ventasCanadaG</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;select * from global_temp.ventasg where trim(Country)=&#39;Canada&#39;&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">ventasCanadaG</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># +---------+---------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |ProductID|     Date|            Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># +---------+---------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |      725|1/15/1999|H1B            |    1|  115.4|Canada |</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># |     2235|1/15/1999|H1B            |    2|  131.1|Canada |</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># |      713|1/15/1999|H1B            |    1|  160.1|Canada |</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># +---------+---------+---------------+-----+-------+-------+</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1"># only showing top 3 rows</span>
+<span class="linenos" data-linenos="14 "></span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># Creamos otra sesión y vemos como funciona</span>
+<span class="linenos" data-linenos="16 "></span><span class="n">spark</span><span class="o">.</span><span class="n">newSession</span><span class="p">()</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;select count(*) from global_temp.ventasg where trim(Country)=&#39;Canada&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="eliminando-vistas">Eliminando vistas<a class="headerlink" href="#eliminando-vistas" title="Permanent link">&para;</a></h3>
+<p>Para borrar una vista que hayamos creado, necesitamos acceder al <em>Spark Catalog</em> que veremos en una <a href="02catalog#spark-sql-catalog">sesión posterior</a>, y utilizar el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.dropTempView.html"><code>dropTempView</code></a> o <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.dropGlobalTempView.html"><code>dropGlobalTempView</code></a>
+dependiendo del tipo de vista:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">dropTempView</span><span class="p">(</span><span class="s2">&quot;ventas&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">dropGlobalTempView</span><span class="p">(</span><span class="s2">&quot;ventasg&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="trabajando-con-databricks">Trabajando con <em>Databricks</em><a class="headerlink" href="#trabajando-con-databricks" title="Permanent link">&para;</a></h2>
+<p>En la sesión anterior ya vimos como crear RDDs con <em>Databricks</em>. En esta ocasión, vamos a trabajar mediante <em>DataFrames</em> y SQL para ver toda la flexibilidad que nos aporta.</p>
+<p>Una vez creado de nuevo el cluster, vamos a cargar los datos mediante la opción <em>Data</em>, subiendo el archivo <a href="resources/pdi_sales_small.csv"><code>pdi_sales_small.csv</code></a>:</p>
+<figure style="align: center;">
+    <img src="images/02spark-databricks-upload.png">
+    <figcaption>Subiendo datos a Databricks</figcaption>
+</figure>
+
+<p>Una vez cargado el archivo, pulsamos sobre el botón <strong><em>Create table in notebook</em></strong> de manera que nos crea un cuaderno <em>Jupyter</em> donde podemos consultar los datos y crear una vista temporal:</p>
+<figure style="align: center;">
+    <img src="images/02spark-databricks-read.png">
+    <figcaption>Cargados los datos en un DataFrame</figcaption>
+</figure>
+
+<p>Para que funcione correctamente con nuestro datos, vamos a modificar el código:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">infer_schema</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">first_row_is_header</span> <span class="o">=</span> <span class="s2">&quot;true&quot;</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">delimiter</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span>
+</code></pre></div>
+<p>Y tras cargar el <em>dataset</em>, antes de crear la vista, vamos a limpiar los países:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">trim</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="n">trim</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Country</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="datos-visuales">Datos visuales<a class="headerlink" href="#datos-visuales" title="Permanent link">&para;</a></h3>
+<p>Si volvemos a ejecutar el cuaderno, ahora sí que cargará correctamente los datos. Si nos vamos a la celda que realiza una consulta sobre todos los datos, podemos ver en la parte superior derecha como el lenguaje empleado en la celda es SQL, por ello la primera línea comienza con <code>%sql</code>, y a continuación ya podemos introducir directamente código SQL, teniendo la opción de visualizar los datos tanto en modo texto como mediante gráficos:</p>
+<figure style="align: center;">
+    <img src="images/02spark-databricks-sql.gif">
+    <figcaption>Datos y gráficos mediante SQL</figcaption>
+</figure>
+
+<h3 id="cuadro-de-mandos">Cuadro de mandos<a class="headerlink" href="#cuadro-de-mandos" title="Permanent link">&para;</a></h3>
+<p>Además, con las tablas y/o gráficos que generamos dentro de <em>Databricks</em>, podemos generar un sencillo cuadro de mandos.</p>
+<p>Vamos a crear un par de consultas, una para obtener las ventas medias por país:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">%</span><span class="k">sql</span>
+<span class="linenos" data-linenos="2 "></span><span class="k">select</span><span class="w"> </span><span class="n">Country</span><span class="p">,</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">Revenue</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">ventas</span>
+<span class="linenos" data-linenos="3 "></span><span class="k">from</span><span class="w"> </span><span class="n">pdi_sales_small_csv</span>
+<span class="linenos" data-linenos="4 "></span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">Country</span>
+<span class="linenos" data-linenos="5 "></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">ventas</span><span class="w"> </span><span class="k">desc</span>
+</code></pre></div>
+<p>Y otra para las unidas pedidas por cada país:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">%</span><span class="k">sql</span>
+<span class="linenos" data-linenos="2 "></span><span class="k">select</span><span class="w"> </span><span class="n">Country</span><span class="p">,</span><span class="w"> </span><span class="k">sum</span><span class="p">(</span><span class="n">Units</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">pedidos</span>
+<span class="linenos" data-linenos="3 "></span><span class="k">from</span><span class="w"> </span><span class="n">pdi_sales_small_csv</span>
+<span class="linenos" data-linenos="4 "></span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">Country</span>
+<span class="linenos" data-linenos="5 "></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">pedidos</span><span class="w"> </span><span class="k">desc</span>
+</code></pre></div>
+<p>Si pulsamos sobre el icono del gráfico de barras de la esquina superior derecha de una celda SQL, podemos añadir el resultado de la celda a un <em>dashboard</em>:</p>
+<figure style="align: center;">
+    <img src="images/02spark-databricks-dashboard.gif">
+    <figcaption>Creando un cuadro de mandos</figcaption>
+</figure>
+
+<p>Una vez creado, sólo tenemos que seleccionar las celdas que queramos, e ir añadiéndolas al cuadro de mandos creado. Posteriormente, podemos abrirlo, resituar los elementos y visualizarlo:</p>
+<figure style="align: center;">
+    <img src="images/02spark-databricks-dashboard2.gif">
+    <figcaption>Añadiendo elementos a un cuadro de mandos</figcaption>
+</figure>
+
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Documentación oficial sobre <a href="https://spark.apache.org/docs/latest/sql-programming-guide.html">Spark SQL, DataFrames and Datasets Guide</a></li>
+<li><a href="https://link.springer.com/book/10.1007/978-1-4842-7383-8">Beginning Apache Spark 3: With DataFrame, Spark SQL, Structured Streaming, and Spark Machine Learning Library</a></li>
+<li><a href="https://sparkbyexamples.com/pyspark/">Spark by Examples</a></li>
+<li><a href="https://towardsdatascience.com/the-most-complete-guide-to-pyspark-dataframes-2702c343b2e8">The Most Complete Guide to pySpark DataFrames</a></li>
+<li><a href="http://datacamp-community-prod.s3.amazonaws.com/02213cb4-b391-4516-adcd-57243ced8eed">Spark SQL Cheatsheet en PDF</a> y en <a href="https://www.datacamp.com/blog/pyspark-cheat-sheet-spark-dataframes-in-python">formato web</a></li>
+</ul>
+<!--
+2085680-8372834-1990332-1616010-5139491-4428950-8671321-4806110-3358726
+
+Bomberos de San Francisco: https://data.sfgov.org/Public-Safety/Fire-Incidents/wr8u-xric/data 212MB
+https://data.sfgov.org/Public-Safety/Fire-Department-Calls-for-Service/nuek-vuh3 2139 MB
+https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
+-->
+
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.">CE4.1b</abbr>) En las siguientes actividades vamos a familiarizarnos con el uso del API de <em>DataFrames</em> de <em>Spark</em>.</p>
+<ol>
+<li>
+<p>(1.5p) A partir del archivo <a href="resources/nombres.json">nombres.json</a>, crea un <em>DataFrame</em> y realiza las siguientes operaciones:</p>
+<ol>
+<li>Crea una nueva columna (columna <code>Mayor30</code>) que indique si la persona es mayor de 30 años.</li>
+<li>Crea una nueva columna (columna <code>FaltanJubilación</code>) que calcule cuantos años le faltan para jubilarse (supongamos que se jubila a los 67 años)</li>
+<li>Crea una nueva columna (columna <code>Apellidos</code>) que contenga <code>XYZ</code> (puedes utilizar la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.lit.html"><code>lit</code></a>)</li>
+<li>Elimina las columna <code>Mayor30</code> y <code>Apellidos</code>?</li>
+<li>Crea una nueva columna (columna <code>AnyoNac</code>) con el año de nacimiento de cada persona (puedes utilizar la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.current_date.html"><code>current_date</code></a>).</li>
+<li>Añade un id incremental para cada fila (campo <code>Id</code>) y haz que al hacer un <code>show</code> se vea en primer lugar (puedes utilizar la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.monotonically_increasing_id.html"><code>monotonically_increasing_id</code></a>) seguidos del <code>Nombre</code>, <code>Edad</code>, <code>AnyoNac</code>, <code>FaltaJubilacion</code> y <code>Ciudad</code></li>
+</ol>
+<p>Al realizar los seis pasos, el resultado del DataFrame será similar a :</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>+---+------+----+-------+----------------+--------+
+<span class="linenos" data-linenos="2 "></span>| Id|Nombre|Edad|AnyoNac|FaltanJubilacion|  Ciudad|
+<span class="linenos" data-linenos="3 "></span>+---+------+----+-------+----------------+--------+
+<span class="linenos" data-linenos="4 "></span>|  0| Aitor|  45|   1977|              22|   Elche|
+<span class="linenos" data-linenos="5 "></span>|  1| María|  23|   1999|              44|Alicante|
+<span class="linenos" data-linenos="6 "></span>|  2| Laura|  19|   2003|              48|   Elche|
+<span class="linenos" data-linenos="7 "></span>|  3| Sonia|  45|   1977|              22|    Aspe|
+<span class="linenos" data-linenos="8 "></span>|  4| Pedro|null|   null|            null|   Elche|
+<span class="linenos" data-linenos="9 "></span>+---+------+----+-------+----------------+--------+
+</code></pre></div>
+</li>
+<li>
+<p>(1p) A partir del archivo <a href="resources/VentasNulos.csv"><code>VentasNulos.csv</code></a>:</p>
+<ol>
+<li>
+<p>Elimina las filas que tengan al menos 4 nulos.</p>
+</li>
+<li>
+<p>Con las filas restantes, sustituye:</p>
+<ol>
+<li>Los nombres nulos por <code>Empleado</code></li>
+<li>Las ventas nulas por la media de las ventas de los compañeros(redondeado a entero).</li>
+<li>Los euros nulos por el valor del compañero que menos € ha ganado</li>
+<li>La ciudad nula por <code>C.V.</code></li>
+<li>El identificador nulo por <code>XYZ</code></li>
+</ol>
+<p>Para los pasos ii) y iii) puedes crear un <em>DataFrame</em> que obtenga el valor a asignar y luego pasarlo como parámetro al método para rellenar los nulos.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>(1.5p) A partir del archivo <a href="resources/movies.tsv"><code>movies.tsv</code></a>, crea una esquema de forma declarativa con los campos:</p>
+<ul>
+<li><code>interprete</code> de tipo <code>string</code></li>
+<li><code>pelicula</code> de tipo <code>string</code></li>
+<li><code>anyo</code> de tipo <code>int</code></li>
+</ul>
+<p>Cada fila del fichero implica que el actor/actriz ha trabajado en dicha película en el año indicado.</p>
+<ol>
+<li>Una vez creado el esquema, carga los datos en un <em>DataFrame</em>.</li>
+<li>¿Cuantas películas diferentes hay?</li>
+<li>¿En cuantas películas ha trabajado <code>Murphy, Eddie (I)</code>?</li>
+<li>Muestra los intérpretes que aparecen tanto en <code>Superman</code> como en <code>Superman II</code>.</li>
+<li>¿Cuáles son los actores que han aparecido en más de 30 películas?</li>
+<li>¿En que película anterior a 1980 aparecen al menos 25 intérpretes?</li>
+<li>Muestra la cantidad de películas producidas cada año (solo debe mostrar el año y la cantidad), ordenando el listado por la cantidad de forma descendente.</li>
+<li>A partir de la consulta anterior, crea un gráfico de barras que muestre el año y la cantidad de películas, ordenados por fecha.</li>
+</ol>
+</li>
+</ol>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        <a href='https://ko-fi.com/T6T8GWT9N' title='Invítame a un café en ko-fi.com' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Invítame a un café en ko-fi.com' /></a>
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Me encantan estos apuntes" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Los apuntes son mejorables" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Gracias por tu tiempo. Si quieres me puedes <a href='https://ko-fi.com/T6T8GWT9N'>invitar a un café en ko-fi</a>.
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              ¡Gracias por tu colaboración! Ayúdame a mejorar los apuntes enviándome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pie" >
+        
+          
+          <a href="01rdd.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: S60.- RDD" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Anterior
+                </span>
+                S60.- RDD
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+    
+  </body>
+</html>

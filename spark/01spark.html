@@ -1,0 +1,1788 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Uso de Spark UI para monitorizar los trabajos.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/spark/01spark.html">
+      
+      
+        <link rel="prev" href="index.html">
+      
+      
+        <link rel="next" href="01rdd.html">
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>Analítica de datos con Spark - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Analítica de datos con Spark - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Uso de Spark UI para monitorizar los trabajos." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/01spark.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/spark/01spark.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Analítica de datos con Spark - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Uso de Spark UI para monitorizar los trabajos." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/01spark.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#spark" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Analítica de datos con Spark
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Sistemas de almacenamiento" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../hadoop/index.html">Ecosistema Hadoop</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Ecosistema Hadoop" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/03hadoop.html" class="md-nav__link">
+        S38.- Hadoop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04hdfs.html" class="md-nav__link">
+        S39.- HDFS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04formatos.html" class="md-nav__link">
+        S39.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/05flume.html" class="md-nav__link">
+        S43.- Sqoop y Flume
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/06hive.html" class="md-nav__link">
+        S45.- Hive
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">Datos en el cloud</a>
+          
+            <label for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Datos en el cloud" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/03s3.html" class="md-nav__link">
+        S40.- S3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/04computacion.html" class="md-nav__link">
+        S44.- EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/05emr.html" class="md-nav__link">
+        S44.- EMR
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/06datos.html" class="md-nav__link">
+        S46.- RDS y DynamoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/07athena.html" class="md-nav__link">
+        S46.- Athena
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">Spark</a>
+          
+            <label for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Spark" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Spark
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          S56.- Ecosistema
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="01spark.html" class="md-nav__link md-nav__link--active">
+        S56.- Ecosistema
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    Introducción
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spark-vs-hadoop" class="md-nav__link">
+    Spark vs Hadoop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-unificado" class="md-nav__link">
+    Stack unificado
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#puesta-en-marcha" class="md-nav__link">
+    Puesta en Marcha
+  </a>
+  
+    <nav class="md-nav" aria-label="Puesta en Marcha">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-docker" class="md-nav__link">
+    Uso de Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-de-spark" class="md-nav__link">
+    Clúster de Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-en-la-nube" class="md-nav__link">
+    Uso en la nube
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparkcontext-vs-sparksession" class="md-nav__link">
+    SparkContext vs SparkSession
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hola-spark" class="md-nav__link">
+    Hola Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-submit" class="md-nav__link">
+    Spark Submit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    Arquitectura
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitectura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aplicaciones-spark" class="md-nav__link">
+    Aplicaciones Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-stage-y-task" class="md-nav__link">
+    Job, Stage y Task
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataframe" class="md-nav__link">
+    DataFrame
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spark-ui" class="md-nav__link">
+    Spark UI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="01rdd.html" class="md-nav__link">
+        S60.- RDD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02dataframeAPI.html" class="md-nav__link">
+        S62.- DataFrames API
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        PIA FP
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduccion" class="md-nav__link">
+    Introducción
+  </a>
+  
+    <nav class="md-nav" aria-label="Introducción">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spark-vs-hadoop" class="md-nav__link">
+    Spark vs Hadoop
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-unificado" class="md-nav__link">
+    Stack unificado
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#puesta-en-marcha" class="md-nav__link">
+    Puesta en Marcha
+  </a>
+  
+    <nav class="md-nav" aria-label="Puesta en Marcha">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uso-de-docker" class="md-nav__link">
+    Uso de Docker
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cluster-de-spark" class="md-nav__link">
+    Clúster de Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uso-en-la-nube" class="md-nav__link">
+    Uso en la nube
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sparkcontext-vs-sparksession" class="md-nav__link">
+    SparkContext vs SparkSession
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hola-spark" class="md-nav__link">
+    Hola Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spark-submit" class="md-nav__link">
+    Spark Submit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#arquitectura" class="md-nav__link">
+    Arquitectura
+  </a>
+  
+    <nav class="md-nav" aria-label="Arquitectura">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aplicaciones-spark" class="md-nav__link">
+    Aplicaciones Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#job-stage-y-task" class="md-nav__link">
+    Job, Stage y Task
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataframe" class="md-nav__link">
+    DataFrame
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spark-ui" class="md-nav__link">
+    Spark UI
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="spark">Spark<a class="headerlink" href="#spark" title="Permanent link">&para;</a></h1>
+<p>La analítica de datos es el proceso de inspeccionar, limpiar, transformar y modelar los datos con el objetivo de descubrir información útil, obtener conclusiones sobre los datos y ayudar en la toma de decisiones.</p>
+<p>Para ello, el uso de <em>Spark</em> de la mano de <em>Python</em>, <em>NumPy</em> y <em>Pandas</em> como interfaz de la analítica es clave en el día a día de un científico/ingeniero de datos.</p>
+<p>Podemos considerar <em>Spark</em> como una navaja suiza, ya que permite trabajar con todo el ciclo del datos, desde la ingesta y la validación de los datos en <em>raw</em>, limpieza, transformación y agregación de los datos, así como la realización de un análisis exploratorio de los mismos.</p>
+<p>La versión 3.0 de <a href="https://spark.apache.org"><em>Apache Spark</em></a> se lanzó en 2020, diez años después de su nacimiento. Esta versión incluye mejoras de rendimiento (el doble en consultas adaptativas), facilidad en el uso del API de Pandas, un nuevo interfaz gráfico para el streaming que facilita el seguimiento y depuración de las consultas y ajustes de rendimiento.</p>
+<p>En la actualidad ya vamos por la versión 3.3.1 (a diciembre de 2022).</p>
+<h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
+<figure style="float: right;">
+    <img src="images/01spark-logo.png" width="200">
+    <figcaption>Logo de Apache Spark</figcaption>
+</figure>
+
+<p><em>Spark</em> es un framework de computación distribuida similar a <em>Hadoop-MapReduce</em> (así pues, <em>Spark</em> no es un lenguaje de programación), pero que en vez de almacenar los datos en un sistema de ficheros distribuidos o utilizar un sistema de gestión de recursos, lo hace en memoria. El hecho de almacenar en memoria los cálculos intermedios implica que sea mucho más eficiente que <em>MapReduce</em>.</p>
+<p>En el caso de tener la necesidad de almacenar los datos o gestionar los recursos, se apoya en sistemas ya existentes como <em>HDFS</em>, <em>YARN</em> o <em>Apache Mesos</em>. Por lo tanto, <em>Hadoop</em> y <em>Spark</em> son sistemas complementarios.</p>
+<p>El diseño de <em>Spark</em> se basa principalmente en cuatro características:</p>
+<ul>
+<li><ins>Velocidad</ins>: enfocado al uso en un clúster de <em>commodity hardware</em> con una gestión eficiente del multihilo y procesamiento paralelo. <em>Spark</em> construye sus consultas mediante un grafo dirigido acíclico (DAG) y utiliza un planificador para descomponer el grafo en tareas que se ejecutan en paralelo en los nodos de los clústers. Finalmente, utiliza un motor de ejecución (<em>Tungsten</em>) que genera código compacto para optimizar la ejecución. Todo ello teniendo en cuenta que los resultados intermedios se almacenan en memoria.</li>
+<li><ins>Facilidad de uso</ins>: <em>Spark</em> ofrece varias capas de abstracción sobre los datos, como son los <em>RDD</em>, <em>DataFrames</em> y <em>Dataset</em>. Al ofrecer un conjunto de transformaciones y acciones como operaciones de su API, <em>Spark</em> facilita el desarrollo de aplicaciones <em>Big data</em>.</li>
+<li><ins>Modularidad</ins>: soporte para todo tipo de cargas mediante cualquiera de los lenguajes de programación soportados: <em>Scala</em>, <em>Java</em>, <em>Python</em>, <em>SQL</em> y <em>R</em>, así como los módulos de <em>Spark SQL</em> para consultas interactivas, <em>Spark Structured Streaming</em> para procesamiento de datos en <em>streaming</em>, <em>Spark MLlib</em> para <em>machine learning</em> y <em>GraphX</em> para trabajar con grafos. De esta manera, mediante una única aplicación <em>Spark</em> se puede hacer todo sin necesidad de utilizar APIs separadas.</li>
+<li><ins>Extensibilidad</ins>: Al centrarse unicamente en el procesamiento, la gestión de los datos se puede realizar a partir de <em>Hadoop</em>, <em>Cassandra</em>, <em>HBase</em>, <em>MongoDB</em>, <em>Hive</em> o cualquier SGBD relacional, haciendo todo en memoria. Además, se puede extender el API para utilizar otras fuentes de datos, como <em>Apache Kafka</em>, <em>Amazon S3</em> o <em>Azure Storage</em>.</li>
+</ul>
+<p>En términos de flexibilidad, Spark ofrece un <em>stack</em> unificado que permite resolver múltiples tipos de procesamiento de datos, tanto aplicaciones <em>batch</em> como consultas interactivas, algoritmos de <em>machine learning</em> que quieren muchas iteraciones, aplicaciones de ingesta en <em>streaming</em> con rendimiento cercado al tiempo real, etc... Antes de <em>Spark</em>, para cada uno de estos tipos de procesamiento necesitábamos una herramienta diferente, ahora con Spark tenemos una <em>bala de plata</em> que reduce los costes y recursos necesarios.</p>
+<h3 id="spark-vs-hadoop">Spark vs Hadoop<a class="headerlink" href="#spark-vs-hadoop" title="Permanent link">&para;</a></h3>
+<p>La principal diferencia es que la computación se realiza en memoria, lo que puede implicar un mejora de hasta 100 veces mejor rendimiento. Para ello, se realiza una evaluación perezosa de las operaciones, de manera, que hasta que no se realiza una operación, los datos realmente no se cargan.</p>
+<p>Para solucionar los problemas asociados a <em>MapReduce</em>, Spark crea un espacio de memoria RAM compartida entre los ordenadores del clúster. Este permite que los <em>NodeManager</em>/<em>WorkerNode</em> compartan variables (y su estado), eliminando la necesidad de escribir los resultados intermedios en disco. Esta zona de memoria compartida se traduce en el uso de RDD, <em>DataFrames</em> y <em>DataSets</em>, permitiendo realizar procesamiento en memoria a lo largo de un clúster con tolerancia a fallos.</p>
+<h3 id="stack-unificado">Stack unificado<a class="headerlink" href="#stack-unificado" title="Permanent link">&para;</a></h3>
+<p>El elemento principal es <strong><em>Spark Core</em></strong> el cual aporta toda la funcionalidad necesaria para preparar y ejecutar las aplicaciones distribuidas, gestionando la planificación y tolerancia a fallos de las diferentes tareas. Para ello, el núcleo ofrece un entorno <em>NoSQL</em> idóneo para el análisis exploratorio e interactivo de los datos. <em>Spark</em> se puede ejecutar en <em>batch</em> o en modo interactivo y tiene soporte para <em>Python</em>. Independientemente del lenguaje utilizado (ya sea <em>Python</em>, <em>Java</em>, <em>Scala</em>, <em>R</em> o <em>SQL</em>) el código se despliega entre todos los nodos a lo largo del clúster.</p>
+<p>Además, contiene otros 4 grandes componentes construidos sobre el <em>core</em>:</p>
+<figure style="align: center;">
+    <img src="images/01spark-ecosystem.png">
+    <figcaption>Componentes de Spark</figcaption>
+</figure>
+
+<ol>
+<li><strong><em>Spark Streaming</em></strong> es una herramienta para la creación de aplicaciones que procesamiento en <em>streaming</em> que ofrece un gran rendimiento con soporte para la tolerancia a fallos. Los datos pueden venir desde fuentes de datos tan diversas como <em>Kafka</em>, <em>Flume</em>, <em>Twitter</em> y tratarse en tiempo real.</li>
+<li>
+<p><strong><em>Spark SQL</em></strong> ofrece un interfaz SQL para trabajar con <em>Spark</em>, permitiendo la lectura de datos tanto de una tabla de cualquier base de datos relacional como de ficheros con formatos estructurados (<em>CSV</em>, texto, <em>JSON</em>, <em>Avro</em>, <em>ORC</em>, <em>Parquet</em>, etc...) y construir tablas permanentes o temporales en <em>Spark</em>. Tras la lectura, permite combinar sentencias SQL para trabajar con los datos y cargar los resultados en un <em>DataFrame de Spark</em>.</p>
+<p>Por ejemplo, con este fragmento leemos un fichero JSON desde nuestro sistema de almacenamiento, creamos una tabla temporal y mediante una consulta SQL cargamos los datos en un <em>DataFrame</em> de <em>Spark</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df_zips</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;zips.json&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">df_zips</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;zips&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df_resultado</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;SELECT city, state</span>
+<span class="linenos" data-linenos="4 "></span><span class="s2">    FROM zips WHERE pop &gt; 10000</span>
+<span class="linenos" data-linenos="5 "></span><span class="s2">    ORDER BY pop DESC&quot;&quot;&quot;</span><span class="p">)</span>
+</code></pre></div>
+</li>
+<li>
+<p><strong><em>Spark MLlib</em></strong> es un módulo de <em>machine learning</em> que ofrece la gran mayoría de algoritmos de ML y permite construir <em>pipelines</em> para el entrenamiento y evaluación de los modelos IA.</p>
+</li>
+<li><strong><em>GraphX</em></strong> permite procesar estructuras de datos en grafo, siendo muy útiles para recorrer las relaciones de una red social u ofrecer recomendaciones sobre gustos/afinidades. En este curso no vamos a entrar en detalle en este módulo.</li>
+</ol>
+<p>Además, la comunidad de <em>Spark</em> dispone de un gran número de conectores para diferentes fuentes de datos, herramientas de monitorización, etc... que conforman su propio ecosistema:</p>
+<figure style="align: center;">
+    <img src="images/01spark-integration.png">
+    <figcaption>Ecosistema de Spark</figcaption>
+</figure>
+
+<h2 id="puesta-en-marcha">Puesta en Marcha<a class="headerlink" href="#puesta-en-marcha" title="Permanent link">&para;</a></h2>
+<p>En nuestra máquina virtual, únicamente necesitamos ejecutar el comando <code>pyspark</code> el cual arrancará directamente un cuaderno <em>Jupyter</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>iabd@iabd-virtualbox:~/Spark$<span class="w"> </span>pyspark
+<span class="linenos" data-linenos=" 2 "></span><span class="o">[</span>I<span class="w"> </span><span class="m">16</span>:50:57.168<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w"> </span>Serving<span class="w"> </span>notebooks<span class="w"> </span>from<span class="w"> </span><span class="nb">local</span><span class="w"> </span>directory:<span class="w"> </span>/home/iabd/Spark
+<span class="linenos" data-linenos=" 3 "></span><span class="o">[</span>I<span class="w"> </span><span class="m">16</span>:50:57.168<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w"> </span>The<span class="w"> </span>Jupyter<span class="w"> </span>Notebook<span class="w"> </span>is<span class="w"> </span>running<span class="w"> </span>at:
+<span class="linenos" data-linenos=" 4 "></span><span class="o">[</span>I<span class="w"> </span><span class="m">16</span>:50:57.168<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w"> </span>http://localhost:8888/?token<span class="o">=</span>b7b4c7232e5d9d3f7c7fdd51d75e5fe314c3f2c637e90652
+<span class="linenos" data-linenos=" 5 "></span><span class="o">[</span>I<span class="w"> </span><span class="m">16</span>:50:57.168<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w">  </span>or<span class="w"> </span>http://127.0.0.1:8888/?token<span class="o">=</span>b7b4c7232e5d9d3f7c7fdd51d75e5fe314c3f2c637e90652
+<span class="linenos" data-linenos=" 6 "></span><span class="o">[</span>I<span class="w"> </span><span class="m">16</span>:50:57.168<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w"> </span>Use<span class="w"> </span>Control-C<span class="w"> </span>to<span class="w"> </span>stop<span class="w"> </span>this<span class="w"> </span>server<span class="w"> </span>and<span class="w"> </span>shut<span class="w"> </span>down<span class="w"> </span>all<span class="w"> </span>kernels<span class="w"> </span><span class="o">(</span>twice<span class="w"> </span>to<span class="w"> </span>skip<span class="w"> </span>confirmation<span class="o">)</span>.
+<span class="linenos" data-linenos=" 7 "></span><span class="o">[</span>C<span class="w"> </span><span class="m">16</span>:50:57.968<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w"> </span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">    </span>To<span class="w"> </span>access<span class="w"> </span>the<span class="w"> </span>notebook,<span class="w"> </span>open<span class="w"> </span>this<span class="w"> </span>file<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>browser:
+<span class="linenos" data-linenos="10 "></span><span class="w">        </span>file:///home/iabd/.local/share/jupyter/runtime/nbserver-9654-open.html
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span>Or<span class="w"> </span>copy<span class="w"> </span>and<span class="w"> </span>paste<span class="w"> </span>one<span class="w"> </span>of<span class="w"> </span>these<span class="w"> </span>URLs:
+<span class="linenos" data-linenos="12 "></span><span class="w">        </span>http://localhost:8888/?token<span class="o">=</span>b7b4c7232e5d9d3f7c7fdd51d75e5fe314c3f2c637e90652
+<span class="linenos" data-linenos="13 "></span><span class="w">     </span>or<span class="w"> </span>http://127.0.0.1:8888/?token<span class="o">=</span>b7b4c7232e5d9d3f7c7fdd51d75e5fe314c3f2c637e90652
+<span class="linenos" data-linenos="14 "></span><span class="o">[</span>W<span class="w"> </span><span class="m">16</span>:51:02.666<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w"> </span><span class="m">404</span><span class="w"> </span>GET<span class="w"> </span>/api/kernels/a8119b9f-91ce-4eee-b32b-9be48a0d281e/channels?session_id<span class="o">=</span>5860cf5e65fa481d9110c9ff9904d3f7<span class="w"> </span><span class="o">(</span><span class="m">127</span>.0.0.1<span class="o">)</span>:<span class="w"> </span>Kernel<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>exist:<span class="w"> </span>a8119b9f-91ce-4eee-b32b-9be48a0d281e
+<span class="linenos" data-linenos="15 "></span><span class="o">[</span>W<span class="w"> </span><span class="m">16</span>:51:02.676<span class="w"> </span>NotebookApp<span class="o">]</span><span class="w"> </span><span class="m">404</span><span class="w"> </span>GET<span class="w"> </span>/api/kernels/a8119b9f-91ce-4eee-b32b-9be48a0d281e/channels?session_id<span class="o">=</span>5860cf5e65fa481d9110c9ff9904d3f7<span class="w"> </span><span class="o">(</span><span class="m">127</span>.0.0.1<span class="o">)</span><span class="w"> </span><span class="m">12</span>.30ms<span class="w"> </span><span class="nv">referer</span><span class="o">=</span>None
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Jupyter Notebook</p>
+<p>Si instalamos PySpark según las <a href="https://spark.apache.org/docs/latest/api/python/getting_started/install.html">instrucciones de la propia web</a>, al ejecutar <code>pyspark</code> se lanzara el <a href="https://spark.apache.org/docs/latest/quick-start.html"><em>spark-shell</em></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="o">(</span>base<span class="o">)</span><span class="w"> </span>jovyan@d747fe4a9742:~$<span class="w"> </span>pyspark
+<span class="linenos" data-linenos=" 2 "></span>Python<span class="w"> </span><span class="m">3</span>.10.8<span class="w"> </span><span class="p">|</span><span class="w"> </span>packaged<span class="w"> </span>by<span class="w"> </span>conda-forge<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="o">(</span>main,<span class="w"> </span>Nov<span class="w"> </span><span class="m">22</span><span class="w"> </span><span class="m">2022</span>,<span class="w"> </span><span class="m">08</span>:13:37<span class="o">)</span><span class="w"> </span><span class="o">[</span>GCC<span class="w"> </span><span class="m">10</span>.4.0<span class="o">]</span><span class="w"> </span>on<span class="w"> </span>linux
+<span class="linenos" data-linenos=" 3 "></span>...
+<span class="linenos" data-linenos=" 4 "></span>Welcome<span class="w"> </span>to
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span>____<span class="w">              </span>__
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span>/<span class="w"> </span>__/__<span class="w">  </span>___<span class="w"> </span>_____/<span class="w"> </span>/__
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span>_<span class="se">\ \/</span><span class="w"> </span>_<span class="w"> </span><span class="se">\/</span><span class="w"> </span>_<span class="w"> </span><span class="sb">`</span>/<span class="w"> </span>__/<span class="w">  </span><span class="s1">&#39;_/</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="s1">/__ / .__/\_,_/_/ /_/\_\   version 3.3.1</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="s1">    /_/</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="s1">Using Python version 3.10.8 (main, Nov 22 2022 08:13:37)</span>
+<span class="linenos" data-linenos="12 "></span><span class="s1">Spark context Web UI available at http://127.0.0.1:4040</span>
+<span class="linenos" data-linenos="13 "></span><span class="s1">Spark context available as &#39;</span>sc<span class="s1">&#39; (master = local[*], app id = local-1672853494013).</span>
+<span class="linenos" data-linenos="14 "></span><span class="s1">SparkSession available as &#39;</span>spark<span class="err">&#39;</span>.
+<span class="linenos" data-linenos="15 "></span>&gt;&gt;&gt;
+</code></pre></div>
+<p>. Para que se abra automáticamente <em>Jupyter Lab</em>, necesitamos exportar las siguientes variables de entorno:</p>
+<div class="highlight"><span class="filename">~/.bashrc</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">export</span><span class="w"> </span><span class="nv">PYSPARK_DRIVER_PYTHON</span><span class="o">=</span>jupyter
+<span class="linenos" data-linenos="2 "></span><span class="nb">export</span><span class="w"> </span><span class="nv">PYSPARK_DRIVER_PYTHON_OPTS</span><span class="o">=</span><span class="s1">&#39;notebook&#39;</span>
+</code></pre></div>
+<p>Más información en <a href="https://www.sicara.ai/blog/2017-05-02-get-started-pyspark-jupyter-notebook-3-minutes">https://www.sicara.ai/blog/2017-05-02-get-started-pyspark-jupyter-notebook-3-minutes</a></p>
+</div>
+<p>Así pues, automáticamente se abrirá una ventana en el navegador web donde crear/trabajar con los cuadernos <em>Jupyter</em>:</p>
+<figure style="align: center;">
+    <img src="images/01spark-pyspark.png">
+    <figcaption>Cuadernos Jupyter con PySpark</figcaption>
+</figure>
+
+<h3 id="uso-de-docker">Uso de Docker<a class="headerlink" href="#uso-de-docker" title="Permanent link">&para;</a></h3>
+<p>Otra posibilidad es utilizar alguna de las imágenes <em>Docker</em> disponibles que facilitan su uso. En nuestro caso, recomendamos las imágenes disponibles en <a href="https://github.com/jupyter/docker-stacks">https://github.com/jupyter/docker-stacks</a>.</p>
+<p>Para lanzar la imagen de <em>PySpark</em> con cuadernos <em>Jupyter</em> utilizaremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8888</span>:8888<span class="w"> </span>-p<span class="w"> </span><span class="m">4040</span>:4040<span class="w"> </span>-p<span class="w"> </span><span class="m">4041</span>:4041<span class="w"> </span>jupyter/pyspark-notebook
+</code></pre></div>
+<p>O si queremos crear un volumen con la carpeta actual:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-v<span class="w"> </span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span>:/home/jovyan/work<span class="w"> </span>-p<span class="w"> </span><span class="m">8888</span>:8888<span class="w"> </span>-p<span class="w"> </span><span class="m">4040</span>:4040<span class="w"> </span>-p<span class="w"> </span><span class="m">4041</span>:4041<span class="w"> </span>--name<span class="w"> </span>pyspark<span class="w"> </span>jupyter/pyspark-notebook
+</code></pre></div>
+<h3 id="cluster-de-spark">Clúster de Spark<a class="headerlink" href="#cluster-de-spark" title="Permanent link">&para;</a></h3>
+<p>Si queremos montar nosotros mismo un clúster de Spark, una vez tenemos todas las máquinas instaladas con <em>Java</em>, <em>Python</em> y <em>Spark</em>, debemos distinguir entre:</p>
+<ul>
+<li>
+<p>Nodo maestro/<em>driver</em> - el cual deberemos arrancar con:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nv">$SPARK_HOME</span>/sbin/start-master.sh<span class="w"> </span>-h<span class="w"> </span><span class="m">0</span>.0.0.0
+</code></pre></div>
+</li>
+<li>
+<p><em>Workers</em> (esclavos) - los cuales arrancaremos con:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nv">$SPARK_HOME</span>/sbin/start-worker.sh<span class="w"> </span>spark://&lt;ip-servidor-driver&gt;:7077
+</code></pre></div>
+<p>Sobre los workers, le podemos indicar la cantidad de CPUs mediante la opción <code>-c</code> y la cantidad de RAM con <code>-m</code>. Por ejemplo, si quisiéramos lanzar un worker con 8 núcleos y 16GB de RAM haríamos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nv">$SPARK_HOME</span>/sbin/start-slave.sh<span class="w"> </span>spark://&lt;ip-servidor-driver&gt;:7077<span class="w"> </span>-c<span class="w"> </span><span class="m">8</span><span class="w"> </span>-m<span class="w"> </span>16G
+</code></pre></div>
+</li>
+</ul>
+<p>Una vez arrancado, si accedemos a <code>http://ip-servidor-driver:8080</code> veremos el IU de <em>Spark</em> con los <em>workers</em> arrancados.</p>
+<p>Más información en la <a href="https://spark.apache.org/docs/3.3.1/spark-standalone.html">documentación oficial</a>.</p>
+<h3 id="uso-en-la-nube">Uso en la nube<a class="headerlink" href="#uso-en-la-nube" title="Permanent link">&para;</a></h3>
+<p>Para trabajar con <em>Spark</em> desde la nube disponemos de varias alternativas, ya sean herramientas que permiten trabajar con cuadernos <em>Jupyter</em> como pueden ser <em>Google Colab</em> o <em>Databricks</em>, o montar un clúster mediante AWS EMR (<em>Elastic MapReduce</em>) o <em>Azure HDInsight</em>.</p>
+<h4 id="google-colab">Google Colab<a class="headerlink" href="#google-colab" title="Permanent link">&para;</a></h4>
+<p>Primero nos vamos a centrar en <em>Google Colab</em>. A lo largo del curso, ya hemos empleado esta herramienta tanto en sistemas de aprendizaje como en el análisis exploratorio de los datos.</p>
+<p>Para que funcione <em>Spark</em> dentro de <em>Google Colab</em>, únicamente hemos de instalar las librerías. Se adjunta un <a href="https://gist.github.com/aitor-medrano/f180cc5672fd8eed87fe32c051e0cc80">cuaderno con ejemplo de código</a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="gh"># 1. Instalar las dependencias</span>
+<span class="linenos" data-linenos=" 2 "></span>!apt-get install openjdk-8-jdk-headless -qq &gt; /dev/null
+<span class="linenos" data-linenos=" 3 "></span>!wget -q https://downloads.apache.org/spark/spark-3.3.1/spark-3.3.1-bin-hadoop3.tgz
+<span class="linenos" data-linenos=" 4 "></span>!tar xvf spark-3.3.1-bin-hadoop3.tgz
+<span class="linenos" data-linenos=" 5 "></span>!pip install -q pyspark
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="gh"># 2. Configurar el entorno</span>
+<span class="linenos" data-linenos=" 8 "></span>import os
+<span class="linenos" data-linenos=" 9 "></span>os.environ[&quot;JAVA_HOME&quot;] = &quot;/usr/lib/jvm/java-8-openjdk-amd64&quot;
+<span class="linenos" data-linenos="10 "></span>os.environ[&quot;SPARK_HOME&quot;] = f&quot;/content/spark-3.3.1-bin-hadoop3&quot;
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="gh"># 3. Cargar Pyspark</span>
+<span class="linenos" data-linenos="13 "></span>from pyspark.sql import SparkSession
+<span class="linenos" data-linenos="14 "></span>spark = SparkSession.builder.appName(&quot;s8a&quot;).master(&quot;local[*]&quot;).getOrCreate()
+<span class="linenos" data-linenos="15 "></span>spark
+</code></pre></div>
+<p>El cual podemos observar cómo se ejecuta en Colab:</p>
+<figure style="align: center;">
+    <img src="images/01spark-colab.png">
+    <figcaption>Ejemplo de cuaderno en Google Colab</figcaption>
+</figure>
+
+<h4 id="databricks">Databricks<a class="headerlink" href="#databricks" title="Permanent link">&para;</a></h4>
+<p><em>Databricks</em> es una plataforma analítica de datos basada en Apache Spark desarrollada por la compañía con el mismo nombre. La empresa, creada en el 2013 por los desarrolladores principales de <em>Spark</em>, permite realizar analítica Big Data e Inteligencia Artificial con <em>Spark</em> de una forma sencilla y colaborativa.</p>
+<p><em>Databricks</em> se integra de forma transparente con <em>AWS</em>, <em>Azure</em> y <em>Google Cloud</em>. En una <a href="https://databricks.com/blog/2021/11/02/databricks-sets-official-data-warehousing-performance-record.html">entrada del blog de la empresa de noviembre de 2021</a>  anuncian un nuevo record de procesamiento que implica que su rendimiento es 3 veces superior a la competencia y con un coste menor.</p>
+<p>Para poder trabajar con <em>Databricks</em> de forma gratuita, podemos hacer uso de <a href="https://community.cloud.databricks.com/login.html">Databricks Community Edition</a>, donde podemos crear nuestros propios cuadernos <em>Jupyter</em> y trabajar con <em>Spark</em> sin necesidad de instalar nada.</p>
+<p>El único paso inicial tras registrarnos, es crear un clúster básico (con 15.3GB de memoria y dos núcleos) desde la opción <em>Create</em> del menú de la izquierda:</p>
+<figure style="align: center;">
+    <img src="images/01spark-databricks-cluster.png">
+    <figcaption>Creación de un clúster en Databricks</figcaption>
+</figure>
+
+<p>Tras un par de minutos se habrá creado y lanzado el clúster, ya estaremos listos para crear un nuevo <em>notebook</em> y tener acceso a <em>Spark</em> directamente desde el objeto <code>spark</code>:</p>
+<figure style="align: center;">
+    <img src="images/01spark-databricks-pm.png">
+    <figcaption>Ejemplo de cuaderno en Databricks</figcaption>
+</figure>
+
+<p>Si queremos, podemos hacer <a href="https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/258974416188569/67277107946785/7969755578738041/latest.html">público</a> el cuaderno y compartirlo con la comunidad.</p>
+<h3 id="sparkcontext-vs-sparksession">SparkContext vs SparkSession<a class="headerlink" href="#sparkcontext-vs-sparksession" title="Permanent link">&para;</a></h3>
+<p><em>SparkContext</em> es el punto de entrada a <em>Spark</em> desde las versiones 1.x y se utiliza para crear de forma programativa RDD, acumuladores y variables <em>broadcast</em> en el clúster. Desde Spark 2.0, la mayoría de funcionalidades (métodos) disponibles en <em>SparkContext</em> también los están en <em>SparkSession</em>. Su objeto <code>sc</code> está disponible en el <em>spark-shell</em> y se puede crear de forma programativa mediante la clase <code>SparkContext</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkContext</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</code></pre></div>
+<p><em>SparkSession</em> se introdujo en la versión 2.0 y es el punto de entrada para crear <em>RDD</em>, <em>DataFrames</em> y <em>DataSets</em>. El objeto <code>spark</code> se encuentra disponible por defecto en el <em>spark-shell</em> y se puede crear de forma programativa mediante el patrón builder de <code>SparkSession</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span> 
+</code></pre></div>
+<p>Además, desde una sesión de <em>Spark</em> podemos obtener un contexto a través de la propiedad <code>sparkContext</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>
+</code></pre></div>
+<h3 id="hola-spark">Hola Spark<a class="headerlink" href="#hola-spark" title="Permanent link">&para;</a></h3>
+<p>Lo primero que debemos hacer siempre es conectarnos a la sesión de <em>Spark</em>, el cual le indica a <em>Spark</em> como acceder al clúster. Si utilizamos la imagen de <em>Docker</em>, debemos obtener siempre la sesión a partir de la clase <code>SparkSession</code>:</p>
+<div class="highlight"><span class="filename">ejemploDockerSpark.py</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span> <span class="c1"># SparkSession de forma programativa</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>                    <span class="c1"># SparkContext a partir de la sesión</span>
+<span class="linenos" data-linenos="5 "></span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># Suma de los 100 primeros números</span>
+<span class="linenos" data-linenos="7 "></span><span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="linenos" data-linenos="8 "></span><span class="n">rdd</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</code></pre></div>
+<p>En cambio, si utilizamos la instalación de <em>PySpark</em> (o la solución de <em>Databricks</em>) que tenemos en la máquina virtual, directamente podemos acceder a la instancia de <code>SparkSession</code> a través del objeto global <code>spark</code>:</p>
+<div class="highlight"><span class="filename">ejemploPySpark.py</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>     <span class="c1"># spark es una instancia de la clase SparkSession</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">rdd</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</code></pre></div>
+<p>En ambos casos, si mostramos el contenido del contexto obtendremos algo similar a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>Version
+<span class="linenos" data-linenos="2 "></span>    v3.3.1
+<span class="linenos" data-linenos="3 "></span>Master
+<span class="linenos" data-linenos="4 "></span>    local[*]
+<span class="linenos" data-linenos="5 "></span>AppName
+<span class="linenos" data-linenos="6 "></span>    PySparkShell
+</code></pre></div>
+<p>A continuación podemos ver el resultado completo en su ejecución dentro de un cuaderno <em>Jupyter</em>:</p>
+<figure style="align: center;">
+    <img src="images/01spark-hello.png">
+    <figcaption>Hola Spark</figcaption>
+</figure>
+
+<div class="admonition tip">
+<p class="admonition-title">Nombre de la aplicación</p>
+<p>Si queremos darle nombre a la aplicación <em>Spark</em>, lo podemos hacer al obtener la <em>SparkSession</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;spark-s8a&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+</code></pre></div>
+</div>
+<!--
+<https://www.datamechanics.co/blog-post/tutorial-running-pyspark-inside-docker-containers>
+-->
+
+<h3 id="spark-submit">Spark Submit<a class="headerlink" href="#spark-submit" title="Permanent link">&para;</a></h3>
+<p>De la misma manera que mediante <em>Hadoop</em> podíamos lanzar un proceso al clúster para su ejecución, <em>Spark</em> ofrece el comando <code>spark-submit</code> para enviar un script al driver para su ejecución de forma distribuida.</p>
+<p>Así pues, si colocamos nuestro código en un archivo de <em>Python</em>:</p>
+<div class="highlight"><span class="filename">holaSpark.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># Suma de los 100 primeros números</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">rdd</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">suma</span> <span class="o">=</span> <span class="n">rdd</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span><span class="nb">print</span><span class="p">(</span><span class="n">suma</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------------&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Lo podemos ejecutar mediante (en nuestra máquina virtual antes debemos resetear una variable de entorno para que no ejecute automáticamente el cuaderno jupyter: <code>unset PYSPARK_DRIVER_PYTHON</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>spark-submit<span class="w"> </span>holaMundo.py
+</code></pre></div>
+<p>Si nuestro servidor estuviera en otra dirección IP, deberíamos indicarle donde encontrar el <em>master</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>spark-submit<span class="w"> </span>--master<span class="w"> </span>spark://&lt;ip-servidor-driver&gt;:7077<span class="w"> </span>holaMundo.py
+</code></pre></div>
+<p>Más información en la <a href="https://spark.apache.org/docs/latest/submitting-applications.html">documentación oficial</a></p>
+<div class="admonition tip">
+<p class="admonition-title">AWS desde Spark</p>
+<p>Para conectar a AWS desde Spark hace falta:</p>
+<ol>
+<li>Descargar dos librerías y configurarlas en <code>$SPARK_HOME/conf/spark-defaults.conf</code> (o colocarlas directamente en la carpeta <code>$SPARK_HOME/jars</code>):</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span># https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-aws 
+<span class="linenos" data-linenos="2 "></span># https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle/1.11.901
+<span class="linenos" data-linenos="3 "></span>spark.driver.extraClassPath = /opt/spark-3.3.1/conf/hadoop-aws-3.3.4.jar:/opt/spark-3.3.1/conf/aws-java-sdk-bundle-1.12.367.jar
+<span class="linenos" data-linenos="4 "></span>spark.executor.extraClassPath = /opt/spark-3.3.1/conf/hadoop-aws-3.3.4.jar:/opt/spark-3.3.1/conf/aws-java-sdk-bundle-1.12.367.jar
+</code></pre></div>
+<ol start="2">
+<li>
+<p>Configurar las credencias de AWS en <code>.aws/credentials</code> (esto lo hicimos varias veces en las sesiones de <em>cloud</em>)</p>
+</li>
+<li>
+<p>Tras crear la sesión de Spark, configurar el proveedor de credenciales:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">spark</span><span class="o">.</span><span class="n">_jsc</span><span class="o">.</span><span class="n">hadoopConfiguration</span><span class="p">()</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;fs.s3a.aws.credentials.provider&quot;</span><span class="p">,</span> <span class="s2">&quot;com.amazonaws.auth.profile.ProfileCredentialsProvider&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span>
+<span class="linenos" data-linenos="5 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="s2">&quot;s3a://s8a-spark-s3/departure_delays.csv&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<h2 id="arquitectura">Arquitectura<a class="headerlink" href="#arquitectura" title="Permanent link">&para;</a></h2>
+<p>Ya hemos comentado que <em>Spark</em> es un sistema distribuido diseñado para procesar grandes volúmenes de datos de forma rápida y eficiente. Este sistema normalmente se despliega en un conjunto de máquinas que se conocen como un <em>clúster Spark</em>, pudiendo estar compuesta de unas pocas máquinas o miles de ellas. Según el <a href="https://spark.apache.org/faq.html">FAQ de Spark</a>, el clúster más grande de Spark contiene más de 8000 nodos.</p>
+<p>A la hora del despliegue, se utiliza un sistema de gestión de recursos como el gestor propio de Spark (conocido como <a href="https://spark.apache.org/docs/latest/spark-standalone.html"><em>Spark Standalone</em></a>), <a href="https://spark.apache.org/docs/latest/running-on-mesos.html">Apache Mesos</a>, <a href="https://spark.apache.org/docs/latest/running-on-kubernetes.html">Kubernetes</a> o <a href="https://spark.apache.org/docs/latest/running-on-yarn.html">YARN</a> para gestionar de forma inteligente y eficiente el clúster.</p>
+<p>Los dos componentes principales del clúster zon:</p>
+<ul>
+<li>el <strong>gestor de clúster</strong>: nodo maestro que sabe donde se localizan los esclavos, cuanta memoria disponen y el número de <em>cores</em> CPU de cada nodo. Su mayor responsabilidad es orquestar el trabajo asignándolo a los diferentes nodos.</li>
+<li>los nodos trabajadores (<strong><em>workers</em></strong>): cada nodo ofrece recursos (memoria, CPU, etc...) al gestor del clúster y realiza las tareas que se le asignen.</li>
+</ul>
+<h3 id="aplicaciones-spark">Aplicaciones Spark<a class="headerlink" href="#aplicaciones-spark" title="Permanent link">&para;</a></h3>
+<p>Una aplicación Spark se compone de dos partes:</p>
+<ol>
+<li>La <strong>lógica de procesamiento</strong> de los datos, la cual realizamos mediante alguna de las API que ofrece <em>Spark</em> (<em>Java</em>, <em>Scala</em>, <em>Python</em>, etc...), desde algo sencillo que realice una ETL sobre los datos a problemas más complejos que requieran múltiples iteraciones y tarden varias horas como entrenar un modelo de <em>machine learning</em>.</li>
+<li><strong>Driver</strong>: es el coordinador central encargado de interactuar con el clúster <em>Spark</em> y averiguar qué máquinas deben ejecutar la lógica de procesamiento. Para cada una de esas máquinas, el driver realiza una petición al clúster para lanzar un proceso conocido como <strong>ejecutor</strong> (<em>executor</em>). Además, el driver <em>Spark</em> es responsable de gestionar y distribuir las tareas a cada ejecutor, y si es necesario, recoger y fusionar los datos resultantes para presentarlos al usuario. Estas tareas se realizan a través de la <em>SparkSession</em>.</li>
+</ol>
+<p>Cada ejecutor es un proceso JVM (<em>Java Virtual Machine</em>) dedicado para una aplicación <em>Spark</em> específica. Un ejecutor vivirá tanto como dure la aplicación <em>Spark</em>, lo cual puede ser segundos, minutos o días, dependiendo de la complejidad de la aplicación. Conviene destacar que los ejecutores son elementos aislados que no se comparten entre aplicaciones <em>Spark</em>, por lo que la única manera de compartir información entre diferente ejecutores es mediante un sistema de almacenamiento externo como HDFS.</p>
+<figure style="align: center;">
+    <img src="images/01spark-arquitectura.jpg">
+    <figcaption>Arquitectura entre una aplicación Spark y el gestor del clúster</figcaption>
+</figure>
+
+<p>Así pues, <em>Spark</em> utiliza una arquitectura maestro/esclavo, donde el <em>driver</em> es el maestro, y los ejecutores los esclavos. Cada uno de estos componentes se ejecutan como un proceso independiente en el clúster <em>Spark</em>. Por lo tanto, una aplicación <em>Spark</em> se compone de un <em>driver</em> y múltiples ejecutores. Cada ejecutor realiza lo que se le pide en forma de tareas, ejecutando cada una de ellas en un núcleo CPU separado. Así es como el procesamiento paralelo acelera el tratamiento de los datos. Además, cada ejecutor, bajo petición de la lógica de la aplicación, se responsabiliza de <em>cachear</em> un fragmento de los datos en memoria y/o disco.</p>
+<p>Al lanzar una aplicación <em>Spark</em>, podemos indicar el número de ejecutores que necesita la aplicación, así como la cantidad de memoria y número de núcleos que debería tener cada ejecutor.</p>
+<figure style="align: center;">
+    <img src="images/01spark-cluster.jpg">
+    <figcaption>Clúster compuesto por un driver y tres ejecutores</figcaption>
+</figure>
+
+<h3 id="job-stage-y-task">Job, Stage y Task<a class="headerlink" href="#job-stage-y-task" title="Permanent link">&para;</a></h3>
+<p>Cuando creamos una aplicación <em>Spark</em>, por debajo, se distinguen los siguientes elementos:</p>
+<ul>
+<li><strong><em>Job</em></strong> (trabajo): computación paralela compuesta de múltiples tareas que se crean tras una acción de Spark (<code>save</code>, <code>collect</code>, etc...). Al codificar nuestro código mediante <em>PySpark</em>, el <em>driver</em> convierte la aplicación <em>Spark</em> en uno o más <em>jobs</em>, y a continuación, estos <em>jobs</em> los transforma en un DAG (grafo). Este grafo, en esencia, es el plan de ejecución, donde cada elemento dentro del DAG puede implicar una o varias <em>stages</em> (escenas).</li>
+<li><strong><em>Stage</em></strong> (escena): cada <em>job</em> se divide en pequeños conjuntos de tareas que forman un escenario. Como parte del grafo, las <em>stages</em> se crean a partir de si las operaciones se pueden realizar de forma paralela o de forma secuencial. Como no todas las operaciones pueden realizarse en una única <em>stage</em>, en ocasiones se dividen en varias, normalmente debido a los límites computacionales de los diferentes ejecutores.</li>
+<li><strong><em>Task</em></strong> (tarea): unidad de trabajo más pequeña que se envía a los ejecutores <em>Spark</em>. Cada escenario se compone de varias tareas. Cada una de las tareas se asigna a un único núcleo y trabaja con una única partición de los datos. Por ello, un ejecutor con 16 núcleos puede tener 16 o más tareas trabajando en 16 o más particiones en paralelo.</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/01spark-driver-job-stage-task.png">
+    <figcaption>Driver → Job → Stage → Task</figcaption>
+</figure>
+
+<h3 id="dataframe">DataFrame<a class="headerlink" href="#dataframe" title="Permanent link">&para;</a></h3>
+<p>La principal abstracción de los datos en Spark es el <strong><em>Dataset</em></strong>. Se pueden crear desde las fuentes de entrada de <em>Hadoop</em> (como ficheros que provienen de HDFS o S3) o mediante transformaciones de otros <em>Datasets</em>.
+Dado el cariz de <em>Python</em>, no necesitamos que los <em>Dataset</em> estén fuertemente tipados, por eso, todos los <em>Dataset</em> que usemos serán <code>Dataset[Row]</code> (si trabajásemos mediante <em>Java</em> o <em>Scala</em> sí deberíamos indicar el tipo de sus datos), y por consistencia con el concepto de <em>Pandas</em> y <em>R</em>, los llamaremos <strong><em>DataFrame</em></strong>.</p>
+<p>Por ejemplo, veamos cómo podemos crear un <em>DataFrame</em> a partir de un fichero de texto:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos=" 2 "></span>
+<span class="linenos" data-linenos=" 3 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span> 
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">quijoteTxt</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s2">&quot;el_quijote.txt&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">quijoteTxt</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>  <span class="c1"># número de filas del DataFrame - 2186</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">quijoteTxt</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>  <span class="c1"># primera fila - Row(value=&#39;DON QUIJOTE DE LA MANCHA&#39;)</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># Transformamos un DataFrame en otro nuevo</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">lineasConQuijote</span> <span class="o">=</span> <span class="n">quijoteTxt</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">quijoteTxt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;Quijote&quot;</span><span class="p">))</span>  <span class="c1"># DataFrame con las líneas que contiene la palabra Quijote</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">lineasConQuijote</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>  <span class="c1"># cantidad de líneas con la palabra Quijote - 584</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># Las transformaciones se pueden encadenar</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">quijoteTxt</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">quijoteTxt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;Quijote&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>     <span class="c1"># idem - 584</span>
+</code></pre></div>
+<p>Estudiaremos los <em>DataFrame</em> en profundidad en la <a href="02dataframeAPI.html">próximas sesiones</a>.</p>
+<h2 id="spark-ui">Spark UI<a class="headerlink" href="#spark-ui" title="Permanent link">&para;</a></h2>
+<p>Si accedemos a la dirección <a href="http://127.0.0.1:4040/">http://127.0.0.1:4040/</a>, veremos un interfaz gráfico donde podemos monitorizar y analizar el código <em>Spark</em> ejecutado. La barra superior muestra un menú con las opciones para visualizar las <em>jobs</em>, <em>stages</em>, almacenamiento, el entorno y sus variables de configuración, y finalmente los ejecutores:</p>
+<figure style="align: center;">
+    <img src="images/01spark-ui.png">
+    <figcaption>Spark Shell UI</figcaption>
+</figure>
+
+<p>Por ejemplo, si ejecutamos el ejemplo de <a href="01rdd.html#groupbykey"><code>groupByKey</code> de la siguiente sesión</a>, obtenemos el siguiente DAG:</p>
+<figure style="align: center;">
+    <img src="images/01spark-ui-dag.png">
+    <figcaption>Ejemplo de DAG</figcaption>
+</figure>
+
+<p>Si pulsamos por ejemplo sobre la fase de <code>groupBy</code> obtendremos sus estadísticas de ejecución:</p>
+<figure style="align: center;">
+    <img src="images/01spark-ui-statistics.png">
+    <figcaption>Estadísticas de una fase</figcaption>
+</figure>
+
+<div class="admonition tip">
+<p class="admonition-title">Spark UI en Databricks</p>
+<p>Para acceder a la herramienta de monitorización en Databricks, una vez creado un clúster, en la opción calcular podremos seleccionar el clúster creado y en la pestaña <em>IU de Spark</em> acceder al mismo interfaz gráfico:</p>
+<p><figure style="align: center;">
+    <img src="images/01spark-databricks-ui.png">
+    <figcaption>Spark UI en Databricks</figcaption>
+</figure></p>
+</div>
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://spark.apache.org/docs/latest/">Documentación oficial de Apache Spark</a></li>
+<li><a href="https://www.oreilly.com/library/view/learning-spark-2nd/9781492050032/">Learning Apache Spark, 2nd Edition</a></li>
+<li>Repositorio GitHub con <a href="https://github.com/vivek-bombatkar/MyLearningNotes/tree/master/spark">apuntes sobre Spark de Vivek Bombatkar</a></li>
+<li><a href="https://runawayhorse001.github.io/LearningApacheSpark/index.html">Learning Apache Spark with Python</a></li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen.">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr>, <abbr title="Se han recogido métricas, procesamiento y visualización de los datos.">CE5.4b</abbr>  / 1.5p) Reproduce el ejemplo de <a href="#dataframe"><em>DataFrames</em></a> sobre el fichero de <a href="resources/el_quijote.txt">El Quijote</a> adjuntado varias capturas de pantalla (entorno, ejecución y monitorización) al realizarlo en:<ul>
+<li>la <a href="#puesta-en-marcha">máquina virtual</a> o un <a href="#uso-de-docker">entorno Docker</a>.</li>
+<li>y en <a href="#databricks">Databricks</a>.</li>
+</ul>
+</li>
+</ol>
+<!--
+https://github.com/PacktPublishing/Apache-Spark-3-for-Data-Engineering-and-Analytics-with-Python-/blob/main/Section%203%20Resources/XYZ%20Research.txt
+-->
+
+<!--
+<https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-apache-spark-rdd-and-pyspark/>
+<https://donnemartin.com/apache-spark-tutorial.html>
+-->
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        <a href='https://ko-fi.com/T6T8GWT9N' title='Invítame a un café en ko-fi.com' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Invítame a un café en ko-fi.com' /></a>
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Me encantan estos apuntes" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Los apuntes son mejorables" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Gracias por tu tiempo. Si quieres me puedes <a href='https://ko-fi.com/T6T8GWT9N'>invitar a un café en ko-fi</a>.
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              ¡Gracias por tu colaboración! Ayúdame a mejorar los apuntes enviándome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pie" >
+        
+          
+          <a href="index.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Analítica de datos mediante Spark" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Anterior
+                </span>
+                Analítica de datos mediante Spark
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="01rdd.html" class="md-footer__link md-footer__link--next" aria-label="Siguiente: S60.- RDD" rel="next">
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Siguiente
+                </span>
+                S60.- RDD
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+    
+  </body>
+</html>

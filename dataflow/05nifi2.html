@@ -1,0 +1,1675 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi.">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/dataflow/05nifi2.html">
+      
+      
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi." >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/05nifi2.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/dataflow/05nifi2.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi." >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/05nifi2.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nifi-avanzado" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Sistemas de almacenamiento" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        S18.- Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        S19.- MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        S21.- Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        S25.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        S28.- Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        S30.- MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../hadoop/index.html">Ecosistema Hadoop</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Ecosistema Hadoop" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/01arq.html" class="md-nav__link">
+        S36.- Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/02etl.html" class="md-nav__link">
+        S36.- Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/03hadoop.html" class="md-nav__link">
+        S38.- Hadoop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04hdfs.html" class="md-nav__link">
+        S39.- HDFS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04formatos.html" class="md-nav__link">
+        S39.- Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/05flume.html" class="md-nav__link">
+        S43.- Sqoop y Flume
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/06hive.html" class="md-nav__link">
+        S45.- Hive
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">Datos en el cloud</a>
+          
+            <label for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Datos en el cloud" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        S33.- Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        S33.- AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/03s3.html" class="md-nav__link">
+        S40.- S3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/04computacion.html" class="md-nav__link">
+        S44.- EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/05emr.html" class="md-nav__link">
+        S44.- EMR
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/06datos.html" class="md-nav__link">
+        S46.- RDS y DynamoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/07athena.html" class="md-nav__link">
+        S46.- Athena
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../spark/index.html">Spark</a>
+          
+            <label for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Spark" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Spark
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/01spark.html" class="md-nav__link">
+        S56.- Ecosistema
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/01rdd.html" class="md-nav__link">
+        S60.- RDD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/02dataframeAPI.html" class="md-nav__link">
+        S62.- DataFrames API
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        PIA FP
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#grupos" class="md-nav__link">
+    Grupos
+  </a>
+  
+    <nav class="md-nav" aria-label="Grupos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creando-un-grupo" class="md-nav__link">
+    Creando un grupo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#puertos" class="md-nav__link">
+    Puertos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#funnels" class="md-nav__link">
+    Funnels
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plantillas" class="md-nav__link">
+    Plantillas
+  </a>
+  
+    <nav class="md-nav" aria-label="Plantillas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creando-plantillas" class="md-nav__link">
+    Creando plantillas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cargando-plantillas" class="md-nav__link">
+    Cargando plantillas
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-5-trabajando-con-conjuntos-de-registros" class="md-nav__link">
+    Caso 5: Trabajando con conjuntos de registros
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 5: Trabajando con conjuntos de registros">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#convirtiendo-formatos" class="md-nav__link">
+    Convirtiendo formatos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#renombrando-el-destino" class="md-nav__link">
+    Renombrando el destino
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-6-trabajando-con-elasticsearch" class="md-nav__link">
+    Caso 6: Trabajando con Elasticsearch
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 6: Trabajando con Elasticsearch">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#separando-los-datos" class="md-nav__link">
+    Separando los datos
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-7-de-twitter-a-elasticsearchmongodb" class="md-nav__link">
+    Caso 7: de Twitter a Elasticsearch/MongoDB
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 7: de Twitter a Elasticsearch/MongoDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#leyendo-tweets" class="md-nav__link">
+    Leyendo tweets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluando-el-idioma" class="md-nav__link">
+    Evaluando el idioma
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guardando-mensajes-en-ingles-en-elasticsearch" class="md-nav__link">
+    Guardando mensajes en inglés en ElasticSearch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#guardando-mensajes-en-castellano-en-mongodb" class="md-nav__link">
+    Guardando mensajes en castellano en MongoDB
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="nifi-avanzado">Nifi Avanzado<a class="headerlink" href="#nifi-avanzado" title="Permanent link">&para;</a></h1>
+<h2 id="grupos">Grupos<a class="headerlink" href="#grupos" title="Permanent link">&para;</a></h2>
+<p>En <em>Nifi</em> sólo hay un canvas de nivel superior, pero podemos construir tantos flujos lógicos como deseemos. Normalmente, para organizar las flujos, se utilizan <strong>grupos de procesos</strong>, por lo que el canvas de nivel superior puede tener varios grupos de procesos, cada uno de los cuales representa un flujo lógico, pero no necesariamente conectados entre sí.</p>
+<figure style="float: right;">
+    <img src="images/05caso0menu.png">
+    <figcaption>Trabajando con grupos</figcaption>
+</figure>
+
+<p>Dentro de los grupos, para indicar como entran los datos se utiliza un <em>Input port</em>, el cual va a definir un <strong>puerto de entrada</strong> al grupo. Del mismo modo, para indicar cómo salen los datos, se utiliza un <em>Output port</em> como <strong>puerto de salida</strong> para transferir la información fuera del grupo.</p>
+<p>Así pues, los grupos de procesos nos van a permitir refactorizar nuestros flujos para agruparlos y poder reutilizarlos en otros flujos, o bien mejorar la legibilidad de nuestro flujo de datos.</p>
+<p>En todo momento podemos ver el nivel en el que nos encontramos en la parte inferior izquierda, con una notación similar a <code>Nifi Flow &gt;&gt; Subnivel &gt;&gt; Otro Nivel</code>.</p>
+<h3 id="creando-un-grupo">Creando un grupo<a class="headerlink" href="#creando-un-grupo" title="Permanent link">&para;</a></h3>
+<p>Vamos a partir de un ejemplo sencillo de leer un fichero de texto, partirlo en fragmentos y nos saque por el log alguno de sus atributos.</p>
+<p>Para ello, vamos a conectar un procesador <em>GetFile</em> con un <em>SplitText</em> y finalmente con <em>LogAttribute</em>.
+El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en fragmentos a partir del número de líneas que queramos (pudiendo tener encabezados, ignorar las líneas en blanco, etc...)</p>
+<figure style="align: center;">
+    <img src="images/05caso0.png">
+    <figcaption>Dividimos un archivo en fragmentos</figcaption>
+</figure>
+
+<p>Para probarlo, podemos copiar cualquier archivo (ya sea el <code>README</code> o el <code>NOTICE</code>) en la carpeta que hayamos indicado de entrada y comprobar el log.</p>
+<p>Una vez lo tenemos funcionando, vamos a colocar el procesador <em>SplitText</em> dentro de un grupo. Así pues, un grupo encapsula la lógica de un procesador haciéndolo funcionar como una caja negra.</p>
+<p>Para ello, desde la barra superior arrastramos el icono de <em>Process Group</em> y lo nombramos como <em>grupo</em>.</p>
+<figure style="align: center;">
+    <img src="images/05caso0group.gif">
+    <figcaption>Creación de un grupo</figcaption>
+</figure>
+
+<h3 id="puertos">Puertos<a class="headerlink" href="#puertos" title="Permanent link">&para;</a></h3>
+<p>Una vez creado, vamos a copiar nuestro procesador <em>SplitText</em>. Pulsamos doble click sobre el grupo y bajaremos un nivel en el canvas para meternos dentro de <em>Grupo</em>. Una vez dentro, vamos a pegar el procesador y añadiremos tanto un <em>Input port</em> (al que nombramos como <em>entrada</em>) como un <em>Output port</em> (al que llamamos <em>salida</em>). Una vez creados, los conectamos con el procesador con las mismas conexiones que antes.</p>
+<figure style="align: center;">
+    <img src="images/05caso0groupFlujos.gif">
+    <figcaption>Grupo con puertos de entrada y salida</figcaption>
+</figure>
+
+<p>Ahora salimos del grupo, y conectamos los procesadores del nivel superior con el grupo creado y comprobamos como sigue funcionando.</p>
+<figure style="align: center;">
+    <img src="images/05caso0completo.png">
+    <figcaption>Sustituimos el procesador por el grupo creado</figcaption>
+</figure>
+
+<h2 id="funnels">Funnels<a class="headerlink" href="#funnels" title="Permanent link">&para;</a></h2>
+<figure style="float: right;">
+    <img src="images/05Funnel.png" width="80">
+    <figcaption>Funnel</figcaption>
+</figure>
+
+<p>Los <em>funnels</em> son un tipo de componente que permite trabajar en paralelo y después unir los diferentes flujos en un único flujo de ejecución, además de poder definir su propia prioridad de forma centralizada.</p>
+<p>Para ello vamos a poner varios <em>GenerateFlowFile</em> (4 en este caso) para mostrar sus datos mediante <em>LogAttribute</em>.</p>
+<figure style="align: center;">
+    <img src="images/05caso0GenerateFF.png">
+    <figcaption>Varios procesadores que apuntan a uno</figcaption>
+</figure>
+
+<p>Si quisiéramos cambiar el procesador de <em>LogAttribute</em> por otro tipo de procesador, deberíamos borrar todas las conexiones y volver a conectarlo todo. Para evitar esto añadimos un <em>Funnel</em> que va a centralizar todas las conexiones en un único punto.</p>
+<figure style="align: center;">
+    <img src="images/05caso0Funnel.png">
+    <figcaption>El Funnel agrupa las conexiones</figcaption>
+</figure>
+
+<h2 id="plantillas">Plantillas<a class="headerlink" href="#plantillas" title="Permanent link">&para;</a></h2>
+<p>Nifi permite trabajar con plantillas para poder reutilizar flujos de datos, así como importar y exportar nuestras plantillas.</p>
+<h3 id="creando-plantillas">Creando plantillas<a class="headerlink" href="#creando-plantillas" title="Permanent link">&para;</a></h3>
+<p>Crear una plantilla es muy sencillo. Si partimos del ejemplo anterior, mediante shift y el ratón, podemos seleccionar todos los elementos que queremos que formen parte de la plantilla.</p>
+<p>Una vez seleccionado, podemos utilizar el botón derecho o dentro del menú <em>Operate</em>, y elegir <em>Create Template</em>:</p>
+<figure style="align: center;">
+    <img src="images/05Template.gif">
+    <figcaption>Creación de una plantilla</figcaption>
+</figure>
+
+<p>Si queremos descargar una plantilla para usarla en otra instalación, desde el menú de la esquina superior derecha, en la opción <em>Templates</em>, podemos consultar las plantillas que tenemos cargadas, y para cada una de ellas, tenemos la opción de descargarlas o eliminarlas.</p>
+<figure style="align: center;">
+    <img src="images/05TemplateDownload.gif">
+    <figcaption>Descargando una plantilla</figcaption>
+</figure>
+
+<h3 id="cargando-plantillas">Cargando plantillas<a class="headerlink" href="#cargando-plantillas" title="Permanent link">&para;</a></h3>
+<p>En cambio, para cargar una plantilla, desde el propio menú de <em>Operate</em>, el icono con la plantilla y la flecha hacia arriba, nos permitirá elegir un archivo <code>.xml</code> con el código de la plantilla.</p>
+<p>Una vez cargada, usaremos el control del menu superior para arrastrarla al área de trabajo.</p>
+<p>Una de las mayores ventajas es el uso de plantillas ya existentes. Existe una colección de plantillas mantenida por <em>Cloudera</em> en <a href="https://github.com/hortonworks-gallery/nifi-templates">https://github.com/hortonworks-gallery/nifi-templates</a>. Se recomienda darle un ojo a la <a href="https://github.com/hortonworks-gallery/nifi-templates/blob/master/NiFi%20Templates.xlsx">hoja de cálculo</a> que contiene un resumen de las plantillas compartidas.</p>
+<p>Otros ejemplos a destacar se encuentran en <a href="https://github.com/xmlking/nifi-examples">https://github.com/xmlking/nifi-examples</a>.</p>
+<p>En nuestro caso, vamos a utilizar la plantilla de <em>CSV-to-JSON</em>, la cual podemos descargar desde <a href="https://raw.githubusercontent.com/hortonworks-gallery/nifi-templates/master/templates/csv-to-json-flow.xml">https://raw.githubusercontent.com/hortonworks-gallery/nifi-templates/master/templates/csv-to-json-flow.xml</a>.</p>
+<p>Una vez descargado el archivo xml, lo subimos a Nifi. Tras ello, arrastramos el componente y vemos su resultado:</p>
+<figure style="align: center;">
+    <img src="images/05TemplateUpload.gif">
+    <figcaption>Cargando una plantilla</figcaption>
+</figure>
+
+<h2 id="caso-5-trabajando-con-conjuntos-de-registros">Caso 5: Trabajando con conjuntos de registros<a class="headerlink" href="#caso-5-trabajando-con-conjuntos-de-registros" title="Permanent link">&para;</a></h2>
+<p>En los casos anteriores, ya hemos visto que haciendo uso de <em>ExtractText</em> y <em>AttributesToJSON</em> podíamos crear ficheros JSON a partir de CSV.</p>
+<p>Nifi ofrece una forma más cómoda de realizar esto. Haciendo uso de los FF como registros y los procesadores de tipo <em>Record</em> (ya utilizamos alguno en el caso 3, en el que filtrábamos mediante una sentencia SQL), vamos a poder trabajar con los datos como un conjunto de registros en vez de hacerlo de forma individual.</p>
+<p>Estos procesadores hacen que los flujos de construcción para manejar datos sean más sencillos, ya que que podemos construir procesadores que acepten cualquier formato de datos sin tener que preocuparnos por el análisis y la lógica de serialización. Otra gran ventaja de este enfoque es que podemos mantener los FF más grandes, cada uno de los cuales consta de múltiples registros, lo que resulta en un mejor rendimiento.</p>
+<p>Tenemos tres componentes a destacar:</p>
+<ul>
+<li>De lectura: <code>AvroReader</code>, <code>CsvReader</code>, <code>ParquetReader</code>, <code>JsonPathReader</code>, <code>JsonTreeReader</code>, <code>ScriptedReader</code>, ...</li>
+<li>De escritura: <code>AvroRecordSetWriter</code>, <code>CsvRecordSetWriter</code>, <code>JsonRecordSetWriter</code>, <code>FreeFormTextRecordSetWriter</code>, <code>ScriptedRecordSetWriter</code>, ...</li>
+<li>Procesador de registros:<ul>
+<li><code>ConvertRecord</code>: convierte entre formatos y/o esquemas similares. Por ejemplo, la conversión de CSV a Avro se puede realizar configurando <code>ConvertRecord</code> con un <code>CsvReader</code> y un <code>AvroRecordSetWriter</code>. Además, la conversión de esquemas entre esquemas similares se puede realizar cuando el esquema de escritura es un subconjunto de los campos del esquema de lectura o si el esquema de escritura tiene campos adicionales con valores propuestos.</li>
+<li><code>LookupRecord</code>: extrae uno o más campos de un registro y busca un valor para esos campos en un <code>LookupService</code> (ya sea a un fichero CSV, XML, accediendo a una base de datos o un servicio REST, etc...). Estos servicios funcionan como un mapa, de manera que reciben la clave y el servicio devuelve el valor. Puedes consultar más información en la serie de artículos <a href="https://community.cloudera.com/t5/Community-Articles/Data-flow-enrichment-with-NiFi-part-1-LookupRecord-processor/ta-p/246940">Data flow enrichment with NiFi part: LookupRecord processor</a> y un ejemplo completo en <a href="https://alasdairb.com/2021/05/16/enriching-records-with-lookuprecord-rest-apis-in-nifi/">Enriching Records with LookupRecord &amp; REST APIs in NiFi</a>.</li>
+<li><code>QueryRecord</code>: ejecuta una declaración SQL contra los registros y escribe los resultados en el contenido del archivo de flujo. Este es el procesador que usamos en el <a href="04nifi1.html#caso-3---filtrado-de-datos">caso 3 de la sesión anterior</a>.</li>
+<li><code>ConsumeKafkaRecord_N_M</code>: utiliza el <em>Reader</em> de registros configurado para deserializar los datos sin procesar recuperados de Kafka, y luego utiliza el <em>Writer</em> de registros configurado para serializar los registros al contenido del archivo de flujo.</li>
+<li><code>PublicarKafkaRecord_N_M</code>: utiliza el <em>Reader</em> de registros configurado para leer el archivo de flujo entrante como registros, y luego utiliza el <em>Writer</em> de registros configurado para serializar cada registro para publicarlo en Kafka.</li>
+</ul>
+</li>
+</ul>
+<h3 id="convirtiendo-formatos">Convirtiendo formatos<a class="headerlink" href="#convirtiendo-formatos" title="Permanent link">&para;</a></h3>
+<p>Así pues, para demostrar su uso vamos a convertir el archivo CSV del <a href="04nifi1.html#caso-3---filtrado-de-datos">caso 3 de la sesión anterior</a> que contiene información sobre <a href="resources/pdi_sales_small.csv">ventas</a> a formato JSON.</p>
+<p>Podríamos utilizar simplemente un <em>GetFile</em> conectado a un <em>ConvertRecord</em> y este a un <em>PutFile</em>. Para que el fichero generado contenga como extensión el formato al que convertimos, antes de serializar los datos, añadimos un procesador <em>UpdateAttribute</em> para modificar el nombre del fichero.</p>
+<p>El flujo de datos resultante será similar a:</p>
+<figure style="align: center;">
+    <img src="images/05caso5completo.png">
+    <figcaption>Conversión de formato mediante ConvertRecord</figcaption>
+</figure>
+
+<p>En concreto, en el caso del <em>ConvertRecord</em>, hemos utilizado los siguientes elementos:</p>
+<figure style="align: center;">
+    <img src="images/05caso5configureRecord.png">
+    <figcaption>Configuración de ConvertRecord</figcaption>
+</figure>
+
+<p>Para el <em>CSVReader</em>, hemos de configurar el separador de campos con el <code>;</code> e indicar que la primera fila contiene un encabezado. Para el <em>JSONRecordSetWriter</em> no hemos configurado nada.</p>
+<h3 id="renombrando-el-destino">Renombrando el destino<a class="headerlink" href="#renombrando-el-destino" title="Permanent link">&para;</a></h3>
+<p>Tal como hemos comentado, necesitamos renombrar el fichero de salida. Para ello, necesitamos hacer uso del procesador <em>UpdateAttribute</em> y utilizar el <a href="https://nifi.apache.org/docs/nifi-docs/html/expression-language-guide.html">Nifi Expression Language</a> para modificar la propiedad <code>filename</code> y recortar la extensión y concatenar con la nueva mediante la expresión <code>${filename:substringBefore('.csv')}.json</code>:</p>
+<figure style="align: center;">
+    <img src="images/05caso5renameFilename.png">
+    <figcaption>Modificando la extensión de filename</figcaption>
+</figure>
+
+<h2 id="caso-6-trabajando-con-elasticsearch">Caso 6: Trabajando con Elasticsearch<a class="headerlink" href="#caso-6-trabajando-con-elasticsearch" title="Permanent link">&para;</a></h2>
+<p>En bloques anteriores ya hemos trabajado con <em>Elasticsearch</em>. En nuestro caso, tenemos la versión 7.16 descargada en la carpeta <code>/opt/elasticsearch-7.16.0</code> de nuestra máquina virtual.</p>
+<div class="admonition tip">
+<p class="admonition-title">Elasticsearch+Nifi via Docker</p>
+<p>Si queremos utilizarlo mediante <em>Docker</em>, necesitamos que <em>ElasticSearch</em> y <em>Nifi</em> estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo <a href="resources/nifi-elastic/docker-compose.yml">docker-compose.yml</a>:</p>
+<div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nt">services</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">nifi</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8443:8443&quot;</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache/nifi:latest</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_USERNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifi</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifinifinifi</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="nt">links</span><span class="p">:</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elasticsearch</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="nt">elasticsearch</span><span class="p">:</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;9200:9200&quot;</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;9300:9300&quot;</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">            </span><span class="nt">discovery.type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">single-node</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker.elastic.co/elasticsearch/elasticsearch:7.15.2</span>
+</code></pre></div>
+<p>Una vez creado el archivo, construimos el contenedor mediante:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker-compose<span class="w"> </span>-p<span class="w"> </span>nifielasticsearch<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+</div>
+<p>Recordad que necesitamos arrancarla mediante el comando <code>./bin/elasticsearch</code>. Para comprobar que ha ido todo bien, podemos ejecutar la siguiente petición:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span><span class="s1">&#39;localhost:9200/_cat/health?v=true&amp;pretty&#39;</span>
+</code></pre></div>
+<p>El procesador con el que vamos a trabajar es del tipo <em>PutElasticSearchHttp</em>, en el cual vamos a configurar:</p>
+<ul>
+<li><em>Elasticsearch URL</em>: <code>http://localhost:9200</code> (en el caso de usar <em>Docker</em>, deberás cambiar <code>localhost</code> por el nombre del servicio: <code>http://elasticsearch:9200</code>)</li>
+<li><em>Index</em>: aquí vamos a poner como valor la palabra <code>peliculas</code>.</li>
+<li>marcamos la opción de autoterminar para las conexiones <em>retry</em> y <em>failure</em>.</li>
+</ul>
+<p>Una vez creado el procesador, vamos a alimentarlo a partir de los datos de un fichero JSON, mediante el procesador que ya conocemos <em>GetFile</em>. Podéis descargar el fichero de pruebas <a href="resources/movies.json">movies.json</a> y colocarlo en la carpeta donde hayamos configurado.</p>
+<figure style="align: center;">
+    <img src="images/05caso6lectura.png">
+    <figcaption>Lectura de JSON e inserción en Elasticsearch</figcaption>
+</figure>
+
+<p>Una vez ejecutado, para comprobar que se han introducido los datos podemos ejecutar la siguiente petición:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl<span class="w"> </span>-X<span class="w">  </span>GET<span class="w"> </span><span class="s2">&quot;localhost:9200/peliculas/_search?pretty&quot;</span>
+</code></pre></div>
+<p>Y veremos cómo se han introducido en <em>Elasticsearch</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="nt">&quot;took&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">46</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="nt">&quot;timed_out&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="nt">&quot;_shards&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="nt">&quot;successful&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nt">&quot;skipped&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nt">&quot;failed&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="p">},</span>
+<span class="linenos" data-linenos="10 "></span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">        </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="nt">&quot;relation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eq&quot;</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="p">},</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="nt">&quot;max_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">    </span><span class="nt">&quot;hits&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">        </span><span class="p">{</span>
+<span class="linenos" data-linenos="18 "></span><span class="w">            </span><span class="nt">&quot;_index&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;peliculas&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="19 "></span><span class="w">            </span><span class="nt">&quot;_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="20 "></span><span class="w">            </span><span class="nt">&quot;_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FTUyU30BBEE3YF7Zlgn1&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="21 "></span><span class="w">            </span><span class="nt">&quot;_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos="22 "></span><span class="w">            </span><span class="nt">&quot;_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="23 "></span><span class="w">                </span><span class="nt">&quot;movies&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="linenos" data-linenos="24 "></span><span class="w">                    </span><span class="p">{</span>
+<span class="linenos" data-linenos="25 "></span><span class="w">                        </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Shawshank Redemption&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="26 "></span><span class="w">                        </span><span class="nt">&quot;rank&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="27 "></span><span class="w">                        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tt0111161&quot;</span>
+<span class="linenos" data-linenos="28 "></span><span class="w">                    </span><span class="p">},</span>
+</code></pre></div>
+<p>Si nos fijamos bien, realmente solo ha insertado un documento que contiene un array de películas, lo cual no está bien.</p>
+<h3 id="separando-los-datos">Separando los datos<a class="headerlink" href="#separando-los-datos" title="Permanent link">&para;</a></h3>
+<p>Así pues, previamente debemos separar el array contenido dentro de <code>movies.json</code> en documentos individuales.</p>
+<div class="admonition warning">
+<p class="admonition-title">Borrar el índice</p>
+<p>Recuerda que antes de meter nuevos datos, necesitamos eliminar el índice de ElasticSearch mediante <code>curl -X DELETE "localhost:9200/peliculas"</code>.</p>
+</div>
+<p>Para dividir el documento de películas en documentos individuales, necesitamos utilizar el procesador <em>SplitJSON</em>. Lo conectamos entre los dos procesadores anteriores, y le indicamos en la propiedad <em>JSonPath Expression</em> la expresión donde se encuentran las películas: <code>$.movies.*</code></p>
+<figure style="align: center;">
+    <img src="images/05caso6split.png">
+    <figcaption>Separamos las películas</figcaption>
+</figure>
+
+<p>Y ahora si volvemos a consultar el índice mediante <code>curl -X  GET "localhost:9200/peliculas/_search?pretty"</code>, sí que veremos que ha insertado las cien películas por separado:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nt">&quot;took&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="nt">&quot;timed_out&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="nt">&quot;_shards&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="nt">&quot;successful&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nt">&quot;skipped&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nt">&quot;failed&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="p">},</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nt">&quot;hits&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">      </span><span class="nt">&quot;value&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">      </span><span class="nt">&quot;relation&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eq&quot;</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="p">},</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="nt">&quot;max_score&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">    </span><span class="nt">&quot;hits&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">      </span><span class="p">{</span>
+<span class="linenos" data-linenos="18 "></span><span class="w">        </span><span class="nt">&quot;_index&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;peliculas&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="19 "></span><span class="w">        </span><span class="nt">&quot;_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="20 "></span><span class="w">        </span><span class="nt">&quot;_id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;X-uaWH0BesFhA-H6MMxA&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="21 "></span><span class="w">        </span><span class="nt">&quot;_score&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos" data-linenos="22 "></span><span class="w">        </span><span class="nt">&quot;_source&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="23 "></span><span class="w">          </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Shawshank Redemption&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="24 "></span><span class="w">          </span><span class="nt">&quot;rank&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="25 "></span><span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tt0111161&quot;</span>
+<span class="linenos" data-linenos="26 "></span><span class="w">        </span><span class="p">}</span>
+<span class="linenos" data-linenos="27 "></span><span class="w">      </span><span class="p">},</span>
+<span class="linenos" data-linenos="28 "></span><span class="w">      </span><span class="p">{</span>
+<span class="linenos" data-linenos="29 "></span><span class="w">        </span><span class="nt">&quot;_index&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;peliculas&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="30 "></span><span class="w">        </span><span class="nt">&quot;_type&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;_doc&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="31 "></span><span class="w">        </span><span class="nt">&quot;_id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;YOuaWH0BesFhA-H6MMxC&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="32 "></span><span class="w">        </span><span class="nt">&quot;_score&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span>
+<span class="linenos" data-linenos="33 "></span><span class="w">        </span><span class="nt">&quot;_source&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="34 "></span><span class="w">          </span><span class="nt">&quot;title&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;The Godfather&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="35 "></span><span class="w">          </span><span class="nt">&quot;rank&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="36 "></span><span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tt0068646&quot;</span>
+<span class="linenos" data-linenos="37 "></span><span class="w">        </span><span class="p">}</span>
+<span class="linenos" data-linenos="38 "></span><span class="w">      </span><span class="p">},</span>
+</code></pre></div>
+<h2 id="caso-7-de-twitter-a-elasticsearchmongodb">Caso 7: de Twitter a Elasticsearch/MongoDB<a class="headerlink" href="#caso-7-de-twitter-a-elasticsearchmongodb" title="Permanent link">&para;</a></h2>
+<p>Para este caso de uso, vamos a recoger datos de <em>Twitter</em> y los vamos a meter tanto en <em>MongoDB</em> como en <em>ElasticSearch</em> a la vez.</p>
+<p>El primer paso es obtener unas credenciales de desarrollador por parte de <em>Twitter</em> para poder acceder a su API.
+Para ello, en <a href="https://developer.twitter.com/">https://developer.twitter.com/</a> creamos una cuenta de desarrollador y creamos un proyecto.</p>
+<figure style="align: center;">
+    <img src="images/05twitterdev.png">
+    <figcaption>Claves necesarias para conectar con Twitter</figcaption>
+</figure>
+
+<div class="admonition tip">
+<p class="admonition-title">Nifi+Elasticsearch+MongDB via Docker</p>
+<p>Si queremos realizar este caso de uso mediante Docker, necesitamos que ElasticSearch, MongoDB y Nifi estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo <a href="resources/nifi-elastic-mongodb/docker-compose.yml">docker-compose.yml</a>:</p>
+<div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nt">services</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">nifi</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8443:8443&quot;</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache/nifi:latest</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_USERNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifi</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifinifinifi</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">NIFI_JVM_HEAP_MAX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2g</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">        </span><span class="nt">links</span><span class="p">:</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elasticsearch</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="nt">elasticsearch</span><span class="p">:</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;9200:9200&quot;</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;9300:9300&quot;</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="linenos" data-linenos="18 "></span><span class="w">            </span><span class="nt">discovery.type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">single-node</span>
+<span class="linenos" data-linenos="19 "></span><span class="w">            </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker.elastic.co/elasticsearch/elasticsearch:7.15.2</span>
+<span class="linenos" data-linenos="20 "></span><span class="w">    </span><span class="nt">mongodb</span><span class="p">:</span>
+<span class="linenos" data-linenos="21 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos="22 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;27017:27017&quot;</span>
+<span class="linenos" data-linenos="23 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongo:latest</span>
+</code></pre></div>
+<p>Una vez creado el archivo, construimos el contenedor mediante:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker-compose<span class="w"> </span>-p<span class="w"> </span>nifielasticsearchmongodb<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+</div>
+<h3 id="leyendo-tweets">Leyendo tweets<a class="headerlink" href="#leyendo-tweets" title="Permanent link">&para;</a></h3>
+<p>Vamos a recuperar cada 100 segundos los mensajes que contengan la palabra <strong>bigdata</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Procesador GetTwitter - Twitter Elevated</p>
+<p>Para poder utilizar el procesador de Nifi <em>GetTwitter</em> es necesario acceder al <em>Twitter API v1.1</em>, la cual solo está disponible para las cuentas con un nivel <em>Elevated</em>. Por ello, en vez de utilizar las credenciales habituales (API Key, API Key Secret, Access Token y Access Token Secret), vamos a realizar el acceso mediante una petición HTTP utilizando un token de validación, conocido como <em>Bearer Token</em> (lo cual es una mejor práctica de seguridad).</p>
+</div>
+<p>Para ello, usamos un procesador <em>InvokeHTTP</em> y configuramos los siguientes parámetros:</p>
+<ul>
+<li>En la planificación, vamos a configurar que se realice una petición cada 100 segundos, configurando <em>Run Schedule</em> a <code>100s</code>.</li>
+<li><em>HTTP Method</em>: <code>GET</code></li>
+<li><em>Remote UR</em>L: <code>https://api.twitter.com/2/tweets/search/recent?query=bigdata&amp;tweet.fields=created_at,lang,public_metrics</code><ul>
+<li>Mediante el parámetro <code>query</code> indicamos el término a buscar. En nuestro caso, buscamos la palabra <code>bigdata</code>.</li>
+<li>Mediante el parámetro <code>tweet.field</code> indicamos los campos a recuperar (por defecto recupera el id y el texto de cada <em>tweet</em>)<ul>
+<li>Puedes comprobar todos los campos que podemos obtener de los mensajes en <a href="https://developer.twitter.com/en/docs/twitter-api/data-dictionary/object-model/tweet">https://developer.twitter.com/en/docs/twitter-api/data-dictionary/object-model/tweet</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Añadimos una propiedad (mediante el icono del signo <code>+</code>) que nombramos como <em>Authorization</em> y le asignamos la palabra <em>Bearer</em> y el token que copiamos desde la administración de Twitter: <code>Bearer AAAAAAAAAAAAAAAAAAAAAIGNWAEAAAAA...</code></li>
+</ul>
+<figure style="align: center;">
+    <img src="images/05caso7twitter.gif">
+    <figcaption>Caso 7: Comprobando la lectura de mensajes de Twitter</figcaption>
+</figure>
+
+<p>Tras realizar una petición, obtendremos un FF similar a la siguiente información (he dejado sólo dos mensajes para facilitar la visualización):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">   </span><span class="nt">&quot;data&quot;</span><span class="p">:[</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">      </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">         </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1468197767885561856&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">         </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;RT @CatherineAdenle: Machine Learning Algorithms in Python You Must Learn \n#DataScience #MachineLearning\n#BigData #Analytics #AI #Tech #Alg…&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">         </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="s2">&quot;2021-12-07T12:36:40.000Z&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">         </span><span class="nt">&quot;public_metrics&quot;</span><span class="p">:{</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">&quot;retweet_count&quot;</span><span class="p">:</span><span class="mi">22</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">&quot;reply_count&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="nt">&quot;like_count&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">            </span><span class="nt">&quot;quote_count&quot;</span><span class="p">:</span><span class="mi">0</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">         </span><span class="p">},</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">         </span><span class="nt">&quot;lang&quot;</span><span class="p">:</span><span class="s2">&quot;en&quot;</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">      </span><span class="p">},</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">      </span><span class="err">...</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">      </span><span class="p">{</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">         </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;1468197570925277190&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="18 "></span><span class="w">         </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="s2">&quot;RT @gp_pulipaka: A Quick Intro to Deep Learning Course! #BigData #Analytics #DataScience #AI #MachineLearning #IoT #IIoT #Python #RStats #T…&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="19 "></span><span class="w">         </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="s2">&quot;2021-12-07T12:35:53.000Z&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="20 "></span><span class="w">         </span><span class="nt">&quot;public_metrics&quot;</span><span class="p">:{</span>
+<span class="linenos" data-linenos="21 "></span><span class="w">            </span><span class="nt">&quot;retweet_count&quot;</span><span class="p">:</span><span class="mi">60</span><span class="p">,</span>
+<span class="linenos" data-linenos="22 "></span><span class="w">            </span><span class="nt">&quot;reply_count&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+<span class="linenos" data-linenos="23 "></span><span class="w">            </span><span class="nt">&quot;like_count&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+<span class="linenos" data-linenos="24 "></span><span class="w">            </span><span class="nt">&quot;quote_count&quot;</span><span class="p">:</span><span class="mi">0</span>
+<span class="linenos" data-linenos="25 "></span><span class="w">         </span><span class="p">},</span>
+<span class="linenos" data-linenos="26 "></span><span class="w">         </span><span class="nt">&quot;lang&quot;</span><span class="p">:</span><span class="s2">&quot;en&quot;</span>
+<span class="linenos" data-linenos="27 "></span><span class="w">      </span><span class="p">}</span>
+<span class="linenos" data-linenos="28 "></span><span class="w">   </span><span class="p">],</span>
+<span class="linenos" data-linenos="29 "></span><span class="w">   </span><span class="nt">&quot;meta&quot;</span><span class="p">:{</span>
+<span class="linenos" data-linenos="30 "></span><span class="w">      </span><span class="nt">&quot;newest_id&quot;</span><span class="p">:</span><span class="s2">&quot;1468197767885561856&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="31 "></span><span class="w">      </span><span class="nt">&quot;oldest_id&quot;</span><span class="p">:</span><span class="s2">&quot;1468197570925277190&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="32 "></span><span class="w">      </span><span class="nt">&quot;result_count&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+<span class="linenos" data-linenos="33 "></span><span class="w">      </span><span class="nt">&quot;next_token&quot;</span><span class="p">:</span><span class="s2">&quot;b26v89c19zqg8o3fpdy8xh0ikrj9fhq1nywqt95oqkxh9&quot;</span>
+<span class="linenos" data-linenos="34 "></span><span class="w">   </span><span class="p">}</span>
+<span class="linenos" data-linenos="35 "></span><span class="p">}</span>
+</code></pre></div>
+<p>A continuación, vamos a separar los mensajes en diferentes FF del mismo modo que acabamos de hacer en el ejercicio anterior. Así pues, añadimos el procesador <em>SplitJson</em> y configuramos la división de los mensajes mediante expresión con <code>$.data.*</code>.</p>
+<h3 id="evaluando-el-idioma">Evaluando el idioma<a class="headerlink" href="#evaluando-el-idioma" title="Permanent link">&para;</a></h3>
+<p>Con esta información, hemos decidido enviar todos los mensajes que vengan en inglés (<code>"lang": "en"</code>) a <em>ElasticSearch</em>, y los que vengan en castellano a MongoDB.</p>
+<p>Mediante el procesador <em>EvaluateJsonPath</em>, vamos a colocar en atributos la siguiente información que queremos almacenar, definiendo la propiedad <em>Destination</em> como <code>flow-attribute</code>:</p>
+<p>Para ello creamos los siguientes atributos con la expresión para acceder al campo JSON asociado:</p>
+<ul>
+<li>twitter.id: <code>$.id</code></li>
+<li>twitter.text: <code>$.text</code></li>
+<li>twitter.lang: <code>$.lang</code></li>
+<li>twitter.created_at: <code>$.created_at</code></li>
+<li>twitter.rt: <code>$.public_metrics.retweet_count</code></li>
+<li>twitter.likes: <code>$.public_metrics.like_count</code></li>
+</ul>
+<figure style="align: center;">
+    <img src="images/05caso7evaluateJson.png">
+    <figcaption>Caso 7: Creamos atributos con información de los tweets</figcaption>
+</figure>
+
+<p>A continuación, conectamos con el procesador <em>RouteOnAttribute</em>.</p>
+<figure style="align: center;">
+    <img src="images/05caso71.png">
+    <figcaption>Caso 7: Conexiones para enrutar según el idioma</figcaption>
+</figure>
+
+<p>Dentro del procesador <em>RouteOnAttribute</em>, creamos dos propiedas para enrutar los FF según el valor del atributo <em>twitter.lang</em>:</p>
+<ul>
+<li><em>lang-en</em>: <code>${twitter.lang:equals("en")}</code></li>
+<li><em>lang-es</em>: <code>${twitter.lang:equals("es")}</code></li>
+</ul>
+<figure style="align: center;">
+    <img src="images/05caso7routeAttribute.png">
+    <figcaption>Caso 7: Enrutamos según el atributo twitter.lang</figcaption>
+</figure>
+
+<h3 id="guardando-mensajes-en-ingles-en-elasticsearch">Guardando mensajes en inglés en ElasticSearch<a class="headerlink" href="#guardando-mensajes-en-ingles-en-elasticsearch" title="Permanent link">&para;</a></h3>
+<p>Tal como acabamos de hacer, sólo tenemos que añadir el procesador <em>PutElasticsearchHttp</em> y configurar las siguientes propiedades:</p>
+<ul>
+<li><em>Elasticsearch URL</em>: <code>http://localhost:9200</code> (en el caso de usar <em>Docker</em>, deberás cambiar <code>localhost</code> por el nombre del servicio: <code>http://elasticsearch:9200</code>)</li>
+<li><em>Index</em>: aquí vamos a poner como valor la palabra <code>tweets</code>.</li>
+<li>marcamos la opción de autoterminar para las conexiones <em>retry</em> y <em>failure</em>.</li>
+</ul>
+<p>A continuación, lo conectamos mediante la conexión <code>lang-en</code> que sale del procesador anterior.</p>
+<p>Para comprobar que los datos se están insertando correctamente, podemos hacer una petición a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl<span class="w"> </span>-X<span class="w">  </span>GET<span class="w"> </span><span class="s2">&quot;localhost:9200/tweets/_search?pretty&quot;</span>
+</code></pre></div>
+<h3 id="guardando-mensajes-en-castellano-en-mongodb">Guardando mensajes en castellano en MongoDB<a class="headerlink" href="#guardando-mensajes-en-castellano-en-mongodb" title="Permanent link">&para;</a></h3>
+<p>De forma similar, agregamos el procesador <em>PutMongo</em> y configuramos las siguientes propiedades:</p>
+<ul>
+<li>Mongo URI: <code>mongodb://localhost</code> (en el caso de usar <em>Docker</em>, deberás cambiar <code>localhost</code> por el nombre del servicio: <code>mongodb://mongodb</code>)</li>
+<li>Mongo Database Name: <code>iabd</code></li>
+<li>Mongo Collection Name: <code>tweets</code></li>
+</ul>
+<p>Tras ello, lo conectamos mediante la conexión <code>lang-es</code> (y si queremos, también podemos añadir la conexión <code>unmatched</code> de manera que almacenerá los también los mensajes que no estén ni en inglés ni en español. Cuando Twitter no reconoce el lenguaje del mensaje, le asigna como lenguaje <em>undetermined</em> mediante el código <code>und</code>).</p>
+<p>Para comprobar que los datos se están insertando correctamente, una vez conectados a <code>mongo</code>, podemos realizar la siguiente consulta:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">use</span><span class="w"> </span><span class="nx">iabd</span><span class="p">;</span>
+<span class="linenos" data-linenos="2 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">find</span><span class="p">();</span>
+</code></pre></div>
+<p>Así pues, el flujo de datos queda tal que así:</p>
+<figure style="align: center;">
+    <img src="images/05caso72.png">
+    <figcaption>Caso 7: Flujo de datos con ElasticSearch y MongoDB</figcaption>
+</figure>
+
+<div class="admonition question">
+<p class="admonition-title">Renombrando id</p>
+<p>Si queremos que <em>MongoDB</em> utilice el id del tweet como la clave de los documentos en <em>MongoDB</em> y así asegurar que no tenemos mensajes repetidos, debemos renombrar el campo a <code>_id</code>. Para ello, podemos utilizar el procesador <em>UpdateAttribute</em> para renombrar <code>twitter.id</code> a <code>_id</code> y luego el procesador <em>AttritubesToJSON</em> para generar la información a almacenar.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">REST API</p>
+<p>Nifi ofrece un API REST con el cual podemos interactuar de forma similar al interfaz gráfico.
+Teniendo Nifi arrancado, prueba con las siguientes URL: <a href="https://localhost:8443/nifi-api/access">https://localhost:8443/nifi-api/access</a> y <a href="https://localhost:8443/nifi-api/flow/about">https://localhost:8443/nifi-api/flow/about</a>.<br />
+Más información en <a href="https://nifi.apache.org/docs/nifi-docs/rest-api/index.html">https://nifi.apache.org/docs/nifi-docs/rest-api/index.html</a></p>
+</div>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p>Realiza los casos de uso del 5 al 7. En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la plantilla de cada flujo.</p>
+</li>
+<li>
+<p>(opcional) Modifica el caso 7 para que los tweets que no están ni en castellano ni en inglés se inserten en una base de datos <em>MySQL</em>/<em>MariaDB</em>.</p>
+<p>Para ello, debes recoger la información de los atributos que hemos separado y generar un nuevo JSON con los datos que quieres almacenar (<em>id</em>, <em>text</em>, <em>created_at</em>, <em>rt</em> y <em>likes</em>) mediante el procesador <em>AttributestoJSON</em>. Una vez tengas el JSON, utiliza los procesadores <em>ConvertJSONToSQL</em> y <em>ExecuteSQL</em> para insertar los datos. Antes deberás crear la tabla en la base de datos. Tienes un ejemplo parecido en el artículo <a href="https://medium.com/@moha.ajori/using-apache-nifi-to-load-tweets-from-twitter-api-to-memsql-19e19a3be20e">Using Apache Nifi to Load Tweets from Twitter API to MemSQL</a>.</p>
+<p>Adjunta capturas de pantalla de la configuración de los procesadores que has añadido, así como de una consulta sobre la base de datos donde aparezcan mensajes insertados y la plantilla del caso de uso completo.</p>
+</li>
+</ol>
+<!--
+https://github.com/addmeaning/nifi-exercises
+-->
+
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://nifi.apache.org/docs/nifi-docs/html/user-guide.html">Apache Nifi User Guide</a></li>
+<li><a href="https://nifi.apache.org/docs/nifi-docs/html/nifi-in-depth.html">Apache Nifi in Depth</a></li>
+<li><a href="https://www.tutorialspoint.com/apache_nifi/index.htm">Apache Nifi en TutorialsPoint</a></li>
+<li>Libro <a href="https://www.packtpub.com/free-ebook/data-engineering-with-python/9781839214189">Data Engineering with Python</a></li>
+<li>Artículo de Futurespace: <a href="https://www.futurespace.es/apache-nifi-flujo-de-extraccion-validacion-transformacion-y-carga-de-ficheros-caso-de-uso-real/">Flujo de extracción, validación, transformación y carga de ficheros (Caso de uso real)</a></li>
+</ul>
+<!--
+https://courses.cs.ut.ee/2021/cloud/spring/Main/Practice10
+https://courses.cs.ut.ee/2021/cloud/spring/Main/Practice11
+https://www.theninjacto.xyz/tags/apache-nifi/
+https://github.com/tjaensch/nifi_docker_elasticsearch_demo
+-->
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        <a href='https://ko-fi.com/T6T8GWT9N' title='Invítame a un café en ko-fi.com' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Invítame a un café en ko-fi.com' /></a>
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Me encantan estos apuntes" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Los apuntes son mejorables" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Gracias por tu tiempo. Si quieres me puedes <a href='https://ko-fi.com/T6T8GWT9N'>invitar a un café en ko-fi</a>.
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              ¡Gracias por tu colaboración! Ayúdame a mejorar los apuntes enviándome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+    
+  </body>
+</html>
