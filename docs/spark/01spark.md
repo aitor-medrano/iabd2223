@@ -483,7 +483,7 @@ Si pulsamos por ejemplo sobre la fase de `groupBy` obtendremos sus estadísticas
 
 ## Actividades
 
-1. (RA5075.4 / CE5.4a, CE5.4b  / 1.5p) Reproduce el ejemplo de [*DataFrames*](#dataframe) sobre el fichero de [El Quijote](resources/el_quijote.txt) adjuntado varias capturas de pantalla (entorno, ejecución y monitorización) al realizarlo en:
+1. (RA5075.4 / CE5.4a, CE5.4b  / 2p) Reproduce el ejemplo de [*DataFrames*](#dataframe) sobre el fichero de [El Quijote](resources/el_quijote.txt) adjuntado varias capturas de pantalla (entorno, ejecución y monitorización) al realizarlo en:
     * la [máquina virtual](#puesta-en-marcha) o un [entorno Docker](#uso-de-docker).
     * y en [Databricks](#databricks).
 

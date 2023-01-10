@@ -898,14 +898,14 @@ print("")
     3. Obtén una única lista con las palabras en ambos idiomas que son distintas entre ellas (`['hello', 'hola', 'table', ...`)
     4. Haz dos grupos con todas las palabras, uno con las que empiezan por vocal y otro con las que empiecen por consonante.
 
-3. (1p) A partir del fichero de [El Quijote](resources/el_quijote.txt):
+3. (0.75p) A partir del fichero de [El Quijote](resources/el_quijote.txt):
 
     1. Crear un RDD a partir del fichero y crea una lista con todas las palabras del documento.
     2. ¿Cuantas veces aparece la palabra `Dulcinea` (independientemente de si está en mayúsculas o minúsculas)? ¿Y `Rocinante`? (86 y 120 ocurrencias respectivamente)
     3. Devuelve una lista ordenada según el número de veces que sale cada palabra de más a menos (las primeras ocurrencias deben ser `[('que', 10731), ('de', 9035), ('y', 8668), ('la', 5014), ...`).
     4. Almacena el resultado en HDFS en  `/user/iabd/spark/wcQuijote`.
 
-4. (1p) Dada una cadena que contiene una lista de nombres `Juan, Jimena, Luis, Cristian, Laura, Lorena, Cristina, Jacobo, Jorge`, una vez transformada la cadena en una lista y luego en un RDD:
+4. (0.75p) Dada una cadena que contiene una lista de nombres `Juan, Jimena, Luis, Cristian, Laura, Lorena, Cristina, Jacobo, Jorge`, una vez transformada la cadena en una lista y luego en un RDD:
 
     1. Agrúpalos según su inicial, de manera que tengamos tuplas formadas por la letra inicial y todos los nombres que comienzan por dicha letra:
 
