@@ -1,0 +1,18 @@
+services:
+  nifi:
+    ports:
+      - "8443:8443"
+    image: apache/nifi:latest
+    environment:
+      SINGLE_USER_CREDENTIALS_USERNAME: nifi
+      SINGLE_USER_CREDENTIALS_PASSWORD: nifinifinifi
+      NIFI_JVM_HEAP_MAX: 2g
+    links:
+      - elasticsearch
+  elasticsearch:
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: single-node
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2

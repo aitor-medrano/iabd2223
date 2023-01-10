@@ -427,15 +427,24 @@ En el mundo real, los formatos de los archivos normalmente serán *Avro* y/o *Pa
 
 ## Hue
 
-[Hue](https://gethue.com) (*Hadoop User Experience*) es una interfaz gráfica de código abierto basada en web para su uso con *Apache Hadoop*. *Hue* actúa como front-end para las aplicaciones que se ejecutan en el clúster, lo que permite interactuar con las aplicaciones mediante una interfaz más amigable que el interfaz de comandos.
+[Hue](https://gethue.com) (*Hadoop User Experience*) es una interfaz gráfica de código abierto basada en web para su uso con *Apache Hadoop*. *Hue* actúa como *front-end* para las aplicaciones que se ejecutan en el clúster, lo que permite interactuar con las aplicaciones mediante una interfaz más amigable que el interfaz de comandos.
 
-En nuestra máquina virtual ya lo tenemos instalado y configurado para que funcione con HDFS y Hive.
+En nuestra máquina virtual ya lo tenemos instalado y configurado para que funcione con *HDFS* y *Hive*.
 
 La ruta de instalación es `/opt/hue-4.10.0` y desde allí, arrancaremos Hue:
 
 ``` bash
 ./build/env/bin/hue runserver
 ```
+
+!!! tip "Docker"
+    Si queremos ejecutarlo desde Docker, la propia Hue dispone de una imagen oficial, la cual podemos lanzar mediante:
+
+    ``` bash
+    docker run -it -p 8888:8888 gethue/hue:latest
+    ```
+
+    Para su configuración se recomienda consultar la [documentación oficial de la imagen](https://github.com/cloudera/hue/tree/testing/tools/docker/hue).
 
 Tras arrancarlo, nos dirigimos a `http://127.0.0.1:8000/`y visualizaremos el formulario de entrada, el cual entraremos con el usuario `iabd` y la contraseña `iabd`:
 

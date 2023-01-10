@@ -235,6 +235,10 @@ Conviene destacar que no podemos reconfigurar y redimensionar el clúster al mis
 
 Es muy importante ser conscientes de los [costes](https://aws.amazon.com/es/emr/pricing/) que lleva utilizar EMR. *A grosso modo*, EMR supone un 25% de sobrecoste a las instancias ECS, es decir, pagaremos el coste del alquiler de las máquinas EC2 más un sobre un incremento del 25%.
 
+<!--
+4 CPUs con 16GB RAM - aprox 1,6€ / hora
+-->
+
 Por ejemplo, para 20 nodos con 122 Gb RAM, 16 vCPU, pagaríamos unos 32 €/h.
 
 ## Referencias

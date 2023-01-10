@@ -1,4 +1,4 @@
-# Unidad de Trabajo 5.- Ecosistema Hadoop
+# Ecosistema Hadoop
 
 ## Resultados de aprendizaje
 
@@ -8,7 +8,7 @@
 * RA5075.3 Genera mecanismos de integridad de los datos, comprobando su mantenimiento en los sistemas de ficheros distribuidos y valorando la sobrecarga que conlleva en el tratamiento de los datos.
 * RA5075.4 Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen.
 
-## Planificación
+## Planificación (20h)
 
 | Sesión                                  | Fecha             | Duración (h) |
 | ---------                               | -----             | --------- |

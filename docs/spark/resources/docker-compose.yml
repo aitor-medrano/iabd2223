@@ -1,0 +1,26 @@
+services:
+    spark:
+        image: jupyter/pyspark-notebook
+        container_name: iabd-spark
+        ports:
+            - "8888:8888"
+            - "4040:4040"
+            - "4041:4041"
+        links:
+            - mysql
+        volumes:
+            - ./:/home/jovyan/work
+            - ./mysql-connector-j-8.0.31.jar:/usr/local/spark/jars/mysql-connector-j-8.0.31.jar
+    mysql:
+        image: mysql:latest
+        container_name: iabd-mysql
+        restart: always
+        command: --default-authentication-plugin=mysql_native_password
+        ports:
+          - "3306:3306"
+        environment:
+          TZ: Europe/Madrid
+          MYSQL_ROOT_PASSWORD: iabd
+          MYSQL_DATABASE: retail_db
+          MYSQL_USER: iabd
+          MYSQL_PASSWORD: iabd

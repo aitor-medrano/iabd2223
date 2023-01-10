@@ -178,6 +178,7 @@ Tal como comentamos al inicio, uno de los puntos débiles de *Hadoop* es el trab
 
 ## YARN
 
+<!-- Revisar curso AWS Ingeniería Datos -->
 *Yet Another Resource Negotiator* es un distribuidor de datos y gestor de recursos distribuidos. Forma parte de Hadoop desde la versión 2, y abstrae la gestión de recursos de los procesos *MapReduce* lo que implica una asignación de recursos más efectiva. YARN soporta varios frameworks de procesamiento distribuido, como *MapReduce v2*, *Tez*, *Impala*, *Spark*, etc..
 
 <figure style="align: center;">

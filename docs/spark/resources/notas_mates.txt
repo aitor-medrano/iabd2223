@@ -1,0 +1,19 @@
+Angel,6
+Maria,2
+Ramon,4.5
+Jorge,10
+Susana,9
+Anabel,8
+Pedro,5
+Rocio,6
+Carlos,4
+Triana,3
+Andres,4
+Fernando,5
+Leonardo,1
+Oscar,7
+Isabel,8
+Jose Juan,5
+Nicolas,2
+Alejandro,5
+Rosa,6

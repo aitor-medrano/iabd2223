@@ -330,7 +330,7 @@ LOCATION '/user/iabd/hive/customer';  -- (4)!
 ```
 
 1. Indica el formato de cada fila como delimitado (con un salto del línea)
-2. Los campos están separados por el caràcter `|` (es el mismo que habíamos indicado en Sqoop)
+2. Los campos están separados por el carácter `|` (es el mismo que habíamos indicado en Sqoop)
 3. El contenido está almacenado en HDFS en  formato texto
 4. Ruta de HDFS donde se encuentran los datos
 

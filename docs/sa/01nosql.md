@@ -695,3 +695,8 @@ Una base de datos que sigue el modelo transaccional BASE prefiere la disponibili
 
 *[CE5.2a]: Se ha determinado la importancia de los sistemas de almacenamiento para depositar y procesar grandes cantidades de cualquier tipo de datos rápidamente.
 *[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
+
+<!--
+Revisar: https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_1_Chapter.xhtml
+Poner intro de ingeneria de datos, evolución de las bases de datos OLAP/OLTP
+-->

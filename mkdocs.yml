@@ -4,7 +4,7 @@ use_directory_urls: false
 
 nav:
   - "Inicio": "index.md"
-  - "UT2.- Sistemas de almacenamiento":
+  - "Sistemas de almacenamiento":
       - "sa/index.md"
       - "S18.- Almacenamiento de datos. NoSQL": "sa/01nosql.md"
       - "S19.- MongoDB": "sa/02mongo.md"
@@ -12,7 +12,7 @@ nav:
       - "S25.- Agregaciones": "sa/05agregaciones.md"
       - "S28.- Replicación y Particionado": "sa/06replicacion.md"
       - "S30.- MongoDB y Python": "sa/07pymongo.md"
-  - "UT5.- Ecosistema Hadoop":
+  - "Ecosistema Hadoop":
       - "hadoop/index.md"
       - "S36.- Arquitecturas Big Data": "hadoop/01arq.md"
       - "S36.- Ingesta de datos": "hadoop/02etl.md"
@@ -21,7 +21,7 @@ nav:
       - "S39.- Formatos de datos": "hadoop/04formatos.md"
       - "S43.- Sqoop y Flume": "hadoop/05flume.md"
       - "S45.- Hive": "hadoop/06hive.md"
-  - "UT6.- Datos en el cloud":
+  - "Datos en el cloud":
       - "cloud/index.md"
       - "S33.- Cloud": "cloud/01cloud.md"
       - "S33.- AWS": "cloud/02aws.md"
@@ -30,7 +30,21 @@ nav:
       - "S44.- EMR": "cloud/05emr.md"
       - "S46.- RDS y DynamoDB": "cloud/06datos.md"
       - "S46.- Athena": "cloud/07athena.md"
-  - "UT7.- PIAFP Lara": "https://aitor-medrano.github.io/pia2223/"
+  - "Spark":
+      - "spark/index.md"
+      - "S56.- Ecosistema": "spark/01spark.md"
+      - "S60.- RDD": "spark/01rdd.md"
+      - "S62.- DataFrames API": "spark/02dataframeAPI.md"
+      - "Agregaciones": "spark/02agregaciones.md"
+      - "Spark Catalog": "spark/02catalog.md"
+      - "Streaming": "spark/03streaming.md"
+  - "Flujo de datos":
+      - "dataflow/index.md"
+      - "S69.- Airflow": "dataflow/01airflow.md"
+      - "Kafka": "dataflow/02kafka.md"
+      - "Nifi I": "dataflow/04nifi1.md"
+      - "Nifi II": "dataflow/05nifi2.md"
+  - "PIA FP": "https://aitor-medrano.github.io/pia2223/"
 
 theme:
   language: es
@@ -57,13 +71,15 @@ theme:
     - header.autohide
     - navigation.top
     - navigation.tracking
+    - navigation.footer
     - navigation.indexes
     - content.code.annotate
     - announce.dismiss
     - toc.follow
+    - content.code.copy
 
 extra_css:
-  - stylesheets/extra.css
+  - css/extra.css
 
 extra:
   search:

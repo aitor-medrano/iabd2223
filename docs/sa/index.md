@@ -1,4 +1,4 @@
-# Unidad de Trabajo 2.- Sistemas de almacenamiento
+# Sistemas de almacenamiento
 
 ## Resultados de aprendizaje
 
@@ -8,7 +8,7 @@
 * RA5075.2 Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.  
 * RA5075.3 Genera mecanismos de integridad de los datos, comprobando su mantenimiento en los sistemas de ficheros distribuidos y valorando la sobrecarga que conlleva en el tratamiento de los datos.
 
-## Planificación (20h)
+## Planificación (24h)
 
 | Sesión                                                                | Fecha             | Duración (h) |
 | ---------                                                             | -----             | --------- |
