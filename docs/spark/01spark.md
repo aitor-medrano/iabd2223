@@ -33,7 +33,7 @@ El diseño de *Spark* se basa principalmente en cuatro características:
 * ^^Modularidad^^: soporte para todo tipo de cargas mediante cualquiera de los lenguajes de programación soportados: *Scala*, *Java*, *Python*, *SQL* y *R*, así como los módulos de *Spark SQL* para consultas interactivas, *Spark Structured Streaming* para procesamiento de datos en *streaming*, *Spark MLlib* para *machine learning* y *GraphX* para trabajar con grafos. De esta manera, mediante una única aplicación *Spark* se puede hacer todo sin necesidad de utilizar APIs separadas.
 * ^^Extensibilidad^^: Al centrarse unicamente en el procesamiento, la gestión de los datos se puede realizar a partir de *Hadoop*, *Cassandra*, *HBase*, *MongoDB*, *Hive* o cualquier SGBD relacional, haciendo todo en memoria. Además, se puede extender el API para utilizar otras fuentes de datos, como *Apache Kafka*, *Amazon S3* o *Azure Storage*.
 
-En términos de flexibilidad, Spark ofrece un *stack* unificado que permite resolver múltiples tipos de procesamiento de datos, tanto aplicaciones *batch* como consultas interactivas, algoritmos de *machine learning* que quieren muchas iteraciones, aplicaciones de ingesta en *streaming* con rendimiento cercado al tiempo real, etc... Antes de *Spark*, para cada uno de estos tipos de procesamiento necesitábamos una herramienta diferente, ahora con Spark tenemos una *bala de plata* que reduce los costes y recursos necesarios.
+En términos de flexibilidad, Spark ofrece un *stack* unificado que permite resolver múltiples tipos de procesamiento de datos, tanto aplicaciones *batch* como consultas interactivas, algoritmos de *machine learning* que requieren muchas iteraciones, aplicaciones de ingesta en *streaming* con rendimiento cercado al tiempo real, etc... Antes de *Spark*, para cada uno de estos tipos de procesamiento necesitábamos una herramienta diferente, ahora con Spark tenemos una *bala de plata* que reduce los costes y recursos necesarios.
 
 ### Spark vs Hadoop
 
@@ -52,7 +52,7 @@ Además, contiene otros 4 grandes componentes construidos sobre el *core*:
     <figcaption>Componentes de Spark</figcaption>
 </figure>
 
-1. ***Spark Streaming*** es una herramienta para la creación de aplicaciones que procesamiento en *streaming* que ofrece un gran rendimiento con soporte para la tolerancia a fallos. Los datos pueden venir desde fuentes de datos tan diversas como *Kafka*, *Flume*, *Twitter* y tratarse en tiempo real.
+1. ***Spark Streaming*** es una herramienta para la creación de aplicaciones de procesamiento en *streaming* que ofrece un gran rendimiento con soporte para la tolerancia a fallos. Los datos pueden venir desde fuentes de datos tan diversas como *Kafka*, *Flume*, *Twitter* y tratarse en tiempo real.
 2. ***Spark SQL*** ofrece un interfaz SQL para trabajar con *Spark*, permitiendo la lectura de datos tanto de una tabla de cualquier base de datos relacional como de ficheros con formatos estructurados (*CSV*, texto, *JSON*, *Avro*, *ORC*, *Parquet*, etc...) y construir tablas permanentes o temporales en *Spark*. Tras la lectura, permite combinar sentencias SQL para trabajar con los datos y cargar los resultados en un *DataFrame de Spark*.
 
     Por ejemplo, con este fragmento leemos un fichero JSON desde nuestro sistema de almacenamiento, creamos una tabla temporal y mediante una consulta SQL cargamos los datos en un *DataFrame* de *Spark*:
@@ -119,7 +119,7 @@ iabd@iabd-virtualbox:~/Spark$ pyspark
     ```
     
     
-    . Para que se abra automáticamente *Jupyter Lab*, necesitamos exportar las siguientes variables de entorno:
+    Para que se abra automáticamente *Jupyter Lab*, necesitamos exportar las siguientes variables de entorno:
 
     ``` bash title="~/.bashrc"
     export PYSPARK_DRIVER_PYTHON=jupyter
