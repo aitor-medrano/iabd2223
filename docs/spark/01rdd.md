@@ -1,6 +1,6 @@
 ---
 title: Spark RDDs
-description: Uso de RDD, transformaciones (narrow y wide) y acciones, tanto con RDD sencillos como de pares. Uso de Spark UI para monitorizar los trabajos.
+description: Uso de RDD en Spark, acciones y transformaciones (narrow y wide), tanto con RDD sencillos como de pares. Actividades sobre listas de palabras, ficheros de texto y uso de Spark Submit para la ejecución de scripts Python en Spark.
 ---
 
 # RDD
@@ -200,7 +200,7 @@ Lucy|Vancouver|Female,57|Sales:89,HR:94|Sales:Lead
 
 La transformación [`map`](https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.map.html) aplica la función recibida a cada elemento del RDD, de manera que vamos a poder añadir una nueva columna, modificar una existente, etc...
 
-Por ejemplo, si la entrada es un RDD que contiene `[1, 2, 3, 4, 5]`, al hacer `rdd.map(x=>x*2)` obtendríamos un nuevo RDD con `[2, 4, 6, 8, 10]`:
+Por ejemplo, si la entrada es un RDD que contiene `[1, 2, 3, 4, 5]`, al hacer `rdd.map(lambda x: x*2)` obtendríamos un nuevo RDD con `[2, 4, 6, 8, 10]`:
 
 ``` python
 rdd = sc.parallelize([1, 2, 3, 4, 5])
@@ -271,7 +271,7 @@ resultRDD = rdd.filter(lambda x: x%2==0)
 resultRDD.collect()     # [2, 4] 
 ```
 
-También podemos anidar diferentes transformaciones. Para este ejemplo, vamos a crear tuplas formadas por un número y su cuadrado, luego quitar los que no coincide el número su potencia (el 0 y el 1), y luego aplanarlo en una lista:
+También podemos anidar diferentes transformaciones. Para este ejemplo, vamos a crear tuplas formadas por un número y su cuadrado, y luego quitar los que no coincide el número con su cuadrado (sólo coinciden el 0 y el 1), y luego aplanarlo en una lista:
 
 ``` python
 rdd10 = sc.parallelize(range(10+1))
@@ -375,7 +375,7 @@ Sobre estos RDD podemos realizar algoritmos *MapReduce* para muchas funciones de
 
 Para generar un RDD de pares, además de crearlo nosotros a partir de una lista, podemos emplear las siguientes operaciones:
 
-* [`zip`](https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.zip.html): une dos listas del mismo tamaño:
+* [`zip`](https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.zip.html): une dos RDDs del mismo tamaño:
 
     ``` python
     lista1 = ['a','b','c','e','f','g','h']
@@ -437,7 +437,7 @@ A continuación se muestra un fragmento de código para poner en práctica las t
 
 ```  python
 listaTuplas = [('a',1), ('z',3), ('b',4), ('c',3), ('a',4)]
-rddTuplas= sc.parallelize(listaTuplas)
+rddTuplas = sc.parallelize(listaTuplas)
 
 claves = rddTuplas.keys()       # ['a', 'z', 'b', 'c', 'a']
 valores = rddTuplas.values()    # [1, 3, 4, 3, 4]
