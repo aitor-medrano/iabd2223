@@ -5,6 +5,11 @@ description: Apuntes sobre big data utilizados en el curso de Especialista de In
 
 # Inteligencia Artificial y Big Data
 
+<figure style="float: right;">
+    <img src="images/logoIABD2.png" width="100px">
+    <figcaption>Logo de IABD</figcaption>
+</figure>
+
 Apuntes realizados para el curso de especialista de *Inteligencia Artificial y Big Data* impartido en el [IES Severo Ochoa](https://portal.edu.gva.es/03013224) de Elche. El curriculum viene fijado por el [Real Decreto 279/2021](https://www.boe.es/eli/es/rd/2021/04/20/279/dof/spa/pdf).
 
 Este curso se ha diseñado mediante un *proceso de flexibilización* del curriculum, mediante el cual hemos repartido los diferentes resultados de aprendizaje a lo largo de tres unidades formativas. Cada una de las unidades formativas contiene varias unidades de trabajo centradas en un área de trabajo concreta. En cada unidad formativa vamos a realizar como hilo conductor un Proyecto de Innovación Aplicada (PIAFP) que dirija el aprendizaje del alumnado.
@@ -17,8 +22,10 @@ En este sitio web podrás consultar los apuntes y ejercicios que he trabajado di
     * [UT6 - Datos en el cloud](cloud/index.md)
     * [UT7 - PIA FP Lara](https://aitor-medrano.github.io/pia2223/)
 * Unidad Formativa II - Industria IoT
-    * [UT9 - Spark](spark/index.md)
+    * [UT8 - Spark](spark/index.md)
+<!--
     * [UT12 - Flujo de datos](dataflow/index.md)
+-->
 * Unidad Formativa III - Sistemas Expertos
 
 Despliega **el menú de la izquierda** para consultar los materiales.
