@@ -948,7 +948,7 @@ Una vez tenemos nuestra agregación, podemos obtener una versión del *pipeline*
 
 ## Actividades
 
-Para las siguientes actividades, vamos a utilizar la base de datos `sample_mflix`, y en concreto, las colecciones `movies` . Un documento de ejemplo sería similar a:
+Para las siguientes actividades, vamos a utilizar la base de datos `sample_mflix`, y en concreto, la colección `movies` . Un documento de ejemplo sería similar a:
 
 ``` json title="movies.json"
 { _id: ObjectId("573a1390f29313caabcd548c"),
@@ -990,7 +990,7 @@ tomatoes:
 num_mflix_comments: 0 }
 ```
 
-1. (RA5075.1 / CE5.1d / 3p) Haciendo uso del framework de agregación y el shell de MongoDB, resuelve las siguientes consultas:
+1. (RA5075.1 / CE5.1d / 3p) Haciendo uso del framework de agregación y el shell de *MongoDB*, resuelve las siguientes consultas:
 
     1. (0.5) Encuentra todas las películas que entre sus géneros (`genres`) se encuentre el `Drama`. Sólo queremos recuperar el título y la calificación (`rating`) de IMDB.
     2. (0.5) Recupera los títulos de las tres películas románticas (`Romance`) con mayor calificación en IMDB que se lanzaron (`released`) antes del 2001.
