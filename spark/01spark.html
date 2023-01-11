@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Uso de Spark UI para monitorizar los trabajos.">
+        <meta name="description" content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Arquitectura de Apache Spark - driver y workers. Uso de Spark UI para monitorizar los trabajos.">
       
       
       
@@ -71,7 +71,7 @@
       
         <meta  property="og:title"  content="Analítica de datos con Spark - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Uso de Spark UI para monitorizar los trabajos." >
+        <meta  property="og:description"  content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Arquitectura de Apache Spark - driver y workers. Uso de Spark UI para monitorizar los trabajos." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/01spark.png" >
       
@@ -87,7 +87,7 @@
       
         <meta  name="twitter:title"  content="Analítica de datos con Spark - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Uso de Spark UI para monitorizar los trabajos." >
+        <meta  name="twitter:description"  content="El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Arquitectura de Apache Spark - driver y workers. Uso de Spark UI para monitorizar los trabajos." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/01spark.png" >
       
@@ -1543,7 +1543,7 @@ Dado el cariz de <em>Python</em>, no necesitamos que los <em>Dataset</em> estén
 </code></pre></div>
 <p>Estudiaremos los <em>DataFrame</em> en profundidad en la <a href="02dataframeAPI.html">próximas sesiones</a>.</p>
 <h2 id="spark-ui">Spark UI<a class="headerlink" href="#spark-ui" title="Permanent link">&para;</a></h2>
-<p>Si accedemos a la dirección <a href="http://127.0.0.1:4040/">http://127.0.0.1:4040/</a>, veremos un interfaz gráfico donde podemos monitorizar y analizar el código <em>Spark</em> ejecutado. La barra superior muestra un menú con las opciones para visualizar las <em>jobs</em>, <em>stages</em>, almacenamiento, el entorno y sus variables de configuración, y finalmente los ejecutores:</p>
+<p>Si accedemos a la dirección <a href="http://127.0.0.1:4040/">http://127.0.0.1:4040/</a>, veremos un interfaz gráfico donde podemos monitorizar y analizar el código <em>Spark</em> ejecutado. La barra superior muestra un menú con las opciones para visualizar los <em>jobs</em>, <em>stages</em>, el almacenamiento, el entorno y sus variables de configuración, y finalmente los ejecutores:</p>
 <figure style="align: center;">
     <img src="images/01spark-ui.png">
     <figcaption>Spark Shell UI</figcaption>
