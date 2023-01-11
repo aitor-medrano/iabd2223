@@ -1,9 +1,9 @@
 ---
 title: Spark Catalog. DeltaLake. 
-description: Acceso a bases de datos relacionales mediante JDBC en Spark.
+description: Acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore, 
 ---
 
-# Spark JDBC y uso del catálogo
+# Spark JDBC y uso del catálogo. Delta Lake.
 
 ## Conectando con bases de datos
 
@@ -465,14 +465,160 @@ Si dejamos de utilizar una tabla y la queremos eliminar del *Metastore*, podemos
 spark.sql("DROP TABLE IF EXISTS cliente")
 ```
 
-### Descubriendo datos
+### Spark y el Metastore
 
-FIXME: hacer con la MV
+Para comprender cómo se almancenan los metadatos de las bases de datos y las tablas gestionadas es importante conocer donde se almacenan los metadatos.
 
-<https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_6_Chapter.xhtml#:-:text=Databases%20and%20Tables%20in%20the%20Hive%20Metastore>
+Si abrimos un terminal y accedemos al MySQL de nuestra máquina virtual, podemos ver todas las tablas que utiliza el Hive Metastore:
 
-REVISAR la asignación de comentarios a las tablas y a las columnas
-Cuaderno Jupyter Catalog de Docker
+``` bash hl_lines="1 10 13"
+$ mysql -uiabd -piabd
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 143
+Server version: 10.3.37-MariaDB-0ubuntu0.20.04.1 Ubuntu 20.04
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use hive
+Database changed
+
+MariaDB [hive]> show tables;
++-------------------------------+
+| Tables_in_hive                |
++-------------------------------+
+| AUX_TABLE                     |
+| BUCKETING_COLS                |
+| CDS                           |
+| COLUMNS_V2                    |
+| COMPACTION_QUEUE              |
+| COMPLETED_COMPACTIONS         |
+| COMPLETED_TXN_COMPONENTS      |
+| CTLGS                         |
+| DATABASE_PARAMS               |
+| DBS                           |
+...
+| WRITE_SET                     |
++-------------------------------+
+74 rows in set (0,000 sec)
+
+MariaDB [hive]> 
+```
+
+De todas las tablas, nos vamos a centrar en la tabla DBS, que almacena las bases de datos creadas, donde podemos observar, además de su nombre, la localización de cada base de datos y su propietario:
+
+``` bash
+MariaDB [hive]> select * from DBS;
++-------+-----------------------+---------------------------------------------------------+---------+------------+------------+-----------+
+| DB_ID | DESC                  | DB_LOCATION_URI                                         | NAME    | OWNER_NAME | OWNER_TYPE | CTLG_NAME |
++-------+-----------------------+---------------------------------------------------------+---------+------------+------------+-----------+
+|     1 | Default Hive database | hdfs://iabd-virtualbox:9000/user/hive/warehouse         | default | public     | ROLE       | hive      |
+|    21 | NULL                  | hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db | iabd    | iabd       | USER       | hive      |
+|    31 |                       | file:/opt/spark-3.3.1/warehouse/s8a.db                  | s8a     | iabd       | USER       | hive      |
++-------+-----------------------+---------------------------------------------------------+---------+------------+------------+-----------+
+3 rows in set (0,001 sec)
+```
+
+Si nos quedamos con el identificador de cada base de datos (`DB_ID`), el cual actúa como clave primaria, vamos a poder consultar las tablas de una determinada base de datos consultando la tabla `TBLS`:
+
+``` bash
+MariaDB [hive]> select * from TBLS where DB_ID = 31;
++--------+-------------+-------+------------------+-------+------------+-----------+-------+-----------+---------------+--------------------+--------------------+--------------------+
+| TBL_ID | CREATE_TIME | DB_ID | LAST_ACCESS_TIME | OWNER | OWNER_TYPE | RETENTION | SD_ID | TBL_NAME  | TBL_TYPE      | VIEW_EXPANDED_TEXT | VIEW_ORIGINAL_TEXT | IS_REWRITE_ENABLED |
++--------+-------------+-------+------------------+-------+------------+-----------+-------+-----------+---------------+--------------------+--------------------+--------------------+
+|     61 |  1673256646 |    31 |                0 | iabd  | NULL       |         0 |   111 | clientes  | MANAGED_TABLE | NULL               | NULL               |                    |
+|     62 |  1673256649 |    31 |                0 | iabd  | NULL       |         0 |   112 | clientesj | MANAGED_TABLE | NULL               | NULL               |                    |
++--------+-------------+-------+------------------+-------+------------+-----------+-------+-----------+---------------+--------------------+--------------------+--------------------+
+```
+
+Y repetimos el proceso, ahora nos quedamos con el identificador de la tabla, y consultamos la tabla `TABLE_PARAMS`, donde podemos ver donde se almacena toda la información que utiliza Spark para leer las tablas de forma automática:
+
+``` bash
+MariaDB [hive]> select * from TABLE_PARAMS where TBL_ID = 61;
++--------+----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| TBL_ID | PARAM_KEY                  | PARAM_VALUE                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
++--------+----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     61 | numFiles                   | 1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|     61 | spark.sql.create.version   | 3.3.1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|     61 | spark.sql.sources.provider | parquet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|     61 | spark.sql.sources.schema   | {"type":"struct","fields":[{"name":"customer_id","type":"integer","nullable":true,"metadata":{"scale":0}},{"name":"customer_fname","type":"string","nullable":true,"metadata":{"scale":0}},{"name":"customer_lname","type":"string","nullable":true,"metadata":{"scale":0}},{"name":"customer_email","type":"string","nullable":true,"metadata":{"scale":0}},{"name":"customer_password","type":"string","nullable":true,"metadata":{"scale":0}},{"name":"customer_street","type":"string","nullable":true,"metadata":{"scale":0}},{"name":"customer_city","type":"string","nullable":true,"metadata":{"scale":0}},{"name":"customer_state","type":"string","nullable":true,"metadata":{"scale":0}},{"name":"customer_zipcode","type":"string","nullable":true,"metadata":{"scale":0}}]} |
+|     61 | totalSize                  | 251792                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|     61 | transient_lastDdlTime      | 1673256646                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
++--------+----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+6 rows in set (0,001 sec)
+```
+
+### Facilitando el descubrimiento de datos
+
+Una vez sabemos cómo se almacenan los metadatos, podemos consultarlos para descubrir los datos, proceso que se conoce como *data discovery*.
+
+Volviendo a nuestros cuadernos Jupyter, si nos centramos en la base de datos `s8a` y consultamos sus tablas mediante [`listTables`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.listTables.html), observamos que no tienen descripción, lo cual a la hora de poder descubrir datos no es nada positivo:
+
+``` python
+spark.sql("use s8a")
+spark.catalog.listTables()
+# [Table(name='clientes', database='s8a', description=None, tableType='MANAGED', isTemporary=False),
+#  Table(name='clientesj', database='s8a', description=None, tableType='MANAGED', isTemporary=False)]
+```
+
+Para poder añadirle la descripción a las tablas, mediante DML modificamos las propiedades de la tabla, en concreto la propiedad `comment`:
+
+``` sql
+spark.sql(
+"""
+ALTER TABLE clientes
+SET TBLPROPERTIES (
+  'comment' = 'Datos de clientes obtenidos desde retail_db.customers',
+  'active' = 'true'
+)
+""")
+```
+
+Si volvemos a consultar las tablas, ya podemos ver su descripción:
+
+```  python hl_lines="2"
+spark.catalog.listTables()
+# [Table(name='clientes', database='s8a', description='Datos de clientes obtenidos desde retail_db.customers', tableType='MANAGED', isTemporary=False),
+#  Table(name='clientesj', database='s8a', description=None, tableType='MANAGED', isTemporary=False)]
+```
+
+Vamos a comprobar ahora las columnas de las tablas mediante [`listColumns`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.listColumns.html):
+
+``` python
+spark.catalog.listColumns("clientes")
+# [Column(name='customer_id', description=None, dataType='int', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_fname', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_lname', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_email', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_password', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_street', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_city', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_state', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_zipcode', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False)]
+```
+
+Igual que antes, tenemos la descripción en blanco (valor `None`), por lo que mediante DML modificamos el comentario de cada columna:
+
+``` python
+spark.sql("ALTER TABLE clientes ALTER COLUMN customer_id COMMENT 'Identificador unívoco (PK) del cliente'")
+spark.sql("ALTER TABLE clientes ALTER COLUMN customer_fname COMMENT 'Nombre del cliente'");
+```
+
+Y comprobamos como han cambiado ambos campos:
+
+``` python hl_lines="2 3"
+spark.catalog.listColumns("clientes")
+# [Column(name='customer_id', description='Identificador unívoco (PK) del cliente', dataType='int', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_fname', description='Nombre del cliente', dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_lname', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_email', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_password', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_street', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_city', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_state', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False),
+#  Column(name='customer_zipcode', description=None, dataType='string', nullable=True, isPartition=False, isBucket=False)]
+```
 
 ## Delta Lake
 
@@ -496,7 +642,7 @@ Podemos ejecutarlo sobre *data lakes* ya existentes y es completamente compatibl
 
     La herramienta final es el desarrollo de un API estándar, como es la DataFrame API, la cual soportan herramientas como TensorFlow o Spark MLlib, la cual, de forma declarativa, permite la construcción de un grafo DAG con su ejecución. 
 
-    Una alternativa como implementación del concepto de *data lakehouse* es [Apache Iceberg](https://iceberg.apache.org/).
+    Otros productos alternativos como implementación del concepto de *data lakehouse* son [Apache Iceberg](https://iceberg.apache.org/) y [Apache Hudi](https://hudi.apache.org/).
 
 Formalmente, podemos decir que *Delta Lake* ofrece una capa de metadatos, caché e indexación sobre el almacenamiento de un data lake, de manera que ofrece un nivel de abstracción con soporte para transacciones ACID y versionado de los datos.
 
@@ -577,7 +723,6 @@ Delta connectors is a fast-growing ecosystem, with more connectors becoming avai
 
 ## Hola Delta
 
-
 Al arrancar Spark, le pone como package io.delta:delta-core_2.12:1.1.0
 
 A la hora de escribir un df, le indicamos como format("delta")
@@ -588,7 +733,10 @@ A la hora de escribir un df, le indicamos como format("delta")
 Si nos centramos en nuestra instalación de la máquina virtual, cuando lanzamos `pyspark` tenemos que indicarle que vamos a utilizar `delta` mediante la opción `packages`:
 
 ``` bash
+pyspark --packages io.delta:delta-core_2.12:2.1.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
 ```
+
+Alias pysparkdl
 
 Una vez hemos arrancado, creamos una sesión xxxx.
 Si partimos de los datos que teníamos en el *DataFrame* de clientes, podemos persistirlos en Delta:
