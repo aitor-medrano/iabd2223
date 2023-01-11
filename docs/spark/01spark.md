@@ -1,6 +1,6 @@
 ---
 title: Analítica de datos con Spark
-description: El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Uso de Spark UI para monitorizar los trabajos.
+description: El ecosistema de Apache Spark. Puesta en marcha con Docker, Google Colab y Databricks Community Edition. Arquitectura de Apache Spark - driver y workers. Uso de Spark UI para monitorizar los trabajos.
 ---
 
 # Spark
@@ -444,7 +444,7 @@ Estudiaremos los *DataFrame* en profundidad en la [próximas sesiones](02datafra
 
 ## Spark UI
 
-Si accedemos a la dirección <http://127.0.0.1:4040/>, veremos un interfaz gráfico donde podemos monitorizar y analizar el código *Spark* ejecutado. La barra superior muestra un menú con las opciones para visualizar las *jobs*, *stages*, almacenamiento, el entorno y sus variables de configuración, y finalmente los ejecutores:
+Si accedemos a la dirección <http://127.0.0.1:4040/>, veremos un interfaz gráfico donde podemos monitorizar y analizar el código *Spark* ejecutado. La barra superior muestra un menú con las opciones para visualizar los *jobs*, *stages*, el almacenamiento, el entorno y sus variables de configuración, y finalmente los ejecutores:
 
 <figure style="align: center;">
     <img src="images/01spark-ui.png">
