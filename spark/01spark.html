@@ -755,6 +755,8 @@
         
           
         
+          
+        
       
       
         
@@ -990,6 +992,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02agregaciones.html" class="md-nav__link">
+        S64.- Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -1211,7 +1227,7 @@
 <li><ins>Modularidad</ins>: soporte para todo tipo de cargas mediante cualquiera de los lenguajes de programación soportados: <em>Scala</em>, <em>Java</em>, <em>Python</em>, <em>SQL</em> y <em>R</em>, así como los módulos de <em>Spark SQL</em> para consultas interactivas, <em>Spark Structured Streaming</em> para procesamiento de datos en <em>streaming</em>, <em>Spark MLlib</em> para <em>machine learning</em> y <em>GraphX</em> para trabajar con grafos. De esta manera, mediante una única aplicación <em>Spark</em> se puede hacer todo sin necesidad de utilizar APIs separadas.</li>
 <li><ins>Extensibilidad</ins>: Al centrarse unicamente en el procesamiento, la gestión de los datos se puede realizar a partir de <em>Hadoop</em>, <em>Cassandra</em>, <em>HBase</em>, <em>MongoDB</em>, <em>Hive</em> o cualquier SGBD relacional, haciendo todo en memoria. Además, se puede extender el API para utilizar otras fuentes de datos, como <em>Apache Kafka</em>, <em>Amazon S3</em> o <em>Azure Storage</em>.</li>
 </ul>
-<p>En términos de flexibilidad, Spark ofrece un <em>stack</em> unificado que permite resolver múltiples tipos de procesamiento de datos, tanto aplicaciones <em>batch</em> como consultas interactivas, algoritmos de <em>machine learning</em> que quieren muchas iteraciones, aplicaciones de ingesta en <em>streaming</em> con rendimiento cercado al tiempo real, etc... Antes de <em>Spark</em>, para cada uno de estos tipos de procesamiento necesitábamos una herramienta diferente, ahora con Spark tenemos una <em>bala de plata</em> que reduce los costes y recursos necesarios.</p>
+<p>En términos de flexibilidad, Spark ofrece un <em>stack</em> unificado que permite resolver múltiples tipos de procesamiento de datos, tanto aplicaciones <em>batch</em> como consultas interactivas, algoritmos de <em>machine learning</em> que requieren muchas iteraciones, aplicaciones de ingesta en <em>streaming</em> con rendimiento cercado al tiempo real, etc... Antes de <em>Spark</em>, para cada uno de estos tipos de procesamiento necesitábamos una herramienta diferente, ahora con Spark tenemos una <em>bala de plata</em> que reduce los costes y recursos necesarios.</p>
 <h3 id="spark-vs-hadoop">Spark vs Hadoop<a class="headerlink" href="#spark-vs-hadoop" title="Permanent link">&para;</a></h3>
 <p>La principal diferencia es que la computación se realiza en memoria, lo que puede implicar un mejora de hasta 100 veces mejor rendimiento. Para ello, se realiza una evaluación perezosa de las operaciones, de manera, que hasta que no se realiza una operación, los datos realmente no se cargan.</p>
 <p>Para solucionar los problemas asociados a <em>MapReduce</em>, Spark crea un espacio de memoria RAM compartida entre los ordenadores del clúster. Este permite que los <em>NodeManager</em>/<em>WorkerNode</em> compartan variables (y su estado), eliminando la necesidad de escribir los resultados intermedios en disco. Esta zona de memoria compartida se traduce en el uso de RDD, <em>DataFrames</em> y <em>DataSets</em>, permitiendo realizar procesamiento en memoria a lo largo de un clúster con tolerancia a fallos.</p>
@@ -1224,7 +1240,7 @@
 </figure>
 
 <ol>
-<li><strong><em>Spark Streaming</em></strong> es una herramienta para la creación de aplicaciones que procesamiento en <em>streaming</em> que ofrece un gran rendimiento con soporte para la tolerancia a fallos. Los datos pueden venir desde fuentes de datos tan diversas como <em>Kafka</em>, <em>Flume</em>, <em>Twitter</em> y tratarse en tiempo real.</li>
+<li><strong><em>Spark Streaming</em></strong> es una herramienta para la creación de aplicaciones de procesamiento en <em>streaming</em> que ofrece un gran rendimiento con soporte para la tolerancia a fallos. Los datos pueden venir desde fuentes de datos tan diversas como <em>Kafka</em>, <em>Flume</em>, <em>Twitter</em> y tratarse en tiempo real.</li>
 <li>
 <p><strong><em>Spark SQL</em></strong> ofrece un interfaz SQL para trabajar con <em>Spark</em>, permitiendo la lectura de datos tanto de una tabla de cualquier base de datos relacional como de ficheros con formatos estructurados (<em>CSV</em>, texto, <em>JSON</em>, <em>Avro</em>, <em>ORC</em>, <em>Parquet</em>, etc...) y construir tablas permanentes o temporales en <em>Spark</em>. Tras la lectura, permite combinar sentencias SQL para trabajar con los datos y cargar los resultados en un <em>DataFrame de Spark</em>.</p>
 <p>Por ejemplo, con este fragmento leemos un fichero JSON desde nuestro sistema de almacenamiento, creamos una tabla temporal y mediante una consulta SQL cargamos los datos en un <em>DataFrame</em> de <em>Spark</em>:</p>
@@ -1283,7 +1299,7 @@
 <span class="linenos" data-linenos="14 "></span><span class="s1">SparkSession available as &#39;</span>spark<span class="err">&#39;</span>.
 <span class="linenos" data-linenos="15 "></span>&gt;&gt;&gt;
 </code></pre></div>
-<p>. Para que se abra automáticamente <em>Jupyter Lab</em>, necesitamos exportar las siguientes variables de entorno:</p>
+<p>Para que se abra automáticamente <em>Jupyter Lab</em>, necesitamos exportar las siguientes variables de entorno:</p>
 <div class="highlight"><span class="filename">~/.bashrc</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">export</span><span class="w"> </span><span class="nv">PYSPARK_DRIVER_PYTHON</span><span class="o">=</span>jupyter
 <span class="linenos" data-linenos="2 "></span><span class="nb">export</span><span class="w"> </span><span class="nv">PYSPARK_DRIVER_PYTHON_OPTS</span><span class="o">=</span><span class="s1">&#39;notebook&#39;</span>
 </code></pre></div>
@@ -1562,7 +1578,7 @@ Dado el cariz de <em>Python</em>, no necesitamos que los <em>Dataset</em> estén
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen.">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr>, <abbr title="Se han recogido métricas, procesamiento y visualización de los datos.">CE5.4b</abbr>  / 1.5p) Reproduce el ejemplo de <a href="#dataframe"><em>DataFrames</em></a> sobre el fichero de <a href="resources/el_quijote.txt">El Quijote</a> adjuntado varias capturas de pantalla (entorno, ejecución y monitorización) al realizarlo en:<ul>
+<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen.">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr>, <abbr title="Se han recogido métricas, procesamiento y visualización de los datos.">CE5.4b</abbr>  / 2p) Reproduce el ejemplo de <a href="#dataframe"><em>DataFrames</em></a> sobre el fichero de <a href="resources/el_quijote.txt">El Quijote</a> adjuntado varias capturas de pantalla (entorno, ejecución y monitorización) al realizarlo en:<ul>
 <li>la <a href="#puesta-en-marcha">máquina virtual</a> o un <a href="#uso-de-docker">entorno Docker</a>.</li>
 <li>y en <a href="#databricks">Databricks</a>.</li>
 </ul>

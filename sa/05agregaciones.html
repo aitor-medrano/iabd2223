@@ -971,6 +971,8 @@
         
           
         
+          
+        
       
       
         
@@ -1029,6 +1031,20 @@
     <li class="md-nav__item">
       <a href="../spark/02dataframeAPI.html" class="md-nav__link">
         S62.- DataFrames API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/02agregaciones.html" class="md-nav__link">
+        S64.- Agregaciones
       </a>
     </li>
   
@@ -2160,7 +2176,7 @@
 <li>Libro <a href="https://www.practical-mongodb-aggregations.com/"><em>Practical MongoDB Aggregations</em></a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
-<p>Para las siguientes actividades, vamos a utilizar la base de datos <code>sample_mflix</code>, y en concreto, las colecciones <code>movies</code> . Un documento de ejemplo sería similar a:</p>
+<p>Para las siguientes actividades, vamos a utilizar la base de datos <code>sample_mflix</code>, y en concreto, la colección <code>movies</code> . Un documento de ejemplo sería similar a:</p>
 <div class="highlight"><span class="filename">movies.json</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="w"> </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;573a1390f29313caabcd548c&quot;</span><span class="err">)</span><span class="p">,</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="err">plo</span><span class="kc">t</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;The</span><span class="w"> </span><span class="err">Civil</span><span class="w"> </span><span class="err">War</span><span class="w"> </span><span class="err">divides</span><span class="w"> </span><span class="err">...&#39;</span><span class="p">,</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="err">ge</span><span class="kc">nres</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="err">&#39;Drama&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;His</span><span class="kc">t</span><span class="err">ory&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;Roma</span><span class="kc">n</span><span class="err">ce&#39;</span><span class="w"> </span><span class="p">],</span>
@@ -2201,7 +2217,7 @@
 </code></pre></div>
 <ol>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados">CE5.1d</abbr> / 3p) Haciendo uso del framework de agregación y el shell de MongoDB, resuelve las siguientes consultas:</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados">CE5.1d</abbr> / 3p) Haciendo uso del framework de agregación y el shell de <em>MongoDB</em>, resuelve las siguientes consultas:</p>
 <ol>
 <li>(0.5) Encuentra todas las películas que entre sus géneros (<code>genres</code>) se encuentre el <code>Drama</code>. Sólo queremos recuperar el título y la calificación (<code>rating</code>) de IMDB.</li>
 <li>(0.5) Recupera los títulos de las tres películas románticas (<code>Romance</code>) con mayor calificación en IMDB que se lanzaron (<code>released</code>) antes del 2001.</li>
