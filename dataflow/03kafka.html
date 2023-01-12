@@ -1,0 +1,2083 @@
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Uso de Apache Kafka y desarrollo de un ejemplo completo desde Twitter a Elasticsearch">
+      
+      
+      
+        <link rel="canonical" href="https://aitor-medrano.github.io/iabd2223/dataflow/03kafka.html">
+      
+      
+        <link rel="prev" href="02kafka.html">
+      
+      
+      <link rel="icon" href="../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
+    
+    
+      
+        <title>Apache Kafka II. - Inteligencia Artificial y Big Data</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-MFP4QLMMV7"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-MFP4QLMMV7",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-MFP4QLMMV7",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>var consent;"undefined"==typeof __md_analytics||(consent=__md_get("__consent"))&&consent.analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Apache Kafka II. - Inteligencia Artificial y Big Data" >
+      
+        <meta  property="og:description"  content="Uso de Apache Kafka y desarrollo de un ejemplo completo desde Twitter a Elasticsearch" >
+      
+        <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/03kafka.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://aitor-medrano.github.io/iabd2223/dataflow/03kafka.html" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Apache Kafka II. - Inteligencia Artificial y Big Data" >
+      
+        <meta  name="twitter:description"  content="Uso de Apache Kafka y desarrollo de un ejemplo completo desde Twitter a Elasticsearch" >
+      
+        <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/03kafka.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kafka-ii" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabecera">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inteligencia Artificial y Big Data
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Apache Kafka II.
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo noche"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo noche" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="light-blue"  aria-label="Cambiar a modo día"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Cambiar a modo día" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpiar" aria-label="Limpiar" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando búsqueda
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+      
+  <img src="../images/logoIABD3.png" alt="logo">
+
+    </a>
+    Inteligencia Artificial y Big Data
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Inicio
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../sa/index.html">Sistemas de almacenamiento</a>
+          
+            <label for="__nav_2">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Sistemas de almacenamiento" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Sistemas de almacenamiento
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/01nosql.html" class="md-nav__link">
+        Almacenamiento de datos. NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/02mongo.html" class="md-nav__link">
+        MongoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/03modelado.html" class="md-nav__link">
+        Modelado de datos NoSQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/05agregaciones.html" class="md-nav__link">
+        Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/06replicacion.html" class="md-nav__link">
+        Replicación y Particionado
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sa/07pymongo.html" class="md-nav__link">
+        MongoDB y Python
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../hadoop/index.html">Ecosistema Hadoop</a>
+          
+            <label for="__nav_3">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Ecosistema Hadoop" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Ecosistema Hadoop
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/01arq.html" class="md-nav__link">
+        Arquitecturas Big Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/02etl.html" class="md-nav__link">
+        Ingesta de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/03hadoop.html" class="md-nav__link">
+        Hadoop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04hdfs.html" class="md-nav__link">
+        HDFS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/04formatos.html" class="md-nav__link">
+        Formatos de datos
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/05flume.html" class="md-nav__link">
+        Sqoop y Flume
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hadoop/06hive.html" class="md-nav__link">
+        Hive
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../cloud/index.html">Datos en el cloud</a>
+          
+            <label for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Datos en el cloud" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Datos en el cloud
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/01cloud.html" class="md-nav__link">
+        Cloud
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/02aws.html" class="md-nav__link">
+        AWS
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/03s3.html" class="md-nav__link">
+        S3
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/04computacion.html" class="md-nav__link">
+        EC2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/05emr.html" class="md-nav__link">
+        EMR
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/06datos.html" class="md-nav__link">
+        RDS y DynamoDB
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cloud/07athena.html" class="md-nav__link">
+        Athena
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="../spark/index.html">Spark</a>
+          
+            <label for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Spark" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          Spark
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/01spark.html" class="md-nav__link">
+        Ecosistema
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/01rdd.html" class="md-nav__link">
+        RDD
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/02dataframeAPI.html" class="md-nav__link">
+        DataFrames API
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/02agregaciones.html" class="md-nav__link">
+        Agregaciones
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/02catalog.html" class="md-nav__link">
+        Spark Catalog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spark/03streaming.html" class="md-nav__link">
+         Streaming
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
+      
+      
+        
+          
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        
+        
+        <div class="md-nav__link md-nav__link--index ">
+          <a href="index.html">Flujo de datos</a>
+          
+            <label for="__nav_6">
+              <span class="md-nav__icon md-icon"></span>
+            </label>
+          
+        </div>
+      
+      <nav class="md-nav" aria-label="Flujo de datos" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Flujo de datos
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="04nifi1.html" class="md-nav__link">
+        Nifi I
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="05nifi2.html" class="md-nav__link">
+        Nifi II
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="02kafka.html" class="md-nav__link">
+        Kafka I
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Kafka II
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="03kafka.html" class="md-nav__link md-nav__link--active">
+        Kafka II
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#caso-2-cluster-de-kafka" class="md-nav__link">
+    Caso 2: Clúster de Kafka
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 2: Clúster de Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creando-brokers" class="md-nav__link">
+    Creando brokers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creando-topics" class="md-nav__link">
+    Creando topics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#produciendo-y-consumiendo" class="md-nav__link">
+    Produciendo y consumiendo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decisiones-de-rendimiento" class="md-nav__link">
+    Decisiones de rendimiento
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-3-de-twitter-a-elasticsearch-con-python" class="md-nav__link">
+    Caso 3: De Twitter a Elasticsearch con Python
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 3: De Twitter a Elasticsearch con Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tweepy" class="md-nav__link">
+    Tweepy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#productor-de-tweets" class="md-nav__link">
+    Productor de Tweets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elasticsearch-desde-python" class="md-nav__link">
+    Elasticsearch desde Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumidor-en-elasticsearch" class="md-nav__link">
+    Consumidor en Elasticsearch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#todo-en-uno-con-nifi" class="md-nav__link">
+    Todo en uno con Nifi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-connect" class="md-nav__link">
+    Kafka Connect
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Connect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hola-kafka-connect" class="md-nav__link">
+    Hola Kafka Connect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rest-api" class="md-nav__link">
+    REST API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-y-el-big-data" class="md-nav__link">
+    Kafka y el Big Data
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://aitor-medrano.github.io/pia2223/" class="md-nav__link">
+        PIA FP
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#caso-2-cluster-de-kafka" class="md-nav__link">
+    Caso 2: Clúster de Kafka
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 2: Clúster de Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creando-brokers" class="md-nav__link">
+    Creando brokers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creando-topics" class="md-nav__link">
+    Creando topics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#produciendo-y-consumiendo" class="md-nav__link">
+    Produciendo y consumiendo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decisiones-de-rendimiento" class="md-nav__link">
+    Decisiones de rendimiento
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-3-de-twitter-a-elasticsearch-con-python" class="md-nav__link">
+    Caso 3: De Twitter a Elasticsearch con Python
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 3: De Twitter a Elasticsearch con Python">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tweepy" class="md-nav__link">
+    Tweepy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#productor-de-tweets" class="md-nav__link">
+    Productor de Tweets
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#elasticsearch-desde-python" class="md-nav__link">
+    Elasticsearch desde Python
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consumidor-en-elasticsearch" class="md-nav__link">
+    Consumidor en Elasticsearch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#todo-en-uno-con-nifi" class="md-nav__link">
+    Todo en uno con Nifi
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kafka-connect" class="md-nav__link">
+    Kafka Connect
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka Connect">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hola-kafka-connect" class="md-nav__link">
+    Hola Kafka Connect
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rest-api" class="md-nav__link">
+    REST API
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka-y-el-big-data" class="md-nav__link">
+    Kafka y el Big Data
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#actividades" class="md-nav__link">
+    Actividades
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="kafka-ii">Kafka II<a class="headerlink" href="#kafka-ii" title="Permanent link">&para;</a></h1>
+<!--
+https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_11_Chapter.xhtml
+Stream Processing
+Stream processing evolved from the simple mechanism of messages passing between operating system (OS) processes across buses. They were more popularly known simply as pub/sub systems, as system processes would publish or subscribe to messages in a form of cross-application communication within a single machine.
+
+Interprocess Communication
+This simple, albeit useful, construct allowed for magnitude gains in parallel processing by allowing processes (applications and kernel tasks) within a single computer OS to take part in a conversation. The beauty of this was that processes could participate in conversations in either synchronous or asynchronous fashion and distribute work among many applications without the necessary overhead of locking and synchronization.
+
+Network Queues
+This approach to parallel processing via pub/sub message buses on a single system allowed engineers to expand and evolve these systems in a distributed-first approach. This led to the advent of the network message queue.
+
+The basic message queue allowed for one or many channels, or named queues, to be created in a distributed first-in, first-out (FIFO) style queue that ran as a service on top of a network addressable location (e.g., ip-address:port). This enabled network-based applications and services to communicate asynchronously, which meant that the producers of the messages didn’t need to know about the subscribers (consumers) directly. Instead this was offloaded to the network queue, which simplified distributed systems greatly.
+
+From Distributed Queues to Repayable Message Queues
+Apache Kafka is a household name within the tech community and is as common a component in the data platform as boutique seltzer and ping pong are to any startup. Kafka started at LinkedIn, and was later gifted to the Apache Foundation, with the goal was to create a distributed, fault-tolerant platform for handling low-latency data feeds, or streams of data.
+
+Kafka was built with a fresh approach to the distributed network queue. However, it had a different approach to handling partial failures from consumers. As you may imagine, if we have a distributed queue and we take a message from that queue, then we could assume that the queue would purge that message and life would go on.
+
+However, in the face of failure, no matter where you point the blame, there would be data loss associated with a message that has been purged from the queue if the process that took the message was lost due to a fault in the application code. It is common for systems reading messages to come across bad data, and without the appropriate defense mechanisms in place to handle corrupt data, the process could terminate unexpectedly. Without a means of recovering. Now as you can imagine, this was not good for business.
+
+Fault-Tolerance and Reliability
+To protect consumers from the inevitable, Kafka was architected to ensure that downstream failures would not immediately lead to data loss. The solution was to treat the messages in a similar fashion to how databases handle reliability. That is, through durable writes. Like magic, the distributed write-ahead log (WAL) emerged. We go over the key terminology, architectural components, and Kafka nomenclature now. If you have experience with Kafka, you can skip ahead to how Spark comes into play as the final piece of the modern data puzzle.
+
+Kafka’s Distributed Architecture
+Kafka stores data emitted by producers in what are called topics. A Kafka topic is further broken down into one or more logical partitions, which enable each topic to be scaled to handle variable read and write throughputs. Each partition is guaranteed to store the data it receives (known as a Kafka record) in time based sequential order. See Figure 1-5.
+
+Given that each partition maintains this synchronous stream of records, Kafka is commonly used to store event streams from contiguous timeseries events (such as users placing items into their shopping carts or transactions being made across a credit card). These timeseries event streams enables the system to analyze data that would otherwise be hard to group efficiently.
+
+Since you can guarantee the ordering of the events within each partition, and events being written into each partition are distributed based on each record’s key, this kind of distribution helps to solve common problems associated with timeseries analysis. The problem of out-of-order data, stored across many locations and across different data stores, feels like the data silo conversation from earlier in the chapter.
+
+Instead of first running a job to collect all the data by key, across all partitions or across different data stores, an application can work across individual partitions, or slices, of the Kafka topic without having to shuffle data around first.
+
+This can greatly reduce the stress on a system processing credit card fraud or handling recommendations based on a user’s real-time activity. With the right selection of keys for each record, you can guarantee how the data lands within each topic.
+
+Kafka Records
+Records are simple rows of data, written out to disk in a durable fashion, like with the write-ahead log (WAL). Each record is identified by a key, which helps Kafka pass the data to the correct partition for the topic being written to. The record carries a main message, or payload, which is called the message value. In addition to the key/value pair, there is an internal timestamp (UNIX epoch milliseconds) stamped when the message is received and written into the topics log. This ensures that the insert order is maintained without issues with time (clock drift, time zone differences, etc.). Lastly, in more recent versions of Kafka, each record has an optional map of headers that can be used to annotate the data further. It can apply metadata about the producer, the payload schema, and just about anything you can dream up.
+
+Brokers
+Kafka manages producers and consumers of data in a similar fashion to that of a common pub/sub system. Data stored in each partition of a topic is managed by an active broker within the Kafka cluster.
+
+These brokers manage the replicas of each record written into the topic and are kept in sync so that if a broker is lost due to the server going offline, or from network partitioning, that there is zero data loss. The next available in-sync replica quickly takes over the serving of the data, and Kafka will find another available broker to assign as the next backup to prevent a data loss scenario.
+
+Why Stream Processing Matters
+Kafka is the most widely used stream-processing framework and given the flexible, low-latency, highly available nature of the framework it isn’t difficult to see why. Kafka however isn’t the only player in the field. Apache Pulsar, which evolved from an internal project at Yahoo!, is another open-source alternative to Kafka. While we won’t be using Apache Pulsar in this book, it is always good to know there are alternatives out there. Chapter 11 introduces using Apache Kafka with Spark.
+
+* Integración de Apache Flume y Apache Kafka
+
+-->
+
+<h2 id="caso-2-cluster-de-kafka">Caso 2: Clúster de Kafka<a class="headerlink" href="#caso-2-cluster-de-kafka" title="Permanent link">&para;</a></h2>
+<p>En <em>Kafka</em> hay tres tipos de clústers:</p>
+<ul>
+<li>Un nodo con un <em>broker</em></li>
+<li>Un nodo con muchos <em>brokers</em></li>
+<li>Muchos nodos con múltiples <em>brokers</em></li>
+</ul>
+<p>Para nuestro ejemplo, como sólo disponemos de una máquina, vamos a crear 3 <em>brokers</em> en un nodo.</p>
+<h3 id="creando-brokers">Creando brokers<a class="headerlink" href="#creando-brokers" title="Permanent link">&para;</a></h3>
+<p>Para ello, vamos a crear diferentes archivos de configuración a partir del archivo <code>config/server.properties</code> que utilizábamos para arrancar el servidor.</p>
+<p>Así pues, crearemos 3 copias del archivo modificando las propiedades <code>broker.id</code> (identificador del broker), <code>listeners</code> (URL y puerto de escucha del broker) y <code>log.dirs</code> (carpeta donde se guardaran los logs del broker):</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Broker 101</label><label for="__tabbed_1_2">Broker 102</label><label for="__tabbed_1_3">Broker 103</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">server101.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">broker.id</span><span class="o">=</span><span class="s">101</span>
+<span class="linenos" data-linenos="2 "></span><span class="na">listeners</span><span class="o">=</span><span class="s">PLAINTEXT://:9092  </span>
+<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/logs/broker_101</span>
+<span class="linenos" data-linenos="4 "></span><span class="na">zookeeper.connect</span><span class="o">=</span><span class="s">localhost:2181</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">server102.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">broker.id</span><span class="o">=</span><span class="s">102</span>
+<span class="linenos" data-linenos="2 "></span><span class="na">listeners</span><span class="o">=</span><span class="s">PLAINTEXT://:9093  </span>
+<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/logs/broker_102</span>
+<span class="linenos" data-linenos="4 "></span><span class="na">zookeeper.connect</span><span class="o">=</span><span class="s">localhost:2181</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">server103.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">broker.id</span><span class="o">=</span><span class="s">103</span>
+<span class="linenos" data-linenos="2 "></span><span class="na">listeners</span><span class="o">=</span><span class="s">PLAINTEXT://:9094</span>
+<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/logs/broker_103 </span>
+<span class="linenos" data-linenos="4 "></span><span class="na">zookeeper.connect</span><span class="o">=</span><span class="s">localhost:2181</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Una vez creados los tres archivos, ejecutaremos los siguientes comandos (cada uno en un terminal diferente) para arrancar <em>Zookeeper</em> y cada uno de los <em>brokers</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>zookeeper-server-start.sh<span class="w"> </span>./config/zookeeper.properties
+<span class="linenos" data-linenos="2 "></span>kafka-server-start.sh<span class="w"> </span>./config/server101.properties
+<span class="linenos" data-linenos="3 "></span>kafka-server-start.sh<span class="w"> </span>./config/server102.properties
+<span class="linenos" data-linenos="4 "></span>kafka-server-start.sh<span class="w"> </span>./config/server103.properties
+</code></pre></div>
+<h3 id="creando-topics">Creando topics<a class="headerlink" href="#creando-topics" title="Permanent link">&para;</a></h3>
+<p>Con cada comando que vayamos a interactuar con <em>Kafka</em>, le vamos a pasar como parámetro <code>--bootstrap-server iabd-virtualbox:9092</code> para indicarle donde se encuentra uno de los brokers (en versiones antiguas de <em>Kafka</em> se indicaba donde estaba <em>Zookeeper</em> mediante <code>--zookeeper iabd-virtualbox:9092</code>).</p>
+<p>A la hora de crear un <em>topic</em>, además de indicarle donde está <em>Zookeeper</em> y el nombre del <em>topic</em>, indicaremos:</p>
+<ul>
+<li>la cantidad de particiones con el parámetro <code>--partitions</code></li>
+<li>el factor de replicación con el parámetro <code>--replication-factor</code></li>
+</ul>
+<p>Así pues, vamos a crear un <em>topic</em> con tres particiones y factor de replicación 2:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-topic-3p2r<span class="w"> </span><span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092<span class="w"> </span><span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span>--partitions<span class="w"> </span><span class="m">3</span><span class="w"> </span>--replication-factor<span class="w"> </span><span class="m">2</span>
+</code></pre></div>
+<p>Si ahora obtenemos la información del topic</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--describe<span class="w"> </span>--topic<span class="w"> </span>iabd-topic-3p2r<span class="w"> </span><span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
+<p>Podemos observar como cada partición tiene la partición líder en un broker distinto y en qué brokers se encuentran las réplicas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>Topic: iabd-topic-3p2r  TopicId: lyrv4qXkS1-c09XAXnIj7w PartitionCount: 3       ReplicationFactor: 2    Configs: segment.bytes=1073741824 
+<span class="linenos" data-linenos="2 "></span>        Topic: iabd-topic-3p2r  Partition: 0    Leader: 103     Replicas: 103,102       Isr: 103,102 
+<span class="linenos" data-linenos="3 "></span>        Topic: iabd-topic-3p2r  Partition: 1    Leader: 102     Replicas: 102,101       Isr: 102,101 
+<span class="linenos" data-linenos="4 "></span>        Topic: iabd-topic-3p2r  Partition: 2    Leader: 101     Replicas: 101,103       Isr: 101,103 
+</code></pre></div>
+<h3 id="produciendo-y-consumiendo">Produciendo y consumiendo<a class="headerlink" href="#produciendo-y-consumiendo" title="Permanent link">&para;</a></h3>
+<p>Respecto al código Python, va a ser el mismo que hemos visto antes pero modificando:</p>
+<ul>
+<li>el nombre del <em>topic</em></li>
+<li>la lista de <em>boostrap_servers</em> (aunque podríamos haber dejado únicamente el nodo principal, ya que Kafka le comunica al cliente el resto de nodos del clúster, es una buena práctica por si el nodo al que nos conectamos de manera explícita está caído).</li>
+</ul>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Productor</label><label for="__tabbed_2_2">Consumidor</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">producer-cluster.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaProducer</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 6 "></span>    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">dumps</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">,</span><span class="s1">&#39;iabd-virtualbox:9093&#39;</span><span class="p">,</span><span class="s1">&#39;iabd-virtualbox:9094&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-topic-3p2r&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;producer &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)},</span> <span class="n">key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;iabd&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># Como el envío es asíncrono, para que no se salga del programa antes de enviar el mensaje, esperamos 1 seg</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>En el consumidor, además hemos modificado la forma de mostrar los mensajes para visualizar más información: </p>
+<div class="highlight"><span class="filename">consumer-cluster.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">consumer</span> <span class="o">=</span> <span class="n">KafkaConsumer</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 5 "></span>    <span class="s1">&#39;iabd-topic-3p2r&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span>    <span class="n">auto_offset_reset</span><span class="o">=</span><span class="s1">&#39;earliest&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="n">enable_auto_commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="n">group_id</span><span class="o">=</span><span class="s1">&#39;iabd-grupo-1&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="n">value_deserializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">loads</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)),</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">,</span><span class="s1">&#39;iabd-virtualbox:9093&#39;</span><span class="p">,</span><span class="s1">&#39;iabd-virtualbox:9094&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">consumer</span><span class="p">:</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;P:</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">partition</span><span class="si">}</span><span class="s2"> O:</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">offset</span><span class="si">}</span><span class="s2"> K:</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2"> V:</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+</div>
+<p>Como ahora tenemos los datos repartidos en dos brokers (por el factor de replicación) y tres particiones, los datos consumidos no tienen por qué llegar en orden (como es el caso), ya que los productores han enviado los datos de manera aleatoria para repartir la carga:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>P:1 O:0 K:None V:{&#39;nombre&#39;: &#39;producer 0&#39;}
+<span class="linenos" data-linenos=" 2 "></span>P:1 O:1 K:None V:{&#39;nombre&#39;: &#39;producer 3&#39;}
+<span class="linenos" data-linenos=" 3 "></span>P:2 O:0 K:None V:{&#39;nombre&#39;: &#39;producer 1&#39;}
+<span class="linenos" data-linenos=" 4 "></span>P:2 O:1 K:None V:{&#39;nombre&#39;: &#39;producer 5&#39;}
+<span class="linenos" data-linenos=" 5 "></span>P:2 O:2 K:None V:{&#39;nombre&#39;: &#39;producer 6&#39;}
+<span class="linenos" data-linenos=" 6 "></span>P:2 O:3 K:None V:{&#39;nombre&#39;: &#39;producer 7&#39;}
+<span class="linenos" data-linenos=" 7 "></span>P:2 O:4 K:None V:{&#39;nombre&#39;: &#39;producer 8&#39;}
+<span class="linenos" data-linenos=" 8 "></span>P:0 O:0 K:None V:{&#39;nombre&#39;: &#39;producer 2&#39;}
+<span class="linenos" data-linenos=" 9 "></span>P:0 O:1 K:None V:{&#39;nombre&#39;: &#39;producer 4&#39;}
+<span class="linenos" data-linenos="10 "></span>P:0 O:2 K:None V:{&#39;nombre&#39;: &#39;producer 9&#39;}
+</code></pre></div>
+<p>Para asegurarnos el orden, debemos enviar los mensajes con una clave de partición con el atributo <code>key</code> del método <code>send</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-topic-3p2r&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;producer &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)},</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="n">key</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;iabd&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Si volvemos a ejecutar el productor con esa clave, el resultado sí que sale ordenado:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>P:0 O:3 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 0&#39;}
+<span class="linenos" data-linenos=" 2 "></span>P:0 O:4 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 1&#39;}
+<span class="linenos" data-linenos=" 3 "></span>P:0 O:5 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 2&#39;}
+<span class="linenos" data-linenos=" 4 "></span>P:0 O:6 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 3&#39;}
+<span class="linenos" data-linenos=" 5 "></span>P:0 O:7 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 4&#39;}
+<span class="linenos" data-linenos=" 6 "></span>P:0 O:8 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 5&#39;}
+<span class="linenos" data-linenos=" 7 "></span>P:0 O:9 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 6&#39;}
+<span class="linenos" data-linenos=" 8 "></span>P:0 O:10 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 7&#39;}
+<span class="linenos" data-linenos=" 9 "></span>P:0 O:11 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 8&#39;}
+<span class="linenos" data-linenos="10 "></span>P:0 O:12 K:b&#39;iabd&#39; V:{&#39;nombre&#39;: &#39;producer 9&#39;}
+</code></pre></div>
+<h3 id="decisiones-de-rendimiento">Decisiones de rendimiento<a class="headerlink" href="#decisiones-de-rendimiento" title="Permanent link">&para;</a></h3>
+<p>Aunque podemos modificar la cantidad de particiones y el factor de replicación una vez creado el clúster, es mejor hacerlo de la manera correcta durante la creación ya que tienen un impacto directo en el rendimiento y durabilidad del sistema:</p>
+<ul>
+<li>si el número de particiones crece con el clúster ya creado, el orden de las claves no está garantizado.</li>
+<li>si se incrementa el factor de replicación durante el ciclo de vida de un <em>topic</em>, estaremos metiendo presión al clúster, que provocará un decremento inesperado del rendimiento.</li>
+</ul>
+<p>Cada partición puede manejar un rendimiento de unos pocos MB/s. Al añadir más particiones, obtendremos mejor paralelización y por tanto, mejor rendimiento. Además, podremos ejecutar más consumidores en un grupo. Pero el hecho de añadir más brokers al clúster para que las particiones los aprovechen, provocará que <em>Zookeeper</em> tenga que realizar más elecciones y que Kafka tenga más ficheros abiertos.</p>
+<div class="admonition tip">
+<p class="admonition-title">Guía de rendimiento</p>
+<p>Una propuesta es:</p>
+<ul>
+<li>Si nuestro clúster es pequeño (menos de 6 <em>brokers</em>), crear el doble de particiones que <em>brokers</em>.</li>
+<li>Si tenemos un clúster grande (más de 12 <em>brokers</em>), crear la misma cantidad de particiones que <em>brokers</em>.</li>
+<li>Ajustar el número de consumidores necesarios que necesitamos que se ejecuten en paralelo en los picos de rendimiento.</li>
+</ul>
+<p>Independientemente de la decisión que tomemos, hay que realizar pruebas de rendimiento con diferentes configuraciones.</p>
+</div>
+<p>Respecto al factor de replicación, debería ser, al menos 2, siendo 3 la cantidad recomendada (es necesario tener al menos 3 <em>brokers</em>) y no sobrepasar de 4. Cuanto mayor sea el factor de replicación (RF):</p>
+<ul>
+<li>El sistema tendrá mejor tolerancia a fallos (se pueden caer RF-1 <em>brokers</em>)</li>
+<li>Pero tendremos mayor replicación (lo que implicará una mayor latencia si <code>acks=all</code>)</li>
+<li>Y también ocupará más espacio en disco (50% más si RF es 3 en vez de 2).</li>
+</ul>
+<p>Respecto al clúster, se recomienda que un <em>broker</em> no contenga más de 2000-4000 particiones (entre todos los <em>topics</em> de ese broker). Además, un clúster de <em>Kafka</em> debería tener un máximo de 20.000 particiones entre todos los brokers, ya que si se cayese algún nodo, <em>Zookeeper</em> necesitaría realizar muchas elecciones de líder.</p>
+<!--
+Kafka con Docker:
+https://www.theninjacto.xyz/Instalacion-Configuracion-Kafka-Manager/
+
+https://learning.oreilly.com/videos/apache-kafka-a-z/9781801077569/
+Apache Kafka A-Z with Hands-On Learning
+-->
+
+<h2 id="caso-3-de-twitter-a-elasticsearch-con-python">Caso 3: De Twitter a Elasticsearch con Python<a class="headerlink" href="#caso-3-de-twitter-a-elasticsearch-con-python" title="Permanent link">&para;</a></h2>
+<p>A continuación vamos a crear un ejemplo completo de flujo de datos mediante <em>Python</em> que nos permita recoger <em>tweets</em> y meterlos dentro de <em>ElasticSearch</em>.</p>
+<p>Vamos a suponer que ya disponemos de una cuenta de <em>Twitter</em> y que tenemos las credenciales de acceso, las cuales vamos a almacenar en un fichero denominado <code>credential.py</code>:</p>
+<div class="highlight"><span class="filename">credentials.py</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">API_KEY</span> <span class="o">=</span> <span class="s1">&#39;YOUR_API_KEY&#39;</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">API_SECRET_KEY</span> <span class="o">=</span> <span class="s1">&#39;YOUR_API_SECRET_KEY&#39;</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">ACCESS_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;YOUR_ACCESS_TOKEN&#39;</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">ACCESS_TOKEN_SECRET</span> <span class="o">=</span> <span class="s1">&#39;YOUR_ACCESS_TOKEN_SECRET&#39;</span>
+</code></pre></div>
+<h3 id="tweepy">Tweepy<a class="headerlink" href="#tweepy" title="Permanent link">&para;</a></h3>
+<p>Para acceder a Twitter desde Python, la librería por excelencia es <a href="https://www.tweepy.org">Tweepy</a>, la cual instalaremos mediante:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip<span class="w"> </span>install<span class="w"> </span>tweepy
+</code></pre></div>
+<p>A continuación, vamos a realizar el proceso de autenticación en <em>Tweepy</em> y recoger el timeline de mi usuario:</p>
+<div class="highlight"><span class="filename">timeline.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">credentials</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">tweepy</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># Nos autenticamos mediante OAuth</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">API_SECRET_KEY</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN_SECRET</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">miTimeline</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">home_timeline</span><span class="p">()</span>
+<span class="linenos" data-linenos="10 "></span><span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">miTimeline</span><span class="p">:</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">tweet</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">screen_name</span><span class="si">}</span><span class="s1">:</span><span class="se">\n</span><span class="si">{</span><span class="n">tweet</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="productor-de-tweets">Productor de Tweets<a class="headerlink" href="#productor-de-tweets" title="Permanent link">&para;</a></h3>
+<p>En este caso de uso vamos a buscar los <em>tweets</em> que contengan la palabra <em>bigdata</em> y meterlos en un topic de <em>Kafka</em>. Así pues, en vez de obtener el timeline de un usuario, realizaremos una búsqueda mediante la función <a href="https://docs.tweepy.org/en/v4.6.0/api.html#search-tweets"><code>search</code></a> y para cada elemento recuperado, lo enviaremos al productor con toda la información (seguimos un planteamiento ELT).</p>
+<p>Primero creamos el topic:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-twitter<span class="w">  </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
+<p>Y a continuación desarrollamos el productor:</p>
+<div class="highlight"><span class="filename">producerTwitter.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">credentials</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">tweepy</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaProducer</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># Creamos el productor de Kafka</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">dumps</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># Nos autenticamos mediante OAuth en Twitter</span>
+<span class="linenos" data-linenos="13 "></span><span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">API_SECRET_KEY</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span><span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN_SECRET</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span><span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># Cargamos 500 tweets</span>
+<span class="linenos" data-linenos="18 "></span><span class="nb">id</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">cantidad</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos" data-linenos="20 "></span><span class="k">while</span> <span class="n">cantidad</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">:</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="n">tweets</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">search_tweets</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;bigdata&#39;</span><span class="p">,</span> <span class="n">tweet_mode</span><span class="o">=</span><span class="s1">&#39;extended&#39;</span><span class="p">,</span> <span class="n">max_id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+<span class="linenos" data-linenos="22 "></span>    <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
+<span class="linenos" data-linenos="23 "></span>        <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-twitter&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">tweet</span><span class="o">.</span><span class="n">_json</span><span class="p">)</span>
+<span class="linenos" data-linenos="24 "></span>        <span class="n">cantidad</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="c1">#  Al final del ciclo le asignamos el id del último tweet</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="c1">#  para que en cada ciclo se consulten solo los tweets hasta el más antiguos del ciclo anterior</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="nb">id</span> <span class="o">=</span> <span class="n">tweet</span><span class="o">.</span><span class="n">id</span>
+<span class="linenos" data-linenos="28 "></span>
+<span class="linenos" data-linenos="29 "></span><span class="c1"># Como el envío es asíncrono, para que no se salga del programa antes de enviar el último mensaje, esperamos 1 seg</span>
+<span class="linenos" data-linenos="30 "></span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="elasticsearch-desde-python">Elasticsearch desde Python<a class="headerlink" href="#elasticsearch-desde-python" title="Permanent link">&para;</a></h3>
+<p>Para poder acceder a <a href="https://elasticsearch-py.readthedocs.io/en/latest/">Elasticsearch desde Python</a> necesitamos descargar la librería:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip<span class="w"> </span>install<span class="w"> </span>elasticsearch
+</code></pre></div>
+<p>El siguiente fragmento muestra varias operaciones básicas y como las operaciones REST de <em>Elasticsearch</em> se traducen en métodos:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Código Python</label><label for="__tabbed_3_2">Resultado</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><span class="filename">prueba-elasticsearch.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="linenos" data-linenos=" 4 "></span><span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">(</span><span class="s2">&quot;http://localhost:9200&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">doc1</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Aitor Medrano&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Prueba de texto desde Python&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+<span class="linenos" data-linenos="10 "></span><span class="p">}</span>
+<span class="linenos" data-linenos="11 "></span><span class="n">doc2</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="12 "></span>    <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Aitor Medrano&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Y otra #prueba desde @Python&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+<span class="linenos" data-linenos="15 "></span><span class="p">}</span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># Inserción</span>
+<span class="linenos" data-linenos="17 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">doc1</span><span class="p">)</span>
+<span class="linenos" data-linenos="18 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">doc2</span><span class="p">)</span>
+<span class="linenos" data-linenos="19 "></span><span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="20 "></span>
+<span class="linenos" data-linenos="21 "></span><span class="c1"># Recuperación</span>
+<span class="linenos" data-linenos="22 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos" data-linenos="23 "></span><span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s1">&#39;_source&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="24 "></span>
+<span class="linenos" data-linenos="25 "></span><span class="n">es</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="26 "></span>
+<span class="linenos" data-linenos="27 "></span><span class="c1"># Búsqueda</span>
+<span class="linenos" data-linenos="28 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;match_all&quot;</span><span class="p">:</span> <span class="p">{}})</span>
+<span class="linenos" data-linenos="29 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Encontrados </span><span class="si">%d</span><span class="s2"> Hits:&quot;</span> <span class="o">%</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="30 "></span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;hits&#39;</span><span class="p">]:</span>
+<span class="linenos" data-linenos="31 "></span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(timestamp)s</span><span class="s2"> </span><span class="si">%(author)s</span><span class="s2">: </span><span class="si">%(text)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">hit</span><span class="p">[</span><span class="s2">&quot;_source&quot;</span><span class="p">])</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>    resp = es.index(index=&quot;prueba&quot;, id=1, document=doc1)
+<span class="linenos" data-linenos=" 2 "></span>    resp = es.index(index=&quot;prueba&quot;, id=2, document=doc2)
+<span class="linenos" data-linenos=" 3 "></span>updated
+<span class="linenos" data-linenos=" 4 "></span>    resp = es.get(index=&quot;prueba&quot;, id=1)
+<span class="linenos" data-linenos=" 5 "></span>{&#39;author&#39;: &#39;Aitor Medrano&#39;, &#39;text&#39;: &#39;Prueba de texto desde Python&#39;, &#39;timestamp&#39;: &#39;2022-02-25T15:11:43.720820&#39;}
+<span class="linenos" data-linenos=" 6 "></span>    es.indices.refresh(index=&quot;prueba&quot;)
+<span class="linenos" data-linenos=" 7 "></span>    resp = es.search(index=&quot;prueba&quot;, query={&quot;match_all&quot;: {}})
+<span class="linenos" data-linenos=" 8 "></span>Encontrados 2 Hits:
+<span class="linenos" data-linenos=" 9 "></span>2022-02-25T15:11:43.720820 Aitor Medrano: Prueba de texto desde Python
+<span class="linenos" data-linenos="10 "></span>2022-02-25T15:11:43.720826 Aitor Medrano: Y otra #prueba desde @Python
+</code></pre></div>
+</div>
+</div>
+</div>
+<h3 id="consumidor-en-elasticsearch">Consumidor en Elasticsearch<a class="headerlink" href="#consumidor-en-elasticsearch" title="Permanent link">&para;</a></h3>
+<p>Finalmente, vamos a crear un consumidor que se conecte a <em>Kafka</em> para consumir los mensajes, e introduzca cada uno de los <em>tuits</em> en <em>Elasticsearch</em>:</p>
+<div class="highlight"><span class="filename">consumerTwitter.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">import</span> <span class="nn">ast</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">(</span><span class="s2">&quot;http://localhost:9200&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">consumer</span> <span class="o">=</span> <span class="n">KafkaConsumer</span><span class="p">(</span>
+<span class="linenos" data-linenos="10 "></span>    <span class="s1">&#39;iabd-twitter&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="n">auto_offset_reset</span><span class="o">=</span><span class="s1">&#39;earliest&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="12 "></span>    <span class="n">enable_auto_commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">group_id</span><span class="o">=</span><span class="s1">&#39;iabd-caso3&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="n">value_deserializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">loads</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)),</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="n">cantidad</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos" data-linenos="18 "></span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">consumer</span><span class="p">:</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="n">tweet</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">value</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="c1"># print(type(tweet))</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="c1"># tweet = ast.literal_eval(m.value)</span>
+<span class="linenos" data-linenos="22 "></span>    <span class="c1"># print(tweet[&#39;user&#39;])</span>
+<span class="linenos" data-linenos="23 "></span>    <span class="c1"># doc = {</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="c1">#     &#39;user&#39;: m.value.user.screen_name,</span>
+<span class="linenos" data-linenos="25 "></span>    <span class="c1">#     &#39;text&#39;: m.value.full_text,</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="c1">#     &#39;created_at&#39;: m.value.created_at,</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="c1">#     &#39;likes&#39;: m.value.favourite_count</span>
+<span class="linenos" data-linenos="28 "></span>    <span class="c1"># }</span>
+<span class="linenos" data-linenos="29 "></span>    <span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;iabd-twitter-es&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">cantidad</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">tweet</span><span class="p">)</span>
+<span class="linenos" data-linenos="30 "></span>    <span class="n">cantidad</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos" data-linenos="31 "></span>
+<span class="linenos" data-linenos="32 "></span><span class="c1"># Forzamos que se persistan los cambios</span>
+<span class="linenos" data-linenos="33 "></span><span class="n">es</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;iabd-twitter-es&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Si accedemos a <code>http://localhost:9200/iabd-twitter-es/_search?pretty</code> podremos ver como <em>Elasticsearch</em> contiene los <em>tuits</em> que habíamos producido previamente:</p>
+<figure style="align: center;">
+    <img src="images/02kafka-elasticsearch-result.png">
+    <figcaption>Resultado de consumir tuits desde Kafka y cargar en Elasticsearch</figcaption>
+</figure>
+
+<h3 id="todo-en-uno-con-nifi">Todo en uno con Nifi<a class="headerlink" href="#todo-en-uno-con-nifi" title="Permanent link">&para;</a></h3>
+<p>Vamos a realizar un flujo de datos en <em>Nifi</em> para el mismo caso de uso que acabamos de desarrollar. Para ello, vamos a crear dos grupos de procesos para tener los flujos ordenados:</p>
+<figure style="align: center;">
+    <img src="images/02kafka-nifi-process-groups.png">
+    <figcaption>Grupos de procesos para E y L</figcaption>
+</figure>
+
+<p>En el primer grupo, que hemos denominado <em>Extract Twitter</em>, vamos a realizar la carga desde Twitter (filtrando los mensajes que contengan la palabra <em>bigdata</em>) y los vamos a meter en el topic <code>iabd-twitter</code>.</p>
+<p>Para ello, conectaremos los siguientes procesadores:</p>
+<ul>
+<li><em>GetTwitter</em>: tras introducir los valores para autenticarnos en Twitter, configuraremos como <em>endpoint</em> que sea de tipo <em>Filter Endpoint</em> y como término a filtrar <em>bigdata</em> (no olvides poner las claves de autenticación).</li>
+<li><em>PublishKafka_2_6</em>: en este procesador, además del <em>topic</em> <code>iabd-twitter</code>, indicaremos que no utilizaremos transacciones (<em>Use Transactions: false</em>), así como que intente garantizar la entrega (*Delivery Guarantee: Best Effort):</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/02kafka-nifi-gettwitter.png">
+    <figcaption>De Twitter a Kafka</figcaption>
+</figure>
+
+<p>Del mismo modo, dentro del segundo grupo (<em>Load Elasticsearch</em>), conectaremos los siguientes procesadores:</p>
+<ul>
+<li><em>ConsumerKafka_2_6</em>: donde consumiremos los mensajes del topic <code>iabd-twitter</code> de <em>Kafka</em>, y por ejemplo, como grupo de consumidores le indicaremos que usamos nifi (<em>group id: nifi</em>)</li>
+<li><em>PutElasticsearchHttp</em>: como ya hicimos en la sesión de <em>Nifi</em>, indicaremos la URL de Elasticsearch (<code>http://localhost:9200</code>) y que lo almacene en un indice que hemos denominado <code>iabd-twitter-es</code>:</li>
+</ul>
+<figure style="align: center;">
+    <img src="images/02kafka-nifi-putelasticsearch.png">
+    <figcaption>De Kafka a Elasticsearch</figcaption>
+</figure>
+
+<!--
+Ejemplo con Kafka
+Split Text + ExtractText + PutKafka
+https://www.youtube.com/watch?v=2w14d16wR8Y
+
+Nifi + Kafka
+https://www.youtube.com/watch?time_continue=1588&v=nWEna1mE4KY&feature=emb_logo
+-->
+
+<h2 id="kafka-connect">Kafka Connect<a class="headerlink" href="#kafka-connect" title="Permanent link">&para;</a></h2>
+<p>Si hacerlo con <em>Nifi</em> ya es un avance respecto a tener que codificarlo con <em>Python</em>, ¿qué dirías si <em>Kafka</em> ofreciera una serie de conectores para las operaciones más comunes?</p>
+<p>Así pues, <em>Kafka Connect</em> permite importar/exportar datos desde/hacia <em>Kafka</em>, facilitando la integración en sistemas existentes mediante alguno del <a href="https://www.confluent.io/hub/">centenar de conectores disponibles</a>.</p>
+<figure style="align: center;">
+    <img src="images/02kafka-connect.png">
+    <figcaption>Arquitectura Kafka Connect</figcaption>
+</figure>
+
+<p>Los elementos que forman <em>Kafka Connect</em> son:</p>
+<ul>
+<li>Conectores fuente (<em>source</em>), para obtener datos desde las fuentes de datos (E en ETL)</li>
+<li>Conectores destino (<em>sink</em>) para publicar los datos en los almacenes de datos (L en ETL).</li>
+</ul>
+<p>Estos conectores facilitan que desarrolladores no expertos puedan trabajar con sus datos en <em>Kafka</em> de forma rápida y fiable, de manera que podamos introducir <em>Kafka</em> dentro de nuestros procesos ETL.</p>
+<h3 id="hola-kafka-connect">Hola Kafka Connect<a class="headerlink" href="#hola-kafka-connect" title="Permanent link">&para;</a></h3>
+<p>Vamos a realizar un ejemplo muy sencillo leyendo datos de una base de datos para meterlos en Kafka.</p>
+<p>Para ello, utilizaremos la base de datos de <em>retail_db</em> que ya hemos empleado en <a href="../hadoop/05flume.html#actividades">otras sesiones</a> y vamos a cargar en <em>Kafka</em> los datos de la tabla <code>categories</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">MariaDB</span><span class="w"> </span><span class="err">[</span><span class="n">retail_db</span><span class="err">]</span><span class="o">&gt;</span><span class="w"> </span><span class="k">describe</span><span class="w"> </span><span class="n">categories</span><span class="p">;</span>
+<span class="linenos" data-linenos="2 "></span><span class="o">+------------------------+-------------+------+-----+---------+----------------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="o">|</span><span class="w"> </span><span class="n">Field</span><span class="w">                  </span><span class="o">|</span><span class="w"> </span><span class="k">Type</span><span class="w">        </span><span class="o">|</span><span class="w"> </span><span class="no">Null</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Key</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">Default</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Extra</span><span class="w">          </span><span class="o">|</span>
+<span class="linenos" data-linenos="4 "></span><span class="o">+------------------------+-------------+------+-----+---------+----------------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="o">|</span><span class="w"> </span><span class="n">category_id</span><span class="w">            </span><span class="o">|</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">NO</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">PRI</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="no">NULL</span><span class="w">    </span><span class="o">|</span><span class="w"> </span><span class="k">auto_increment</span><span class="w"> </span><span class="o">|</span>
+<span class="linenos" data-linenos="6 "></span><span class="o">|</span><span class="w"> </span><span class="n">category_department_id</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="k">NO</span><span class="w">   </span><span class="o">|</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="no">NULL</span><span class="w">    </span><span class="o">|</span><span class="w">                </span><span class="o">|</span>
+<span class="linenos" data-linenos="7 "></span><span class="o">|</span><span class="w"> </span><span class="n">category_name</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="k">NO</span><span class="w">   </span><span class="o">|</span><span class="w">     </span><span class="o">|</span><span class="w"> </span><span class="no">NULL</span><span class="w">    </span><span class="o">|</span><span class="w">                </span><span class="o">|</span>
+<span class="linenos" data-linenos="8 "></span><span class="o">+------------------------+-------------+------+-----+---------+----------------</span>
+</code></pre></div>
+<h4 id="configuracion">Configuración<a class="headerlink" href="#configuracion" title="Permanent link">&para;</a></h4>
+<p>Cuando ejecutemos <em>Kafka Connect</em>, le debemos pasar un archivo de configuración. Para empezar, tenemos <code>config/connect-standalone.properties</code> el cual ya viene rellenado e indica los formatos que utilizarán los conversores y otros aspectos:</p>
+<div class="highlight"><span class="filename">config/connect-standalone.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">bootstrap.servers</span><span class="o">=</span><span class="s">localhost:9092</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="na">key.converter</span><span class="o">=</span><span class="s">org.apache.kafka.connect.json.JsonConverter</span>
+<span class="linenos" data-linenos="4 "></span><span class="na">value.converter</span><span class="o">=</span><span class="s">org.apache.kafka.connect.json.JsonConverter</span>
+<span class="linenos" data-linenos="5 "></span><span class="na">key.converter.schemas.enable</span><span class="o">=</span><span class="s">true</span>
+<span class="linenos" data-linenos="6 "></span><span class="na">value.converter.schemas.enable</span><span class="o">=</span><span class="s">true</span>
+<span class="linenos" data-linenos="7 "></span>
+<span class="linenos" data-linenos="8 "></span><span class="na">offset.storage.file.filename</span><span class="o">=</span><span class="s">/tmp/connect.offsets</span>
+</code></pre></div>
+<p>Los conectores se incluyen en <em>Kafka</em> como plugins. Para ello, primero hemos de indicarle a <em>Kafka</em> donde se encuentran. Para ello, en el archivo de configuración le indicaremos la siguiente ruta:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">plugin.path</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/plugins</span>
+</code></pre></div>
+<h4 id="extrayendo-datos-mediante-kafka-connect">Extrayendo datos mediante Kafka Connect<a class="headerlink" href="#extrayendo-datos-mediante-kafka-connect" title="Permanent link">&para;</a></h4>
+<p>Así pues, el primer paso es crear el archivo de configuración de <em>Kafka Connect</em> con los datos (en nuestro caso lo colocamos en la carpeta <code>config</code>  de la instalación de <em>Kafka</em>) utilizando un <a href="https://docs.confluent.io/kafka-connect-jdbc/current/source-connector/source_config_options.html#jdbc-source-configs">conector fuente de JDBC</a>:</p>
+<div class="highlight"><span class="filename">retaildb-mariadb-source-connector.properties</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="na">name</span><span class="o">=</span><span class="s">retaildb-mariabd-source-jdbc-autoincrement</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">connector.class</span><span class="o">=</span><span class="s">io.confluent.connect.jdbc.JdbcSourceConnector</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">tasks.max</span><span class="o">=</span><span class="s">1</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">connection.url</span><span class="o">=</span><span class="s">jdbc:mysql://localhost/retail_db</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="na">connection.user</span><span class="o">=</span><span class="s">iabd</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="na">connection.password</span><span class="o">=</span><span class="s">iabd</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">table.whitelist</span><span class="o">=</span><span class="s">categories</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="na">mode</span><span class="o">=</span><span class="s">incrementing</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="na">incrementing.column.name</span><span class="o">=</span><span class="s">category_id</span>
+<span class="linenos" data-linenos="10 "></span><span class="na">topic.prefix</span><span class="o">=</span><span class="s">iabd-retail_db-</span>
+</code></pre></div>
+<p>Antes de ponerlo en marcha, debemos <a href="https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc">descargar el conector</a> y colocar la carpeta descomprimida dentro de nuestra carpeta de plugins <code>/opt/kafka_2.13-2.8.1/plugins</code> y descargar el <a href="resources/mysql-connector-j-8.0.31.jar">driver de MySQL</a> y colocarlos en la carpeta <code>/opt/kafka_2.13-2.8.1/lib</code>.</p>
+<p>Y a continuación ya podemos ejecutar <em>Kafka Connect</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>connect-standalone.sh<span class="w"> </span>config/connect-standalone.properties<span class="w"> </span>config/retaildb-mariadb-source-connector.properties
+</code></pre></div>
+<div class="admonition caution">
+<p class="admonition-title">Guava</p>
+<p>Es posible que salte un error de ejecución indicando que falta la librería <a href="https://github.com/google/guava">Guava</a> la cual podéis descargar <a href="https://repo1.maven.org/maven2/com/google/guava/guava/31.0.1-jre/guava-31.0.1-jre.jar">desde aquí</a> y colocar en la carpeta <code>/opt/kafka_2.13-2.8.1/lib</code></p>
+</div>
+<p>Si ahora arrancamos un consumidor sobre el topic <code>iabd-retail_db-categories</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-console-consumer.sh<span class="w"> </span>--topic<span class="w"> </span>iabd-retail_db-categories<span class="w"> </span>--from-beginning<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
+<p>Veremos que aparecen todos los datos que teníamos en la tabla en formato JSON (es lo que hemos indicado en el archivo de configuración de <em>Kafka Connect</em>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span><span class="nt">&quot;schema&quot;</span><span class="p">:{</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;struct&quot;</span><span class="p">,</span><span class="nt">&quot;fields&quot;</span><span class="p">:[</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">            </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="s2">&quot;category_id&quot;</span><span class="p">},</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="s2">&quot;category_department_id&quot;</span><span class="p">},</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">            </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="s2">&quot;category_name&quot;</span><span class="p">}],</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;categories&quot;</span><span class="p">},</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">        </span><span class="nt">&quot;payload&quot;</span><span class="p">:{</span><span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&quot;category_department_id&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;category_name&quot;</span><span class="p">:</span><span class="s2">&quot;Football&quot;</span><span class="p">}}</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="p">{</span><span class="nt">&quot;schema&quot;</span><span class="p">:{</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;struct&quot;</span><span class="p">,</span><span class="nt">&quot;fields&quot;</span><span class="p">:[</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="s2">&quot;category_id&quot;</span><span class="p">},</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">            </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="s2">&quot;category_department_id&quot;</span><span class="p">},</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">            </span><span class="p">{</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;field&quot;</span><span class="p">:</span><span class="s2">&quot;category_name&quot;</span><span class="p">}],</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="nt">&quot;optional&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;categories&quot;</span><span class="p">},</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">        </span><span class="nt">&quot;payload&quot;</span><span class="p">:{</span><span class="nt">&quot;category_id&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;category_department_id&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;category_name&quot;</span><span class="p">:</span><span class="s2">&quot;Soccer&quot;</span><span class="p">}}</span>
+<span class="linenos" data-linenos="15 "></span><span class="err">...</span>
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Autoevaluación</p>
+<p>Vamos a dejar el consumidor y <em>Kafka Connect</em> corriendo.
+¿Qué sucederá si inserto un nuevo registro en la base de datos en la tabla <code>categories</code>?
+Que automáticamente aparecerá en nuestro consumidor.</p>
+</div>
+<h3 id="rest-api">REST API<a class="headerlink" href="#rest-api" title="Permanent link">&para;</a></h3>
+<p>Como <em>Kafka Connect</em> está diseñado como un servicio que debería correr continuamente, ofrece un API REST para gestionar los conectores. Por defecto está a la escucha el puerto 8083, de manera que si accedemos a <a href="http://iabd-virtualbox:8083/">http://iabd-virtualbox:8083/</a> obtendremos información sobre la versión que se está ejecutando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="s2">&quot;2.8.1&quot;</span><span class="p">,</span><span class="nt">&quot;commit&quot;</span><span class="p">:</span><span class="s2">&quot;839b886f9b732b15&quot;</span><span class="p">,</span><span class="nt">&quot;kafka_cluster_id&quot;</span><span class="p">:</span><span class="s2">&quot;iHa0JUnTSfm85fvFadsylA&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Por ejemplo, si queremos obtener un listado de los conectores realizaremos una petición GET a <code>/connectors</code> mediante <code>http://iabd-virtualbox:8083/connectors</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">[</span><span class="s2">&quot;retaildb-mariabd-source-jdbc-autoincrement&quot;</span><span class="p">]</span>
+</code></pre></div>
+<p>Más información en <a href="https://kafka.apache.org/documentation/#connect_rest">https://kafka.apache.org/documentation/#connect_rest</a></p>
+<div class="admonition tip">
+<p class="admonition-title">Kafka Streams</p>
+<p><a href="https://kafka.apache.org/documentation/streams/">Kafka Streams</a> es la tercera pata del ecosistema de Kafka, y permite procesar y transformar datos dentro de Kafka.
+Una vez que los datos se almacenan en <em>Kafka</em> como eventos, podemos procesar los datos en nuestras aplicaciones cliente mediante <em>Kafka Streams</em> y sus librerías desarrolladas en Java y/o Scala, ya que requiere una JVM.</p>
+<p>En nuestro caso, realizaremos en posteriores sesiones un procesamiento similar de los datos mediante <em>Spark Streaming</em>, permitiendo operaciones con estado y agregaciones, funciones ventana, <em>joins</em>, procesamiento de eventos basados en el tiempo, etc...</p>
+</div>
+<h3 id="kafka-y-el-big-data">Kafka y el Big Data<a class="headerlink" href="#kafka-y-el-big-data" title="Permanent link">&para;</a></h3>
+<p>El siguiente gráfico muestra cómo <em>Kafka</em> está enfocado principalmente para el tratamiento en <em>streaming</em>, aunque con los conectores de <em>Kafka Connect</em> da soporte para el procesamiento <em>batch</em>:</p>
+<figure style="align: center;">
+    <img src="images/02kafka-bigdata.png">
+    <figcaption>Kafka y Big Data</figcaption>
+</figure>
+
+<h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://www.packtpub.com/product/apache-kafka-series-learn-apache-kafka-for-beginners-video/9781789342604">Apache Kafka Series - Learn Apache Kafka for Beginners</a></li>
+<li>Serie de artículos de Víctor Madrid sobre <a href="https://enmilocalfunciona.io/tag/kafka/">Kafka</a> en <a href="https://enmilocalfunciona.io">enmilocalfunciona.io</a>.</li>
+<li><a href="https://mikeldeltio.com/2020/05/20/distributed-databases-kafka/">Distributed Databases: Kafka</a> por Miguel del Tio</li>
+<li><a href="https://www.baeldung.com/kafka-connectors-guide">Introduction to Kafka Connectors</a></li>
+<li><a href="https://github.com/lensesio/kafka-cheat-sheet">Kafka Cheatsheet</a></li>
+</ul>
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<ol>
+<li>(opcional) A partir del caso 2, crea un clúster de Kafka con 4 particiones y 3 nodos. A continuación, en el productor utiliza <em>Faker</em> para crear 10 personas (almacénalas como un diccionario). En el consumidor, muestra los datos de las personas (no es necesario recibirlos ordenados, sólo necesitamos que se aproveche al máximo la infraestructura de Kafka).</li>
+<li>Realiza el caso de uso 3 (De <em>Twitter</em> a <em>ElasticSearch</em>) tanto con <em>Python</em> como con <em>Nifi</em>.</li>
+<li>(opcional) Repite el caso de uso 2 únicamente mediante <em>Kafka Connect</em>.  </li>
+<li>(opcional) Investiga en qué consiste el patrón CDC (<em>Change Data Capture</em>) y cómo se realiza CDC con <em>Kafka</em>/<em>Kafka Connect</em> y <a href="https://debezium.io/">Debezium</a>. ¿Qué ventajas aportan las soluciones CDC?</li>
+</ol>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        <a href='https://ko-fi.com/T6T8GWT9N' title='Invítame a un café en ko-fi.com' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Invítame a un café en ko-fi.com' /></a>
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Me encantan estos apuntes" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81Z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="Los apuntes son mejorables" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14Z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              Gracias por tu tiempo. Si quieres me puedes <a href='https://ko-fi.com/T6T8GWT9N'>invitar a un café en ko-fi</a>.
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              ¡Gracias por tu colaboración! Ayúdame a mejorar los apuntes enviándome un mail a <a href="mailto:a.medrano@edu.gva.es">a.medrano@edu.gva.es</a> con tus comentarios.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+            Volver al principio
+          </a>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Pie" >
+        
+          
+          <a href="02kafka.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Kafka I" rel="prev">
+            <div class="md-footer__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <div class="md-ellipsis">
+                <span class="md-footer__direction">
+                  Anterior
+                </span>
+                Kafka I
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      2022-2023 Aitor Medrano - Licencia CC BY-NC-SA
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/aitormedrano" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+    <a href="mailto:<a.medrano@edu.gva.es>" target="_blank" rel="noopener" title="" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4l217.6 163.2c11.4 8.5 27 8.5 38.4 0l217.6-163.2c12.1-9.1 19.2-23.3 19.2-38.4 0-26.5-21.5-48-48-48H48zM0 176v208c0 35.3 28.7 64 64 64h384c35.3 0 64-28.7 64-64V176L294.4 339.2a63.9 63.9 0 0 1-76.8 0L0 176z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+  
+    
+  
+
+
+
+
+  
+
+
+<h4>Consentimiento de cookie</h4>
+<p>Esta página de apuntes utiliza cookies para reconocer las visitas, medir la efectividad de la documentación y averiguar si encuentras aquello que buscas o cómo has llegado a estos apuntes. Con tu consentimiento, me ayudas a mejorar estos materiales.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+      
+      
+        
+        
+      
+      <li class="task-list-item">
+        <label class="task-list-control">
+          <input type="checkbox" name="analytics" checked>
+          <span class="task-list-indicator"></span>
+          Google Analytics
+        <label>
+      </li>
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Aceptar</button>
+    
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Gestionar cookies</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout(function(){document.querySelector("[data-md-component=consent]").hidden=!1},250);var action,form=document.forms.consent;for(action of["submit","reset"])form.addEventListener(action,function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map(function(e){return[e,!0]}))),location.hash="",location.reload()})</script>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.ba449ae6.min.js"></script>
+      
+    
+  </body>
+</html>
