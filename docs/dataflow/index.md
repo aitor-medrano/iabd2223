@@ -12,8 +12,10 @@
 
 | Sesión                    | Fecha             | Duración (h) |
 | ---------                 | -----             | --------- |
+| 90.- [Nifi I](04nifi1.md)               | Lunes 6 Mar  | 2p + 2o   |
+| 92.- [Nifi II](05nifi2.md)              | Miércoles 8 Mar      | 2p + 2o   |
+| 97.- [Kafka I](02kafka.md)                | Miércoles 15 Mar       | 2p + 2o   |
+| 99.- [Kafka II](03kafka.md)                           | Lunes 20 Mar   | 2p + 2o   |
+<!--
 | 69.- [Airflow](01airflow.md)              | Lunes 30 Ene      | 2p + 2o   |
-| 90.- [Kafka](02kafka.md)                | Lunes 6 Mar       | 2p + 2o   |
-| 92.- Kafka II             | Miércoles 8 Mar   | 2p + 2o   |
-| 97.- [Nifi I](04nifi1.md)               | Miércoles 15 Mar  | 2p + 2o   |
-| 99.- [Nifi II](05nifi2.md)              | Lunes 20 Mar      | 2p + 2o   |
+-->
