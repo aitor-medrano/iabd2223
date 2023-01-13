@@ -49,7 +49,7 @@ En cambio, no es apropiado para:
 
 ## Puesta en marcha
 
-Para instalar Nifi, sólo hemos de descargar la última versión desde <https://nifi.apache.org> (en nuestro caso hemos descargado la version 1.15) y tras descomprimirla, debemos crear unas credenciales de acceso. Para ello, ejecutaremos el comando `./nifi.sh set-single-user-credentials <username> <password>` indicando el usuario y contraseña que queramos.
+Para instalar Nifi, sólo hemos de descargar la última versión desde <https://nifi.apache.org> (en nuestro caso hemos descargado la version 1.19.1) y tras descomprimirla, debemos crear unas credenciales de acceso. Para ello, ejecutaremos el comando `./nifi.sh set-single-user-credentials <username> <password>` indicando el usuario y contraseña que queramos.
 
 Por ejemplo, nosotros hemos creado el usuario `nifi`/`nifinifinifi`:
 
@@ -57,7 +57,7 @@ Por ejemplo, nosotros hemos creado el usuario `nifi`/`nifinifinifi`:
 ./bin/nifi.sh set-single-user-credentials nifi nifinifinifi
 ```
 
-A continuación, ya podemos arrancar Nifi ejecutando el comando `./nifi.sh start` (se ejecutará en *brackgound*):
+A continuación, ya podemos arrancar Nifi ejecutando el comando `./nifi.sh start` (se ejecutará en *background*):
 
 ``` bash
 ./bin/nifi.sh start
@@ -72,8 +72,8 @@ Si quieres trabajar con una máquina en AWS has de seguir los siguientes pasos:
 1. Crear una instancia EC2 (se recomienda elegir el tipo `t3.large`  para tener 8GB RAM), con un grupo de seguridad que permita tanto las conexiones SSH como el puerto 8443.
 2. Conectarnos via SSH a la *ipPublicaAWS* y descargar Nifi:
 ``` bash
-wget https://downloads.apache.org/nifi/1.15.0/nifi-1.15.0-bin.zip
-unzip nifi-1.15.0-bin.zip
+wget https://dlcdn.apache.org/nifi/1.19.1/nifi-1.19.1-bin.zip
+unzip nifi-1.19.1-bin.zip
 ```
 3. Tras meternos dentro de la carpeta recién creada, configurar el archivo `conf/nifi.properties` para permitir el acceso remoto. Para ello, modificaremos las siguientes propiedades:
 ``` properties
