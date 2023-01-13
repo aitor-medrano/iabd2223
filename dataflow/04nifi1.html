@@ -19,7 +19,7 @@
         <link rel="next" href="05nifi2.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.4">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.9c788c91.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -1514,11 +1514,11 @@
 <li>procesamiento complejo de eventos.</li>
 </ul>
 <h2 id="puesta-en-marcha">Puesta en marcha<a class="headerlink" href="#puesta-en-marcha" title="Permanent link">&para;</a></h2>
-<p>Para instalar Nifi, sólo hemos de descargar la última versión desde <a href="https://nifi.apache.org">https://nifi.apache.org</a> (en nuestro caso hemos descargado la version 1.15) y tras descomprimirla, debemos crear unas credenciales de acceso. Para ello, ejecutaremos el comando <code>./nifi.sh set-single-user-credentials &lt;username&gt; &lt;password&gt;</code> indicando el usuario y contraseña que queramos.</p>
+<p>Para instalar Nifi, sólo hemos de descargar la última versión desde <a href="https://nifi.apache.org">https://nifi.apache.org</a> (en nuestro caso hemos descargado la version 1.19.1) y tras descomprimirla, debemos crear unas credenciales de acceso. Para ello, ejecutaremos el comando <code>./nifi.sh set-single-user-credentials &lt;username&gt; &lt;password&gt;</code> indicando el usuario y contraseña que queramos.</p>
 <p>Por ejemplo, nosotros hemos creado el usuario <code>nifi</code>/<code>nifinifinifi</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/nifi.sh<span class="w"> </span>set-single-user-credentials<span class="w"> </span>nifi<span class="w"> </span>nifinifinifi
 </code></pre></div>
-<p>A continuación, ya podemos arrancar Nifi ejecutando el comando <code>./nifi.sh start</code> (se ejecutará en <em>brackgound</em>):</p>
+<p>A continuación, ya podemos arrancar Nifi ejecutando el comando <code>./nifi.sh start</code> (se ejecutará en <em>background</em>):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/nifi.sh<span class="w"> </span>start
 </code></pre></div>
 <p>Si queremos detenerlo ejecutaremos <code>./bin/nifi.sh stop</code>.</p>
@@ -1527,8 +1527,8 @@
 <ol>
 <li>Crear una instancia EC2 (se recomienda elegir el tipo <code>t3.large</code>  para tener 8GB RAM), con un grupo de seguridad que permita tanto las conexiones SSH como el puerto 8443.</li>
 <li>Conectarnos via SSH a la <em>ipPublicaAWS</em> y descargar Nifi:
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>wget<span class="w"> </span>https://downloads.apache.org/nifi/1.15.0/nifi-1.15.0-bin.zip
-<span class="linenos" data-linenos="2 "></span>unzip<span class="w"> </span>nifi-1.15.0-bin.zip
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>wget<span class="w"> </span>https://dlcdn.apache.org/nifi/1.19.1/nifi-1.19.1-bin.zip
+<span class="linenos" data-linenos="2 "></span>unzip<span class="w"> </span>nifi-1.19.1-bin.zip
 </code></pre></div></li>
 <li>Tras meternos dentro de la carpeta recién creada, configurar el archivo <code>conf/nifi.properties</code> para permitir el acceso remoto. Para ello, modificaremos las siguientes propiedades:
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">nifi.web.https.host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0.0.0.0</span>

@@ -19,7 +19,7 @@
         <link rel="next" href="06hive.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.4">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.3">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.9c788c91.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6b71719e.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
@@ -1777,8 +1777,8 @@ Exportar datos con updates
 <p><em>Flume</em> funciona como un buffer entre los productores de datos y el destino final. Al utilizar un buffer, evitamos que un productor sature a un consumidor, sin necesidad de preocuparnos de que algún destino esté inalcanzable o inoperable (por ejemplo, en el caso de que haya caído HDFS), etc...</p>
 <div class="admonition info">
 <p class="admonition-title">Instalación</p>
-<p>Aunque en la máquina virtual con la que trabajamos también tenemos instalado <em>Flume</em>, podemos descargar la última versión desde <a href="http://www.apache.org/dyn/closer.lua/flume/1.9.0/apache-flume-1.9.0-bin.tar.gz">http://www.apache.org/dyn/closer.lua/flume/1.9.0/apache-flume-1.9.0-bin.tar.gz</a>.</p>
-<p>A nivel de configuración sólo hemos definido la variable de entorno <code>$FLUME_HOME</code> que apunta a <code>/opt/flume-1.9.0</code>.</p>
+<p>Aunque en la máquina virtual con la que trabajamos también tenemos instalado <em>Flume</em>, podemos descargar la última versión desde <a href="https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz">https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz</a>.</p>
+<p>A nivel de configuración sólo hemos definido la variable de entorno <code>$FLUME_HOME</code> que apunta a <code>/opt/flume-1.11.0</code>.</p>
 </div>
 <h3 id="arquitectura">Arquitectura<a class="headerlink" href="#arquitectura" title="Permanent link">&para;</a></h3>
 <p>Su arquitectura es sencilla, y se basa en el uso de agentes que se dividen en tres componentes los cuales podemos configurar:</p>
@@ -1921,7 +1921,7 @@ Toma eventos del canal de manera continua leyendo y eliminando los eventos. A co
 </code></pre></div>
 <p>Antes de lanzar el agente Flume, recuerda que debes arrancar tanto <em>Hadoop</em> como <em>YARN</em>, por ejemplo, mediante el comando <code>start-all.sh</code>.</p>
 <p>A continuación ya podemos lanzar <em>Flume</em> con el agente mediante el comando (la opción <code>-n</code> sirve para indicar el nombre del agente, y con <code>-f</code> indicamos el nombre del archivo de configuración):</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>flume-ng<span class="w"> </span>agent<span class="w"> </span>-n<span class="w"> </span>ExecLoggerAgent<span class="w"> </span>-f<span class="w"> </span>agente.conf<span class="w"> </span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>flume-ng<span class="w"> </span>agent<span class="w"> </span>--name<span class="w"> </span>ExecLoggerAgent<span class="w"> </span>--conf<span class="w"> </span>./conf/<span class="w"> </span>--conf-file<span class="w"> </span>conf/agente.conf<span class="w"> </span>
 </code></pre></div>
 <h3 id="configurando-un-agente">Configurando un agente<a class="headerlink" href="#configurando-un-agente" title="Permanent link">&para;</a></h3>
 <p>Si te has fijado en el ejemplo anterior, los ficheros de configuración de los agentes siguen el mismo formato.
