@@ -541,9 +541,9 @@ Allá por el año 2010 *Cloudera* presentó ***Flume*** que posteriormente pasó
 *Flume* funciona como un buffer entre los productores de datos y el destino final. Al utilizar un buffer, evitamos que un productor sature a un consumidor, sin necesidad de preocuparnos de que algún destino esté inalcanzable o inoperable (por ejemplo, en el caso de que haya caído HDFS), etc...
 
 !!! info "Instalación"
-    Aunque en la máquina virtual con la que trabajamos también tenemos instalado *Flume*, podemos descargar la última versión desde <http://www.apache.org/dyn/closer.lua/flume/1.9.0/apache-flume-1.9.0-bin.tar.gz>.
+    Aunque en la máquina virtual con la que trabajamos también tenemos instalado *Flume*, podemos descargar la última versión desde <https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz>.
 
-    A nivel de configuración sólo hemos definido la variable de entorno `$FLUME_HOME` que apunta a `/opt/flume-1.9.0`.
+    A nivel de configuración sólo hemos definido la variable de entorno `$FLUME_HOME` que apunta a `/opt/flume-1.11.0`.
 
 ### Arquitectura
 
@@ -642,7 +642,7 @@ Antes de lanzar el agente Flume, recuerda que debes arrancar tanto *Hadoop* como
 A continuación ya podemos lanzar *Flume* con el agente mediante el comando (la opción `-n` sirve para indicar el nombre del agente, y con `-f` indicamos el nombre del archivo de configuración):
 
 ``` bash
-flume-ng agent -n ExecLoggerAgent -f agente.conf 
+flume-ng agent --name ExecLoggerAgent --conf ./conf/ --conf-file conf/agente.conf 
 ```
 
 ### Configurando un agente
