@@ -16,16 +16,14 @@ Este curso se ha diseñado mediante un *proceso de flexibilización* del curricu
 
 En este sitio web podrás consultar los apuntes y ejercicios que he trabajado directamente con el alumnado durante el curso 22/23:
 
-* Unidad Formativa I - Toma de decisiones
-    * [UT2 - Sistemas de almacenamiento](sa/index.md)
-    * [UT5 - Ecosistema Hadoop](hadoop/index.md)
-    * [UT6 - Datos en el cloud](cloud/index.md)
-    * [UT7 - PIA FP Lara](https://aitor-medrano.github.io/pia2223/)
-* Unidad Formativa II - Industria IoT
-    * [UT8 - Spark](spark/index.md)
-<!--
-    * [UT12 - Flujo de datos](dataflow/index.md)
--->
-* Unidad Formativa III - Sistemas Expertos
+* [Sistemas de almacenamiento](sa/index.md)
+* [Ecosistema Hadoop](hadoop/index.md)
+* [Datos en el cloud](cloud/index.md)
+* [Spark](spark/index.md)
+* [Flujo de datos](dataflow/index.md)
+
+Y los materiales creados para el seguimiento de los Proyectos de Innovación Aplicada:
+
+* [PIA FP](https://aitor-medrano.github.io/pia2223/)
 
 Despliega **el menú de la izquierda** para consultar los materiales.
