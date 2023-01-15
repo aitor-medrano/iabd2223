@@ -19,11 +19,11 @@ Las dos herramientas principales utilizadas para importar/exportar datos en *HDF
 !!! caution "Sin continuidad"
     Desde Junio de 2021, el proyecto *Sqoop* ha dejado de mantenerse como proyecto de Apache y forma parte del *ático*. Aún así, creemos conveniente conocer su uso en el estado actual. Gran parte de las funcionalidad que ofrece *Sqoop* se pueden realizar mediante *Nifi* o *Spark*.
 
-Un caso típico de uso es el de cargar los datos en un *data lake*  (ya sea en HDFS o en S3) con datos que importaremos desde una base de datos, como *MariaDB*, *PostgreSQL* o *MongoDB*.
+Un caso típico de uso es el de cargar los datos en un *data lake*  (ya sea en HDFS o en S3) con datos que importaremos desde una base de datos relacional, como *MariaDB* o *PostgreSQL*.
 
-*Sqoop* utiliza una arquitectura basada en conectores, con soporte para *plugins* que ofrecen la conectividad a los sistemas externos, como pueden ser *Oracle* o *SqlServer*. Internamente, Sqoop utiliza los algoritmos *MapReduce* para importar y exportar los datos.
+*Sqoop* utiliza una arquitectura basada en conectores, con soporte para *plugins* que ofrecen la conectividad a los sistemas externos, como pueden ser *Oracle* o *SqlServer*. Internamente, *Sqoop* utiliza los algoritmos *MapReduce* para importar y exportar los datos.
 
-Por defecto, todos los trabajos *Sqoop* ejecutan cuatro mapas de trabajo, de manera que los datos se dividen en cuatro nodos de Hadoop.
+Por defecto, todos los trabajos *Sqoop* ejecutan cuatro mapas de trabajo, de manera que los datos se dividen en cuatro nodos de *Hadoop*.
 
 !!! info "Instalación"
     Aunque en la máquina virtual con la que trabajamos ya tenemos tanto *Hadoop* como *Sqoop* instalados, podemos descargar la última versión desde <http://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz>.
@@ -35,7 +35,7 @@ Por defecto, todos los trabajos *Sqoop* ejecutan cuatro mapas de trabajo, de man
     * Copiar el [driver de MySQL](resources/mysql-connector-java-5.1.49-bin.jar) en `$SQOOP_HOME/lib`
     * Copiar la librería [commons-langs-2.6](https://repo1.maven.org/maven2/commons-lang/commons-lang/2.6/commons-lang-2.6.jar) en `$SQOOP_HOME/lib`
 
-    Una vez configurado, podemos comprobar que funciona, por ejemplo, consultando las bases de datos que tenemos en MariaDB (aparecen mensajes de *warning* por no tener instalados/configurados algunos productos):
+    Una vez configurado, podemos comprobar que funciona, por ejemplo, consultando las bases de datos que tenemos en *MariaDB* (aparecen mensajes de *warning* por no tener instalados/configurados algunos productos) mediante [`sqoop list-databases`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_list_databases_literal):
 
     ```
     sqoop list-databases --connect jdbc:mysql://localhost --username=iabd --password=iabd
@@ -43,7 +43,7 @@ Por defecto, todos los trabajos *Sqoop* ejecutan cuatro mapas de trabajo, de man
 
 ### Importando datos
 
-La sintaxis básica de *Sqoop* para importar datos en HDFS es mediantel comando [`sqoop import`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal):
+La sintaxis básica de *Sqoop* para importar datos en *HDFS* es mediante el comando [`sqoop import`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal):
 
 ``` bash
 sqoop import --connect jdbc:mysql://host/nombredb --table <nombreTabla> \
@@ -54,16 +54,15 @@ El único parámetro que conviene explicar es `-m 2`, el cual está indicando qu
 
 La importación se realiza en dos pasos:
 
-1. *Sqoop* escanea la base de datos y colecta los metadatos de la tabla a importar.
-2. Envía un *job* y transfiere los datos reales utilizando los metadatos necesarios.
-3. De forma paralela, cada uno de los *mappers* se encarga de cargar en HDFS una parte proporcional de los datos.
+1. *Sqoop* escanea la base de datos y colecta los metadatos de la tabla a importar. Con esos datos, envía un *job* y transfiere los datos reales utilizando los metadatos necesarios.
+2. De forma paralela, cada uno de los *mappers* se encarga de cargar en *HDFS* una parte proporcional de los datos.
 
 <figure style="align: center;">
     <img src="images/05sqoop-arq.png">
     <figcaption>Arquitectura de trabajo de Sqoop</figcaption>
 </figure>
 
-Los datos importados se almacenan en carpetas de HDFS, pudiendo especificar otras carpetas, así como los caracteres separadores o de terminación de registro. Además, podemos utilizar diferentes formatos, como son Avro, ORC, Parquet, ficheros secuenciales o de tipo texto, para almacenar los datos en HDFS.
+Los datos importados se almacenan en carpetas de *HDFS*, pudiendo especificar otras carpetas, así como los caracteres separadores o de terminación de registro. Además, podemos utilizar diferentes formatos, como son *Avro*, *ORC*, *Parquet*, ficheros secuenciales o de tipo texto, para almacenar los datos en *HDFS*.
 
 ### Caso 1 - Importando datos desde MariaDB
 
@@ -107,32 +106,44 @@ start-dfs.sh
 start-yarn.sh
 ```
 
-Con el comando `sqoop list-tables` listamos todas las tablas de la base de datos `sqoopCaso1`:
+Con el comando [`sqoop list-tables`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_list_tables_literal) listamos todas las tablas de la base de datos `sqoopCaso1`:
 
 ``` bash
 sqoop list-tables --connect jdbc:mysql://localhost/sqoopCaso1 --username=iabd --password=iabd
 ```
 
-Y finalmente importamos los datos mediante el comando `sqoop import`:
+Y finalmente importamos los datos mediante el comando [`sqoop import`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal):
 
-``` bash
-sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
-    --username=iabd --password=iabd \
-    --table=profesores --driver=com.mysql.jdbc.Driver \
-    --target-dir=/user/iabd/sqoop/profesores_hdfs \
-    --fields-terminated-by=',' --lines-terminated-by '\n'
-```
+=== "Comando con explicaciones"
 
-En la primera línea, indicamos que vamos a importar datos desde un conexión JDBC, donde se indica el SGBD (`mysql`), el host (`localhost`) y el nombre de la base de datos (`sqoopCaso1`).
-En la línea dos, se configuran tanto el usuario como la contraseña del usuario (`iabd` / `iabd`) que se conecta a la base de datos.
-En la tercera línea, indicamos la tabla que vamos a leer (`profesores`) y el driver que utilizamos.
-En la cuarta línea configuramos el destino HDFS donde se van a importar los datos.
-Finalmente, en la última línea, indicamos el separador de los campos y el carácter para separar las líneas.
+    ``` bash
+    sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \ # (1)!
+        --username=iabd --password=iabd \ # (2)!
+        --table=profesores --driver=com.mysql.jdbc.Driver \ # (3)!
+        --target-dir=/user/iabd/sqoop/profesores_hdfs \ # (4)!
+        --fields-terminated-by=',' --lines-terminated-by '\n' # (5)!
+    ```
+
+    1. Indicamos que vamos a importar datos desde un conexión JDBC, donde se indica el SGBD (`mysql`), el host (`localhost`) y el nombre de la base de datos (`sqoopCaso1`).
+    2. Se configura tanto el usuario como la contraseña del usuario (`iabd` / `iabd`) que se conecta a la base de datos.
+    3. Indicamos la tabla que vamos a leer (`profesores`) y el driver que utilizamos.
+    4. Configuramos el destino HDFS donde se van a importar los datos.
+    5. Indicamos el separador de los campos y el carácter para separar las líneas.
+
+=== "Comando copiable"
+
+    ``` bash
+    sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
+        --username=iabd --password=iabd \
+        --table=profesores --driver=com.mysql.jdbc.Driver \
+        --target-dir=/user/iabd/sqoop/profesores_hdfs \
+        --fields-terminated-by=',' --lines-terminated-by '\n'
+    ```
 
 Si queremos que en el caso de que ya exista la carpeta de destino la borre previamente, añadiremos la opción `--delete-target-dir`.
 
 !!! danger "Unhealthy node"
-    Nuestra máquina virtual tiene el espacio limitado a 30GB, y es probable que en algún momento se llene el disco. Además de eliminar archivos no necesarios, una opción es configurar YARN mediante el archivo `yarn-site.xml` y configurar las siguientes propiedades para ser más permisivos con la falta de espacio:
+    Nuestra máquina virtual tiene el espacio limitado, y es probable que en algún momento se llene el disco. Además de eliminar archivos no necesarios, una opción es configurar YARN mediante el archivo `yarn-site.xml` y configurar las siguientes propiedades para ser más permisivos con la falta de espacio:
 
     ```  xml
     <property>
@@ -379,7 +390,7 @@ drwxr-xr-x   - iabd supergroup          0 2021-12-15 16:14 /user/iabd/sqoop/prof
 -rw-r--r--   1 iabd supergroup       1073 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/eda459b2-1da4-4790-b649-0f2f8b83ab06.parquet
 ```
 
-Podemos usar las `parquet-tools` para ver su contenido. Si la instalamos mediante `pip install parquet-tools`, podremos acceder a ficheros locales y almacenados en S3. Si queremos acceder de forma remota via HDFS, podemos descargar la [versión Java](https://repo1.maven.org/maven2/org/apache/parquet/parquet-tools/1.11.2/parquet-tools-1.11.2.jar) y utilizarla mediante `hadoop` (aunque da problemas entre las versiones de Sqoop y Parquet):
+Podemos usar las `parquet-tools` para ver su contenido. Si la instalamos mediante `pip3 install parquet-tools` podremos acceder a ficheros locales y almacenados en S3. Si queremos acceder de forma remota via *HDFS*, podemos descargar la [versión Java](https://repo1.maven.org/maven2/org/apache/parquet/parquet-tools/1.11.2/parquet-tools-1.11.2.jar) y utilizarla mediante `hadoop` (aunque da problemas entre las versiones de Sqoop y Parquet):
 
 ``` bash
 hadoop jar parquet-tools-1.11.2.jar head -n5 hdfs://iabd-virtualbox:9000/user/iabd/sqoop/profesores_parquet/12205ee4-6e63-4c0d-8e64-751882d60179.parquet
@@ -468,7 +479,7 @@ sqoop import --connect jdbc:mysql://localhost/sqoopCaso1 \
     --split-by "id"
 ```
 
-En la consulta, hemos de añadir el token `\$CONDITIONS`, el cual Hadoop substituirá por la columna por la que realiza el particionado.
+En la consulta, hemos de añadir el token `\$CONDITIONS`, el cual *Sqoop* sustituirá por la columna por la que los *mappers* realizan el particionado.
 
 ### Importación incremental
 
