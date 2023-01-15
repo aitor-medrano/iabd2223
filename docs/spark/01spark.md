@@ -377,7 +377,7 @@ Ya hemos comentado que *Spark* es un sistema distribuido diseñado para procesar
 
 A la hora del despliegue, se utiliza un sistema de gestión de recursos como el gestor propio de Spark (conocido como [*Spark Standalone*](https://spark.apache.org/docs/latest/spark-standalone.html)), [Apache Mesos](https://spark.apache.org/docs/latest/running-on-mesos.html), [Kubernetes](https://spark.apache.org/docs/latest/running-on-kubernetes.html) o [YARN](https://spark.apache.org/docs/latest/running-on-yarn.html) para gestionar de forma inteligente y eficiente el clúster.
 
-Los dos componentes principales del clúster zon:
+Los dos componentes principales del clúster son:
 
 * el **gestor de clúster**: nodo maestro que sabe donde se localizan los esclavos, cuanta memoria disponen y el número de *cores* CPU de cada nodo. Su mayor responsabilidad es orquestar el trabajo asignándolo a los diferentes nodos.
 * los nodos trabajadores (***workers***): cada nodo ofrece recursos (memoria, CPU, etc...) al gestor del clúster y realiza las tareas que se le asignen.
