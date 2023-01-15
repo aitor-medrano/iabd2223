@@ -1392,7 +1392,7 @@
 <li>Copiar el <a href="resources/mysql-connector-java-5.1.49-bin.jar">driver de MySQL</a> en <code>$SQOOP_HOME/lib</code></li>
 <li>Copiar la librería <a href="https://repo1.maven.org/maven2/commons-lang/commons-lang/2.6/commons-lang-2.6.jar">commons-langs-2.6</a> en <code>$SQOOP_HOME/lib</code></li>
 </ul>
-<p>Una vez configurado, podemos comprobar que funciona, por ejemplo, consultando las bases de datos que tenemos en <em>MariaDB</em> (aparecen mensajes de <em>warning</em> por no tener instalados/configurados algunos productos):</p>
+<p>Una vez configurado, podemos comprobar que funciona, por ejemplo, consultando las bases de datos que tenemos en <em>MariaDB</em> (aparecen mensajes de <em>warning</em> por no tener instalados/configurados algunos productos) mediante <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_list_databases_literal"><code>sqoop list-databases</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop list-databases --connect jdbc:mysql://localhost --username=iabd --password=iabd
 </code></pre></div>
 </div>
@@ -1442,25 +1442,41 @@
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>start-dfs.sh
 <span class="linenos" data-linenos="2 "></span>start-yarn.sh
 </code></pre></div>
-<p>Con el comando <code>sqoop list-tables</code> listamos todas las tablas de la base de datos <code>sqoopCaso1</code>:</p>
+<p>Con el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_list_tables_literal"><code>sqoop list-tables</code></a> listamos todas las tablas de la base de datos <code>sqoopCaso1</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop<span class="w"> </span>list-tables<span class="w"> </span>--connect<span class="w"> </span>jdbc:mysql://localhost/sqoopCaso1<span class="w"> </span>--username<span class="o">=</span>iabd<span class="w"> </span>--password<span class="o">=</span>iabd
 </code></pre></div>
-<p>Y finalmente importamos los datos mediante el comando <code>sqoop import</code>:</p>
+<p>Y finalmente importamos los datos mediante el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal"><code>sqoop import</code></a>:</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Comando con explicaciones</label><label for="__tabbed_1_2">Comando copiable</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop<span class="w"> </span>import<span class="w"> </span>--connect<span class="w"> </span>jdbc:mysql://localhost/sqoopCaso1<span class="w"> </span><span class="se">\ </span><span class="c1"># (1)!</span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span>--username<span class="o">=</span>iabd<span class="w"> </span>--password<span class="o">=</span>iabd<span class="w"> </span><span class="se">\ </span><span class="c1"># (2)!</span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span>--table<span class="o">=</span>profesores<span class="w"> </span>--driver<span class="o">=</span>com.mysql.jdbc.Driver<span class="w"> </span><span class="se">\ </span><span class="c1"># (3)!</span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span>--target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_hdfs<span class="w"> </span><span class="se">\ </span><span class="c1"># (4)!</span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span>--fields-terminated-by<span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="w"> </span>--lines-terminated-by<span class="w"> </span><span class="s1">&#39;\n&#39;</span><span class="w"> </span><span class="c1"># (5)!</span>
+</code></pre></div>
+<ol>
+<li>Indicamos que vamos a importar datos desde un conexión JDBC, donde se indica el SGBD (<code>mysql</code>), el host (<code>localhost</code>) y el nombre de la base de datos (<code>sqoopCaso1</code>).</li>
+<li>Se configura tanto el usuario como la contraseña del usuario (<code>iabd</code> / <code>iabd</code>) que se conecta a la base de datos.</li>
+<li>Indicamos la tabla que vamos a leer (<code>profesores</code>) y el driver que utilizamos.</li>
+<li>Configuramos el destino HDFS donde se van a importar los datos.</li>
+<li>Indicamos el separador de los campos y el carácter para separar las líneas.</li>
+</ol>
+</div>
+<div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop<span class="w"> </span>import<span class="w"> </span>--connect<span class="w"> </span>jdbc:mysql://localhost/sqoopCaso1<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--username<span class="o">=</span>iabd<span class="w"> </span>--password<span class="o">=</span>iabd<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">    </span>--table<span class="o">=</span>profesores<span class="w"> </span>--driver<span class="o">=</span>com.mysql.jdbc.Driver<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="4 "></span><span class="w">    </span>--target-dir<span class="o">=</span>/user/iabd/sqoop/profesores_hdfs<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="5 "></span><span class="w">    </span>--fields-terminated-by<span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="w"> </span>--lines-terminated-by<span class="w"> </span><span class="s1">&#39;\n&#39;</span>
 </code></pre></div>
-<p>En la primera línea, indicamos que vamos a importar datos desde un conexión JDBC, donde se indica el SGBD (<code>mysql</code>), el host (<code>localhost</code>) y el nombre de la base de datos (<code>sqoopCaso1</code>).
-En la línea dos, se configuran tanto el usuario como la contraseña del usuario (<code>iabd</code> / <code>iabd</code>) que se conecta a la base de datos.
-En la tercera línea, indicamos la tabla que vamos a leer (<code>profesores</code>) y el driver que utilizamos.
-En la cuarta línea configuramos el destino HDFS donde se van a importar los datos.
-Finalmente, en la última línea, indicamos el separador de los campos y el carácter para separar las líneas.</p>
+</div>
+</div>
+</div>
 <p>Si queremos que en el caso de que ya exista la carpeta de destino la borre previamente, añadiremos la opción <code>--delete-target-dir</code>.</p>
 <div class="admonition danger">
 <p class="admonition-title">Unhealthy node</p>
-<p>Nuestra máquina virtual tiene el espacio limitado a 30GB, y es probable que en algún momento se llene el disco. Además de eliminar archivos no necesarios, una opción es configurar YARN mediante el archivo <code>yarn-site.xml</code> y configurar las siguientes propiedades para ser más permisivos con la falta de espacio:</p>
+<p>Nuestra máquina virtual tiene el espacio limitado, y es probable que en algún momento se llene el disco. Además de eliminar archivos no necesarios, una opción es configurar YARN mediante el archivo <code>yarn-site.xml</code> y configurar las siguientes propiedades para ser más permisivos con la falta de espacio:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nt">&lt;property&gt;</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span><span class="nt">&lt;name&gt;</span>yarn.nodemanager.disk-health-checker.min-healthy-disks<span class="nt">&lt;/name&gt;</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="nt">&lt;value&gt;</span>0.0<span class="nt">&lt;/value&gt;</span>
@@ -1663,7 +1679,7 @@ Finalmente, en la última línea, indicamos el separador de los campos y el car�
 <span class="linenos" data-linenos="6 "></span><span class="go">-rw-r--r--   1 iabd supergroup       1097 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/6a803503-f3e0-4f2a-8546-a337f7f90e73.parquet</span>
 <span class="linenos" data-linenos="7 "></span><span class="go">-rw-r--r--   1 iabd supergroup       1073 2021-12-15 16:14 /user/iabd/sqoop/profesores_parquet/eda459b2-1da4-4790-b649-0f2f8b83ab06.parquet</span>
 </code></pre></div>
-<p>Podemos usar las <code>parquet-tools</code> para ver su contenido. Si la instalamos mediante <code>pip install parquet-tools</code>, podremos acceder a ficheros locales y almacenados en S3. Si queremos acceder de forma remota via HDFS, podemos descargar la <a href="https://repo1.maven.org/maven2/org/apache/parquet/parquet-tools/1.11.2/parquet-tools-1.11.2.jar">versión Java</a> y utilizarla mediante <code>hadoop</code> (aunque da problemas entre las versiones de Sqoop y Parquet):</p>
+<p>Podemos usar las <code>parquet-tools</code> para ver su contenido. Si la instalamos mediante <code>pip3 install parquet-tools</code> podremos acceder a ficheros locales y almacenados en S3. Si queremos acceder de forma remota via <em>HDFS</em>, podemos descargar la <a href="https://repo1.maven.org/maven2/org/apache/parquet/parquet-tools/1.11.2/parquet-tools-1.11.2.jar">versión Java</a> y utilizarla mediante <code>hadoop</code> (aunque da problemas entre las versiones de Sqoop y Parquet):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hadoop<span class="w"> </span>jar<span class="w"> </span>parquet-tools-1.11.2.jar<span class="w"> </span>head<span class="w"> </span>-n5<span class="w"> </span>hdfs://iabd-virtualbox:9000/user/iabd/sqoop/profesores_parquet/12205ee4-6e63-4c0d-8e64-751882d60179.parquet
 </code></pre></div>
 <p>Si queremos obtener información sobre los documentos, usaremos la opción <code>meta</code>:</p>
@@ -1724,7 +1740,7 @@ Finalmente, en la última línea, indicamos el separador de los campos y el car�
 <span class="hll"><span class="linenos" data-linenos="5 "></span><span class="w">    </span>--query<span class="w"> </span><span class="s2">&quot;select * from profesores where edad &gt; 40 AND \$CONDITIONS&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span class="hll"><span class="linenos" data-linenos="6 "></span><span class="w">    </span>--split-by<span class="w"> </span><span class="s2">&quot;id&quot;</span>
 </span></code></pre></div>
-<p>En la consulta, hemos de añadir el token <code>\$CONDITIONS</code>, el cual Hadoop substituirá por la columna por la que realiza el particionado.</p>
+<p>En la consulta, hemos de añadir el token <code>\$CONDITIONS</code>, el cual <em>Sqoop</em> sustituirá por la columna por la que los <em>mappers</em> realizan el particionado.</p>
 <h3 id="importacion-incremental">Importación incremental<a class="headerlink" href="#importacion-incremental" title="Permanent link">&para;</a></h3>
 <p>Si utilizamos procesos <em>batch</em>, es muy común realizar importaciones incrementales tras una carga de datos. Para ello, utilizaremos las opciones <code>--incremental append</code> junto con la columna a comprobar mediante <code>--check-column</code> y el último registro cargado mediante <code>--last-value</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop<span class="w"> </span>import<span class="w"> </span>--connect<span class="w"> </span>jdbc:mysql://localhost/sqoopCaso1<span class="w"> </span><span class="se">\</span>
