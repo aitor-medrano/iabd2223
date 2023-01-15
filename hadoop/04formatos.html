@@ -1887,7 +1887,7 @@ https://towardsdatascience.com/understanding-apache-parquet-7197ba6462a9
     <figcaption>Formato de un archivo ORC</figcaption>
 </figure>
 
-<p><a href="https://orc.apache.org/">Apache ORC</a> es un formato de datos columnar optimizado para la lectura, escritura y procesamiento de datos en <em>Hive</em>. <em>ORC</em> tiene una tasa de compresión alta (utiliza <em>zlib</em>), y al basarse en Hive, soporta sus tipos de datos (<em>datetime</em>, <em>decimal</em>, y tipos complejos como <em>struct</em>, <em>list</em>, <em>map</em> y <em>union</em>) y es compatible con HiveQL.</p>
+<p><a href="https://orc.apache.org/">Apache ORC</a> es un formato de datos columnar optimizado para la lectura, escritura y procesamiento de datos en <em>Hive</em>. <em>ORC</em> tiene una tasa de compresión alta (utiliza <em>zlib</em>), y al basarse en <em>Hive</em>, soporta sus tipos de datos simples (<em>datetime</em>, <em>decimal</em>, etc...) y los tipos complejos (como <em>struct</em>, <em>list</em>, <em>map</em> y <em>union</em>), siendo totalmente compatible con <em>HiveQL</em>.</p>
 <p>Los fichero <em>ORC</em> se componen de tiras de datos (<em>stripes</em>), donde cada tira contiene un índice, los datos de la fila y un pie (con estadísticas como la cantidad, máximos y mínimos y la suma de cada columna convenientemente cacheadas)</p>
 <h3 id="orc-y-python">ORC y Python<a class="headerlink" href="#orc-y-python" title="Permanent link">&para;</a></h3>
 <p>Para crear archivos <em>ORC</em> y leerlos, volvemos a necesitar la librería <a href="https://arrow.apache.org/docs/python/"><em>PyArrow</em></a>.</p>
