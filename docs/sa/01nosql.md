@@ -377,7 +377,7 @@ Los almacenes más empleados son:
 
 ### Basado en columnas
 
-Las bases de datos relacionales utilizan la fila como unidad de almacenamiento, lo que permite un buen rendimiento de escritura. Sin embargo, cuando las escrituras son ocasionales y es más comun tener que leer unas pocas columnas de muchas filas a la vez, es mejor utilizar como unidad de almacenamiento un grupos de columnas. Es decir, lo que hacemos es girar el modelo 90 grados, de manera que los registros se almacenan en columnas en vez de hacerlo por filas.
+Las bases de datos relacionales utilizan la fila como unidad de almacenamiento, lo que permite un buen rendimiento de escritura. Sin embargo, cuando las escrituras son ocasionales y es más común tener que leer unas pocas columnas de muchas filas a la vez, es mejor utilizar como unidad de almacenamiento un grupos de columnas. Es decir, lo que hacemos es girar el modelo 90 grados, de manera que los registros se almacenan en columnas en vez de hacerlo por filas.
 
 Supongamos que tenemos los siguientes datos:
 
