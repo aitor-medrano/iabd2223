@@ -1380,9 +1380,9 @@
 <p class="admonition-title">Sin continuidad</p>
 <p>Desde Junio de 2021, el proyecto <em>Sqoop</em> ha dejado de mantenerse como proyecto de Apache y forma parte del <em>ático</em>. Aún así, creemos conveniente conocer su uso en el estado actual. Gran parte de las funcionalidad que ofrece <em>Sqoop</em> se pueden realizar mediante <em>Nifi</em> o <em>Spark</em>.</p>
 </div>
-<p>Un caso típico de uso es el de cargar los datos en un <em>data lake</em>  (ya sea en HDFS o en S3) con datos que importaremos desde una base de datos, como <em>MariaDB</em>, <em>PostgreSQL</em> o <em>MongoDB</em>.</p>
-<p><em>Sqoop</em> utiliza una arquitectura basada en conectores, con soporte para <em>plugins</em> que ofrecen la conectividad a los sistemas externos, como pueden ser <em>Oracle</em> o <em>SqlServer</em>. Internamente, Sqoop utiliza los algoritmos <em>MapReduce</em> para importar y exportar los datos.</p>
-<p>Por defecto, todos los trabajos <em>Sqoop</em> ejecutan cuatro mapas de trabajo, de manera que los datos se dividen en cuatro nodos de Hadoop.</p>
+<p>Un caso típico de uso es el de cargar los datos en un <em>data lake</em>  (ya sea en HDFS o en S3) con datos que importaremos desde una base de datos relacional, como <em>MariaDB</em> o <em>PostgreSQL</em>.</p>
+<p><em>Sqoop</em> utiliza una arquitectura basada en conectores, con soporte para <em>plugins</em> que ofrecen la conectividad a los sistemas externos, como pueden ser <em>Oracle</em> o <em>SqlServer</em>. Internamente, <em>Sqoop</em> utiliza los algoritmos <em>MapReduce</em> para importar y exportar los datos.</p>
+<p>Por defecto, todos los trabajos <em>Sqoop</em> ejecutan cuatro mapas de trabajo, de manera que los datos se dividen en cuatro nodos de <em>Hadoop</em>.</p>
 <div class="admonition info">
 <p class="admonition-title">Instalación</p>
 <p>Aunque en la máquina virtual con la que trabajamos ya tenemos tanto <em>Hadoop</em> como <em>Sqoop</em> instalados, podemos descargar la última versión desde <a href="http://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz">http://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz</a>.</p>
@@ -1392,28 +1392,27 @@
 <li>Copiar el <a href="resources/mysql-connector-java-5.1.49-bin.jar">driver de MySQL</a> en <code>$SQOOP_HOME/lib</code></li>
 <li>Copiar la librería <a href="https://repo1.maven.org/maven2/commons-lang/commons-lang/2.6/commons-lang-2.6.jar">commons-langs-2.6</a> en <code>$SQOOP_HOME/lib</code></li>
 </ul>
-<p>Una vez configurado, podemos comprobar que funciona, por ejemplo, consultando las bases de datos que tenemos en MariaDB (aparecen mensajes de <em>warning</em> por no tener instalados/configurados algunos productos):</p>
+<p>Una vez configurado, podemos comprobar que funciona, por ejemplo, consultando las bases de datos que tenemos en <em>MariaDB</em> (aparecen mensajes de <em>warning</em> por no tener instalados/configurados algunos productos):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop list-databases --connect jdbc:mysql://localhost --username=iabd --password=iabd
 </code></pre></div>
 </div>
 <h3 id="importando-datos">Importando datos<a class="headerlink" href="#importando-datos" title="Permanent link">&para;</a></h3>
-<p>La sintaxis básica de <em>Sqoop</em> para importar datos en HDFS es mediante el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal"><code>sqoop import</code></a>:</p>
+<p>La sintaxis básica de <em>Sqoop</em> para importar datos en <em>HDFS</em> es mediante el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_literal"><code>sqoop import</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop<span class="w"> </span>import<span class="w"> </span>--connect<span class="w"> </span>jdbc:mysql://host/nombredb<span class="w"> </span>--table<span class="w"> </span>&lt;nombreTabla&gt;<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--username<span class="w"> </span>&lt;usuarioMariaDB&gt;<span class="w"> </span>--password<span class="w"> </span>&lt;passwordMariaDB&gt;<span class="w"> </span>-m<span class="w"> </span><span class="m">2</span>
 </code></pre></div>
 <p>El único parámetro que conviene explicar es <code>-m 2</code>, el cual está indicando que utilice dos <em>mappers</em> en paralelo para importar los datos. Si no le indicamos este parámetro, como hemos comentado antes, <em>Sqoop</em> siempre utilizará cuatro <em>mappers</em>.</p>
 <p>La importación se realiza en dos pasos:</p>
 <ol>
-<li><em>Sqoop</em> escanea la base de datos y colecta los metadatos de la tabla a importar.</li>
-<li>Envía un <em>job</em> y transfiere los datos reales utilizando los metadatos necesarios.</li>
-<li>De forma paralela, cada uno de los <em>mappers</em> se encarga de cargar en HDFS una parte proporcional de los datos.</li>
+<li><em>Sqoop</em> escanea la base de datos y colecta los metadatos de la tabla a importar. Con esos datos, envía un <em>job</em> y transfiere los datos reales utilizando los metadatos necesarios.</li>
+<li>De forma paralela, cada uno de los <em>mappers</em> se encarga de cargar en <em>HDFS</em> una parte proporcional de los datos.</li>
 </ol>
 <figure style="align: center;">
     <img src="images/05sqoop-arq.png">
     <figcaption>Arquitectura de trabajo de Sqoop</figcaption>
 </figure>
 
-<p>Los datos importados se almacenan en carpetas de HDFS, pudiendo especificar otras carpetas, así como los caracteres separadores o de terminación de registro. Además, podemos utilizar diferentes formatos, como son Avro, ORC, Parquet, ficheros secuenciales o de tipo texto, para almacenar los datos en HDFS.</p>
+<p>Los datos importados se almacenan en carpetas de <em>HDFS</em>, pudiendo especificar otras carpetas, así como los caracteres separadores o de terminación de registro. Además, podemos utilizar diferentes formatos, como son <em>Avro</em>, <em>ORC</em>, <em>Parquet</em>, ficheros secuenciales o de tipo texto, para almacenar los datos en <em>HDFS</em>.</p>
 <h3 id="caso-1-importando-datos-desde-mariadb">Caso 1 - Importando datos desde MariaDB<a class="headerlink" href="#caso-1-importando-datos-desde-mariadb" title="Permanent link">&para;</a></h3>
 <p>En el siguiente caso de uso vamos a importar datos que tenemos en una base de datos de MariaDB a HDFS.</p>
 <div class="admonition caution">
