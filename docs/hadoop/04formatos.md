@@ -1,6 +1,6 @@
 ---
 title: Formatos de datos en Big Data
-description: Apuntes sobre formatos de datos en Big Data, como son Avro, Parquet y ORC. Acceso y tranformación de Avro, Parquet y ORC desde Python mediante PyArrow y Pandas.
+description: Apuntes sobre formatos de datos en Big Data, como son Avro, Parquet y ORC. Acceso y transformación de Avro, Parquet y ORC desde Python mediante PyArrow y Pandas.
 ---
 
 En la primera unidad de trabajo ya vimos una pequeña introducción a los diferentes [formatos de datos](https://manoli-iborra.github.io/bigdata2122/apuntes04.html#formato-de-datos_1).
@@ -574,7 +574,7 @@ df.to_parquet('sales.parquet')
     <figcaption>Formato de un archivo ORC</figcaption>
 </figure>
 
-[Apache ORC](https://orc.apache.org/) es un formato de datos columnar optimizado para la lectura, escritura y procesamiento de datos en *Hive*. *ORC* tiene una tasa de compresión alta (utiliza *zlib*), y al basarse en Hive, soporta sus tipos de datos (*datetime*, *decimal*, y tipos complejos como *struct*, *list*, *map* y *union*) y es compatible con HiveQL.
+[Apache ORC](https://orc.apache.org/) es un formato de datos columnar optimizado para la lectura, escritura y procesamiento de datos en *Hive*. *ORC* tiene una tasa de compresión alta (utiliza *zlib*), y al basarse en *Hive*, soporta sus tipos de datos simples (*datetime*, *decimal*, etc...) y los tipos complejos (como *struct*, *list*, *map* y *union*), siendo totalmente compatible con *HiveQL*.
 
 Los fichero *ORC* se componen de tiras de datos (*stripes*), donde cada tira contiene un índice, los datos de la fila y un pie (con estadísticas como la cantidad, máximos y mínimos y la suma de cada columna convenientemente cacheadas)
 
@@ -647,7 +647,7 @@ Si comparamos los tamaños de los archivos respecto al formato de datos empleado
 
 ## Actividades
 
-5. (RA5075.1 / CE5.1c / 1p) Mediante *Python* y utilizando *Kaggle*, crea un notebook a partir de los datos del dataset de [retrasos en los vuelos](https://www.kaggle.com/datasets/yuanyuwendymu/airline-delay-and-cancellation-data-2009-2018) y a partir de uno de los ficheros (el que más te guste) transforma los datos y persiste los siguientes archivos:
+1. (RA5075.1 / CE5.1c / 1p) Mediante *Python* y utilizando *Kaggle*, crea un notebook a partir de los datos del dataset de [retrasos en los vuelos](https://www.kaggle.com/datasets/yuanyuwendymu/airline-delay-and-cancellation-data-2009-2018) y a partir de uno de los ficheros (el que más te guste) transforma los datos y persiste los siguientes archivos:
 
     * `air<anyo>.parquet`: el archivo csv en formato *Parquet*.
     * `air<anyo>.orc`: el archivo csv en formato *ORC*.
