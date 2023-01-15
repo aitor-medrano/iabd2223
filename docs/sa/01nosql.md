@@ -145,10 +145,9 @@ La replicación mantiene copias idénticas de los datos en múltiples servidores
 
 La mayoría de las bases de datos NoSQL también soportan la replicación automática, lo que implica una alta disponibilidad y recuperación frente a desastres sin la necesidad de aplicaciones de terceros encargadas de ello. Desde el punto de vista del desarrollador, el entorno de almacenamiento es virtual y ajeno al código de aplicación.
 
-
 Existen dos formas de realiza la replicación:
 
-####  Maestro-esclavo / Primario-secundario
+#### Maestro-esclavo / Primario-secundario
 
 Todas las escrituras se realizan en el nodo principal y después se replican a los nodos secundarios. El nodo primario es un SPOF (*single point of failure*).
 
@@ -160,7 +159,7 @@ Todas las escrituras se realizan en el nodo principal y después se replican a l
 #### Par-a-par (*peer-to-peer*)
 
 Todos los nodos tienen el mismo nivel jerárquico, de manera que todos admiten escrituras. Al poder haber escrituras simultáneas sobre el mismo datos en diferentes nodos, pueden darse inconsistencia en los datos.
-    
+
 <figure style="align: center;">
     <img src="images/01replication-peer-to-peer.png" width="500px">
     <figcaption>Replicación Peer-to-peer</figcaption>
@@ -197,7 +196,7 @@ Así pues, al elegir un base de datos hemos de tener en cuenta las siguientes di
 * modelo de consultas: Dependiendo de la aplicación, puede ser aceptable un modelo de consultas que sólo accede a los registros por su clave primaria. En cambio, otras aplicaciones pueden necesitar consultar por diferentes valores de cada registro. Además, si la aplicación necesita modificar los registros, la base de datos necesita consultar los datos por un índice secundario.
 * modelo de consistencia: Los sistemas NoSQL normalmente mantienen múltiples copias de los datos para ofrecer disponibilidad y escalabilidad al sistema, lo que define la consistencia del mismo. Los sistemas NoSQL tienden a ser consistentes o eventualmente consistentes.
 * APIs: No existe un estándar para interactuar con los sistemas NoSQL. Cada sistema presenta diferentes diseños y capacidades para los equipos de desarrollo. La madurez de un API puede suponer una inversión en tiempo y dinero a la hora de desarrollar y mantener el sistema NoSQL.
-* soporte comercial y de la comunidad: Los usuarios deben considerar la salud de la compañia o de los proyectos al evaluar una base de datos. El producto debe evolucionar y mantenerse para introducir nuevas prestaciones y corregir fallos. Una base de datos con una comunidad fuerte de usuarios:
+* soporte comercial y de la comunidad: Los usuarios deben considerar la salud de la compañía o de los proyectos al evaluar una base de datos. El producto debe evolucionar y mantenerse para introducir nuevas prestaciones y corregir fallos. Una base de datos con una comunidad fuerte de usuarios:
 
     * permite encontrar y contratar desarrolladores con destrezas en el producto.
     * facilita encontrar información, documentación y ejemplos de código.
@@ -321,7 +320,6 @@ curl -v -X PUT <http://localhost:8091/riak/heroes/ace> -H "Content-Type: applica
 ```
 
 Algunos almacenes clave-valor, como puede ser [Redis](https://redis.io), permiten almacenar datos con cualquier estructura, como por ejemplos listas, conjuntos, hashes y pueden realizar operaciones como intersección, unión, diferencia y rango.
-
 
 === "Comandos Redis"
 
