@@ -1568,11 +1568,12 @@
 <p>Vamos a repasar la salida del log para entender el proceso:</p>
 <ul>
 <li>En la línea 5 vemos como se lanza el generador de código.</li>
-<li>En las líneas 6, 7 y 15 vemos como ejecuta la consulta para obtener todos los datos de profesores.</li>
+<li>En las líneas 6, 7 y 15 vemos como ejecuta la consulta para obtener todos los metadatos de la tabla de profesores.</li>
 <li>En la línea 20 obtiene los valores mínimo y máximo para calcular como dividir los datos.</li>
-<li>De las líneas 29 a la 34 se ejecuta el proceso <em>MapReduce</em>.</li>
+<li>De las líneas 29 a la 34 se ejecuta el proceso <em>MapReduce</em>, donde realmente recupera los datos.</li>
 <li>En el resto se puede observar un resumen estadístico.</li>
 </ul>
+<h4 id="monitorizando-sqoop">Monitorizando Sqoop<a class="headerlink" href="#monitorizando-sqoop" title="Permanent link">&para;</a></h4>
 <p>Si accedemos al interfaz gráfico de YARN (en <code>http://iabd-virtualbox:8088/cluster</code>) podemos ver cómo aparece el proceso como realizado:</p>
 <figure style="align: center;">
     <img src="images/05sqoop-caso1yarn.png">
@@ -1593,7 +1594,7 @@
 
 <div class="admonition tip">
 <p class="admonition-title">Importándolo todo</p>
-<p>Si queremos importar todas las tablas de una base de datos, podemos emplear el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_all_tables_literal"><code>sqoop import-all-tables</code></a>, en el cual ya no indicamos la tabla a importar:</p>
+<p>Si queremos importar todas las tablas de una base de datos, podemos emplear el comando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_all_tables_literal"><code>sqoop import-all-tables</code></a>, en el cual ya no indicamos la tabla a importar, sino la carpeta (<code>warehouse-dir</code>) donde creará una carpeta por cada tabla que encuentra en la base de datos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop<span class="w"> </span>import-all-tables<span class="w"> </span>--connect<span class="w"> </span>jdbc:mysql://localhost/mi_bd<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--username<span class="o">=</span>iabd<span class="w"> </span>--password<span class="o">=</span>iabd<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">    </span>--driver<span class="o">=</span>com.mysql.jdbc.Driver<span class="w"> </span><span class="se">\</span>
@@ -1621,6 +1622,12 @@
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--username<span class="o">=</span>iabd<span class="w"> </span>--password<span class="o">=</span>iabd<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">    </span>--table<span class="o">=</span>profesores2<span class="w"> </span>--export-dir<span class="o">=</span>/user/iabd/sqoop/profesores_hdfs
 </code></pre></div>
+<p>Si quisiéramos exportar los datos sobre la misma tabla del caso de uso anterior, nos daría error ya que tendríamos registros duplicados por la clave primaria. Para evitar el error, podemos indicarle una clave de actualización mediante <code>--update-key</code>, de manera que en el caso de que el registro ya existiese, modificara sus datos, realizando <a href="https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_inserts_vs_updates">actualizaciones de datos en vez de inserciones</a>. Si queremos que su comportamiento sea el de un <em>upsert</em>, le añadiremos la opción <code>--update-mode allowinsert</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sqoop<span class="w"> </span><span class="nb">export</span><span class="w"> </span>--connect<span class="w"> </span>jdbc:mysql://localhost/sqoopCaso1<span class="w"> </span><span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span>--username<span class="o">=</span>iabd<span class="w"> </span>--password<span class="o">=</span>iabd<span class="w"> </span><span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span>--table<span class="o">=</span>profesores<span class="w"> </span>--export-dir<span class="o">=</span>/user/iabd/sqoop/profesores_hdfs<span class="w"> </span><span class="se">\</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span><span class="w">    </span>--update-key<span class="w"> </span>id<span class="w"> </span>--update-mode<span class="w"> </span>allowinsert
+</span></code></pre></div>
 <h3 id="formatos-avro-y-parquet">Formatos Avro y Parquet<a class="headerlink" href="#formatos-avro-y-parquet" title="Permanent link">&para;</a></h3>
 <p>Sqoop permite trabajar con diferentes formatos, tanto <em>Avro</em> como <em>Parquet</em>.</p>
 <p><em>Avro</em> es un formato de almacenamiento basado en filas para <em>Hadoop</em> que se usa ampliamente como formato de serialización. Recuerda que <em>Avro</em> almacena la estructura en formato JSON y los datos en binario.</p>
@@ -1665,7 +1672,7 @@
 </code></pre></div>
 <div class="admonition question">
 <p class="admonition-title">Autoevaluación</p>
-<p>¿Qué sucede si ejectuamos el comando <code>hdfs dfs -tail /user/iabd/sqoop/profesores_avro/part-m-00000.avro</code>? ¿Por qué aparece contenido en binario?</p>
+<p>¿Qué sucede si ejecutamos el comando <code>hdfs dfs -tail /user/iabd/sqoop/profesores_avro/part-m-00000.avro</code>? ¿Por qué aparece contenido en binario?</p>
 </div>
 <p>En el caso de ficheros <em>Parquet</em>, primero listamos los archivos generados:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-ls<span class="w"> </span>/user/iabd/sqoop/profesores_parquet
@@ -1899,16 +1906,16 @@ Toma eventos del canal de manera continua leyendo y eliminando los eventos. A co
 <p>Para lanzar un tarea en <em>Flume</em>, debemos definir un agente, el cual funciona como un contenedor para alojar subcomponentes que permiten mover los datos.</p>
 <p>Estos agentes tienen cuatro partes bien diferenciadas asociadas a la arquitectura de Flume. En la primera parte, definiremos los componente del agente (<em>sources</em>, <em>channels</em> y <em>sinks</em>), y luego, para cada uno de ellos, configuraremos sus propiedades:</p>
 <ul>
-<li><code>sources</code>: responsables de colocar los eventos/datos en el agente</li>
-<li><code>channels</code>: <em>buffer</em> que almacena los eventos/datos recibidos por los <em>sources</em> hasta que un <em>sink</em> lo saca para enviarlo al siguiente destino.</li>
-<li><code>sinks</code>: responsable de sacar los eventos/datos del agente y reenviarlo al siguiente agente (HDFS, HBase, etc...)</li>
+<li><strong><code>sources</code></strong>: responsables de colocar los eventos/datos en el agente</li>
+<li><strong><code>channels</code></strong>: <em>buffer</em> que almacena los eventos/datos recibidos por los <em>sources</em> hasta que un <em>sink</em> lo saca para enviarlo al siguiente destino.</li>
+<li><strong><code>sinks</code></strong>: responsable de sacar los eventos/datos del agente y reenviarlo al siguiente agente (HDFS, HBase, etc...)</li>
 </ul>
 <h4 id="evento">Evento<a class="headerlink" href="#evento" title="Permanent link">&para;</a></h4>
-<p>El evento es la unidad más pequeña del procesamiento de eventos de Flume. Cuando Flume lee una fuente de datos, envuelve una fila de datos (es decir, encuentra los saltos de línea) en un evento.</p>
+<p>El evento es la unidad más pequeña del procesamiento de eventos de <em>Flume</em>. Cuando <em>Flume</em> lee una fuente de datos, envuelve una fila de datos (es decir, encuentra los saltos de línea) en un evento.</p>
 <p>Un evento es una estructura de datos que se compone de dos partes:</p>
 <ul>
-<li>Encabezado, se utiliza principalmente para registrar información mediante un mapa en forma de clave y valor. No transfieren datos, pero contienen información util para el enrutado y gestión de la prioridad o importancia de los mensajes.</li>
-<li>Cuerpo: array de bytes que almacena los datos reales.</li>
+<li>Encabezado (<em>header</em>), se utiliza principalmente para registrar información mediante un mapa en forma de clave y valor. No transfieren datos, pero contienen información util para el enrutado y gestión de la prioridad o importancia de los mensajes.</li>
+<li>Cuerpo (<em>payload</em>): array de bytes que almacena los datos reales.</li>
 </ul>
 <h3 id="probando-flume">Probando Flume<a class="headerlink" href="#probando-flume" title="Permanent link">&para;</a></h3>
 <p>Por ejemplo, vamos a crear un agente el cual llamaremos <code>ExecLoggerAgent</code> el cual va a ejecutar un comando y mostrará el resultado por el log de <em>Flume</em>.</p>
@@ -2103,30 +2110,29 @@ Para definir un flujo dentro de un agente, necesitamos enlazar las fuentes y los
 <span class="linenos" data-linenos="20 "></span><span class="na">NetcatAvroAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span>
 <span class="linenos" data-linenos="21 "></span><span class="na">NetcatAvroAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span>
 </code></pre></div>
-<p>A continuación, creamos un segundo agente (<code>AvroHdfsAgent</code>) que utilice como fuente Avro y que almacene los eventos recibidos en HDFS. Para ello, creamos el agente <code>avro-hdfs.conf</code>:</p>
+<p>A continuación, creamos un segundo agente (<code>AvroHdfsAgent</code>) que utilice como fuente <em>Avro</em> y que almacene los eventos recibidos en HDFS. Para ello, creamos el agente <code>avro-hdfs.conf</code>:</p>
 <div class="highlight"><span class="filename">avro-hdfs.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Nombramos a los componentes del agente</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="na">AvroHdfsAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">AvroSource</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="na">AvroHdfsAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
 <span class="linenos" data-linenos=" 4 "></span><span class="na">AvroHdfsAgent.sinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">HdfsSink</span>
 <span class="linenos" data-linenos=" 5 "></span>
 <span class="linenos" data-linenos=" 6 "></span><span class="c1"># Describimos el origen como Avro en localhost:10003</span>
-<span class="linenos" data-linenos=" 7 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
-<span class="linenos" data-linenos=" 8 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.bind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
-<span class="linenos" data-linenos=" 9 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
-<span class="linenos" data-linenos="10 "></span>
-<span class="linenos" data-linenos="11 "></span>
-<span class="linenos" data-linenos="12 "></span><span class="c1"># Describimos el destino HDFS </span>
-<span class="linenos" data-linenos="13 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hdfs</span>
-<span class="linenos" data-linenos="14 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/user/iabd/flume/avro_data/</span>
-<span class="linenos" data-linenos="15 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.fileType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">DataStream</span>
-<span class="linenos" data-linenos="16 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.writeFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Text</span>
-<span class="linenos" data-linenos="17 "></span>
-<span class="linenos" data-linenos="18 "></span><span class="c1"># Unimos el origen y el destino</span>
-<span class="linenos" data-linenos="19 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
-<span class="linenos" data-linenos="20 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
-<span class="linenos" data-linenos="21 "></span><span class="na">AvroHdfsAgent.channels.MemChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span>
+<span class="hll"><span class="linenos" data-linenos=" 7 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
+</span><span class="hll"><span class="linenos" data-linenos=" 8 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.bind</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
+</span><span class="hll"><span class="linenos" data-linenos=" 9 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
+</span><span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># Describimos el destino HDFS </span>
+<span class="linenos" data-linenos="12 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">hdfs</span>
+<span class="linenos" data-linenos="13 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/user/iabd/flume/avro_data/</span>
+<span class="linenos" data-linenos="14 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.fileType</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">DataStream</span>
+<span class="linenos" data-linenos="15 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.hdfs.writeFormat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Text</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># Unimos el origen y el destino</span>
+<span class="linenos" data-linenos="18 "></span><span class="na">AvroHdfsAgent.sources.AvroSource.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
+<span class="linenos" data-linenos="19 "></span><span class="na">AvroHdfsAgent.sinks.HdfsSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
+<span class="linenos" data-linenos="20 "></span><span class="na">AvroHdfsAgent.channels.MemChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span>
 </code></pre></div>
-<p>Primero lanzamos este último agente, para que Flume quede a la espera de mensajes Avro en <code>localhost:10003</code>:</p>
+<p>Primero lanzamos este último agente, para que <em>Flume</em> quede a la espera de mensajes <em>Avro</em> en <code>localhost:10003</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng<span class="w"> </span>agent<span class="w"> </span>--conf<span class="w"> </span>./conf/<span class="w"> </span>--conf-file<span class="w"> </span>./conf/avro-hdfs.conf<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--name<span class="w"> </span>AvroHdfsAgent<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">    </span>-Dflume.root.logger<span class="o">=</span>INFO,console
@@ -2136,9 +2142,9 @@ Para definir un flujo dentro de un agente, necesitamos enlazar las fuentes y los
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--name<span class="w"> </span>NetcatAvroAgent<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">    </span>-Dflume.root.logger<span class="o">=</span>INFO,console
 </code></pre></div>
-<p>Finalmente, en otro terminal, escribimos mensajes Netcat accediendo a <code>curl telnet://localhost:44444</code>. Si accedéis a la carpeta <code>/user/iabd/flume/avro_data</code> en HDFS podremos comprobar cómo se van creando archivos que agrupan los mensajes enviados.</p>
+<p>Finalmente, en otro terminal, escribimos mensajes <em>Netcat</em> accediendo a <code>curl telnet://localhost:44444</code>. Si accedéis a la carpeta <code>/user/iabd/flume/avro_data</code> en HDFS podremos comprobar cómo se van creando archivos que agrupan los mensajes enviados.</p>
 <h3 id="caso-5-flujo-multi-agente">Caso 5 - Flujo multi-agente<a class="headerlink" href="#caso-5-flujo-multi-agente" title="Permanent link">&para;</a></h3>
-<p>Para demostrar como varios agentes pueden conectarse entre sí, vamos a realizar un caso de uso donde vamos a leer información de tres fuentes distintas: una fuente de Netcat con un canal basado en ficheros, otra que realice <em>spooling</em> de una carpeta (vigile una carpeta y cuando haya algún archivo, lo ingeste y lo elimine) utilizando un canal en memoria y un tercero que ejecute un comando utilizando también un canal en memoria.</p>
+<p>Para demostrar como varios agentes pueden conectarse entre sí, vamos a realizar un caso de uso donde leeremos información de tres fuentes distintas: una fuente de <em>Netcat</em> con un canal basado en ficheros, otra que realice <em>spooling</em> de una carpeta (vigile una carpeta y cuando haya algún archivo, lo ingeste y lo elimine) utilizando un canal en memoria y un tercero que ejecute un comando utilizando también un canal en memoria.</p>
 <p>Como agente de consolidación que una la información de las tres fuentes de datos, vamos a reutilizar el agente <em>AvroHdfsAgent</em> que hemos creado en el caso de uso anterior.</p>
 <figure style="align: center">
     <img src="images/05flume-consolidation.png">
