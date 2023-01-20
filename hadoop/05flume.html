@@ -1795,15 +1795,21 @@ Exportar datos con updates
     <figcaption>Logo de Apache Flume</figcaption>
 </figure>
 
-<p>Allá por el año 2010 <em>Cloudera</em> presentó <strong><em>Flume</em></strong> que posteriormente pasó a formar parte de Apache (<a href="https://flume.apache.org/">https://flume.apache.org/</a>) como un software para tratamiento e ingesta de datos masivo, facilitando crear desarrollos complejos que permiten el tratamiento de datos en <em>streaming</em>.</p>
+<p>Allá por el año 2010 <em>Cloudera</em> presentó <strong><em>Flume</em></strong> que posteriormente pasó a formar parte de Apache (<a href="https://flume.apache.org/">https://flume.apache.org/</a>) como un software para tratamiento e ingesta de datos masivo, facilitando crear desarrollos complejos que permiten el tratamiento de datos en <em>streaming</em>. Inicialmente se diseñó para recolectar ficheros de log de una granja de servidores web y mover los eventos almacenados en esos ficheros a HDFS para su posterior procesamiento.</p>
 <p><em>Flume</em> funciona como un <em>buffer</em> entre los productores de datos y el destino final. Al utilizar un buffer, evitamos que un productor sature a un consumidor, sin necesidad de preocuparnos de que algún destino esté inalcanzable o inoperable (por ejemplo, en el caso de que haya caído HDFS), etc...</p>
 <div class="admonition info">
 <p class="admonition-title">Instalación</p>
 <p>Aunque en la máquina virtual con la que trabajamos también tenemos instalado <em>Flume</em>, podemos descargar la última versión desde <a href="https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz">https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz</a>.</p>
 <p>A nivel de configuración sólo hemos definido la variable de entorno <code>$FLUME_HOME</code> que apunta a <code>/opt/flume-1.11.0</code>.</p>
 </div>
+<p>Algunas de sus características son:</p>
+<ul>
+<li>Diseño flexible basado en flujos de datos de transmisión.</li>
+<li>Resistente a fallos y robusto con múltiples conmutaciones por error y  mecanismos de recuperación.</li>
+<li>Lleva datos desde origen a destino: incluidos HDFS y <em>HBase</em>.</li>
+</ul>
 <h3 id="arquitectura">Arquitectura<a class="headerlink" href="#arquitectura" title="Permanent link">&para;</a></h3>
-<p>Su arquitectura es sencilla, y se basa en el uso de agentes que se dividen en tres componentes los cuales podemos configurar:</p>
+<p>Su arquitectura es sencilla, y se basa en el uso de agentes que se dividen en tres componentes, los cuales podemos configurar:</p>
 <ul>
 <li><em>Source</em> (fuente): Fuente de origen de los datos, ya sea <em>Twitter</em>, <em>Kafka</em>, una petición <em>Http</em>, etc...<br />
 Las fuentes son un componente activo que recibe datos desde otra aplicación que produce datos (aunque también existen fuentes que pueden producir datos por sí mismos, cuyo objetivo es poder probar ciertos flujos de datos). Las fuentes puedes escuchar uno o más puertos de red para recibir o leer datos del sistema de archivos. Cada fuente debe conectar a al menos un canal. Una fuente puede escribir en varios canales, replicando los eventos a todos o algunos canales en base a algún criterio.</li>
@@ -1894,13 +1900,8 @@ Toma eventos del canal de manera continua leyendo y eliminando los eventos. A co
 </tr>
 </tbody>
 </table>
+<p>Una instalación de <em>Flume</em> consiste en una colección de agentes conectados los cuales se ejecutan en una arquitectura distribuida. Los agentes del borde del sistema (situados, por ejemplo, en los mismos servidores web que generan los datos) recogen los datos y los reenvían a los agentes responsables de agregar y ordenar los datos en el destino final.</p>
 <p><em>Flume</em> se complica cuando queremos utilizarlo para obtener datos de manera paralela (o multiplexada) y/o necesitamos crear nuestros propios sumideros o interceptores. Pero por lo general, su uso es sencillo y se trata de una herramienta muy recomendada como ayuda/alternativa a herramientas como <em>Pentaho</em>.</p>
-<p>Algunas de sus características son:</p>
-<ul>
-<li>Diseño flexible basado en flujos de datos de transmisión.</li>
-<li>Resistente a fallos y robusto con múltiples conmutaciones por error y  mecanismos de recuperación.</li>
-<li>Lleva datos desde origen a destino: incluidos HDFS y <em>HBase</em>.</li>
-</ul>
 <h4 id="agentes">Agentes<a class="headerlink" href="#agentes" title="Permanent link">&para;</a></h4>
 <p>Un agente es la unidad más sencilla con la que trabaja <em>Flume</em>, permitiendo conectar un agente <em>Flume</em> a uno o más agentes, encandenándolos. Además, un agente puede recibir datos de uno o más agentes. Conectando múltiples agentes entre sí podemos crear un flujo de datos para mover datos de un lugar a otro, de aplicaciones que producen datos a HDFS, HBase o donde necesitemos.</p>
 <p>Para lanzar un tarea en <em>Flume</em>, debemos definir un agente, el cual funciona como un contenedor para alojar subcomponentes que permiten mover los datos.</p>
@@ -1948,10 +1949,6 @@ Toma eventos del canal de manera continua leyendo y eliminando los eventos. A co
 <h3 id="configurando-un-agente">Configurando un agente<a class="headerlink" href="#configurando-un-agente" title="Permanent link">&para;</a></h3>
 <p>Si te has fijado en el ejemplo anterior, los ficheros de configuración de los agentes siguen el mismo formato.
 Para definir un flujo dentro de un agente, necesitamos enlazar las fuentes y los sumideros con un canal. Para ello, listaremos las fuentes, sumideros y canales del agente, y entonces apuntaremos la fuente y el sumidero a un canal.</p>
-<div class="admonition important">
-<p class="admonition-title">1 - N - 1</p>
-<p>Una fuente puede indicar múltiples canales, pero un sumidero sólo puede indicar un único canal.</p>
-</div>
 <p>Así pues, el formato será similar al siguiente archivo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Listamos las fuentes, sumideros y canales</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="na">&lt;Agent&gt;.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;Source&gt;</span>
@@ -1964,6 +1961,12 @@ Para definir un flujo dentro de un agente, necesitamos enlazar las fuentes y los
 <span class="linenos" data-linenos=" 9 "></span><span class="c1"># Configuramos el canal para el sumidero</span>
 <span class="linenos" data-linenos="10 "></span><span class="na">&lt;Agent&gt;.sinks.&lt;Sink&gt;.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;Channel1&gt;</span>
 </code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">channel y channels</p>
+<p>Destacar que una fuente tiene una propiedad <code>channels</code>(en plural), pero un sumidero tiene la propiedad <code>channel</code> (en singular). Esto se debe a que una fuente puede alimentar más de un canal (<em>fan out</em>), pero un sumidero sólo puede obtener datos de un único canal.
+También es posible que un canal alimente a varios sumideros.</p>
+<p>En resumen, siguen una relación 1 - N - 1, de manera que una fuente puede indicar múltiples canales, pero un sumidero sólo puede indicar un único canal.</p>
+</div>
 <p>Además de definir el flujo, es necesario configurar las propiedades de cada fuente, sumidero y canal. Para elo se sigue la misma nomenclatura donde fijamos el tipo de componente (mediante la propiedad <code>type</code>) y el resto de propiedades específicas de cada componente:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Propiedades de las fuentes</span>
 <span class="linenos" data-linenos="2 "></span><span class="na">&lt;Agent&gt;.sources.&lt;Source&gt;.&lt;someProperty&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;someValue&gt;</span>
@@ -2277,6 +2280,7 @@ Revisar: https://learning.oreilly.com/library/view/hadoop-the-definitive/9781491
 
 Al hacer exec ls, explicar el formato de un evento, donde podemos ver el header... hacer esto antes de explicar los interceptores, y luego, al poner un timestamp, volver a comprobar que en el header se ve
 
+Probar spoolDir ... completed?
 -->
 
 

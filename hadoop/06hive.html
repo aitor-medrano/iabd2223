@@ -1666,11 +1666,17 @@ Actualmente ha perdido uso en detrimento de <em>Hive</em>/<em>Impala</em> y de <
 
 <h4 id="hive-server">Hive Server<a class="headerlink" href="#hive-server" title="Permanent link">&para;</a></h4>
 <p><em>HiveServer 2</em> (HS2) es la última versión del servicio. Se compone de una interfaz que permite a clientes externos ejecutar consultas contra <em>Apache Hive</em> y obtener los resultados. Está basado en <em>Thrift RPC</em> y soporta clientes concurrentes. Para arrancar el servidor, ejecutaremos el comando <code>hiveserver2</code>, el cual quedará a la escucha en el puerto <code>10000.</code></p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$<span class="w"> </span>hiveserver2
+<span class="linenos" data-linenos="2 "></span><span class="m">2023</span>-01-20<span class="w"> </span><span class="m">09</span>:39:51:<span class="w"> </span>Starting<span class="w"> </span>HiveServer2
+<span class="linenos" data-linenos="3 "></span>SLF4J:<span class="w"> </span>Class<span class="w"> </span>path<span class="w"> </span>contains<span class="w"> </span>multiple<span class="w"> </span>SLF4J<span class="w"> </span>bindings.
+<span class="linenos" data-linenos="4 "></span>SLF4J:<span class="w"> </span>...
+<span class="linenos" data-linenos="5 "></span>Hive<span class="w"> </span>Session<span class="w"> </span><span class="nv">ID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>9e39b0c8-45a6-46ca-bfb0-6e320c85f989
+</code></pre></div>
 <p>A este servidor nos conectaremos mediante la herramienta <em>Beeline</em> (Beeline CLI).</p>
 <h4 id="hive-metastore">Hive Metastore<a class="headerlink" href="#hive-metastore" title="Permanent link">&para;</a></h4>
 <p>Es el repositorio central para los metatados de <em>Hive</em>, y se almacena en una base de datos relacional como <em>MySQL</em>, <em>PostgreSQL</em> o <em>Apache Derby</em> (embebida). Mantiene los metadatos, las tablas y sus tipos mediante <em>Hive DDL</em> (<em>Data Definition Language</em>). Además, el sistema se puede configurar para que también almacene estadísticas de las operaciones y registros de autorización para optimizar las consultas.</p>
 <p>En las últimas versiones de <em>Hive</em>, este componente se puede desplegar de forma remota e independiente, para no compartir la misma JVM con <em>HiveServer</em>. Dentro del <em>metastore</em> podemos encontrar el <em>Hive Catalog</em> (<em>HCatalog</em>), que permite acceder a sus metadatos, actuando como una API. Al poder desplegarse de forma aislada e independiente, permite que otras aplicaciones hagan uso del <em>schema</em> sin tener que desplegar el motor de consultas de Hive.</p>
-<p>Así pues, al <em>Metastore</em> podremos acceder mediante <em>HiveCLI</em>, o a través del <em>Hive Server</em> mediante una conexión remota mediante <em>Beeline</em>.</p>
+<p>Así pues, al <em>Metastore</em> podremos acceder mediante <em>HiveCLI</em>, o a través del <em>Hive Server</em> mediante una conexión remota mediante <em>Beeline</em>. En la sesión de <a href="../spark/02catalog.html"><em>Spark Catalog</em></a>, veremos como desde una herramienta externa a Hive, se accede y utilizan los metadatos almacenados.</p>
 <h4 id="beeline">Beeline<a class="headerlink" href="#beeline" title="Permanent link">&para;</a></h4>
 <p><em>Hive</em> incorpora <em>Beeline</em>, el cual actúa como un cliente basado en JDBC para hacer consultas por línea de comandos contra el <em>Hive Server</em>, sin necesitar las dependencias de <em>Hive</em>.</p>
 <p>Por otro lado, también podemos utilizar <em>Hive CLI</em>, un cliente basado en <em>Apache Thrift</em>, que usa los mismos drivers que <em>Hive</em>.</p>
@@ -1699,7 +1705,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <p class="admonition-title">Máquina virtual</p>
 <p>Los siguientes pasos no son necesarios ya que nuestra máquina virtual ya tiene <em>Hive</em> instalado y configurado correctamente. Si quieres hacer tu propia instalación sigue los siguientes pasos de la <a href="https://cwiki.apache.org/confluence/display/Hive//GettingStarted">documentación oficial</a>.</p>
 </div>
-<p>Una vez instalado, vamos a configurarlo. Para ello, debemos crear los ficheros de configuración a partir de las plantilla que ofrece <em>Hive</em>. Para ello, desde la carpeta <code>$HIVE_HOME/conf</code>, ejecutaremos los siguientes comandos:</p>
+<p>Una vez instalado vamos a configurarlo. Para ello, debemos crear los ficheros de configuración a partir de las plantilla que ofrece <em>Hive</em>. Para ello, desde la carpeta <code>$HIVE_HOME/conf</code>, ejecutaremos los siguientes comandos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>cp<span class="w"> </span>hive-default.xml.template<span class="w"> </span>hive-site.xml
 <span class="linenos" data-linenos="2 "></span>cp<span class="w"> </span>hive-env.sh.template<span class="w"> </span>hive-env.sh
 <span class="linenos" data-linenos="3 "></span>cp<span class="w"> </span>hive-exec-log4j2.properties.template<span class="w"> </span>hive-exec-log4j2.properties
@@ -1712,7 +1718,12 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <p>Para que funcione la ingesta de datos en <em>Hive</em> mediante <em>Sqoop</em>, necesitamos añadir una librería a <em>Sqoop</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>cp<span class="w"> </span><span class="nv">$HIVE_HOME</span>/lib/hive-common-3.1.2.jar<span class="w"> </span><span class="nv">$SQOOP_HOME</span>/lib
 </code></pre></div>
-<p>Preparamos HDFS para crear la estructura de archivos:</p>
+<p>Y configuramos las variables de entorno de nuestro <em>path</em> para exportar las rutas de Hive y del <em>metastore</em>:</p>
+<div class="highlight"><span class="filename">~/.bashrc</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">export</span><span class="w"> </span><span class="nv">HIVE_HOME</span><span class="o">=</span>/opt/hive-3.1.2
+<span class="linenos" data-linenos="2 "></span><span class="nb">export</span><span class="w"> </span><span class="nv">HIVE_CONF_DIR</span><span class="o">=</span><span class="nv">$HIVE_HOME</span>/conf
+<span class="linenos" data-linenos="3 "></span><span class="nb">export</span><span class="w"> </span><span class="nv">HCAT_HOME</span><span class="o">=</span><span class="nv">$HIVE_HOME</span>/hcatalog
+</code></pre></div>
+<p>A continuación, preparamos HDFS para crear la estructura de archivos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-mkdir<span class="w"> </span>/tmp
 <span class="linenos" data-linenos="2 "></span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-mkdir<span class="w"> </span>-p<span class="w"> </span>/user/hive/warehouse
 <span class="linenos" data-linenos="3 "></span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-chmod<span class="w"> </span>g+w<span class="w"> </span>/tmp
