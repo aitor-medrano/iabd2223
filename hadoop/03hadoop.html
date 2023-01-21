@@ -1476,7 +1476,7 @@ Cloudera con Docker: https://github.com/rubensa/hortonworks-sandbox-hdp
 
 <h2 id="hdfs">HDFS<a class="headerlink" href="#hdfs" title="Permanent link">&para;</a></h2>
 <p>Es la capa de almacenamiento de <em>Hadoop</em>, y como tal, es un sistema de ficheros distribuido y tolerante a fallos que puede almacenar gran cantidad de datos, escalar de forma incremental y sobrevivir a fallos de hardware sin perder datos. Se basa en el <a href="https://static.googleusercontent.com/media/research.google.com/es//archive/gfs-sosp2003.pdf"><em>paper</em></a> que publicó <em>Google</em> detallando su <em>Google File System</em> en 2003.</p>
-<p>En un sistema que reparte los datos entre todos los nodos del clúster de <em>Hadoop</em>, dividiendo los ficheros en bloques (cada bloque por defecto es de 128MB) y almacenando copias duplicadas a través de los nodos. Por defecto se replica en 3 nodos distintos (esto se conoce como el <strong>factor de replicación</strong>).</p>
+<p>Es un sistema que reparte los datos entre todos los nodos del clúster de <em>Hadoop</em>, dividiendo los ficheros en bloques (cada bloque por defecto es de 128MB) y almacenando copias duplicadas a través de los nodos. Por defecto se replica en 3 nodos distintos (esto se conoce como el <strong>factor de replicación</strong>).</p>
 <p>HDFS asegura que se puedan añadir servidores para incrementar el tamaño de almacenamiento de forma lineal, de manera que al introducir un nuevo nodo, se incrementa tanto la redundancia como la capacidad de almacenamiento.</p>
 <p>Está planteado para escribir los datos una vez y leerlos muchos veces (<em>WORM / Write Once, Read Many</em>). Las escrituras se pueden realizar a mano, o desde herramientas como <em>Flume</em> y <em>Sqoop</em>, que estudiaremos más adelante.</p>
 <p>No ofrece buen rendimiento para:</p>
@@ -1489,11 +1489,12 @@ Cloudera con Docker: https://github.com/rubensa/hortonworks-sandbox-hdp
 <p>Así pues, los datos, una vez escritos en HDFS son immutables. Cada fichero de HDFS solo permite añadir contenido (<em>append-only</em>). Una vez se ha creado y escrito en él, solo podemos añadir contenido o eliminarlo. Es decir, a priori, no podemos modificar los datos.</p>
 <div class="admonition tip">
 <p class="admonition-title">HBase / Hive</p>
-<p>Tanto HBase como Hive ofrecen una capa por encima de HDFS para dar soporte a la modificación de los datos, como en cualquier base de datos.</p>
+<p>Tanto <em>HBase</em> como <em>Hive</em> ofrecen una capa por encima de HDFS para dar soporte a la modificación de los datos, como en cualquier base de datos.</p>
 </div>
 <h3 id="bloques">Bloques<a class="headerlink" href="#bloques" title="Permanent link">&para;</a></h3>
 <p>Un bloque es la cantidad mínima de datos que puede ser leída o escrita. El tamaño predeterminado de HDFS son 128 MB, ya que como hemos comentado, <em>Hadoop</em> está pensado para trabajar con ficheros de gran tamaño.</p>
 <p>Todos los ficheros están divididos en bloques. Esto quiere decir que si subimos un fichero de 600MB, lo dividirá en 5 bloques de 128MB. Estos bloques se distribuyen por todos los nodos de datos del clúster de <em>Hadoop</em>.</p>
+<p>Si un fichero de HDFS es menor que el tamaño de un bloque, es decir, menor de 128MB, ocupará un bloque lógico pero en disco únicamente ocupará el espacio necesario. Es decir, un archivo de 1MB ocupará un bloque de 128MB, pero utilizará 1MB en disco.</p>
 <p>A partir del <em>factor de replicación</em>, cada bloque se almacena varias veces en máquinas distintas. El valor por defecto es 3. Por lo tanto, el archivo de 600MB que teníamos dividido en 5 bloques de 128MB, si lo replicamos tres veces, lo tendremos repartido en 15 bloques entre todos los nodos del clúster.</p>
 <figure style="align: center;">
     <img src="images/03hdfsReplicacion.png" width="500">

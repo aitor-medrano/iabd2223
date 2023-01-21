@@ -1471,6 +1471,7 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 <p>Una vez creado subimos el archivo con las calificaciones de las películas:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-put<span class="w"> </span>ratings.csv<span class="w">  </span>/user/iabd/prueba-hdfs
 </code></pre></div>
+<p>FIXME: hdfs fsck / -files -blocks</p>
 <p>Con el fichero subido nos vamos al interfaz gráfico de Hadoop (<a href="http://iabd-virtualbox:9870/explorer.html#/">http://iabd-virtualbox:9870/explorer.html#/</a>), localizamos el archivo y obtenemos el <em>Block Pool ID</em> del <em>block information</em>:</p>
 <figure style="align: center;">
     <img src="images/04hdfs-ratings-blockpoolid.png" width="500px">

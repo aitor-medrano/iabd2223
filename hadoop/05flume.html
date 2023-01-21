@@ -1368,7 +1368,7 @@
 
 
 <h1 id="sqoop-flume">Sqoop / Flume<a class="headerlink" href="#sqoop-flume" title="Permanent link">&para;</a></h1>
-<p>Las dos herramientas principales utilizadas para importar/exportar datos en <em>HDFS</em> son Sqoop y Flume, las cuales vamos a estudiar a continuación.</p>
+<p>Las dos herramientas principales utilizadas para importar/exportar datos en <em>HDFS</em> son <em>Sqoop</em> y <em>Flume</em>, las cuales vamos a estudiar a continuación.</p>
 <h2 id="sqoop">Sqoop<a class="headerlink" href="#sqoop" title="Permanent link">&para;</a></h2>
 <figure style="float: right;">
     <img src="images/05sqoop-logo.png">
@@ -1919,7 +1919,7 @@ Toma eventos del canal de manera continua leyendo y eliminando los eventos. A co
 <li>Cuerpo (<em>payload</em>): array de bytes que almacena los datos reales.</li>
 </ul>
 <h3 id="probando-flume">Probando Flume<a class="headerlink" href="#probando-flume" title="Permanent link">&para;</a></h3>
-<p>Por ejemplo, vamos a crear un agente el cual llamaremos <code>ExecLoggerAgent</code> el cual va a ejecutar un comando y mostrará el resultado por el log de <em>Flume</em>.</p>
+<p>Por ejemplo, vamos a crear un agente el cual llamaremos <code>ExecLoggerAgent</code> el cual va a ejecutar un comando y mostrará el resultado por el log de <em>Flume</em>, utilizando como canal la memoria.</p>
 <p>Para ello, creamos la configuración del agente en el fichero <code>agente.conf</code> (todas las propiedades comenzarán con el nombre del agente):</p>
 <div class="highlight"><span class="filename">agente.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Nombramos los componentes del agente</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="na">ExecLoggerAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Exec</span>
@@ -1942,9 +1942,56 @@ Toma eventos del canal de manera continua leyendo y eliminando los eventos. A co
 <span class="linenos" data-linenos="19 "></span><span class="na">ExecLoggerAgent.sources.Exec.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
 <span class="linenos" data-linenos="20 "></span><span class="na">ExecLoggerAgent.sinks.LoggerSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
 </code></pre></div>
-<p>Antes de lanzar el agente Flume, recuerda que debes arrancar tanto <em>Hadoop</em> como <em>YARN</em>, por ejemplo, mediante el comando <code>start-all.sh</code>.</p>
 <p>A continuación ya podemos lanzar <em>Flume</em> con el agente mediante el comando (la opción <code>-n</code> sirve para indicar el nombre del agente, y con <code>-f</code> indicamos el nombre del archivo de configuración):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>flume-ng<span class="w"> </span>agent<span class="w"> </span>--name<span class="w"> </span>ExecLoggerAgent<span class="w"> </span>--conf<span class="w"> </span>./conf/<span class="w"> </span>--conf-file<span class="w"> </span>conf/agente.conf<span class="w"> </span>
+</code></pre></div>
+<p>Tras su ejecución, si consultamos el fichero <code>flume.log</code> podremos ver cómo ha creado primero el canal del agente <code>MemChannel</code>, así como la instancia de la fuente <code>Exec</code> y el sumidero <code>LoggerSink</code> y los conecta:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>21 ene 2023 19:28:25,006 INFO  [main] (org.apache.flume.conf.FlumeConfiguration$AgentConfiguration.addComponentConfig:1203)  - Processing:LoggerSink
+<span class="linenos" data-linenos="2 "></span>21 ene 2023 19:28:25,014 INFO  [main] (org.apache.flume.conf.FlumeConfiguration$AgentConfiguration.addComponentConfig:1203)  - Processing:MemChannel
+<span class="linenos" data-linenos="3 "></span>...
+<span class="linenos" data-linenos="4 "></span>21 ene 2023 19:28:25,041 INFO  [main] (org.apache.flume.node.AbstractConfigurationProvider.loadChannels:154)  - Creating channels
+<span class="linenos" data-linenos="5 "></span>21 ene 2023 19:28:25,049 INFO  [main] (org.apache.flume.channel.DefaultChannelFactory.create:42)  - Creating instance of channel MemChannel type memory
+<span class="hll"><span class="linenos" data-linenos="6 "></span>21 ene 2023 19:28:25,054 INFO  [main] (org.apache.flume.node.AbstractConfigurationProvider.loadChannels:208)  - Created channel MemChannel
+</span><span class="hll"><span class="linenos" data-linenos="7 "></span>21 ene 2023 19:28:25,055 INFO  [main] (org.apache.flume.source.DefaultSourceFactory.create:41)  - Creating instance of source Exec, type exec
+</span><span class="hll"><span class="linenos" data-linenos="8 "></span>21 ene 2023 19:28:25,113 INFO  [main] (org.apache.flume.sink.DefaultSinkFactory.create:42)  - Creating instance of sink: LoggerSink, type: logger
+</span><span class="linenos" data-linenos="9 "></span>21 ene 2023 19:28:25,127 INFO  [main] (org.apache.flume.node.AbstractConfigurationProvider.getConfiguration:123)  - Channel MemChannel connected to [Exec, LoggerSink]
+</code></pre></div>
+<p>A continuación, inicializa los componentes y los arranca:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>21 ene 2023 19:28:25,128 INFO  [main] (org.apache.flume.node.Application.initializeAllComponents:177)  - Initializing components
+<span class="linenos" data-linenos=" 2 "></span>21 ene 2023 19:28:25,173 INFO  [main] (org.apache.flume.node.Application.startAllComponents:207)  -
+<span class="hll"><span class="linenos" data-linenos=" 3 "></span>    Starting new configuration:{
+</span><span class="hll"><span class="linenos" data-linenos=" 4 "></span>        sourceRunners:{Exec=EventDrivenSourceRunner: { source:org.apache.flume.source.ExecSource{name:Exec,state:IDLE} }}
+</span><span class="hll"><span class="linenos" data-linenos=" 5 "></span>        sinkRunners:{LoggerSink=SinkRunner: { policy:org.apache.flume.sink.DefaultSinkProcessor@4b7dc788 counterGroup:{ name:null counters:{} } }}
+</span><span class="hll"><span class="linenos" data-linenos=" 6 "></span>        channels:{MemChannel=org.apache.flume.channel.MemoryChannel{name: MemChannel}} }
+</span><span class="linenos" data-linenos=" 7 "></span>21 ene 2023 19:28:25,174 INFO  [main] (org.apache.flume.node.Application.startAllComponents:214)  - Starting Channel MemChannel
+<span class="linenos" data-linenos=" 8 "></span>21 ene 2023 19:28:25,188 INFO  [main] (org.apache.flume.node.Application.startAllComponents:229)  - Waiting for channel: MemChannel to start. Sleeping for 500 ms
+<span class="linenos" data-linenos=" 9 "></span>21 ene 2023 19:28:25,190 INFO  [lifecycleSupervisor-1-0] (org.apache.flume.instrumentation.MonitoredCounterGroup.register:119)  - Monitored counter group for type: CHANNEL, name: MemChannel: Successfully registered new MBean.
+<span class="linenos" data-linenos="10 "></span>21 ene 2023 19:28:25,190 INFO  [lifecycleSupervisor-1-0] (org.apache.flume.instrumentation.MonitoredCounterGroup.start:95)  - Component type: CHANNEL, name: MemChannel started
+<span class="linenos" data-linenos="11 "></span>21 ene 2023 19:28:25,692 INFO  [main] (org.apache.flume.node.Application.startAllComponents:241)  - Starting Sink LoggerSink
+<span class="linenos" data-linenos="12 "></span>21 ene 2023 19:28:25,714 INFO  [main] (org.apache.flume.node.Application.startAllComponents:252)  - Starting Source Exec
+</code></pre></div>
+<p>Una vez arrancados, podemos ver cómo ha ejecutado el comando <code>ls /home/iabd/</code> y mediante el <code>LoggerSink</code>, muestra cada uno de los archivos de la carpeta en un evento, donde podemos ver que tiene la cabecera vacía <code>headers:{}</code>, luego los datos en una representación en hexadecimal y por último el nombre del archivo/carpeta:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>21 ene 2023 19:28:25,716 INFO  [lifecycleSupervisor-1-2] (org.apache.flume.source.ExecSource.start:170)  -
+<span class="linenos" data-linenos=" 2 "></span>    Exec source starting with command: ls /home/iabd/
+<span class="linenos" data-linenos=" 3 "></span>21 ene 2023 19:28:25,722 INFO  [lifecycleSupervisor-1-2] (org.apache.flume.instrumentation.MonitoredCounterGroup.register:119)  -
+<span class="linenos" data-linenos=" 4 "></span>    Monitored counter group for type: SOURCE, name: Exec: Successfully registered new MBean.
+<span class="linenos" data-linenos=" 5 "></span>21 ene 2023 19:28:25,729 INFO  [lifecycleSupervisor-1-2] (org.apache.flume.instrumentation.MonitoredCounterGroup.start:95)  -
+<span class="linenos" data-linenos=" 6 "></span>    Component type: SOURCE, name: Exec started
+<span class="hll"><span class="linenos" data-linenos=" 7 "></span>21 ene 2023 19:28:25,892 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  -
+</span><span class="hll"><span class="linenos" data-linenos=" 8 "></span>    Event: { headers:{} body: 64 61 74 6F 73                                  datos }
+</span><span class="linenos" data-linenos=" 9 "></span>21 ene 2023 19:28:25,893 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  -
+<span class="linenos" data-linenos="10 "></span>    Event: { headers:{} body: 44 65 73 63 61 72 67 61 73                      Descargas }
+<span class="linenos" data-linenos="11 "></span>21 ene 2023 19:28:25,893 INFO  [pool-3-thread-1] (org.apache.flume.source.ExecSource$ExecRunnable.run:379)  - 
+<span class="linenos" data-linenos="12 "></span>    Command [ls /home/iabd/] exited with 0
+<span class="linenos" data-linenos="13 "></span>21 ene 2023 19:28:25,900 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+<span class="linenos" data-linenos="14 "></span>    Event: { headers:{} body: 44 65 73 6B 74 6F 70                            Desktop }
+<span class="linenos" data-linenos="15 "></span>21 ene 2023 19:28:25,905 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+<span class="linenos" data-linenos="16 "></span>    Event: { headers:{} body: 44 6F 63 75 6D 65 6E 74 6F 73                   Documentos }
+<span class="linenos" data-linenos="17 "></span>21 ene 2023 19:28:25,906 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+<span class="linenos" data-linenos="18 "></span>    Event: { headers:{} body: 66 6C 75 6D 65                                  flume }
+<span class="linenos" data-linenos="19 "></span>21 ene 2023 19:28:25,908 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+<span class="linenos" data-linenos="20 "></span>    Event: { headers:{} body: 49 6D C3 A1 67 65 6E 65 73                      Im..genes }
+<span class="linenos" data-linenos="21 "></span>...
 </code></pre></div>
 <h3 id="configurando-un-agente">Configurando un agente<a class="headerlink" href="#configurando-un-agente" title="Permanent link">&para;</a></h3>
 <p>Si te has fijado en el ejemplo anterior, los ficheros de configuración de los agentes siguen el mismo formato.
@@ -2006,6 +2053,10 @@ También es posible que un canal alimente a varios sumideros.</p>
 <span class="linenos" data-linenos="23 "></span><span class="na">SeqGenAgent.sources.SeqSource.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
 <span class="linenos" data-linenos="24 "></span><span class="na">SeqGenAgent.sinks.HDFS.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
 </code></pre></div>
+<div class="admonition caution">
+<p class="admonition-title">Arrancamos Hadoop</p>
+<p>Antes de lanzar el agente <em>Flume</em>, recuerda que debes arrancar tanto <em>Hadoop</em> como <em>YARN</em>, por ejemplo, mediante el comando <code>start-all.sh</code>.</p>
+</div>
 <p>Ejecutamos el siguiente comando desde <code>$FLUME_HOME</code> y a los pocos segundo lo paramos mediante <code>CTRL + C</code> para que detenga la generación de números, ya que si no seguirá generando archivos en HDFS:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng<span class="w"> </span>agent<span class="w"> </span>--conf<span class="w"> </span>./conf/<span class="w"> </span>--conf-file<span class="w"> </span>conf/seqgen.conf<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--name<span class="w"> </span>SeqGenAgent<span class="w"> </span><span class="se">\</span>
@@ -2039,6 +2090,7 @@ También es posible que un canal alimente a varios sumideros.</p>
 </code></pre></div>
 <h3 id="caso-3b-de-netcat-a-hdfs">Caso 3b - De Netcat a HDFS<a class="headerlink" href="#caso-3b-de-netcat-a-hdfs" title="Permanent link">&para;</a></h3>
 <p>Ahora vamos a crear otro ejemplo de generación de información, pero esta vez, en vez de utilizar la memoria del servidor como canal, vamos a utilizar el sistema de archivos. Además, para generar la información nos basamos en una fuente <a href="https://flume.apache.org/FlumeUserGuide.html#netcat-tcp-source">Netcat</a>, en la cual debemos especificar un puerto de escucha. Mediante esta fuente, <em>Flume</em> quedará a la escucha en dicho puerto y recibirá cada línea introducida como un evento individual que transferirá al canal especificado.</p>
+<p>En este caso, vamos a utilizar un canal de tipo fichero para hacer los eventos durables, de manera que si se cayese Flume a mitad de una operación, no se perderían los datos, y al volver a funcionar, el agente finalizará la ingesta.</p>
 <p>En el mismo directorio <code>$FLUME_HOME\conf</code>, creamos un nuevo fichero con el nombre <code>netcat.conf</code> y creamos otro agente que se va a encargar de generar información:</p>
 <div class="highlight"><span class="filename">netcat.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Nombramos a los componentes del agente</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="na">NetcatAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Netcat</span>
@@ -2063,6 +2115,12 @@ También es posible que un canal alimente a varios sumideros.</p>
 <span class="linenos" data-linenos="21 "></span><span class="na">NetcatAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span>
 <span class="linenos" data-linenos="22 "></span><span class="na">NetcatAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span>
 </code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Eventos, ficheros y HDFS</p>
+<p>Al trabajar con HDFS, el fichero se mantendrá abierto durante un tiempo (normalmente 30 segundos, lo podemos configurar mediante la propiedad <code>hdfs.rollInterval</code>), hasta que llegue a un determinado tamaño (por defecto 1024b, configurado <code>hdfs.rollSize</code>) o que haya escrito un determinado número de eventos (por defecto 10, configurado mediante <code>hdfs.rollCount</code>).</p>
+<p>Mientras está abierto, se renombrará con el prefijo <code>_</code> y el sufijo <code>.tmp</code>. Al finalizar alguno de los criterios, volverá a su nombre original y se cierra el fichero. </p>
+</div>
+<p>Los nuevos eventos se escribirán en un nuevo fichero.</p>
 <p>Lanzamos al agente:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/flume-ng<span class="w"> </span>agent<span class="w"> </span>--conf<span class="w"> </span>./conf/<span class="w"> </span>--conf-file<span class="w"> </span>./conf/netcat.conf<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--name<span class="w"> </span>NetcatAgent<span class="w"> </span><span class="se">\</span>
@@ -2102,10 +2160,10 @@ También es posible que un canal alimente a varios sumideros.</p>
 <span class="linenos" data-linenos=" 9 "></span><span class="na">NetcatAvroAgent.sources.Netcat.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">44444</span>
 <span class="linenos" data-linenos="10 "></span>
 <span class="linenos" data-linenos="11 "></span><span class="c1"># Describimos el destino como Avro en localhost:10003</span>
-<span class="linenos" data-linenos="12 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
-<span class="linenos" data-linenos="13 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
-<span class="linenos" data-linenos="14 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
-<span class="linenos" data-linenos="15 "></span>
+<span class="hll"><span class="linenos" data-linenos="12 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
+</span><span class="hll"><span class="linenos" data-linenos="13 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
+</span><span class="hll"><span class="linenos" data-linenos="14 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
+</span><span class="linenos" data-linenos="15 "></span>
 <span class="linenos" data-linenos="16 "></span><span class="c1"># Unimos el origen y el destino a través del canal de fichero</span>
 <span class="linenos" data-linenos="17 "></span><span class="na">NetcatAvroAgent.sources.Netcat.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span>
 <span class="linenos" data-linenos="18 "></span><span class="na">NetcatAvroAgent.sinks.AvroSink.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span>
@@ -2113,7 +2171,7 @@ También es posible que un canal alimente a varios sumideros.</p>
 <span class="linenos" data-linenos="20 "></span><span class="na">NetcatAvroAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span>
 <span class="linenos" data-linenos="21 "></span><span class="na">NetcatAvroAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span>
 </code></pre></div>
-<p>A continuación, creamos un segundo agente (<code>AvroHdfsAgent</code>) que utilice como fuente <em>Avro</em> y que almacene los eventos recibidos en HDFS. Para ello, creamos el agente <code>avro-hdfs.conf</code>:</p>
+<p>A continuación, creamos un segundo agente (<code>AvroHdfsAgent</code>) que utilice como fuente <em>Avro</em> capturando los datos desde el mismo host y puerto que el <em>sink</em> anterior, y que almacene los eventos recibidos en HDFS. Para ello, creamos el agente <code>avro-hdfs.conf</code>:</p>
 <div class="highlight"><span class="filename">avro-hdfs.conf</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Nombramos a los componentes del agente</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="na">AvroHdfsAgent.sources</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">AvroSource</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="na">AvroHdfsAgent.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel</span>
@@ -2147,7 +2205,7 @@ También es posible que un canal alimente a varios sumideros.</p>
 </code></pre></div>
 <p>Finalmente, en otro terminal, escribimos mensajes <em>Netcat</em> accediendo a <code>curl telnet://localhost:44444</code>. Si accedéis a la carpeta <code>/user/iabd/flume/avro_data</code> en HDFS podremos comprobar cómo se van creando archivos que agrupan los mensajes enviados.</p>
 <h3 id="caso-5-flujo-multi-agente">Caso 5 - Flujo multi-agente<a class="headerlink" href="#caso-5-flujo-multi-agente" title="Permanent link">&para;</a></h3>
-<p>Para demostrar como varios agentes pueden conectarse entre sí, vamos a realizar un caso de uso donde leeremos información de tres fuentes distintas: una fuente de <em>Netcat</em> con un canal basado en ficheros, otra que realice <em>spooling</em> de una carpeta (vigile una carpeta y cuando haya algún archivo, lo ingeste y lo elimine) utilizando un canal en memoria y un tercero que ejecute un comando utilizando también un canal en memoria.</p>
+<p>Para demostrar como varios agentes pueden conectarse entre sí, vamos a realizar un caso de uso donde leeremos información de tres fuentes distintas: una fuente de <em>Netcat</em> con un canal basado en ficheros, otra que realice <em>spooling</em> de una carpeta (vigila una carpeta y cuando haya algún archivo, lo ingesta y lo renombra añadiéndole el sufijo <code>COMPLETED</code>) utilizando un canal en memoria y un tercero que ejecute un comando utilizando también un canal en memoria.</p>
 <p>Como agente de consolidación que una la información de las tres fuentes de datos, vamos a reutilizar el agente <em>AvroHdfsAgent</em> que hemos creado en el caso de uso anterior.</p>
 <figure style="align: center">
     <img src="images/05flume-consolidation.png">
@@ -2168,39 +2226,38 @@ También es posible que un canal alimente a varios sumideros.</p>
 <span class="linenos" data-linenos="11 "></span><span class="c1"># Describimos el segundo agente</span>
 <span class="linenos" data-linenos="12 "></span><span class="na">MultiAgent.sources.Spooldir.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">spooldir</span>
 <span class="linenos" data-linenos="13 "></span><span class="na">MultiAgent.sources.Spooldir.spoolDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/spoolDir</span>
-<span class="linenos" data-linenos="14 "></span><span class="na">MultiAgent.sources.Spooldir.deletePolicy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">immediate</span>
-<span class="linenos" data-linenos="15 "></span>
-<span class="linenos" data-linenos="16 "></span><span class="c1"># Describimos el tercer agente</span>
-<span class="linenos" data-linenos="17 "></span><span class="na">MultiAgent.sources.Exec.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">exec</span>
-<span class="linenos" data-linenos="18 "></span><span class="na">MultiAgent.sources.Exec.command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">cat /home/iabd/datos/empleados.txt</span>
-<span class="linenos" data-linenos="19 "></span>
-<span class="linenos" data-linenos="20 "></span><span class="c1"># Describimos los tres destinos como Avro en localhost:10003</span>
-<span class="linenos" data-linenos="21 "></span><span class="na">MultiAgent.sinks.AvroSink1.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
-<span class="linenos" data-linenos="22 "></span><span class="na">MultiAgent.sinks.AvroSink1.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
-<span class="linenos" data-linenos="23 "></span><span class="na">MultiAgent.sinks.AvroSink1.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
-<span class="linenos" data-linenos="24 "></span>
-<span class="linenos" data-linenos="25 "></span><span class="na">MultiAgent.sinks.AvroSink2.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
-<span class="linenos" data-linenos="26 "></span><span class="na">MultiAgent.sinks.AvroSink2.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
-<span class="linenos" data-linenos="27 "></span><span class="na">MultiAgent.sinks.AvroSink2.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
-<span class="linenos" data-linenos="28 "></span>
-<span class="linenos" data-linenos="29 "></span><span class="na">MultiAgent.sinks.AvroSink3.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
-<span class="linenos" data-linenos="30 "></span><span class="na">MultiAgent.sinks.AvroSink3.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
-<span class="linenos" data-linenos="31 "></span><span class="na">MultiAgent.sinks.AvroSink3.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
-<span class="linenos" data-linenos="32 "></span>
-<span class="linenos" data-linenos="33 "></span><span class="c1"># Describimos los canales</span>
-<span class="linenos" data-linenos="34 "></span><span class="na">MultiAgent.channels.FileChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
-<span class="linenos" data-linenos="35 "></span><span class="na">MultiAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span>
-<span class="linenos" data-linenos="36 "></span><span class="na">MultiAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span>
-<span class="linenos" data-linenos="37 "></span><span class="na">MultiAgent.channels.MemChannel1.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span>
-<span class="linenos" data-linenos="38 "></span><span class="na">MultiAgent.channels.MemChannel2.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span>
-<span class="linenos" data-linenos="39 "></span>
-<span class="linenos" data-linenos="40 "></span><span class="c1"># Unimos los orígenes y destinos</span>
-<span class="linenos" data-linenos="41 "></span><span class="na">MultiAgent.sources.Netcat.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span>
-<span class="linenos" data-linenos="42 "></span><span class="na">MultiAgent.sources.Spooldir.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel1</span>
-<span class="linenos" data-linenos="43 "></span><span class="na">MultiAgent.sources.Exec.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel2</span>
-<span class="linenos" data-linenos="44 "></span><span class="na">MultiAgent.sinks.AvroSink1.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span>
-<span class="linenos" data-linenos="45 "></span><span class="na">MultiAgent.sinks.AvroSink2.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel1</span>
-<span class="linenos" data-linenos="46 "></span><span class="na">MultiAgent.sinks.AvroSink3.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel2</span>
+<span class="linenos" data-linenos="14 "></span>
+<span class="linenos" data-linenos="15 "></span><span class="c1"># Describimos el tercer agente</span>
+<span class="linenos" data-linenos="16 "></span><span class="na">MultiAgent.sources.Exec.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">exec</span>
+<span class="linenos" data-linenos="17 "></span><span class="na">MultiAgent.sources.Exec.command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">cat /home/iabd/datos/empleados.txt</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span><span class="c1"># Describimos los tres destinos como Avro en localhost:10003</span>
+<span class="linenos" data-linenos="20 "></span><span class="na">MultiAgent.sinks.AvroSink1.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
+<span class="linenos" data-linenos="21 "></span><span class="na">MultiAgent.sinks.AvroSink1.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
+<span class="linenos" data-linenos="22 "></span><span class="na">MultiAgent.sinks.AvroSink1.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
+<span class="linenos" data-linenos="23 "></span>
+<span class="linenos" data-linenos="24 "></span><span class="na">MultiAgent.sinks.AvroSink2.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
+<span class="linenos" data-linenos="25 "></span><span class="na">MultiAgent.sinks.AvroSink2.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
+<span class="linenos" data-linenos="26 "></span><span class="na">MultiAgent.sinks.AvroSink2.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
+<span class="linenos" data-linenos="27 "></span>
+<span class="linenos" data-linenos="28 "></span><span class="na">MultiAgent.sinks.AvroSink3.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">avro</span>
+<span class="linenos" data-linenos="29 "></span><span class="na">MultiAgent.sinks.AvroSink3.hostname</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">localhost</span>
+<span class="linenos" data-linenos="30 "></span><span class="na">MultiAgent.sinks.AvroSink3.port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10003</span>
+<span class="linenos" data-linenos="31 "></span>
+<span class="linenos" data-linenos="32 "></span><span class="c1"># Describimos los canales</span>
+<span class="linenos" data-linenos="33 "></span><span class="na">MultiAgent.channels.FileChannel.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">file</span>
+<span class="linenos" data-linenos="34 "></span><span class="na">MultiAgent.channels.FileChannel.dataDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/data</span>
+<span class="linenos" data-linenos="35 "></span><span class="na">MultiAgent.channels.FileChannel.checkpointDir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">/home/iabd/flume/checkpoint</span>
+<span class="linenos" data-linenos="36 "></span><span class="na">MultiAgent.channels.MemChannel1.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span>
+<span class="linenos" data-linenos="37 "></span><span class="na">MultiAgent.channels.MemChannel2.type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">memory</span>
+<span class="linenos" data-linenos="38 "></span>
+<span class="linenos" data-linenos="39 "></span><span class="c1"># Unimos los orígenes y destinos</span>
+<span class="linenos" data-linenos="40 "></span><span class="na">MultiAgent.sources.Netcat.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span>
+<span class="linenos" data-linenos="41 "></span><span class="na">MultiAgent.sources.Spooldir.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel1</span>
+<span class="linenos" data-linenos="42 "></span><span class="na">MultiAgent.sources.Exec.channels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel2</span>
+<span class="linenos" data-linenos="43 "></span><span class="na">MultiAgent.sinks.AvroSink1.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">FileChannel</span>
+<span class="linenos" data-linenos="44 "></span><span class="na">MultiAgent.sinks.AvroSink2.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel1</span>
+<span class="linenos" data-linenos="45 "></span><span class="na">MultiAgent.sinks.AvroSink3.channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">MemChannel2</span>
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Preparación</p>
@@ -2266,7 +2323,7 @@ Si quieres profundizar en el tema, el siguiente artículo detalla los diferentes
 <p>Para ello, necesitaréis las claves de desarrollo de <em>Twitter</em>. Adjunta una captura de pantalla donde se visualice el contenido de uno de los bloques de HDFS.</p>
 <div class="admonition tip">
 <p class="admonition-title">Cuidado con el espacio de almacenamiento</p>
-<p>Una vez lances el agente, detenlo a los tres segundos para no llenar de datos HDFS.</p>
+<p>Una vez lances el agente, páralo a los tres segundos para no llenar de datos HDFS.</p>
 </div>
 </li>
 </ol>
@@ -2278,9 +2335,11 @@ Por ejemplo, timestampInterceptor
 
 Revisar: https://learning.oreilly.com/library/view/hadoop-the-definitive/9781491901687/ch14.html#id995726
 
-Al hacer exec ls, explicar el formato de un evento, donde podemos ver el header... hacer esto antes de explicar los interceptores, y luego, al poner un timestamp, volver a comprobar que en el header se ve
+Al hacer exec ls, explicar el formato de un evento, donde podemos ver el header (HECHO)... hacer esto antes de explicar los interceptores, y luego, al poner un timestamp, volver a comprobar que en el header se ve
 
 Probar spoolDir ... completed?
+
+Explicar transacciones y confiabilidad - libro The Hadoop Definitive Guide
 -->
 
 

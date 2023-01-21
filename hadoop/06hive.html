@@ -1674,11 +1674,17 @@ Actualmente ha perdido uso en detrimento de <em>Hive</em>/<em>Impala</em> y de <
 </code></pre></div>
 <p>A este servidor nos conectaremos mediante la herramienta <em>Beeline</em> (Beeline CLI).</p>
 <h4 id="hive-metastore">Hive Metastore<a class="headerlink" href="#hive-metastore" title="Permanent link">&para;</a></h4>
-<p>Es el repositorio central para los metatados de <em>Hive</em>, y se almacena en una base de datos relacional como <em>MySQL</em>, <em>PostgreSQL</em> o <em>Apache Derby</em> (embebida). Mantiene los metadatos, las tablas y sus tipos mediante <em>Hive DDL</em> (<em>Data Definition Language</em>). Además, el sistema se puede configurar para que también almacene estadísticas de las operaciones y registros de autorización para optimizar las consultas.</p>
-<p>En las últimas versiones de <em>Hive</em>, este componente se puede desplegar de forma remota e independiente, para no compartir la misma JVM con <em>HiveServer</em>. Dentro del <em>metastore</em> podemos encontrar el <em>Hive Catalog</em> (<em>HCatalog</em>), que permite acceder a sus metadatos, actuando como una API. Al poder desplegarse de forma aislada e independiente, permite que otras aplicaciones hagan uso del <em>schema</em> sin tener que desplegar el motor de consultas de Hive.</p>
-<p>Así pues, al <em>Metastore</em> podremos acceder mediante <em>HiveCLI</em>, o a través del <em>Hive Server</em> mediante una conexión remota mediante <em>Beeline</em>. En la sesión de <a href="../spark/02catalog.html"><em>Spark Catalog</em></a>, veremos como desde una herramienta externa a Hive, se accede y utilizan los metadatos almacenados.</p>
+<p>Es el repositorio central para los metadatos de <em>Hive</em>, y se almacena en una base de datos relacional como <em>MySQL</em>, <em>PostgreSQL</em> o <em>Apache Derby</em> (embebida). Mantiene los metadatos, las tablas y sus tipos mediante <em>Hive DDL</em> (<em>Data Definition Language</em>). Además, el sistema se puede configurar para que también almacene estadísticas de las operaciones y registros de autorización para optimizar las consultas.</p>
+<p>En las últimas versiones de <em>Hive</em>, este componente se puede desplegar de forma remota e independiente, para no compartir la misma JVM con <em>HiveServer</em>. Dentro del <em>metastore</em> podemos encontrar el <em>Hive Catalog</em> (<em>HCatalog</em>), que permite acceder a sus metadatos, actuando como una API. Al poder desplegarse de forma aislada e independiente, permite que otras aplicaciones hagan uso del <em>schema</em> sin tener que desplegar el motor de consultas de Hive. En la sesión de <a href="../spark/02catalog.html"><em>Spark Catalog</em></a>, veremos cómo desde una herramienta externa a <em>Hive</em>, se accede y utilizan los metadatos almacenados.</p>
+<p>Así pues, al <em>Metastore</em> podremos acceder mediante <em>HiveCLI</em>, o a través del <em>Hive Server</em> mediante una conexión remota mediante <em>Beeline</em>. </p>
 <h4 id="beeline">Beeline<a class="headerlink" href="#beeline" title="Permanent link">&para;</a></h4>
-<p><em>Hive</em> incorpora <em>Beeline</em>, el cual actúa como un cliente basado en JDBC para hacer consultas por línea de comandos contra el <em>Hive Server</em>, sin necesitar las dependencias de <em>Hive</em>.</p>
+<p><em>Hive</em> incorpora <em>Beeline</em>, el cual actúa como un cliente basado en JDBC para hacer consultas por línea de comandos contra el <em>Hive Server</em>, sin necesitar las dependencias de <em>Hive</em>, mediante el comando <code>beeline</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$<span class="w"> </span>beeline
+<span class="linenos" data-linenos="2 "></span>SLF4J:<span class="w"> </span>Class<span class="w"> </span>path<span class="w"> </span>contains<span class="w"> </span>multiple<span class="w"> </span>SLF4J<span class="w"> </span>bindings.
+<span class="linenos" data-linenos="3 "></span>SLF4J:<span class="w"> </span>...
+<span class="linenos" data-linenos="4 "></span>Beeline<span class="w"> </span>version<span class="w"> </span><span class="m">3</span>.1.2<span class="w"> </span>by<span class="w"> </span>Apache<span class="w"> </span>Hive
+<span class="linenos" data-linenos="5 "></span>beeline&gt;<span class="w"> </span>
+</code></pre></div>
 <p>Por otro lado, también podemos utilizar <em>Hive CLI</em>, un cliente basado en <em>Apache Thrift</em>, que usa los mismos drivers que <em>Hive</em>.</p>
 <div class="admonition info">
 <p class="admonition-title">Apache Tez</p>
@@ -1687,6 +1693,7 @@ Actualmente ha perdido uso en detrimento de <em>Hive</em>/<em>Impala</em> y de <
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>SET hive.execution.engine=tez;
 </code></pre></div>
 <p>En nuestro caso no tenemos <em>Tez</em> instalado en la máquina virtual, quedando fuera del alcance del presente curso.</p>
+<p>FIXME: Spark SQL is different to using the Spark execution engine from within Hive (“Hive on Spark,” see Execution engines). Hive, on Spark provides all the features of Hive since it is a part of the Hive project. Spark SQL, on the other hand, is a new SQL engine that offers some level of Hive compatibility.</p>
 </div>
 <h3 id="tipos-de-datos">Tipos de datos<a class="headerlink" href="#tipos-de-datos" title="Permanent link">&para;</a></h3>
 <p>Los tipos de datos que podemos emplear en Hive son muy similares a los que se utilizan en el DDL de SQL.
@@ -1781,8 +1788,8 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <p>Si quisiéramos ejecutar un script, podemos hacerlo desde el propio comando <code>hive</code> con la opción <code>-f</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hive<span class="w"> </span>-f<span class="w"> </span>script.sql
 </code></pre></div>
-<p>Además, tenemos la opción de pasar una consulta desde la propia línea de comandos mediante la opción <code>-e</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hive<span class="w"> </span>-e<span class="w"> </span><span class="err">&#39;</span><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>tablaEjemplo<span class="sb">`</span>
+<p>Además, tenemos la opción de pasar una consulta desde la propia línea de comandos mediante la opción <code>-e</code>. Supongamos que queremos recuperar los datos de la tabla <code>categories</code> de la base de datos <code>iabd</code> haríamos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hive<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;select * from iabd.categories&#39;</span>
 </code></pre></div>
 <h3 id="acceso-remoto">Acceso remoto<a class="headerlink" href="#acceso-remoto" title="Permanent link">&para;</a></h3>
 <p><em>HiveServer2</em> (desde Hive 0.11) tiene su propio cliente conocido como <em>Beeline</em>. En entornos reales, el cliente <em>Hive</em> está en desuso a favor de <em>Beeline</em>, por la falta de múltiples usuarios, seguridad y otras características de <em>HiveServer2</em>.</p>
@@ -1829,7 +1836,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="5 "></span><span class="w">  </span>--columns<span class="w"> </span><span class="s2">&quot;customer_id,customer_fname,customer_lname,customer_city&quot;</span>
 </code></pre></div>
 <p>Una vez nos hemos conectado con el cliente <code>hive</code> o mediante <code>beeline</code>, creamos una base de datos llamada <code>iabd</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="n">iabd</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="n">iabd</span><span class="p">;</span>
 </code></pre></div>
 <p>Nos conectamos a la base de datos que acabamos de crear:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">use</span><span class="w"> </span><span class="n">iabd</span><span class="p">;</span>
@@ -1928,6 +1935,8 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="4 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers_caguas</span>
 <span class="linenos" data-linenos="5 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">custId</span><span class="p">,</span><span class="w"> </span><span class="n">fName</span><span class="p">,</span><span class="w"> </span><span class="n">lName</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;Caguas&quot;</span><span class="p">;</span>
 </code></pre></div>
+<p>FIXME: Hive has long supported adding new rows in bulk to an existing table by using INSERT INTO to add new data files to a table. From release 0.14.0, finer-grained changes are possible, so you can call INSERT INTO TABLE...VALUES to insert small batches of values computed in SQL. In addition, it is possible to UPDATE and DELETE rows in a table.</p>
+<p>FIXME: HDFS does not provide in-place file updates, so changes resulting from inserts, updates, and deletes are stored in small delta files. Delta files are periodically merged into the base table files by MapReduce jobs that are run in the background by the metastore. These features only work in the context of transactions (introduced in Hive 0.13.0), so the table they are being used on needs to have transactions enabled on it. Queries reading the table are guaranteed to see a consistent snapshot of the table.</p>
 <h3 id="ingestando-datos">Ingestando datos<a class="headerlink" href="#ingestando-datos" title="Permanent link">&para;</a></h3>
 <p>Tal como vimos en la <a href="05flume.html#trabajando-con-hive">sesión anterior</a>, podemos ingestar los datos en <em>Hive</em> haciendo uso de <em>Sqoop</em> (también lo podemos hacer con <em>Flume</em> o <em>Nifi</em>).</p>
 <p>Por ejemplo, vamos a ingestar los datos de la tabla <code>orders</code> de la base de datos <em>MariaDB</em> que tenemos instalada en nuestra máquina virtual. En el comando de <em>Sqoop</em> le indicamos que dentro de <em>Hive</em> lo ingeste en la base de datos <code>iabd</code> y que cree una tabla llamada <code>orders</code>:</p>
@@ -2924,7 +2933,7 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
   Vistas
   tablesample
   Transformación map/reduce ... ejemplo para rellenar tipos de datos complejos
-  Anaban -> Ejercicio dataset clima - Hadoop definitive guide
+  Anban -> Ejercicio dataset clima - Hadoop definitive guide
   Investigar Tez
 --->
 
