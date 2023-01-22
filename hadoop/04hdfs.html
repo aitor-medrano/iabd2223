@@ -1471,48 +1471,63 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
 <p>Una vez creado subimos el archivo con las calificaciones de las películas:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-put<span class="w"> </span>ratings.csv<span class="w">  </span>/user/iabd/prueba-hdfs
 </code></pre></div>
-<p>FIXME: hdfs fsck / -files -blocks</p>
-<p>Con el fichero subido nos vamos al interfaz gráfico de Hadoop (<a href="http://iabd-virtualbox:9870/explorer.html#/">http://iabd-virtualbox:9870/explorer.html#/</a>), localizamos el archivo y obtenemos el <em>Block Pool ID</em> del <em>block information</em>:</p>
+<p>Si queremos saber cuantos bloques ha creado y cuanto ocupa cada uno de ellos, por ejemplo, podemos utilizar la utilidad <code>fsck</code> que permite comprobar la salud del sistema de archivos. Si le pasamos las opciones <code>-files</code> y <code>-blocks</code> nos mostrará información tanto de los archivos como de los bloques contenidos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>iabd@iabd-virtualbox:$<span class="w"> </span>hdfs<span class="w"> </span>fsck<span class="w"> </span>/user/iabd/prueba-hdfs<span class="w"> </span>-files<span class="w"> </span>-blocks
+<span class="linenos" data-linenos=" 2 "></span>Connecting<span class="w"> </span>to<span class="w"> </span>namenode<span class="w"> </span>via<span class="w"> </span>http://iabd-virtualbox:9870/fsck?ugi<span class="o">=</span>iabd<span class="p">&amp;</span><span class="nv">files</span><span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">blocks</span><span class="o">=</span><span class="m">1</span><span class="p">&amp;</span><span class="nv">path</span><span class="o">=</span>%2Fuser%2Fiabd%2Fprueba-hdfs
+<span class="linenos" data-linenos=" 3 "></span>FSCK<span class="w"> </span>started<span class="w"> </span>by<span class="w"> </span>iabd<span class="w"> </span><span class="o">(</span>auth:SIMPLE<span class="o">)</span><span class="w"> </span>from<span class="w"> </span>/127.0.0.1<span class="w"> </span><span class="k">for</span><span class="w"> </span>path<span class="w"> </span>/user/iabd/prueba-hdfs<span class="w"> </span>at<span class="w"> </span>Sun<span class="w"> </span>Jan<span class="w"> </span><span class="m">22</span><span class="w"> </span><span class="m">18</span>:11:45<span class="w"> </span>CET<span class="w"> </span><span class="m">2023</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span>/user/iabd/prueba-hdfs<span class="w"> </span>&lt;dir&gt;
+<span class="linenos" data-linenos=" 6 "></span>/user/iabd/prueba-hdfs/ratings.csv<span class="w"> </span><span class="m">678260987</span><span class="w"> </span>bytes,<span class="w"> </span>replicated:<span class="w"> </span><span class="nv">replication</span><span class="o">=</span><span class="m">1</span>,<span class="w"> </span><span class="m">6</span><span class="w"> </span>block<span class="o">(</span>s<span class="o">)</span>:<span class="w">  </span>OK
+<span class="hll"><span class="linenos" data-linenos=" 7 "></span><span class="m">0</span>.<span class="w"> </span>BP-481169443-127.0.1.1-1639217848073:blk_1073750565_9750<span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">134217728</span><span class="w"> </span><span class="nv">Live_repl</span><span class="o">=</span><span class="m">1</span>
+</span><span class="linenos" data-linenos=" 8 "></span><span class="m">1</span>.<span class="w"> </span>BP-481169443-127.0.1.1-1639217848073:blk_1073750566_9751<span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">134217728</span><span class="w"> </span><span class="nv">Live_repl</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="m">2</span>.<span class="w"> </span>BP-481169443-127.0.1.1-1639217848073:blk_1073750567_9752<span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">134217728</span><span class="w"> </span><span class="nv">Live_repl</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="10 "></span><span class="m">3</span>.<span class="w"> </span>BP-481169443-127.0.1.1-1639217848073:blk_1073750568_9753<span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">134217728</span><span class="w"> </span><span class="nv">Live_repl</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="11 "></span><span class="m">4</span>.<span class="w"> </span>BP-481169443-127.0.1.1-1639217848073:blk_1073750569_9754<span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">134217728</span><span class="w"> </span><span class="nv">Live_repl</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="12 "></span><span class="m">5</span>.<span class="w"> </span>BP-481169443-127.0.1.1-1639217848073:blk_1073750570_9755<span class="w"> </span><span class="nv">len</span><span class="o">=</span><span class="m">7172347</span><span class="w"> </span><span class="nv">Live_repl</span><span class="o">=</span><span class="m">1</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span>
+<span class="linenos" data-linenos="15 "></span>Status:<span class="w"> </span>HEALTHY
+<span class="linenos" data-linenos="16 "></span><span class="w"> </span>Number<span class="w"> </span>of<span class="w"> </span>data-nodes:<span class="w">  </span><span class="m">1</span>
+<span class="linenos" data-linenos="17 "></span><span class="w"> </span>Number<span class="w"> </span>of<span class="w"> </span>racks:<span class="w">               </span><span class="m">1</span>
+<span class="linenos" data-linenos="18 "></span><span class="w"> </span>Total<span class="w"> </span>dirs:<span class="w">                    </span><span class="m">1</span>
+<span class="linenos" data-linenos="19 "></span><span class="w"> </span>Total<span class="w"> </span>symlinks:<span class="w">                </span><span class="m">0</span>
+<span class="linenos" data-linenos="20 "></span>...
+</code></pre></div>
+<p>Si queremos utilizar el interfaz gráfico de Hadoop (<a href="http://iabd-virtualbox:9870/explorer.html#/">http://iabd-virtualbox:9870/explorer.html#/</a>), tras localizar el archivo, obtenemos el <em>Block Pool ID</em> del <em>block information</em>:</p>
 <figure style="align: center;">
     <img src="images/04hdfs-ratings-blockpoolid.png" width="500px">
     <figcaption>Identificador de bloque</figcaption>
 </figure>
 
-<p>Si desplegamos el combo de <em>block information</em>, podremos ver cómo ha partido el archivo CSV en 5 bloques (566 MB que ocupa el fichero CSV / 128 del tamaño del bloque).</p>
+<p>Si desplegamos el combo de <em>block information</em>, podremos ver cómo ha partido el archivo CSV en 6 bloques (650 MB aproximadamente que ocupa el fichero CSV / 128 del tamaño del bloque).</p>
 <figure style="align: center;">
     <img src="images/04hdfs-ratings-blocks.png" width="500px">
     <figcaption>Bloques del archivo</figcaption>
 </figure>
 
 <p>Así pues, con el código del <em>Block Pool Id</em>, podemos confirmar que debe existir el directorio <code>current</code> del <em>datanode</em> donde almacena la información nuestro servidor (en `/opt/hadoop-data/):</p>
-<p><div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$<span class="w"> </span>ls<span class="w"> </span>/opt/hadoop-data/hdfs/datanode/current
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$<span class="w"> </span>ls<span class="w"> </span>/opt/hadoop-data/hdfs/datanode/current
 <span class="hll"><span class="linenos" data-linenos="2 "></span>BP-481169443-127.0.1.1-1639217848073<span class="w">  </span>VERSION
 </span></code></pre></div>
-El valor que aparece coincide con el que hemos recuperado en la imagen.</p>
+<p>El valor que aparece coincide con el que hemos recuperado tanto en la imagen como mediante <code>fsck</code>.</p>
 <p>Dentro de este subdirectorio existe otro <code>finalized</code>, donde <em>Hadoop</em> irá creando una estructura de subdirectorios <code>subdir</code> donde albergará los bloques de datos:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>iabd@iabd-virtualbox:~$<span class="w"> </span>ls<span class="w"> </span>/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
-<span class="hll"><span class="linenos" data-linenos=" 2 "></span>total<span class="w"> </span><span class="m">172</span>
-</span><span class="linenos" data-linenos=" 3 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>dic<span class="w"> </span><span class="m">22</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>subdir0
-<span class="linenos" data-linenos=" 4 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>dic<span class="w"> </span><span class="m">22</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>subdir1
-<span class="linenos" data-linenos=" 5 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>dic<span class="w"> </span><span class="m">22</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>subdir2
-<span class="linenos" data-linenos=" 6 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">12288</span><span class="w"> </span>feb<span class="w">  </span><span class="m">9</span><span class="w">  </span><span class="m">2022</span><span class="w"> </span>subdir3
-<span class="linenos" data-linenos=" 7 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>mar<span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="m">2022</span><span class="w"> </span>subdir4
-<span class="linenos" data-linenos=" 8 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>mar<span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="m">2022</span><span class="w"> </span>subdir5
-<span class="linenos" data-linenos=" 9 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">12288</span><span class="w"> </span>nov<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">20</span>:16<span class="w"> </span>subdir6
-<span class="linenos" data-linenos="10 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>nov<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">20</span>:03<span class="w"> </span>subdir7
-<span class="linenos" data-linenos="11 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>mar<span class="w"> </span><span class="m">16</span><span class="w">  </span><span class="m">2022</span><span class="w"> </span>subdir8
-<span class="linenos" data-linenos="12 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w">  </span><span class="m">4096</span><span class="w"> </span>nov<span class="w"> </span><span class="m">30</span><span class="w"> </span><span class="m">17</span>:31<span class="w"> </span>subdir9
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$<span class="w"> </span>ls<span class="w"> </span>/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
+<span class="hll"><span class="linenos" data-linenos="2 "></span>total<span class="w"> </span><span class="m">172</span>
+</span><span class="linenos" data-linenos="3 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>dic<span class="w"> </span><span class="m">22</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>subdir0
+<span class="linenos" data-linenos="4 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>dic<span class="w"> </span><span class="m">22</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>subdir1
+<span class="linenos" data-linenos="5 "></span>drwxrwxr-x<span class="w"> </span><span class="m">2</span><span class="w"> </span>iabd<span class="w"> </span>iabd<span class="w"> </span><span class="m">20480</span><span class="w"> </span>dic<span class="w"> </span><span class="m">22</span><span class="w">  </span><span class="m">2021</span><span class="w"> </span>subdir2
+<span class="linenos" data-linenos="6 "></span>...
 </code></pre></div>
 <p>Una vez en este nivel, vamos a buscar el archivo que coincide con el <em>block id</em> poniéndole como prefijo <code>blk_</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
 <span class="linenos" data-linenos="2 "></span>iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$<span class="w"> </span><span class="se">\</span>
-<span class="hll"><span class="linenos" data-linenos="3 "></span>&gt;<span class="w"> </span>find<span class="w"> </span>-name<span class="w"> </span>blk_1073744314
+<span class="hll"><span class="linenos" data-linenos="3 "></span>&gt;<span class="w"> </span>find<span class="w"> </span>-name<span class="w"> </span>blk_1073750565
 </span></code></pre></div>
-<p>En mi caso devuelve <code>./subdir9/blk_1073744314</code>. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:</p>
+<p>En mi caso devuelve <code>./subdir2/blk_1073750565</code>. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$<span class="w"> </span><span class="se">\</span>
-<span class="linenos" data-linenos=" 2 "></span>&gt;<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>subdir9
+<span class="linenos" data-linenos=" 2 "></span>&gt;<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>subdir2
 <span class="linenos" data-linenos=" 3 "></span>iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir9$<span class="w"> </span><span class="se">\</span>
-<span class="hll"><span class="linenos" data-linenos=" 4 "></span>&gt;<span class="w"> </span>head<span class="w"> </span>blk_1073744314
+<span class="hll"><span class="linenos" data-linenos=" 4 "></span>&gt;<span class="w"> </span>head<span class="w"> </span>blk_1073750565
 </span><span class="linenos" data-linenos=" 5 "></span>userId,movieId,rating,timestamp
 <span class="linenos" data-linenos=" 6 "></span><span class="m">1</span>,296,5.0,1147880044
 <span class="linenos" data-linenos=" 7 "></span><span class="m">1</span>,306,3.5,1147868817
@@ -1528,7 +1543,7 @@ El valor que aparece coincide con el que hemos recuperado en la imagen.</p>
 <p>Algunas de las opciones más útiles para administrar HDFS son:</p>
 <ul>
 <li><code>hdfs dfsadmin -report</code>: Realiza un resumen del sistema HDFS, similar al que aparece en el interfaz web, donde podemos comprobar el estado de los diferentes nodos.</li>
-<li><code>hdfs fsck</code>: Comprueba el estado del sistema de ficheros. Si queremos comprobar el estado de un determinado directorio, lo indicamos mediante un segundo parámetro: <code>hdfs fsck /datos/prueba</code></li>
+<li><code>hdfs fsck</code>: como acabamos de ver, comprueba el estado del sistema de ficheros. Si queremos comprobar el estado de un determinado directorio, lo indicamos mediante un segundo parámetro: <code>hdfs fsck /datos/prueba</code></li>
 <li><code>hdfs dfsadmin -printTopology</code>: Muestra la topología, identificando los nodos que tenemos y al rack al que pertenece cada nodo.</li>
 <li><code>hdfs dfsadmin -listOpenFiles</code>: Comprueba si hay algún fichero abierto.</li>
 <li><code>hdfs dfsadmin -safemode enter</code>: Pone el sistema en modo seguro, el cual evita la modificación de los recursos del sistema de archivos.</li>

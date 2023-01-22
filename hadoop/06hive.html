@@ -1687,13 +1687,13 @@ Actualmente ha perdido uso en detrimento de <em>Hive</em>/<em>Impala</em> y de <
 </code></pre></div>
 <p>Por otro lado, también podemos utilizar <em>Hive CLI</em>, un cliente basado en <em>Apache Thrift</em>, que usa los mismos drivers que <em>Hive</em>.</p>
 <div class="admonition info">
-<p class="admonition-title">Apache Tez</p>
+<p class="admonition-title">Apache Tez y Spark</p>
 <p>Hive 3 deja de soportar <em>MapReduce</em>. <em>Apache Tez</em> lo reemplaza como el motor de ejecución por defecto, de manera que mejora el rendimiento y se ejecuta sobre <em>Hadoop Yarn</em>, que encola y planifica los trabajos en el clúster. Además de <em>Tez</em>, <em>Hive</em> también puede utilizar <em>Apache Spark</em> como motor de ejecución.</p>
 <p>Para indicar que queremos ejecutar <em>Tez</em> como motor de ejecución, ejecutaríamos el siguiente comando:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>SET hive.execution.engine=tez;
 </code></pre></div>
 <p>En nuestro caso no tenemos <em>Tez</em> instalado en la máquina virtual, quedando fuera del alcance del presente curso.</p>
-<p>FIXME: Spark SQL is different to using the Spark execution engine from within Hive (“Hive on Spark,” see Execution engines). Hive, on Spark provides all the features of Hive since it is a part of the Hive project. Spark SQL, on the other hand, is a new SQL engine that offers some level of Hive compatibility.</p>
+<p>Conviene distinguir que <em>Spark SQL</em> no tiene nada que ver con utilizar el motor de ejecución de <em>Spark</em> dentro de <em>Hive</em>. Al utilizar el motor de <em>Hive</em>, podemos hacer un uso completo de las características de Hive, mientras que <em>Spark SQL</em> es un motor diferente que ofrece una alta compatibilidad con <em>Hive</em>, pero tiene sus particularidades.</p>
 </div>
 <h3 id="tipos-de-datos">Tipos de datos<a class="headerlink" href="#tipos-de-datos" title="Permanent link">&para;</a></h3>
 <p>Los tipos de datos que podemos emplear en Hive son muy similares a los que se utilizan en el DDL de SQL.
