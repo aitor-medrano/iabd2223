@@ -1867,8 +1867,8 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <p class="admonition-title">default</p>
 <p>Si olvidamos el comando <code>use</code>, se utilizará la base de datos <code>default</code>, la cual reside en <code>/user/hive/warehouse</code> como raíz en HDFS.</p>
 </div>
-<p>A continuación, vamos a crear una tabla externa que almacene el identificador, nombre, apellido y ciudad de los clientes (como puedes observar, la sintaxis es similar a SQL):</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTERNAL</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span>
+<p>A continuación, vamos a crear una tabla que almacene el identificador, nombre, apellido y ciudad de los clientes (como puedes observar, la sintaxis es similar a SQL):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="p">(</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="n">custId</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
 <span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="n">fName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
@@ -1902,7 +1902,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <p>En ocasiones necesitamos almacenar la salida de una consulta <em>Hive</em> en una nueva tabla. Las definiciones de las columnas de la nueva tabla se deriva de las columnas recuperadas en la consulta. Para ello, usaremos el comando <em>create table-as select</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers_new</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
 </code></pre></div>
-<p>En el caso de la consulta falle por algún motivo, la tabla no se crearía.</p>
+<p>En el caso de que la consulta falle por algún motivo, la tabla no se crearía.</p>
 <p>Otra posibilidad es crear una tabla con la misma estructura que otra ya existente (pero sin datos):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers2</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
 </code></pre></div>
@@ -1916,9 +1916,9 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="2 "></span><span class="k">drop</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">customers2</span><span class="p">;</span>
 </code></pre></div>
 <p>Si ejecutamos el comando <code>!tables</code> (o <code>show tables</code> en el cliente <code>hive</code>) veremos que ya no aparecen dichas tablas.</p>
-<p>En el caso de que queramos eliminar una base de datos, de la misma manera que en SQL, ejecutaríamos el comando <code>drop database iabd;</code>.</p>
+<p>En el caso de que queramos eliminar una base de datos, de la misma manera que en SQL, ejecutaríamos el comando <code>drop database iabd</code>. Si nuestra base de datos contiene tablas y las queremos borrar igualmente, entonces necesitamos un borrado en cascada mediante <code>drop database iabd cascade</code>.</p>
 <h2 id="caso-de-uso-2-insertando-datos">Caso de uso 2: Insertando datos<a class="headerlink" href="#caso-de-uso-2-insertando-datos" title="Permanent link">&para;</a></h2>
-<p>Para insertar datos en las tablas de Hive lo podemos hacer de varias formas:</p>
+<p>Para insertar datos en las tablas de <em>Hive</em> podemos hacerlo de varias formas:</p>
 <ul>
 <li>Cargando los datos mediante sentencias <code>LOAD DATA</code>.</li>
 <li>Insertando los datos mediante sentencias <code>INSERT</code>.</li>
@@ -2025,7 +2025,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 </div>
 <h2 id="caso-de-uso-3-consultas-con-join">Caso de uso 3: Consultas con <em>join</em><a class="headerlink" href="#caso-de-uso-3-consultas-con-join" title="Permanent link">&para;</a></h2>
-<p>En este caso de uso vamos a trabajar con los datos de clientes que hemos cargado en los dos casos anteriores, tanto en <code>customers</code> como en <code>orders</code>.</p>
+<p>En este caso de uso vamos a trabajar con los datos de clientes y pedidos que hemos cargado en los dos casos anteriores, tanto en <code>customers</code> como en <code>orders</code>.</p>
 <p>Si queremos relacionar los datos de ambas tablas, tenemos que hacer un <em>join</em> entre la clave ajena de <code>orders</code> (<code>order_customer_id</code>) y la clave primaria de <code>customers</code> (<code>custid</code>):</p>
 <div class="highlight"><pre><span></span><code><span class="hll"><span class="linenos" data-linenos=" 1 "></span><span class="n">hive</span><span class="o">&gt;</span><span class="w"> </span><span class="k">describe</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
 </span><span class="linenos" data-linenos=" 2 "></span><span class="n">OK</span>
@@ -2042,7 +2042,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="13 "></span><span class="n">order_status</span><span class="w">            </span><span class="n">string</span><span class="w">                                      </span>
 <span class="linenos" data-linenos="14 "></span><span class="k">Time</span><span class="w"> </span><span class="n">taken</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">276</span><span class="w"> </span><span class="n">seconds</span><span class="p">,</span><span class="w"> </span><span class="n">Fetched</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">row</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
 </code></pre></div>
-<p>Para ello, para obtener la ciudad de cada pedido, podemos ejecutar la consulta:</p>
+<p>Para ello, para obtener la ciudad de cada pedido podemos ejecutar la consulta:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_id</span><span class="p">,</span><span class="w"> </span><span class="n">o</span><span class="p">.</span><span class="n">order_date</span><span class="p">,</span><span class="w"> </span><span class="k">c</span><span class="p">.</span><span class="n">city</span>
 <span class="linenos" data-linenos="2 "></span><span class="k">from</span><span class="w"> </span><span class="n">orders</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="k">join</span><span class="w"> </span><span class="n">customers</span><span class="w"> </span><span class="k">c</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="k">on</span><span class="w"> </span><span class="p">(</span><span class="n">o</span><span class="p">.</span><span class="n">order_customer_id</span><span class="o">=</span><span class="k">c</span><span class="p">.</span><span class="n">custid</span><span class="p">);</span>

@@ -880,6 +880,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#persistiendo-diferentes-formatos" class="md-nav__link">
+    Persistiendo diferentes formatos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#comprimiendo-los-datos" class="md-nav__link">
     Comprimiendo los datos
   </a>
@@ -1276,6 +1283,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#persistiendo-diferentes-formatos" class="md-nav__link">
+    Persistiendo diferentes formatos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#comprimiendo-los-datos" class="md-nav__link">
     Comprimiendo los datos
   </a>
@@ -1633,6 +1647,7 @@
 </div>
 </div>
 </div>
+<h3 id="persistiendo-diferentes-formatos">Persistiendo diferentes formatos<a class="headerlink" href="#persistiendo-diferentes-formatos" title="Permanent link">&para;</a></h3>
 <p>Si lo que queremos es persistir los datos, en vez de <code>read</code>, utilizaremos <code>write</code> y si usamos la forma general usaremos el método <code>save</code>:</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:4"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><input id="__tabbed_2_4" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">CSV</label><label for="__tabbed_2_2">TXT</label><label for="__tabbed_2_3">JSON</label><label for="__tabbed_2_4">Parquet</label></div>
 <div class="tabbed-content">
@@ -1658,7 +1673,8 @@
 </div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfParquet</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;datos.parquet&quot;</span><span class="p">)</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">dfParquet</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;datos.parquet&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfParquet</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">partitionBy</span><span class="p">(</span><span class="s2">&quot;fecha&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="s2">&quot;datos/&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfParquet</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;parquet&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;datos.parquet&quot;</span><span class="p">)</span>
 </code></pre></div>
 <p>Más información en la <a href="https://spark.apache.org/docs/latest/sql-data-sources-parquet.html">documentación oficial</a></p>
 </div>
@@ -2290,15 +2306,15 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 <li>Añade un id incremental para cada fila (campo <code>Id</code>) y haz que al hacer un <code>show</code> se vea en primer lugar (puedes utilizar la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.monotonically_increasing_id.html"><code>monotonically_increasing_id</code></a>) seguidos del <code>Nombre</code>, <code>Edad</code>, <code>AnyoNac</code>, <code>FaltaJubilacion</code> y <code>Ciudad</code></li>
 </ol>
 <p>Al realizar los seis pasos, el resultado del DataFrame será similar a :</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>+---+------+----+-------+----------------+--------+
-<span class="linenos" data-linenos="2 "></span>| Id|Nombre|Edad|AnyoNac|FaltanJubilacion|  Ciudad|
-<span class="linenos" data-linenos="3 "></span>+---+------+----+-------+----------------+--------+
-<span class="linenos" data-linenos="4 "></span>|  0| Aitor|  45|   1977|              22|   Elche|
-<span class="linenos" data-linenos="5 "></span>|  1| María|  23|   1999|              44|Alicante|
-<span class="linenos" data-linenos="6 "></span>|  2| Laura|  19|   2003|              48|   Elche|
-<span class="linenos" data-linenos="7 "></span>|  3| Sonia|  45|   1977|              22|    Aspe|
-<span class="linenos" data-linenos="8 "></span>|  4| Pedro|null|   null|            null|   Elche|
-<span class="linenos" data-linenos="9 "></span>+---+------+----+-------+----------------+--------+
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>+---+-------+----+-------+----------------+--------+
+<span class="linenos" data-linenos="2 "></span>| Id|Nombre |Edad|AnyoNac|FaltanJubilacion|  Ciudad|
+<span class="linenos" data-linenos="3 "></span>+---+-------+----+-------+----------------+--------+
+<span class="linenos" data-linenos="4 "></span>|  0|  Aitor|  45|   1977|              22|   Elche|
+<span class="linenos" data-linenos="5 "></span>|  1| Marina|  14|   2008|              53|Alicante|
+<span class="linenos" data-linenos="6 "></span>|  2|  Laura|  19|   2003|              48|   Elche|
+<span class="linenos" data-linenos="7 "></span>|  3|  Sonia|  45|   1977|              22|    Aspe|
+<span class="linenos" data-linenos="8 "></span>|  4|  Pedro|null|   null|            null|   Elche|
+<span class="linenos" data-linenos="9 "></span>+---+-------+----+-------+----------------+--------+
 </code></pre></div>
 </li>
 <li>

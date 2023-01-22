@@ -2070,18 +2070,19 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 -->
 
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.">CE4.1b</abbr>) En las siguientes actividades vamos a realizar agregaciones mediante el uso del API de <em>DataFrames</em> de <em>Spark</em> (cada apartado vale 0,25p).</p>
 <ol>
 <li>
-<p>Vamos a seguir realizando analíticas de datos sobre las películas, ya que nos han enviado un nuevo archivo llamado <a href="resources/movie-ratings.tsv"><code>movie-ratings.tsv</code></a> que contiene las calificaciones de las películas.</p>
+<p>(1p) Sobre las películas de la sesión anterior, nos han enviado un nuevo archivo llamado <a href="resources/movie-ratings.tsv"><code>movie-ratings.tsv</code></a> que contiene las calificaciones de las películas.</p>
 <ol>
-<li>Crea un DataFrame que contenga los datos de ambos <em>datasets</em>.</li>
+<li>Crea un <em>DataFrame</em> que contenga los datos de ambos <em>datasets</em>.</li>
 <li>Muestra para cada año, la película con mayor puntuación (año, título de la película, puntuación)</li>
 <li>Sobre los datos anteriores, obtén también una lista con los nombres de los intérpretes.</li>
 <li>Averigua las tres parejas de intérpretes han trabajado juntos en más ocasiones. La salida debe tener tres columnas: <code>interprete1</code>, <code>interprete2</code> y <code>cantidad</code>. (necesitas utilizar un <em>self-join</em>)</li>
 </ol>
 </li>
 <li>
-<p>Hemos recibido un dataset con las ventas de 2019 de una tienda americana de productos de tecnología, mediante un conjunto de ficheros en formato CSV comprimidos en <a href="resources/salesdata.zip">salesdata.zip</a>.</p>
+<p>(1.5p) Hemos recibido un dataset con las ventas de 2019 de una tienda americana de productos de tecnología, mediante un conjunto de ficheros en formato CSV comprimidos en <a href="resources/salesdata.zip">salesdata.zip</a>.</p>
 <ol>
 <li>Una vez descomprimidos los datos, crea un <em>DataFrame</em> con todos los datos, infiriendo el esquema.</li>
 <li>
@@ -2105,7 +2106,12 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 <li>A partir del campo dirección, crea dos nuevas columnas para almacenar la ciudad (<code>City</code>) y el estado (<code>State</code>). Por ejemplo, para la dirección <code>136 Church St, New York City, NY 10001</code>, la ciudad es <code>New York City</code> y el estado es <code>NY</code>.</li>
 <li>Modifica el campo con la fecha del pedido para que su formato sea <em>timestamp</em>.</li>
 <li>Sobre el campo anterior, crea dos nuevas columnas, con el mes (<code>Month</code>) y el año (<code>Year</code>) del pedido.</li>
-<li>Almacena los datos en formato Parquet en la carpeta <code>salesoutput</code> particionando los datos por año y mes. Tras ejecutar esta operación, comprueba en disco la estructura de archivos creada.</li>
+</ol>
+</li>
+<li>
+<p>(1.5p) Una vez realizada la transformación de los datos, vamos a realizar su carga y extraer información`, utilizando Spark SQL siempre que sea posible:</p>
+<ol>
+<li>Almacena los datos en formato <em>Parquet</em> en la carpeta <code>salesoutput</code> particionando los datos por año y mes. Tras ejecutar esta operación, comprueba en disco la estructura de archivos creada.</li>
 <li>Sobre los datos almacenados, realiza una nueva lectura pero solo leyendo los datos de 2019 los cuales deberían estar almacenados en <code>./salesdataoutput/Year=2019</code>.</li>
 <li>
 <p>Averigua cual ha sido el mes que ha recaudado más. Para ello, deberás multiplicar el precio por la cantidad de unidades, y posteriormente, realizar alguna agregación. Sobre el resultado, crea un gráfico similar al siguiente:</p>
@@ -2140,9 +2146,6 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 </code></pre></div>
 </li>
 </ol>
-</li>
-<li>
-<p>(opcional) Vuelve a realizar todo el ejercicio anterior pero utilizando únicamente Spark SQL.</p>
 </li>
 </ol>
 
