@@ -677,6 +677,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#modificando-datos" class="md-nav__link">
+    Modificando datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ingestando-datos" class="md-nav__link">
     Ingestando datos
   </a>
@@ -1418,6 +1425,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#modificando-datos" class="md-nav__link">
+    Modificando datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ingestando-datos" class="md-nav__link">
     Ingestando datos
   </a>
@@ -1793,7 +1807,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 <h3 id="acceso-remoto">Acceso remoto<a class="headerlink" href="#acceso-remoto" title="Permanent link">&para;</a></h3>
 <p><em>HiveServer2</em> (desde Hive 0.11) tiene su propio cliente conocido como <em>Beeline</em>. En entornos reales, el cliente <em>Hive</em> está en desuso a favor de <em>Beeline</em>, por la falta de múltiples usuarios, seguridad y otras características de <em>HiveServer2</em>.</p>
-<p>Arrancamos <em>HiveServer2</em> (lo hará en el puerto <code>10000</code>) y <em>Beeline</em> en dos pestañas diferentes mediante los comandos <code>hiveserver2</code> y <code>beeline</code>. Una vez dentro de <em>Beeline</em>, tras esperar unos segundo a que <em>HiveServer2</em> haya arrancando completamente, nos conectamos al servidor:</p>
+<p>Arrancamos <em>HiveServer2</em> (lo hará en el puerto <code>10000</code>) y <em>Beeline</em> en dos pestañas diferentes mediante los comandos <code>hiveserver2</code> y <code>beeline</code>. Una vez dentro de <em>Beeline</em>, tras esperar unos segundos a que <em>HiveServer2</em> haya arrancando completamente, nos conectamos al servidor:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>!connect jdbc:hive2://iabd-virtualbox:10000
 </code></pre></div>
 <p>Al conectarnos, tras introducir <code>iabd</code> como usuario y contraseña, obtendremos un interfaz similar al siguiente:</p>
@@ -1835,7 +1849,15 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="4 "></span><span class="w">  </span>--fields-terminated-by<span class="w"> </span><span class="s1">&#39;|&#39;</span><span class="w"> </span>--delete-target-dir<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="5 "></span><span class="w">  </span>--columns<span class="w"> </span><span class="s2">&quot;customer_id,customer_fname,customer_lname,customer_city&quot;</span>
 </code></pre></div>
-<p>Una vez nos hemos conectado con el cliente <code>hive</code> o mediante <code>beeline</code>, creamos una base de datos llamada <code>iabd</code>:</p>
+<p>Si comprobamos el contenido en HDFS, veremos cómo se han cargado los datos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-head<span class="w"> </span>/user/iabd/hive/customer/part-m-00000
+<span class="linenos" data-linenos="2 "></span><span class="c1"># 1|Richard|Hernandez|Brownsville</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># 2|Mary|Barrett|Littleton</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># 3|Ann|Smith|Caguas</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># 4|Mary|Jones|San Marcos</span>
+<span class="linenos" data-linenos="6 "></span>...
+</code></pre></div>
+<p>A continuación, tras habernos conectado con el cliente <code>hive</code> o mediante <code>beeline</code>, creamos una base de datos llamada <code>iabd</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">create</span><span class="w"> </span><span class="k">database</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">exists</span><span class="w"> </span><span class="n">iabd</span><span class="p">;</span>
 </code></pre></div>
 <p>Nos conectamos a la base de datos que acabamos de crear:</p>
@@ -1845,8 +1867,8 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <p class="admonition-title">default</p>
 <p>Si olvidamos el comando <code>use</code>, se utilizará la base de datos <code>default</code>, la cual reside en <code>/user/hive/warehouse</code> como raíz en HDFS.</p>
 </div>
-<p>A continuación, vamos a crear una tabla que almacene el identificador, nombre, apellido y ciudad de los clientes (como puedes observar, la sintaxis es similar a SQL):</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span>
+<p>A continuación, vamos a crear una tabla externa que almacene el identificador, nombre, apellido y ciudad de los clientes (como puedes observar, la sintaxis es similar a SQL):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">EXTERNAL</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="p">(</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="n">custId</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
 <span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="n">fName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
@@ -1861,7 +1883,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <ol>
 <li>Indica el formato de cada fila como delimitado (con un salto del línea)</li>
 <li>Los campos están separados por el carácter <code>|</code> (es el mismo que habíamos indicado en Sqoop)</li>
-<li>El contenido está almacenado en HDFS en  formato texto</li>
+<li>El contenido está almacenado en HDFS en formato texto</li>
 <li>Ruta de HDFS donde se encuentran los datos</li>
 </ol>
 <p>Y ya podemos realizar algunas consultas:</p>
@@ -1917,7 +1939,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">col1</span><span class="p">,</span><span class="w"> </span><span class="n">col2</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span><span class="p">;</span>
 </code></pre></div>
 <p>Mediante la opción <code>OVERWRITE</code>, en cada ejecución se vacía la tabla y se vuelve a rellenar. Si no lo indicamos o utilizamos <code>INTO</code>, los datos se añadirían a los ya existentes.</p>
-<p>Si necesitamos insertar datos en múltiples tablas a la vez lo haremos mediante el comando <em>from-insert</em>:</p>
+<p>Si necesitamos insertar datos en múltiples tablas a la vez lo haremos mediante el comando <em>from-insert</em>, ya que ofrece un mejor rendimiento al sólo necesitar un escaneado de los datos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span>
 <span class="linenos" data-linenos="2 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">destino1</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">col1</span><span class="p">,</span><span class="w"> </span><span class="n">col2</span>
@@ -1935,8 +1957,34 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="4 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customers_caguas</span>
 <span class="linenos" data-linenos="5 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">custId</span><span class="p">,</span><span class="w"> </span><span class="n">fName</span><span class="p">,</span><span class="w"> </span><span class="n">lName</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;Caguas&quot;</span><span class="p">;</span>
 </code></pre></div>
-<p>FIXME: Hive has long supported adding new rows in bulk to an existing table by using INSERT INTO to add new data files to a table. From release 0.14.0, finer-grained changes are possible, so you can call INSERT INTO TABLE...VALUES to insert small batches of values computed in SQL. In addition, it is possible to UPDATE and DELETE rows in a table.</p>
-<p>FIXME: HDFS does not provide in-place file updates, so changes resulting from inserts, updates, and deletes are stored in small delta files. Delta files are periodically merged into the base table files by MapReduce jobs that are run in the background by the metastore. These features only work in the context of transactions (introduced in Hive 0.13.0), so the table they are being used on needs to have transactions enabled on it. Queries reading the table are guaranteed to see a consistent snapshot of the table.</p>
+<h3 id="modificando-datos">Modificando datos<a class="headerlink" href="#modificando-datos" title="Permanent link">&para;</a></h3>
+<p>Acabamos de añadir datos, y en teoría podemos realizar operaciones <code>UPDATE</code> y <code>DELETE</code> sobre las filas de una tabla.</p>
+<p>HDFS no se diseñó pensando en las modificaciones de archivos, con lo que los cambios resultantes de las inserciones, modificaciones y borrados se almacenan en archivos delta. Por cada transacción, se crea un conjunto de archivo delta que altera la tabla (o partición). Los ficheros delta se fusionan periódicamente con los ficheros base de las tablas mediante <em>jobs MapReduce</em> que el metastore ejecuta en <em>background</em>.</p>
+<p>Para poder modificar o borrar los datos, Hive necesita trabajar en un contexto transaccional, por lo que necesitamos activar las siguientes variables:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>set hive.support.concurrency=true;
+<span class="linenos" data-linenos="2 "></span>set hive.enforce.bucketing=true;
+<span class="linenos" data-linenos="3 "></span>set hive.exec.dynamic.partition.mode=nonstrict;
+<span class="linenos" data-linenos="4 "></span>set hive.txn.manager=org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+</code></pre></div>
+<p>Una vez configurado, hemos de crear las tablas con el formato ORC y organizar los datos mediante <em>buckets</em> (los estudiaremos más adelante en esta <a href="#buckets">misma sesión</a>). Por ejemplo, volvemos a crear la tabla de clientes:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customerstx</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="p">(</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="n">custId</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">  </span><span class="n">fName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="n">lName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="n">city</span><span class="w"> </span><span class="n">STRING</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">CLUSTERED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="p">(</span><span class="n">custId</span><span class="p">)</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="n">BUCKETS</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">STORED</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ORC</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">TBLPROPERTIES</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;transactional&#39;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;true&#39;</span><span class="p">);</span>
+</code></pre></div>
+<p>Una vez creada la tabla, la vamos a cargar con los datos de los clientes:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">customerstx</span>
+<span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</code></pre></div>
+<p>Un par de minutos después, con los datos datos ya cargados, ya podemos cambiar el nombre de la ciudad <code>Caguas</code> por <code>Elche</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">UPDATE</span><span class="w"> </span><span class="n">customerstx</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">city</span><span class="o">=</span><span class="ss">&quot;Elche&quot;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">city</span><span class="o">=</span><span class="ss">&quot;Caguas&quot;</span><span class="p">;</span>
+</code></pre></div>
 <h3 id="ingestando-datos">Ingestando datos<a class="headerlink" href="#ingestando-datos" title="Permanent link">&para;</a></h3>
 <p>Tal como vimos en la <a href="05flume.html#trabajando-con-hive">sesión anterior</a>, podemos ingestar los datos en <em>Hive</em> haciendo uso de <em>Sqoop</em> (también lo podemos hacer con <em>Flume</em> o <em>Nifi</em>).</p>
 <p>Por ejemplo, vamos a ingestar los datos de la tabla <code>orders</code> de la base de datos <em>MariaDB</em> que tenemos instalada en nuestra máquina virtual. En el comando de <em>Sqoop</em> le indicamos que dentro de <em>Hive</em> lo ingeste en la base de datos <code>iabd</code> y que cree una tabla llamada <code>orders</code>:</p>
@@ -1969,7 +2017,7 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 </code></pre></div>
 <div class="admonition question">
 <p class="admonition-title">¿Y usar <em>INSERT LOCAL</em>?</p>
-<p>Mediante <code>INSERT LOCAL</code> podemos escribir el resultado de una consulta en nuestro sistema de archivos, fuera de HDFS. El problema es que si hay muchos datos creará múltiples ficheros y necesitaremos concatenarlos para tener un único resultado:</p>
+<p>Mediante <code>INSERT LOCAL DIRECTORY</code> podemos escribir el resultado de una consulta en nuestro sistema de archivos, fuera de HDFS. El problema es que si hay muchos datos creará múltiples ficheros y necesitaremos concatenarlos para tener un único resultado:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">insert</span><span class="w"> </span><span class="n">overwrite</span><span class="w"> </span><span class="k">local</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="s1">&#39;/home/iabd/datos&#39;</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="k">row</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="n">delimited</span>
 <span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="n">fields</span><span class="w"> </span><span class="n">terminated</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="s1">&#39;,&#39;</span>
@@ -2119,6 +2167,14 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="26 "></span><span class="o">|</span><span class="w">   </span><span class="s1">&#39;transient_lastDdlTime&#39;</span><span class="o">=</span><span class="s1">&#39;1647432129&#39;</span><span class="p">)</span><span class="w">            </span><span class="o">|</span>
 <span class="linenos" data-linenos="27 "></span><span class="o">+</span><span class="c1">----------------------------------------------------+</span>
 </code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Formato de las tablas</p>
+<p>Si queremos indicarle el <a href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-StorageFormatsStorageFormatsRowFormat,StorageFormat,andSerDe">formato a las tablas</a>, mediante <code>STORED AS</code> podemos indicar formatos:</p>
+<ul>
+<li>basados en filas, como <code>TEXTFILE</code>, <code>JSONFILE</code>, <code>AVRO</code> o en formato de secuencia mediante <code>SEQUENCEFILE</code>.</li>
+<li>basados en columnas, como <code>PARQUET</code> o <code>ORC</code>.</li>
+</ul>
+</div>
 <p>A continuación, vamos a cargar los datos del fichero <a href="resources/empleados.txt">empleados.txt</a>, el cual colocaremos en nuestra carpeta de <em>Descargas</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">LOAD</span><span class="w"> </span><span class="k">DATA</span><span class="w"> </span><span class="k">LOCAL</span><span class="w"> </span><span class="n">INPATH</span><span class="w"> </span><span class="s1">&#39;/home/iabd/Descargas/empleados.txt&#39;</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">empleados_interna</span><span class="p">;</span>
 </code></pre></div>
@@ -2418,10 +2474,10 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 -->
 
 <h2 id="estructuras-de-datos-en-hive">Estructuras de datos en Hive<a class="headerlink" href="#estructuras-de-datos-en-hive" title="Permanent link">&para;</a></h2>
-<p><em>Hive</em> proporciona una estructura basada en tablas sobre HDFS. Soporta tres tipos de estructuras: tablas, particiones y <em>buckets</em>. Las tablas se corresponden con directorios de HDFS, las particiones son las divisiones de las tablas y los buckets son las divisiones de las particiones.</p>
-<p>Acabamos de ver en el apartado anterior que <em>Hive</em> permite crear tablas externas, similares a las tablas en una base de datos, pero a la que se les proporciona una ubicación. En este caso, cuando se elimina la tabla externa, los datos continúan en HDFS.</p>
+<p><em>Hive</em> proporciona una estructura basada en tablas sobre HDFS. Soporta tres tipos de estructuras: tablas, particiones y <em>buckets</em>. Las tablas se corresponden con directorios de HDFS, las particiones son las divisiones de las tablas y los <em>buckets</em> son las divisiones de las particiones.</p>
+<p>Acabamos de ver en el apartado anterior que <em>Hive</em> permite crear tablas externas, similares a las tablas en una base de datos, pero a la que se les proporciona una ubicación.</p>
 <h3 id="particiones">Particiones<a class="headerlink" href="#particiones" title="Permanent link">&para;</a></h3>
-<p>Las <strong><em>particiones</em></strong> en <em>Hive</em> consisten en dividir las tablas en varios subdirectorios. Esta estructura permite aumentar el rendimiento cuando utilizamos consultas que filtran los datos mediante la cláusula <em>where</em>.</p>
+<p>Las <strong><em>particiones</em></strong> en <em>Hive</em> consisten en dividir las tablas en varios subdirectorios. Esta estructura permite aumentar el rendimiento cuando utilizamos consultas que filtran los datos mediante la cláusula <em>where</em> basada en la clave de particionado.</p>
 <p>Por ejemplo, si estamos almacenado ficheros de log (tanto la línea del log como su <em>timestamp</em>), podemos pensar en agrupar por fecha los diferentes ficheros. Podríamos añadir otra partición para también dividirlos por países:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">logs</span><span class="w"> </span><span class="p">(</span><span class="n">ts</span><span class="w"> </span><span class="nb">BIGINT</span><span class="p">,</span><span class="w"> </span><span class="n">linea</span><span class="w"> </span><span class="n">STRING</span><span class="p">)</span>
 <span class="linenos" data-linenos="2 "></span><span class="n">PARTITIONED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="p">(</span><span class="n">fecha</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span><span class="w"> </span><span class="n">pais</span><span class="w"> </span><span class="n">STRING</span><span class="p">);</span>
@@ -2463,15 +2519,15 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 <p class="admonition-title">Moviendo datos a una tabla particionada</p>
 <p>Si queremos mover datos de una tabla ordinaria a una particionada (vaciando los datos de la partición existente):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">logs</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">PARTITION</span><span class="w"> </span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="s1">&#39;2022-01-01&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">PARTITION</span><span class="w"> </span><span class="p">(</span><span class="n">fecha</span><span class="o">=</span><span class="s1">&#39;2022-01-01&#39;</span><span class="p">)</span>
 <span class="linenos" data-linenos="3 "></span><span class="k">SELECT</span><span class="w"> </span><span class="n">col1</span><span class="p">,</span><span class="w"> </span><span class="n">col2</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span><span class="p">;</span>
 </code></pre></div>
 <p>Otra posibilidad es utilizar un <em>particionado dinámico</em>, de manera que las particiones se crean de forma relativa a los datos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">logs</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">PARTITION</span><span class="w"> </span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-<span class="linenos" data-linenos="3 "></span><span class="k">SELECT</span><span class="w"> </span><span class="n">col1</span><span class="p">,</span><span class="w"> </span><span class="n">col2</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span><span class="p">;</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">PARTITION</span><span class="w"> </span><span class="p">(</span><span class="n">fecha</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="k">SELECT</span><span class="w"> </span><span class="n">fecha</span><span class="p">,</span><span class="w"> </span><span class="n">col1</span><span class="p">,</span><span class="w"> </span><span class="n">col2</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span><span class="p">;</span>
 </code></pre></div>
-<p>Para ello, previamente hay que habilitarlo (por defecto está deshabilitado para evitar la creación de múltiples particiones sin querer) y configurar el modo no estricto para que no nos obligue a indicar al menos una partición estática:</p>
+<p>Para ello, previamente hay que habilitarlo (por defecto está desactivado para evitar la creación de múltiples particiones sin querer) y configurar el modo no estricto para que no nos obligue a indicar al menos una partición estática:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">set</span><span class="w"> </span>hive.exec.dynamic.partition<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span>
 <span class="linenos" data-linenos="2 "></span><span class="nb">set</span><span class="w"> </span>hive.exec.dynamic.partition.mode<span class="w"> </span><span class="o">=</span><span class="w"> </span>nonstrict<span class="p">;</span>
 </code></pre></div>
