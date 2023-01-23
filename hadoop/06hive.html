@@ -19,7 +19,7 @@
         <link rel="next" href="../cloud/index.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.5">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
     
     
       
@@ -1934,11 +1934,30 @@ Los tipos simples más comunes son <code>STRING</code> e <code>INT</code>, aunqu
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="n">overwrite</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
 </code></pre></div>
 <h3 id="insertando-datos">Insertando datos<a class="headerlink" href="#insertando-datos" title="Permanent link">&para;</a></h3>
-<p>Aunque podemos insertar datos de forma atómica (es decir, registro a registro mediante <code>INSERT INTO TABLE ... VALUES</code>), realmente las inserciones que se realizan en <em>Hive</em> se hacen a partir de los datos de otras tablas mediante el comando <em>insert-select</em> a modo de ETL:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">destino</span>
+<p>Aunque podemos insertar datos de forma atómica (es decir, registro a registro mediante <code>INSERT INTO [TABLE] ... VALUES</code>), realmente las inserciones que se realizan en <em>Hive</em> se hacen a partir de los datos de otras tablas mediante el comando <em>insert-select</em> a modo de ETL:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">destino</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">col1</span><span class="p">,</span><span class="w"> </span><span class="n">col2</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span><span class="p">;</span>
+<span class="linenos" data-linenos="3 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="n">destino</span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="k">SELECT</span><span class="w"> </span><span class="n">col1</span><span class="p">,</span><span class="w"> </span><span class="n">col2</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span><span class="p">;</span>
 </code></pre></div>
 <p>Mediante la opción <code>OVERWRITE</code>, en cada ejecución se vacía la tabla y se vuelve a rellenar. Si no lo indicamos o utilizamos <code>INTO</code>, los datos se añadirían a los ya existentes.</p>
+<p>Por ejemplo, vamos a crear una nueva tabla de clientes, pero la vamos a almacenar en formato Parquet:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">customersp</span>
+<span class="linenos" data-linenos="2 "></span><span class="p">(</span>
+<span class="linenos" data-linenos="3 "></span><span class="w">  </span><span class="n">custId</span><span class="w"> </span><span class="nb">INT</span><span class="p">,</span>
+<span class="linenos" data-linenos="4 "></span><span class="w">  </span><span class="n">fName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<span class="linenos" data-linenos="5 "></span><span class="w">  </span><span class="n">lName</span><span class="w"> </span><span class="n">STRING</span><span class="p">,</span>
+<span class="linenos" data-linenos="6 "></span><span class="w">  </span><span class="n">city</span><span class="w"> </span><span class="n">STRING</span>
+<span class="linenos" data-linenos="7 "></span><span class="p">)</span>
+<span class="linenos" data-linenos="8 "></span><span class="n">STORED</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">PARQUET</span><span class="p">;</span>
+</code></pre></div>
+<p>Y a continuación la cargamos con los datos de la tabla <code>customers</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">customersp</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">customers</span><span class="p">;</span>
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Rendimiento</p>
+<p>Prueba a realizar una consulta que cuente la cantidad de clientes en cada una de las tablas ¿Cuál tarda menos? ¿Por qué?</p>
+</div>
 <p>Si necesitamos insertar datos en múltiples tablas a la vez lo haremos mediante el comando <em>from-insert</em>, ya que ofrece un mejor rendimiento al sólo necesitar un escaneado de los datos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">FROM</span><span class="w"> </span><span class="n">fuente</span>
 <span class="linenos" data-linenos="2 "></span><span class="k">INSERT</span><span class="w"> </span><span class="n">OVERWRITE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">destino1</span>
@@ -2989,8 +3008,6 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
   Vistas
   tablesample
   Transformación map/reduce ... ejemplo para rellenar tipos de datos complejos
-  Anban -> Ejercicio dataset clima - Hadoop definitive guide
-  Investigar Tez
 --->
 
 
