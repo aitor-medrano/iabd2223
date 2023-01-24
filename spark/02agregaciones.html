@@ -2073,7 +2073,18 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 <p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.">CE4.1b</abbr>) En las siguientes actividades vamos a realizar agregaciones mediante el uso del API de <em>DataFrames</em> de <em>Spark</em> (cada apartado vale 0,25p).</p>
 <ol>
 <li>
-<p>(1p) Sobre las películas de la sesión anterior, nos han enviado un nuevo archivo llamado <a href="resources/movie-ratings.tsv"><code>movie-ratings.tsv</code></a> que contiene las calificaciones de las películas.</p>
+<p>(1p) Sobre las películas de la sesión anterior:</p>
+<ol>
+<li>¿Cuantas películas diferentes hay?</li>
+<li>¿En cuantas películas ha trabajado <code>Murphy, Eddie (I)</code>?</li>
+<li>¿Cuáles son los actores que han aparecido en más de 30 películas?</li>
+<li>¿En que película anterior a 1980 aparecen al menos 25 intérpretes?</li>
+<li>Muestra la cantidad de películas producidas cada año (solo debe mostrar el año y la cantidad), ordenando el listado por la cantidad de forma descendente.</li>
+<li>A partir de la consulta anterior, crea un gráfico de barras que muestre el año y la cantidad de películas, ordenados por fecha.</li>
+</ol>
+</li>
+<li>
+<p>Nos han enviado un nuevo archivo llamado <a href="resources/movie-ratings.tsv"><code>movie-ratings.tsv</code></a> que contiene las calificaciones de las películas.</p>
 <ol>
 <li>Crea un <em>DataFrame</em> que contenga los datos de ambos <em>datasets</em>.</li>
 <li>Muestra para cada año, la película con mayor puntuación (año, título de la película, puntuación)</li>

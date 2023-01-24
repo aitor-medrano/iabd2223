@@ -2028,6 +2028,10 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="7 "></span><span class="c1"># Unimos los dos DataFrames</span>
 <span class="linenos" data-linenos="8 "></span><span class="n">dfUpdated</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">nvDF</span><span class="p">)</span>
 </code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Trabajando con conjuntos</p>
+<p>Considerando dos DataFrames como dos conjuntos, podemos emplear las operaciones <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.union.html">union</a>, <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.intersect.html">intersect</a>, <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.intersectAll.html">intersectAll</a> (mantiene los duplicados), <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.exceptAll.html">exceptAll</a> (mantiene los duplicados) y <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.subtract.html">subtract</a> .</p>
+</div>
 <h3 id="cogiendo-muestras">Cogiendo muestras<a class="headerlink" href="#cogiendo-muestras" title="Permanent link">&para;</a></h3>
 <p>Si necesitamos recoger un subconjunto de los datos, ya sea para preparar los datos para algún modelo de <em>machine learning</em> como para una muestra aleatoria de los mismos, podemos utilizar las siguientes transformaciones:</p>
 <ul>
@@ -2300,7 +2304,7 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 <li>Crea una nueva columna (columna <code>Mayor30</code>) que indique si la persona es mayor de 30 años.</li>
 <li>Crea una nueva columna (columna <code>FaltanJubilación</code>) que calcule cuantos años le faltan para jubilarse (supongamos que se jubila a los 67 años)</li>
 <li>Crea una nueva columna (columna <code>Apellidos</code>) que contenga <code>XYZ</code> (puedes utilizar la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.lit.html"><code>lit</code></a>)</li>
-<li>Elimina las columna <code>Mayor30</code> y <code>Apellidos</code>?</li>
+<li>Elimina las columna <code>Mayor30</code> y <code>Apellidos</code>.</li>
 <li>Crea una nueva columna (columna <code>AnyoNac</code>) con el año de nacimiento de cada persona (puedes utilizar la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.current_date.html"><code>current_date</code></a>).</li>
 <li>Añade un id incremental para cada fila (campo <code>Id</code>) y haz que al hacer un <code>show</code> se vea en primer lugar (puedes utilizar la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.monotonically_increasing_id.html"><code>monotonically_increasing_id</code></a>) seguidos del <code>Nombre</code>, <code>Edad</code>, <code>AnyoNac</code>, <code>FaltaJubilacion</code> y <code>Ciudad</code></li>
 </ol>
@@ -2326,17 +2330,26 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 <p>Con las filas restantes, sustituye:</p>
 <ol>
 <li>Los nombres nulos por <code>Empleado</code></li>
-<li>Las ventas nulas por la media de las ventas de los compañeros(redondeado a entero).</li>
-<li>Los euros nulos por el valor del compañero que menos € ha ganado</li>
-<li>La ciudad nula por <code>C.V.</code></li>
-<li>El identificador nulo por <code>XYZ</code></li>
+<li>
+<p>Las ventas nulas por la media de las ventas de los compañeros (redondeado a entero).</p>
+<div class="admonition tip">
+<p class="admonition-title">Agrupando</p>
+<p>Para obtener la media, aunque lo veremos en la próxima sesión, debes agrupar y luego obtener la media de la columna:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">valor</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">()</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s1">&#39;Ventas&#39;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</li>
+<li>
+<p>Los euros nulos por el valor del compañero que menos € ha ganado. (tras agrupar, puedes usar la función <code>min</code>)</p>
+</li>
+<li>La ciudad nula por <code>C.V.</code> y el identificador nulo por <code>XYZ</code></li>
 </ol>
 <p>Para los pasos ii) y iii) puedes crear un <em>DataFrame</em> que obtenga el valor a asignar y luego pasarlo como parámetro al método para rellenar los nulos.</p>
 </li>
 </ol>
 </li>
 <li>
-<p>(1.5p) A partir del archivo <a href="resources/movies.tsv"><code>movies.tsv</code></a>, crea una esquema de forma declarativa con los campos:</p>
+<p>(0.5p) A partir del archivo <a href="resources/movies.tsv"><code>movies.tsv</code></a>, crea una esquema de forma declarativa con los campos:</p>
 <ul>
 <li><code>interprete</code> de tipo <code>string</code></li>
 <li><code>pelicula</code> de tipo <code>string</code></li>
@@ -2345,13 +2358,8 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 <p>Cada fila del fichero implica que el actor/actriz ha trabajado en dicha película en el año indicado.</p>
 <ol>
 <li>Una vez creado el esquema, carga los datos en un <em>DataFrame</em>.</li>
-<li>¿Cuantas películas diferentes hay?</li>
-<li>¿En cuantas películas ha trabajado <code>Murphy, Eddie (I)</code>?</li>
+<li>Muestra las películas en las que ha trabajado <code>Murphy, Eddie (I)</code>.</li>
 <li>Muestra los intérpretes que aparecen tanto en <code>Superman</code> como en <code>Superman II</code>.</li>
-<li>¿Cuáles son los actores que han aparecido en más de 30 películas?</li>
-<li>¿En que película anterior a 1980 aparecen al menos 25 intérpretes?</li>
-<li>Muestra la cantidad de películas producidas cada año (solo debe mostrar el año y la cantidad), ordenando el listado por la cantidad de forma descendente.</li>
-<li>A partir de la consulta anterior, crea un gráfico de barras que muestre el año y la cantidad de películas, ordenados por fecha.</li>
 </ol>
 </li>
 </ol>

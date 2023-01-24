@@ -1520,7 +1520,7 @@
 <p>Para crear una cuenta gratuita, clickando sobre <em>Sign up</em>, tras rellenar los datos personales, antes de seleccionar el proveedor <em>cloud</em>, en la parte inferior, hemos de pulsar sobre <em>Get started with Community Edition</em>:</p>
 <figure style="align: center;">
     <img src="images/01spark-databricks-signup.png">
-    <figcaption>Creación una cuenta Community en Databricks</figcaption>
+    <figcaption>Creación de una cuenta Community en Databricks</figcaption>
 </figure>
 
 <p>El único paso inicial tras registrarnos, es crear un clúster básico (con 15.3GB de memoria y dos núcleos) desde la opción <em>Create</em> del menú de la izquierda:</p>
@@ -1539,7 +1539,7 @@
 <div class="admonition tip">
 <p class="admonition-title">Navegador de archivos DBFS</p>
 <p>Por defecto, el navegador del sistema de archivos de DataBricks está oculto.
-Para facilitar el acceso a los datos y visualizar la estructura y ruta de los mismos, lo podemos activar desde: Settings -&gt; Admin Console -&gt; Workspace Settings -&gt; Advanced, y ponemos la opción <em>DBFS File Browser</em> a <em>Enabled</em>.</p>
+Para facilitar el acceso a los datos y visualizar la estructura y ruta de los mismos, lo podemos activar desde: <em>Settings</em> → <em>Admin Console</em> → <em>Workspace Settings</em> → <em>Advanced</em>, y ponemos la opción <strong><em>DBFS File Browser</em></strong> a <em>Enabled</em>.</p>
 </div>
 <h3 id="sparkcontext-vs-sparksession">SparkContext vs SparkSession<a class="headerlink" href="#sparkcontext-vs-sparksession" title="Permanent link">&para;</a></h3>
 <p><em>SparkContext</em> es el punto de entrada a <em>Spark</em> desde las versiones 1.x y se utiliza para crear de forma programativa RDD, acumuladores y variables <em>broadcast</em> en el clúster. Desde Spark 2.0, la mayoría de funcionalidades (métodos) disponibles en <em>SparkContext</em> también los están en <em>SparkSession</em>. Su objeto <code>sc</code> está disponible en el <em>spark-shell</em> y se puede crear de forma programativa mediante la clase <code>SparkContext</code>.</p>
