@@ -19,7 +19,7 @@
         <link rel="next" href="02agregaciones.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.5">
     
     
       
@@ -1717,7 +1717,7 @@ Así pues, cada columna de un <em>DataFrame</em> de <em>Spark</em> se modela med
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">Tipos</p>
-<p>Además de cadenas y enteros, flotantes (<code>FloatType</code>) o dobles (<code>DoubleType</code>), tenemos tipos booleanos (<code>BooleanType</code>), de fecha (DateType y TimestampType), así como tipos complejos como <code>ArrayType</code>, <code>MapType</code> y <code>StructType</code>.
+<p>Además de cadenas y enteros, flotantes (<code>FloatType</code>) o dobles (<code>DoubleType</code>), tenemos tipos booleanos (<code>BooleanType</code>), de fecha (<code>DateType</code> y <code>TimestampType</code>), así como tipos complejos como <code>ArrayType</code>, <code>MapType</code> y <code>StructType</code>.
 Para más información, consultar la <a href="https://spark.apache.org/docs/latest/sql-ref-datatypes.html">documentación oficial</a>.</p>
 </div>
 <p>Volvamos al ejemplo anterior donde tenemos ciertos datos de clientes, como son su nombre y apellidos, ciudad y sueldo:</p>
@@ -1737,7 +1737,7 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="5 "></span>    <span class="n">StructField</span><span class="p">(</span><span class="s2">&quot;sueldo&quot;</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">(),</span> <span class="kc">False</span><span class="p">)</span>
 <span class="linenos" data-linenos="6 "></span><span class="p">])</span>
 </code></pre></div>
-<p>A continuación ya podemos crear un <em>DataFrame</em> con datos propios que cumplen un esquema haciendo uso del método <code>createDataFrame</code>:</p>
+<p>A continuación ya podemos crear un <em>DataFrame</em> con datos propios que cumplen un esquema haciendo uso del método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.createDataFrame.html"><code>createDataFrame</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">clientes</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">esquema</span><span class="p">)</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="c1"># root</span>
@@ -1775,7 +1775,7 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="8 "></span><span class="n">df</span><span class="o">.</span><span class="n">schema</span>
 <span class="linenos" data-linenos="9 "></span><span class="c1"># StructType(List(StructField(nombre,StringType,false),StructField(apellidos,StringType,false),StructField(ciudad,StringType,true),StructField(sueldo,IntegerType,false)))</span>
 </code></pre></div>
-<p>Si una vez hemos cargado un <em>DataFrame</em> queremos cambiar el tipo de una de sus columnas, podemos hacer uso del método <code>withColumn</code>:</p>
+<p>Si una vez hemos cargado un <em>DataFrame</em> queremos cambiar el tipo de una de sus columnas, podemos hacer uso del método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.withColumn.html"><code>withColumn</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Forma larga</span>
 <span class="linenos" data-linenos="2 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">DoubleType</span>
 <span class="linenos" data-linenos="3 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;sueldo&quot;</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">sueldo</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">DoubleType</span><span class="p">())</span>
@@ -1867,7 +1867,6 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="5 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ProductID&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Revenue&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="linenos" data-linenos="6 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">col</span><span class="p">(</span><span class="s2">&quot;ProductID&quot;</span><span class="p">),</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-<p>https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.join.html</p>
 <h4 id="col-vs-expr">col vs expr<a class="headerlink" href="#col-vs-expr" title="Permanent link">&para;</a></h4>
 <p>En ocasiones se confunde el uso de la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.col.html"><code>col</code></a> con <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.expr.html"><code>expr</code></a>. Aunque podemos referenciar a una columna haciendo uso de <code>expr</code>, su uso provoca que se parseé la cadena recibida para interpretarla.</p>
 <p>Para el siguiente ejemplo, supongamos que tenemos un <em>DataFrame</em> con datos de clientes. Utilizaremos también la función <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.concat_ws.html">concat_ws</a> para concatenar textos utilizado un separador.</p>
@@ -1895,7 +1894,7 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 </code></pre></div>
 <div class="admonition info">
 <p class="admonition-title">withColumn</p>
-<p>Anteriormente hemos utilizado el método <code>withColumn</code> para cambiarle el tipo a un campo ya existente. Así pues, si referenciamos a una columna que ya existe, en vez de crearla, la sustituirá.</p>
+<p>Anteriormente hemos utilizado el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.withColumn.html">withColumn</a> para cambiarle el tipo a un campo ya existente. Así pues, si referenciamos a una columna que ya existe, en vez de crearla, la sustituirá.</p>
 </div>
 <p>Otra forma de añadir una columna con una expresión es mediante la transformación <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.selectExpr.html"><code>selectExpr</code></a>. Por ejemplo, podemos conseguir el mismo resultado que en el ejemplo anterior de la siguiente manera:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">selectExpr</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="s2">&quot;Units * Revenue as total&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span><span class="err">`</span>
@@ -2219,7 +2218,7 @@ dependiendo del tipo de vista:</p>
 <span class="linenos" data-linenos="2 "></span><span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">dropGlobalTempView</span><span class="p">(</span><span class="s2">&quot;ventasg&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="trabajando-con-databricks">Trabajando con <em>Databricks</em><a class="headerlink" href="#trabajando-con-databricks" title="Permanent link">&para;</a></h2>
-<p>En la sesión anterior ya vimos como crear RDDs con <em>Databricks</em>. En esta ocasión, vamos a trabajar mediante <em>DataFrames</em> y SQL para ver toda la flexibilidad que nos aporta.</p>
+<p>En la sesión anterior ya vimos como crear RDDs con <a href="https://community.cloud.databricks.com/login.html"><em>Databricks</em></a>. En esta ocasión, vamos a trabajar mediante <em>DataFrames</em> y SQL para ver toda la flexibilidad que nos aporta.</p>
 <p>Una vez creado de nuevo el cluster, vamos a cargar los datos mediante la opción <em>Data</em>, subiendo el archivo <a href="resources/pdi_sales_small.csv"><code>pdi_sales_small.csv</code></a>:</p>
 <figure style="align: center;">
     <img src="images/02spark-databricks-upload.png">
