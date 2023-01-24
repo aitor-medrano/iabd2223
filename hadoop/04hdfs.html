@@ -1673,6 +1673,24 @@ Este diseño permite que HDFS escale de manera adecuada, ya que el tráfico de l
     <figcaption>HDFS en Hue</figcaption>
 </figure>
 
+<!--
+1. Abrir DBeaver, y crear una base de datos llamada hue.
+2. Abrir el archivo de configuración de Hue:
+    nano /opt/hue-4.10.0/desktop/conf/hue.ini
+3. En la sección [database], copiar estos valores:
+    engine=mysql
+    host=localhost
+    port=3306
+    user=iabd
+    password=iabd
+    name=hue
+
+4. Guardar el fichero
+5. Ejecutar las migraciones para la creación de las tablas de Hue. Desde la carpeta de Hue:
+    ./build/env/bin/hue migrate
+6. Arrancar Hadoop, HiveServer2 y Hue y probar que funciona.
+-->
+
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Documentación de <a href="https://hadoop.apache.org/docs/stable/">Apache Hadoop</a>.</li>

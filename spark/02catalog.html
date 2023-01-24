@@ -1883,33 +1883,37 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 </figure>
 
 <h3 id="el-ecosistema-delta">El ecosistema Delta<a class="headerlink" href="#el-ecosistema-delta" title="Permanent link">&para;</a></h3>
-<p>Delta Lake se utiliza en su mayor medida como <em>lakehouse</em> por más de 7000 empresas, procesando exabytes de datos por día.</p>
-<p>Sin embargo, los <em>data warehouses</em> y las aplicaciones de <em>machine learning</em> no son el único objetivo de <em>Delta Lake</em>, ya que el soporte transaccional ACID aporta confiabilidad al <em>data lake</em> y permite ingestar y consumir datos tanto en streaming como por lotes.</p>
-<p>Otro componente importante es <em>Delta Sharing</em>, el cual permite a las compañías compartir conjuntos de datos con otros de una forma segura.</p>
-<hr />
-<p>Delta Lake 2.0 now also supports standalone readers and writers, enabling any client (Python, Ruby or Rust) to write data directly to Delta Lake without requiring any big data engine such as Spark or Flink.</p>
-<p>Data Lake ships with an extended set of open-source connectors, including Presto, Flink and Trino.</p>
-<p>The Delta Lake storage layer is now used extensively on many different platforms, include Azure Data Lake Storage Gen 2, Amazon s3 and Google’s Cloud Storage. All components of Delta Lake 2.0 have been open sourced by Databricks.</p>
-<p>The success of Delta Lake and data lakehouses has spawned a completely new ecosystem, build around the Delta technology. This ecosystem is made up of a variety of individual components including Delta Lake Storage, Delta Sharing, and Delta Connectors.</p>
-<h4 id="delta-lake-storage">Delta lake storage<a class="headerlink" href="#delta-lake-storage" title="Permanent link">&para;</a></h4>
-<p>Delta lake storage is an open-source storage layer that runs on top of cloud-based data lakes. It adds transactional capabilities to data lake files and tables, thereby bringing data warehouse-like features to a standard data lake. Delta lake storage is the core component of the ecosystem because all other components depend on this layer.</p>
+<p><em>Delta Lake</em> se utiliza en su mayor medida como <em>lakehouse</em> por más de 7000 empresas, procesando exabytes de datos por día.</p>
+<p>Sin embargo, los <em>data warehouses</em> y las aplicaciones de <em>machine learning</em> no son el único objetivo de <em>Delta Lake</em>, ya que el soporte transaccional ACID aporta confiabilidad al <em>data lake</em> y permite ingestar y consumir datos tanto en <em>streaming</em> como por lotes.</p>
+<p>El ecosistema de <em>DeltaLake</em> se compone de una conjunto de componentes individuales entre los que destacan <em>Delta Lake Storage</em>, <em>Delta Sharing</em>, y <em>Delta Connectors</em>.</p>
+<h4 id="delta-lake-storage">Delta Lake Storage<a class="headerlink" href="#delta-lake-storage" title="Permanent link">&para;</a></h4>
+<p>Se trata de una capa de almacenamiento que corre sobre los lagos de datos basados en el cloud, como son <em>Azure Data Lake Storage</em> (ADLS), <em>AWS S3</em> o <em>Google Cloud Storage</em> (GCS), añadiendo transaccionalidad al lago de datos y las tablas, y por tanto, ofreciendo características de un <em>data warehouse</em> a un <em>data lake</em>. </p>
+<p>Se trata del componente principal, ya que el resto de elementos del ecosistema dependen de él.</p>
 <h4 id="delta-sharing">Delta Sharing<a class="headerlink" href="#delta-sharing" title="Permanent link">&para;</a></h4>
-<p>Data sharing is a very common use case in the business world. For example, for preventative maintenance and diagnostic purposes, a mining company might want to securely share IoT information from their massive mining truck engines with the manufacturer. A thermostat manufacturer might want to securely share HVAC data with a public utility to optimize the power grid load on high-usage days. However, in the past, implementing a secure, reliable data sharing solution was very challenging, and required expensive, custom development.</p>
-<p>Delta Sharing is an open-source protocol for securely sharing large datasets of Delta Lake data. It allows a user to securely share data stored in S3, ADLS or GCS. With Delta Sharing users can directly connect to the shared data, using their favorite toolsets like Spark, Rust, Power BI, without having to deploy any additional components. Notice that the data can be shared across cloud providers, without any custom development.</p>
-<p>Delta sharing enables use cases such as:</p>
-<p>Data stored in Azure ADLS can be processed by a Spark Engine on AWS.</p>
-<p>Data stored in AWS S3 can be processed by Rust on GCP.</p>
-<h4 id="delta-connectors">Delta Connectors<a class="headerlink" href="#delta-connectors" title="Permanent link">&para;</a></h4>
-<p>The main goal of Delta Connectors was to bring Delta Lake to other big data engines outside of Apache Spark.</p>
-<p>Delta connectors are open-source connectors that directly connect to Delta Lake. The framework includes Delta Standalone which is a Java native library which allows direct reading and writing the Delta Lake tables without requiring an Apache Spark cluster. Consuming Applications can use Delta Standalone to directly connect to Delta files written by their big data infrastructure. This eliminates the need for data duplication into another format before it can be consumed.</p>
-<p>Other native libraries are available for:</p>
+<p>Todo lago de datos va a tener que compartir sus datos en algún momento, lo que requiere una solución segura y confiable que nos asegure la privacidad deseada en los datos.</p>
+<p><em>Delta Sharing</em> es un protocolo para compartir datos seguros para grandes conjuntos de datos almacenados en el <em>data lake</em>, de manera que podemos compartir los datos almacenados en S3 o <em>ADLS</em> y acceder mediante <em>Spark</em> o <em>PowerBI</em> sin necesidad de desplegar ningún componente adicional, facilitando compartir los datos incluso entre diferentes proveedores cloud sin necesidad de ningún desarrollo.</p>
+<figure style="align: center">
+    <img src="images/02delta-sharing.png">
+    <figcaption>Delta Sharing</figcaption>
+</figure>
+
+<p>Por ejemplo, podemos:</p>
 <ul>
-<li>Hive. The Hive Connector reads Delta tables directly from Apache Hive.</li>
-<li>Flink. The Flink/Delta Connector reads and writes Delta tables from Apache Flink application. The connector includes a sink for writing to Delta tables from Apache Flink, and a source for reading Delta tables using Flink.</li>
-<li>Sql-delta-import. This connector allows for importing data from a JDBC data source directly into a Delta table.</li>
-<li>Power BI. The Power BI connector is a custom Power Query function which allows Power BI to read a Delta table from any file-based data source supported by Microsoft Power BI.</li>
+<li>Procesar en AWS mediante Spark datos que están almacenados en Azure ADLS.</li>
+<li>Procesar en Google mediante Rust datos que están almacenados en S3. </li>
 </ul>
-<p>Delta connectors is a fast-growing ecosystem, with more connectors becoming available on a regular basis. The integrations page on the Delta Lake home page describes the currently available integrations.</p>
+<p>Más información sobre el ecosistema de <em>Delta Sharing</em> en la página de <a href="https://delta.io/sharing"><em>Sharing</em></a> de <em>Delta Lake</em>.</p>
+<h4 id="delta-connectors">Delta Connectors<a class="headerlink" href="#delta-connectors" title="Permanent link">&para;</a></h4>
+<p>El principal objetivo de los conectores <em>Delta</em> es llevar <em>Delta Lake</em> a otros motores de procesamiento ajenos a <em>Spark</em>. Para ello, ofrece conectores open source que realizan la conexión directa a <em>DeltaLake</em> sin necesidad de pasar por <em>Spark</em>.</p>
+<p>Los conectores más destacados son:</p>
+<ul>
+<li><em>Delta Standalone</em>: librerías Java/Python/Rust/etc... para desarrollar aplicaciones que leen y escriben en Delta Lake.</li>
+<li><em>Hive</em>. Lectura de datos desde <em>Apache Hive</em>.</li>
+<li><em>Flink</em>. Lectura y escritura de datos desde <em>Apache Flink</em>.</li>
+<li><em>Sql-delta-import</em>. Permite importar datos desde cualquier fuente de datos JDBC.</li>
+<li><em>Power BI</em>. Función de Power Query que permite la lectura  de una tabla Delta desde cualquier fuente de datos soportado por Power BI.</li>
+</ul>
+<p>Más información sobre los conectores existentes, donde cada día hay más, en la página de <a href="https://delta.io/integrations">Integrations</a> de <em>Delta Lake</em>.</p>
 <h2 id="hola-delta">Hola Delta<a class="headerlink" href="#hola-delta" title="Permanent link">&para;</a></h2>
 <p>Al arrancar Spark, le pone como package io.delta:delta-core_2.12:1.1.0</p>
 <p>A la hora de escribir un df, le indicamos como format("delta")</p>
@@ -1952,14 +1956,18 @@ https://rhuanca.medium.com/on-premise-delta-lake-con-minio-da87f5f2b331
 <li><a href="https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/">Modern Data Engineering with Apache Spark - Scott Haines - Apress</a></li>
 <li><a href="https://www.youtube.com/watch?v=_pCUra3_BGA">Construir data lakes fiables con Delta Lake - Carlos del Cacho</a></li>
 <li><a href="https://learning.oreilly.com/library/view/delta-lake-up/9781098139711/">Delta Lake: Up and Running - Bennie Haelen - O'Reilly</a></li>
-<li>[Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores]https://www.databricks.com/wp-content/uploads/2020/08/p975-armbrust.pdf</li>
+<li><a href="https://www.databricks.com/wp-content/uploads/2020/08/p975-armbrust.pdf">Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.">CE4.1b</abbr>) En las siguientes actividades vamos a familiarizarnos con el uso del API de <em>Spark JDBC</em>, el acceso al catálogo y <em>DeltaLake</em>.</p>
 <ol>
-<li>Cargar un par de tablas desde retail_db. Realizar un join en un nuevo DataFrame. Persistir en una nueva tabla de la BD.</li>
-<li>Crear una tabla gestionada a partir del ejercicio anterior. Añadir un comentario a la tabla y a todas las columnas.
-Cachear la tabla.</li>
-<li>Crear un ejemplo básico con DeltaLake</li>
+<li>(1p) Vamos a repetir una actividad que realizamos durante la sesión de Hive. Para ello, se pide recuperar desde la base de datos <code>retail_db</code> las tablas <code>customers</code> y <code>orders</code> en dos dataframes, realizar un <em>join</em> de manera que contenga la información de cada pedido y la ciudad del cliente.</li>
+<li>
+<p>(1p) Sobre el <em>dataframe</em> anterior, crea una tabla gestionada en el catálogo cuyo nombre sea <code>pedidos_ciudad</code>, y añade comentarios tanto a a la tabla como a sus columnas.</p>
+</li>
+<li>
+<p>(1p) Crear un ejemplo básico con DeltaLake</p>
+</li>
 </ol>
 
 
