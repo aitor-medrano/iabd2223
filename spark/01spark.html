@@ -1536,6 +1536,11 @@
 </figure>
 
 <p>Si queremos, podemos hacer <a href="https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/258974416188569/67277107946785/7969755578738041/latest.html">público</a> el cuaderno y compartirlo con la comunidad.</p>
+<div class="admonition tip">
+<p class="admonition-title">Navegador de archivos DBFS</p>
+<p>Por defecto, el navegador del sistema de archivos de DataBricks está oculto.
+Para facilitar el acceso a los datos y visualizar la estructura y ruta de los mismos, lo podemos activar desde: Settings -&gt; Admin Console -&gt; Workspace Settings -&gt; Advanced, y ponemos la opción <em>DBFS File Browser</em> a <em>Enabled</em>.</p>
+</div>
 <h3 id="sparkcontext-vs-sparksession">SparkContext vs SparkSession<a class="headerlink" href="#sparkcontext-vs-sparksession" title="Permanent link">&para;</a></h3>
 <p><em>SparkContext</em> es el punto de entrada a <em>Spark</em> desde las versiones 1.x y se utiliza para crear de forma programativa RDD, acumuladores y variables <em>broadcast</em> en el clúster. Desde Spark 2.0, la mayoría de funcionalidades (métodos) disponibles en <em>SparkContext</em> también los están en <em>SparkSession</em>. Su objeto <code>sc</code> está disponible en el <em>spark-shell</em> y se puede crear de forma programativa mediante la clase <code>SparkContext</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkContext</span>
