@@ -1377,7 +1377,7 @@
 
 
 
-<h1 id="spark-jdbc-y-uso-del-catalogo-delta-lake">Spark JDBC y uso del catálogo. Delta Lake.<a class="headerlink" href="#spark-jdbc-y-uso-del-catalogo-delta-lake" title="Permanent link">&para;</a></h1>
+<h1 id="spark-jdbc-y-uso-del-catalogo-delta-lake">Spark JDBC y uso del catálogo. Delta Lake<a class="headerlink" href="#spark-jdbc-y-uso-del-catalogo-delta-lake" title="Permanent link">&para;</a></h1>
 <h2 id="conectando-con-bases-de-datos">Conectando con bases de datos<a class="headerlink" href="#conectando-con-bases-de-datos" title="Permanent link">&para;</a></h2>
 <p>Para conectar desde <a href="https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html">Spark con una base de datos relacional</a> (<em>RDBMS</em>) necesitamos:</p>
 <ul>
@@ -1630,7 +1630,10 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <p>Una vez creada, la activamos mediante <code>use</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;use s8a&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>FIXME: continuar https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_6_Chapter.xhtml#PC17</p>
+<!--
+FIXME: continuar https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_6_Chapter.xhtml#PC17
+-->
+
 <h3 id="trabajando-con-tablas">Trabajando con tablas<a class="headerlink" href="#trabajando-con-tablas" title="Permanent link">&para;</a></h3>
 <p>Vamos a suponer que tenemos el <em>DataFrame</em> de clientes que hemos cargado previamente desde JDBC, y creamos una vista sobre él:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">jdbcDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
@@ -1721,7 +1724,7 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;DROP TABLE IF EXISTS cliente&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="spark-y-el-metastore">Spark y el Metastore<a class="headerlink" href="#spark-y-el-metastore" title="Permanent link">&para;</a></h3>
-<p>Para comprender cómo se almancenan los metadatos de las bases de datos y las tablas gestionadas es importante conocer donde se almacenan los metadatos.</p>
+<p>Para comprender cómo se almacenan los metadatos de las bases de datos y las tablas gestionadas es importante conocer donde se almacenan los metadatos.</p>
 <p>Si abrimos un terminal y accedemos al MySQL de nuestra máquina virtual, podemos ver todas las tablas que utiliza el Hive Metastore:</p>
 <div class="highlight"><pre><span></span><code><span class="hll"><span class="linenos" data-linenos=" 1 "></span>$<span class="w"> </span>mysql<span class="w"> </span>-uiabd<span class="w"> </span>-piabd
 </span><span class="linenos" data-linenos=" 2 "></span>Welcome<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>MariaDB<span class="w"> </span>monitor.<span class="w">  </span>Commands<span class="w"> </span>end<span class="w"> </span>with<span class="w"> </span><span class="p">;</span><span class="w"> </span>or<span class="w"> </span><span class="se">\g</span>.
@@ -1887,7 +1890,7 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <p>Sin embargo, los <em>data warehouses</em> y las aplicaciones de <em>machine learning</em> no son el único objetivo de <em>Delta Lake</em>, ya que el soporte transaccional ACID aporta confiabilidad al <em>data lake</em> y permite ingestar y consumir datos tanto en <em>streaming</em> como por lotes.</p>
 <p>El ecosistema de <em>DeltaLake</em> se compone de una conjunto de componentes individuales entre los que destacan <em>Delta Lake Storage</em>, <em>Delta Sharing</em>, y <em>Delta Connectors</em>.</p>
 <h4 id="delta-lake-storage">Delta Lake Storage<a class="headerlink" href="#delta-lake-storage" title="Permanent link">&para;</a></h4>
-<p>Se trata de una capa de almacenamiento que corre sobre los lagos de datos basados en el cloud, como son <em>Azure Data Lake Storage</em> (ADLS), <em>AWS S3</em> o <em>Google Cloud Storage</em> (GCS), añadiendo transaccionalidad al lago de datos y las tablas, y por tanto, ofreciendo características de un <em>data warehouse</em> a un <em>data lake</em>. </p>
+<p>Se trata de una capa de almacenamiento que corre sobre los lagos de datos basados en el cloud, como son <em>Azure Data Lake Storage</em> (ADLS), <em>AWS S3</em> o <em>Google Cloud Storage</em> (GCS), añadiendo transaccionalidad al lago de datos y las tablas, y por tanto, ofreciendo características de un <em>data warehouse</em> a un <em>data lake</em>.</p>
 <p>Se trata del componente principal, ya que el resto de elementos del ecosistema dependen de él.</p>
 <h4 id="delta-sharing">Delta Sharing<a class="headerlink" href="#delta-sharing" title="Permanent link">&para;</a></h4>
 <p>Todo lago de datos va a tener que compartir sus datos en algún momento, lo que requiere una solución segura y confiable que nos asegure la privacidad deseada en los datos.</p>
@@ -1900,7 +1903,7 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <p>Por ejemplo, podemos:</p>
 <ul>
 <li>Procesar en AWS mediante Spark datos que están almacenados en Azure ADLS.</li>
-<li>Procesar en Google mediante Rust datos que están almacenados en S3. </li>
+<li>Procesar en Google mediante Rust datos que están almacenados en S3.</li>
 </ul>
 <p>Más información sobre el ecosistema de <em>Delta Sharing</em> en la página de <a href="https://delta.io/sharing"><em>Sharing</em></a> de <em>Delta Lake</em>.</p>
 <h4 id="delta-connectors">Delta Connectors<a class="headerlink" href="#delta-connectors" title="Permanent link">&para;</a></h4>
@@ -1934,7 +1937,10 @@ Si partimos de los datos que teníamos en el <em>DataFrame</em> de clientes, pod
 </code></pre></div>
 <p>--</p>
 <h3 id="por-dentro">Por dentro<a class="headerlink" href="#por-dentro" title="Permanent link">&para;</a></h3>
-<p>https://www.bbva.com/es/delta-lake-dale-potencia-a-tus-datos/</p>
+<!--
+https://www.bbva.com/es/delta-lake-dale-potencia-a-tus-datos/
+-->
+
 <h3 id="vacuum">vacuum<a class="headerlink" href="#vacuum" title="Permanent link">&para;</a></h3>
 <p>Cuando hacemos un overwrite de los datos, cada vez guarda una copia de lo que había y lo nuevo ... esto puede provocar que se llene el disco de los workers .... para eso está el vacuum, por ejemplo, 7 días, y significa que va a guardar el histórico de los últimos 7 días.</p>
 <p>Por cada 10 operaciones que aparezca en los logs con json, se crea un archivo Parquet.</p>
