@@ -2126,8 +2126,8 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="27 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
 <span class="linenos" data-linenos="28 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
 </code></pre></div>
-<p>También podemos indicar la cantidad de nulos que ha de contener cada fila para eliminarla mediante el parámetro <code>thresh</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Elimina las filas con 3 o más nulos</span>
+<p>También podemos indicar la cantidad de valores no nulos que ha de contener cada fila para eliminarla mediante el parámetro <code>thresh</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Elimina las filas que tengan menos de 3 valores rellenados</span>
 <span class="linenos" data-linenos="2 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">thresh</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
 </code></pre></div>
 </li>
