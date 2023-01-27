@@ -1619,7 +1619,7 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <span class="linenos" data-linenos="10 "></span><span class="c1">#  Database(name=&#39;iabd&#39;, description=&#39;&#39;, locationUri=&#39;hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db&#39;)]</span>
 </code></pre></div>
 <p>De manera que obtenemos las bases de datos que está utilizando actualmente (como puedes observar, son las bases de datos que hemos creado previamente en la sesión de <a href="../hadoop/06hive.html">Hive</a>).</p>
-<p>Si queremos vel cual nuestra base de datos activa, utilizaremos el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.currentDatabase.html"><code>currentDatabase</code></a>:</p>
+<p>Si queremos ver cual nuestra base de datos activa, utilizaremos el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.currentDatabase.html"><code>currentDatabase</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">currentDatabase</span><span class="p">()</span>
 <span class="linenos" data-linenos="2 "></span><span class="c1"># &#39;default&#39;</span>
 </code></pre></div>
@@ -1630,8 +1630,19 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <p>Una vez creada, la activamos mediante <code>use</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;use s8a&quot;</span><span class="p">)</span>
 </code></pre></div>
+<p>Si comprobamos la ruta, podemos ver cómo la ha creado en el almacén de Spark:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">listDatabases</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># [Database(name=&#39;default&#39;, description=&#39;Default Hive database&#39;, locationUri=&#39;hdfs://iabd-virtualbox:9000/user/hive/warehouse&#39;),</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1">#  Database(name=&#39;iabd&#39;, description=&#39;&#39;, locationUri=&#39;hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db&#39;),</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span><span class="c1">#  Database(name=&#39;s8a&#39;, description=&#39;&#39;, locationUri=&#39;file:/opt/spark-3.3.1/warehouse/s8a.db&#39;)]</span>
+</span></code></pre></div>
 <!--
 FIXME: continuar https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_6_Chapter.xhtml#PC17
+
+https://towardsdatascience.com/3-ways-to-create-tables-with-apache-spark-32aed0f355ab
+
+https://cca175.itversity.com/spark-python/08_spark_metastore.html
+https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/demo/demo-connecting-spark-sql-to-hive-metastore.html
 -->
 
 <h3 id="trabajando-con-tablas">Trabajando con tablas<a class="headerlink" href="#trabajando-con-tablas" title="Permanent link">&para;</a></h3>
@@ -1673,16 +1684,40 @@ FIXME: continuar https://learning.oreilly.com/library/view/modern-data-engineeri
 <p>Por defecto, al persistir una tabla, se realiza en formato <em>Parquet</em> y comprimido mediante <em>Snappy</em>.</p>
 </div>
 <h4 id="tablas-externas">Tablas externas<a class="headerlink" href="#tablas-externas" title="Permanent link">&para;</a></h4>
-<p>FIXME: revisar y reescribir ... probar con la MV</p>
-<p>Si queremos crear una tabla no gestionada, también conocida como tabla externa, la cual puede que se almacenen como <a href="https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html">tablas en Hive</a>,necesitamos indicar la ruta de los datos en el momento de creación:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;CREATE TABLE ventasext(ProductID INT, Date STRING, </span>
-<span class="linenos" data-linenos="2 "></span><span class="s2">  Zip STRING, Units INT, Revenue DOUBLE, Country STRING) </span>
-<span class="linenos" data-linenos="3 "></span><span class="s2">  USING csv OPTIONS (PATH </span>
-<span class="linenos" data-linenos="4 "></span><span class="s2">  &#39;/pdi_sales_small.csv&#39;)&quot;&quot;&quot;</span><span class="p">)</span>
+<p>Si queremos crear una tabla no gestionada, también conocida como tabla externa, la cual se almacena como <a href="https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html">tablas en Hive</a>, necesitamos indicar la ruta de los datos en el momento de la creación mediante la clausula <code>LOCATION</code>.</p>
+<p>Vamos a crear una tabla de clientes con los datos que tenemos almacenados en HDFS que <a href="../hadoop/06hive.html#caso-de-uso-1-creación-y-borrado-de-tablas">cargamos mediante Sqoop en la sesión de Hive</a> en la ruta <code>/user/iabd/hive/customer</code>.</p>
+<p>Así pues, nuestra sentencia DDL sería:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="s2">CREATE EXTERNAL TABLE IF NOT EXISTS clientese</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="s2">(</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="s2">  custId INT,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="s2">  fName STRING,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="s2">  lName STRING,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="s2">  city STRING</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="s2">)</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="s2">ROW FORMAT DELIMITED</span>
+<span class="linenos" data-linenos="10 "></span><span class="s2">FIELDS TERMINATED BY &#39;|&#39;</span>
+<span class="linenos" data-linenos="11 "></span><span class="s2">STORED AS TEXTFILE</span>
+<span class="linenos" data-linenos="12 "></span><span class="s2">LOCATION &#39;hdfs://iabd-virtualbox:9000/user/iabd/hive/customer&#39;&quot;&quot;&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>Para ello, necesitamos colocar el archivo de datos dentro del almacén del <em>metastore</em>, que en nuestro caso es <code>spark-warehouse/s8a.db/</code></p>
-<p>También podemos crear la tabla indicando la <a href="https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#saving-to-persistent-tables">opción <code>path</code></a>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;/user/iabd/clientes&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;clientes_ext&quot;</span><span class="p">)</span>
+<p>Si volvemos a comprobar las tablas, veremos que que la ha marcado <code>EXTERNAL</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">listTables</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># [Table(name=&#39;clientes&#39;, database=&#39;s8a&#39;, description=&#39;Datos de clientes obtenidos desde retail_db.customers&#39;, tableType=&#39;MANAGED&#39;, isTemporary=False),</span>
+<span class="hll"><span class="linenos" data-linenos="3 "></span><span class="c1">#  Table(name=&#39;clientese&#39;, database=&#39;s8a&#39;, description=None, tableType=&#39;EXTERNAL&#39;, isTemporary=False),</span>
+</span><span class="linenos" data-linenos="4 "></span><span class="c1">#  Table(name=&#39;clientesj&#39;, database=&#39;s8a&#39;, description=None, tableType=&#39;MANAGED&#39;, isTemporary=False)]</span>
+</code></pre></div>
+<p>Y si realizamos una consulta, obtenemos los mismos datos que hay almacenados en HDFS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;select * from clientese limit 3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># +------+-------+---------+-----------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># |custId|  fName|    lName|       city|</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># +------+-------+---------+-----------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># |     1|Richard|Hernandez|Brownsville|</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># |     2|   Mary|  Barrett|  Littleton|</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># |     3|    Ann|    Smith|     Caguas|</span>
+<span class="linenos" data-linenos="8 "></span><span class="c1"># +------+-------+---------+-----------+</span>
+</code></pre></div>
+<p>También podemos crear una tabla externa indicando la <a href="https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#saving-to-persistent-tables">opción <code>path</code></a>, de manera que nos creará los datos en HDFS (recuerda que por defecto almacena los datos en formato <em>Parquet</em>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">jdbcDF</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/spark/customer&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">saveAsTable</span><span class="p">(</span><span class="s2">&quot;clienteses&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h4 id="cargando-tablas">Cargando tablas<a class="headerlink" href="#cargando-tablas" title="Permanent link">&para;</a></h4>
 <p>Una vez las tablas ya están persistidas, en cualquier momento podemos recuperarlas y asociarlas a un nuevo <em>DataFrame</em> mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameReader.table.html"><code>table</code></a>:</p>
