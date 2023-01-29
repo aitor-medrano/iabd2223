@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore,">
+        <meta name="description" content="Apuntes y ejercicios sobre el acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore. Uso de Delta Lake, creación de tablas y operaciones DML sobre los datos.">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Spark Catalog. DeltaLake. - Inteligencia Artificial y Big Data</title>
+        <title>Spark Catalog. Delta Lake. - Inteligencia Artificial y Big Data</title>
       
     
     
@@ -69,9 +69,9 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Spark Catalog. DeltaLake. - Inteligencia Artificial y Big Data" >
+        <meta  property="og:title"  content="Spark Catalog. Delta Lake. - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="Acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore," >
+        <meta  property="og:description"  content="Apuntes y ejercicios sobre el acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore. Uso de Delta Lake, creación de tablas y operaciones DML sobre los datos." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/02catalog.png" >
       
@@ -85,9 +85,9 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Spark Catalog. DeltaLake. - Inteligencia Artificial y Big Data" >
+        <meta  name="twitter:title"  content="Spark Catalog. Delta Lake. - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="Acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore," >
+        <meta  name="twitter:description"  content="Apuntes y ejercicios sobre el acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore. Uso de Delta Lake, creación de tablas y operaciones DML sobre los datos." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/02catalog.png" >
       
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Spark Catalog. DeltaLake.
+              Spark Catalog. Delta Lake.
             
           </span>
         </div>
@@ -969,6 +969,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#arquitectura-medallion" class="md-nav__link">
+    Arquitectura Medallion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#arquitectura-de-un-lakehouse" class="md-nav__link">
     Arquitectura de un Lakehouse
   </a>
@@ -982,18 +989,12 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
+          <li class="md-nav__item">
   <a href="#hola-delta" class="md-nav__link">
     Hola Delta
   </a>
   
-    <nav class="md-nav" aria-label="Hola Delta">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#por-dentro" class="md-nav__link">
@@ -1003,8 +1004,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#vacuum" class="md-nav__link">
-    vacuum
+  <a href="#trabajando-con-tablas-delta" class="md-nav__link">
+    Trabajando con tablas Delta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viajando-en-el-tiempo" class="md-nav__link">
+    Viajando en el tiempo
   </a>
   
 </li>
@@ -1302,6 +1310,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#arquitectura-medallion" class="md-nav__link">
+    Arquitectura Medallion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#arquitectura-de-un-lakehouse" class="md-nav__link">
     Arquitectura de un Lakehouse
   </a>
@@ -1315,18 +1330,12 @@
   
 </li>
         
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
+          <li class="md-nav__item">
   <a href="#hola-delta" class="md-nav__link">
     Hola Delta
   </a>
   
-    <nav class="md-nav" aria-label="Hola Delta">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#por-dentro" class="md-nav__link">
@@ -1336,8 +1345,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#vacuum" class="md-nav__link">
-    vacuum
+  <a href="#trabajando-con-tablas-delta" class="md-nav__link">
+    Trabajando con tablas Delta
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viajando-en-el-tiempo" class="md-nav__link">
+    Viajando en el tiempo
   </a>
   
 </li>
@@ -1599,13 +1615,33 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <p>Volviendo al catálogo de datos, el cual al final es un conjunto de metadatos, actúa como un contrato público que se establece durante la vida del dato, definiendo el cómo, cuándo y el porqué se consume un determinado dato, por ejemplo, indicando la disponibilidad de cada campo (por ejemplo, si tendrá un valor por defecto o nulo), así como reglas sobre la gobernanza y acceso de cada campo, etc...</p>
 <p>El catálogo de datos por excelencia es el que forma parte de <em>Apache Hive</em>, y se conoce como el <strong><em>Hive Metastore</em></strong>, el cual ofrece una fuente veraz para describir la localización, codificación de los datos (texto, Parquet, ORC, ...), el esquema de las columnas, y estadísticas de las tablas almacenadas para facilitar su uso a todos los roles que interactúan con los datos (ingenieros de datos, analistas, ingenieros de ML, ...)</p>
 <h3 id="bases-de-datos">Bases de datos<a class="headerlink" href="#bases-de-datos" title="Permanent link">&para;</a></h3>
-<p>El catálogo se organiza, en su primer nivel, en <strong>bases de datos</strong>, la cuales agrupan y categorizan las tablas que utiliza nuestro equipo de trabajo, permitiendo identificar su propietario y restringir el acceso. Dentro del <em>Hive Metastore</em>, una base de datos funciona como un prefijo dentro de una ruta física dentro de nuestro <em>data warehouse</em>, evitando colisiones entre nombres de tablas.</p>
+<p>El catálogo se organiza, en su primer nivel, en <strong>bases de datos</strong>, la cuales agrupan y categorizan las tablas que utiliza nuestro equipo de trabajo, permitiendo identificar su propietario y restringir el acceso. Dentro del <em>Hive Metastore</em>, una base de datos funciona como un prefijo dentro de una ruta física de nuestro <em>data warehouse</em>, evitando colisiones entre nombres de tablas.</p>
 <div class="admonition tip">
 <p class="admonition-title">Una base de datos por equipo</p>
 <p>Es conveniente que cada equipo de trabajo o unidad de negocio utilice sus propias bases de datos en Spark.</p>
 </div>
 <h4 id="accediendo-al-catalogo">Accediendo al catálogo<a class="headerlink" href="#accediendo-al-catalogo" title="Permanent link">&para;</a></h4>
-<p>En nuestra máquina virtual ya tenemos configurado el uso del <em>Hive Metastore</em> como catálogo de <em>Spark</em>. A partir de la sesión de <em>Spark</em>, podemos acceder al objeto <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/catalog.html"><code>catalog</code></a> que contiene un conjunto de métodos para interactuar con él.</p>
+<p>En nuestra máquina virtual ya tenemos configurado el uso del <em>Hive Metastore</em> como catálogo de <em>Spark</em>. Para ello, hemos colocado dentro de <code>$SPARK_HOME/conf</code> una copia del archivo <code>hive-site.xml</code> con la información de acceso:</p>
+<div class="highlight"><span class="filename">hive-site.xml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nt">&lt;configuration&gt;</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">   </span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionURL<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">    </span><span class="nt">&lt;value&gt;</span>jdbc:mysql://localhost:3306/hive?createDatabaseIfNotExist=true<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionDriverName<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nt">&lt;value&gt;</span>com.mysql.cj.jdbc.Driver<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionUserName<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="nt">&lt;value&gt;</span>iabd<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">  </span><span class="nt">&lt;property&gt;</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionPassword<span class="nt">&lt;/name&gt;</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">    </span><span class="nt">&lt;value&gt;</span>iabd<span class="nt">&lt;/value&gt;</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">  </span><span class="nt">&lt;/property&gt;</span>
+<span class="linenos" data-linenos="18 "></span><span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div>
+<p>A partir de la sesión de <em>Spark</em>, podemos acceder al objeto <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/catalog.html"><code>catalog</code></a> que contiene un conjunto de métodos para interactuar con él.</p>
 <p>Podemos comprobar su uso mediante una consulta a <code>show databases</code> o accediendo al método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.listDatabases.html"><code>listDatabases()</code></a> del <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/catalog.html"><code>catalog</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;show databases;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="c1"># +---------+</span>
@@ -1619,7 +1655,7 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <span class="linenos" data-linenos="10 "></span><span class="c1">#  Database(name=&#39;iabd&#39;, description=&#39;&#39;, locationUri=&#39;hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db&#39;)]</span>
 </code></pre></div>
 <p>De manera que obtenemos las bases de datos que está utilizando actualmente (como puedes observar, son las bases de datos que hemos creado previamente en la sesión de <a href="../hadoop/06hive.html">Hive</a>).</p>
-<p>Si queremos ver cual nuestra base de datos activa, utilizaremos el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.currentDatabase.html"><code>currentDatabase</code></a>:</p>
+<p>Si queremos ver cual es nuestra base de datos activa, utilizaremos el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.currentDatabase.html"><code>currentDatabase</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">currentDatabase</span><span class="p">()</span>
 <span class="linenos" data-linenos="2 "></span><span class="c1"># &#39;default&#39;</span>
 </code></pre></div>
@@ -1893,10 +1929,10 @@ https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/demo/demo-connect
 <p>El almacenamiento de un <em>data lakehouse</em> se cede a servicios de almacenamiento de objetos, los cuales son muy económicos, como son Amazon S3 o Azure ADLs, almacenando los dato en formatos abiertos como Apache Parquet.</p>
 <p>Sin embargo, para ser un <em>data lakehouse</em>, necesitamos soporte para transacciones ACID. Para ello, debemos tener una capa de metadatos transaccionales sobre el almacenamiento cloud, que defina que objetos forman parte de que versión de tabla.</p>
 <p>Para conseguir un gran rendimiento en las consultas SQL es necesario ofrecer servicios de caché, estructuras de datos auxiliares como índices y estadísticas para poder optimizar la capa de datos.</p>
-<p>La herramienta final es el desarrollo de un API estándar, como es la DataFrame API, la cual soportan herramientas como TensorFlow o Spark MLlib, la cual, de forma declarativa, permite la construcción de un grafo DAG con su ejecución. </p>
+<p>La herramienta final es el desarrollo de un API estándar, como es la DataFrame API, la cual soportan herramientas como <em>TensorFlow</em> o <em>Spark MLlib</em>, la cual permite, de forma declarativa, la construcción de un grafo DAG con su ejecución. </p>
 <p>Otros productos alternativos como implementación del concepto de <em>data lakehouse</em> son <a href="https://iceberg.apache.org/">Apache Iceberg</a> y <a href="https://hudi.apache.org/">Apache Hudi</a>.</p>
 </div>
-<p>Formalmente, podemos decir que <em>Delta Lake</em> ofrece una capa de metadatos, caché e indexación sobre el almacenamiento de un data lake, de manera que ofrece un nivel de abstracción con soporte para transacciones ACID y versionado de los datos.</p>
+<p>Formalmente, podemos decir que <em>Delta Lake</em> ofrece una capa de metadatos, caché e indexación sobre el almacenamiento de un <em>data lake</em>, de manera que ofrece un nivel de abstracción con soporte para transacciones ACID y versionado de los datos.</p>
 <p>Se trata de un proyecto <em>open-source</em> desde que en 2019 <em>Databricks</em> lo liberó. Por supuesto, <em>Databricks</em> ofrece soporte completo de <em>Delta Lake</em> como capa de persistencia de datos.</p>
 <h3 id="caracteristicas">Características<a class="headerlink" href="#caracteristicas" title="Permanent link">&para;</a></h3>
 <p><em>Delta Lake</em> ofrece las siguientes características:</p>
@@ -1908,7 +1944,21 @@ https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/demo/demo-connect
 <li><ins>Evolución y aplicación de esquemas</ins>, al provocar el cumplimiento de un esquema a la hora de leer o escribir datos desde el lago, permitiendo una evolución segura del esquema para casos de uso donde los datos necesitan evolucionar.</li>
 <li><ins>Soporte de metadatos ricos y escalables</ins>, ya que los metadatos pueden crecer y convertirse en <em>big data</em> y no escalar correctamente, de manera que <em>Delta Lake</em> facilita el escalado y procesamiento eficiente mediante Spark pudiendo manejar petabytes de datos.</li>
 </ul>
+<h3 id="arquitectura-medallion">Arquitectura Medallion<a class="headerlink" href="#arquitectura-medallion" title="Permanent link">&para;</a></h3>
+<p>La <a href="https://www.databricks.com/glossary/medallion-architecture">arquitectura <em>Medallion</em></a> es un patrón de diseño de datos que se utiliza para organizar los datos en un <em>lakehouse</em>, con el objetivo de mejorar progresivamente la estructura y calidad de los datos conforme fluyen a través de las diferentes capas de la arquitectura (de la capa <em>raw</em>/bronce a la plata, y de ahí a la oro.)</p>
+<figure style="align: center">
+    <img src="images/02delta-lake-medallion-architecture.jpeg">
+    <figcaption>Arquitectura Medallion de un lago de datos - databricks.com</figcaption>
+</figure>
+
+<p>Conforme los datos transicionan de la capa bronce y plata a la de oro (conforme evolución los datos valen más, y de ahí su material) obtenemos datos más precisos. Cuando realizamos la ingesta de datos mediante procesos <em>batch</em> o en <em>streaming</em> los almacenamos en la capa de bronce en su formato crudo (<em>raw</em>), tras limpiarlos, normalizarlos y realizar el procesado necesario para realizar nuestras consultas, los volvemos a almacenar en la capa de plata (<em>curated</em>). Finalmente, en la capa de oro almacenamos los datos agregados, con las tablas de sumario que contienen los KPI o las tablas necesarias para la visualización de los datos por parte de las herramientas de negocio como <em>PowerBI</em> o <em>Tableau</em>.</p>
+<!--
+FIXME: https://learn.microsoft.com/es-es/azure/databricks/lakehouse/medallion
+-->
+
+<p>Para este flujo de datos entre capas, <em>Databricks</em> ofrece las tablas <em>Delta Live</em> y el uso de <em>pipelines</em> (esta opción no está habilitada en la versión educativa y no la vamos a poder probar). Tenéis un ejemplo completo en <a href="https://www.databricks.com/discover/pages/getting-started-with-delta-live-tables">Getting Started with Delta Live Tables</a>.</p>
 <h3 id="arquitectura-de-un-lakehouse">Arquitectura de un Lakehouse<a class="headerlink" href="#arquitectura-de-un-lakehouse" title="Permanent link">&para;</a></h3>
+<p>El uso de la arquitectura que propone <em>Delta Lake</em> permite el procesamiento simultáneos de los datos <em>batch</em> y en <em>streaming</em>, de manera que podemos tener escribir los datos <em>batch</em> y los flujos en <em>streaming</em> en la misma tabla, y a su vez, se escriben de manera progresiva en otras tablas más limpias y refinadas.</p>
 <p>La arquitectura de un <em>lakehouse</em> se compone de tres capas, y en nuestro caso, se concreta en:</p>
 <ul>
 <li>la capa de almacenamiento, por ejemplo, sobre S3.</li>
@@ -1952,9 +2002,7 @@ https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/demo/demo-connect
 <li><em>Power BI</em>. Función de Power Query que permite la lectura  de una tabla Delta desde cualquier fuente de datos soportado por Power BI.</li>
 </ul>
 <p>Más información sobre los conectores existentes, donde cada día hay más, en la página de <a href="https://delta.io/integrations">Integrations</a> de <em>Delta Lake</em>.</p>
-<h2 id="hola-delta">Hola Delta<a class="headerlink" href="#hola-delta" title="Permanent link">&para;</a></h2>
-<p>Al arrancar Spark, le pone como package io.delta:delta-core_2.12:1.1.0</p>
-<p>A la hora de escribir un df, le indicamos como format("delta")</p>
+<h3 id="hola-delta">Hola Delta<a class="headerlink" href="#hola-delta" title="Permanent link">&para;</a></h3>
 <div class="admonition info">
 <p class="admonition-title">Probando Delta Lake</p>
 <p>Para poder realizar los ejemplos y practicar <em>DeltaLake</em>, en esta sesión nos vamos a centrar en la máquina virtual o mediante <em>DataBricks</em>, ya que no existe (de momento) una imagen de <em>DeltaLake</em> para <em>Docker</em>.</p>
@@ -1962,23 +2010,137 @@ https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/demo/demo-connect
 <p>Si nos centramos en nuestra instalación de la máquina virtual, cuando lanzamos <code>pyspark</code> tenemos que indicarle que vamos a utilizar <code>delta</code> mediante la opción <code>packages</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pyspark<span class="w"> </span>--packages<span class="w"> </span>io.delta:delta-core_2.12:2.1.0<span class="w"> </span>--conf<span class="w"> </span><span class="s2">&quot;spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension&quot;</span><span class="w"> </span>--conf<span class="w"> </span><span class="s2">&quot;spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog&quot;</span>
 </code></pre></div>
-<p>Alias pysparkdl</p>
-<p>Una vez hemos arrancado, creamos una sesión xxxx.
-Si partimos de los datos que teníamos en el <em>DataFrame</em> de clientes, podemos persistirlos en Delta:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">ejemplo</span> <span class="n">con</span> <span class="n">persistencia</span> <span class="n">en</span> <span class="n">Delta</span> <span class="n">de</span> <span class="n">clientes</span>
+<p>Para facilitar su uso, en nuestro máquina virtual hemos creado un alias:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pysparkdl
 </code></pre></div>
-<p>Si queremos sobrescribir los datos, necesitamos indicarle el modo <code>overwrite</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>
+<p>Si partimos de los datos que teníamos en el <em>DataFrame</em> de clientes, podemos persistirlos en Delta indicando su formato mediante <code>format("delta")</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;use s8a&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;clientes&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># DeltaLake el Local</span>
+<span class="linenos" data-linenos="4 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;/tmp/raw/clientes&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># DeltaLake el DataBricks</span>
+<span class="linenos" data-linenos="6 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;/delta/raw/clientes&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># DeltaLake el HDFS</span>
+<span class="linenos" data-linenos="8 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes&quot;</span><span class="p">)</span>
 </code></pre></div>
-<p>--</p>
+<p>Si intentamos volver a escribir los datos en la misma ruta, obtendremos un error. Si queremos sobrescribir los datos, necesitamos indicarle el modo <code>overwrite</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;/tmp/raw/clientes&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Para recuperar los datos, realizamos una lectura indicando siempre el formato <code>delta'</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># DeltaLake el Local</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">dfdeltal</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;/tmp/raw/clientes&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dfdeltahdfs</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes&quot;</span><span class="p">)</span>
+</code></pre></div>
 <h3 id="por-dentro">Por dentro<a class="headerlink" href="#por-dentro" title="Permanent link">&para;</a></h3>
+<p>Si accedemos al sistema de archivos local, HDFS o Databricks DBFS, podemos analizar la estructura de archivos que ha utilizado para almacenar la información.</p>
+<p><em>Delta Lake</em> almacena los datos en formato <em>Parquet</em> en la ruta indicada (y si hubiéramos indicando particiones, en sus subcarpetas), y luego crea una carpeta denominada <code>_delta_log</code> donde almacena el <em>DeltaLog</em> o log transaccional en formato JSON, en el cual va registrando los cambios <em>delta</em> que se realizan sobre los datos. </p>
+<p>Vamos a comprobar qué datos se han almacenado en HDFS:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~/datos$<span class="w"> </span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-ls<span class="w"> </span>-R<span class="w"> </span>/user/iabd/delta/raw/clientes
+<span class="linenos" data-linenos="2 "></span>drwxr-xr-x<span class="w">   </span>-<span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">          </span><span class="m">0</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log
+<span class="linenos" data-linenos="3 "></span>-rw-r--r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">2605</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log/00000000000000000000.json
+<span class="linenos" data-linenos="4 "></span>-rw-r--r--<span class="w">   </span><span class="m">3</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">     </span><span class="m">251875</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/part-00000-05cb7b9c-c529-4f5e-83ab-0dc79d0422bf-c000.snappy.parquet
+</code></pre></div>
+<p>Si realizamos otra operación, por ejemplo, sobrescribimos la tabla, generará nuevos datos y otro fichero de log:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Lo comprobamos volviendo a listar los archivos almacenados:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~/datos$<span class="w"> </span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-ls<span class="w"> </span>-R<span class="w"> </span>/user/iabd/delta/raw/clientes
+<span class="linenos" data-linenos="2 "></span>drwxr-xr-x<span class="w">   </span>-<span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">          </span><span class="m">0</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:29<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log
+<span class="linenos" data-linenos="3 "></span>-rw-r--r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">2605</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log/00000000000000000000.json
+<span class="linenos" data-linenos="4 "></span>-rw-r--r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">1592</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:29<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log/00000000000000000001.json
+<span class="linenos" data-linenos="5 "></span>-rw-r--r--<span class="w">   </span><span class="m">3</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">     </span><span class="m">251875</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/part-00000-05cb7b9c-c529-4f5e-83ab-0dc79d0422bf-c000.snappy.parquet
+<span class="linenos" data-linenos="6 "></span>-rw-r--r--<span class="w">   </span><span class="m">3</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">     </span><span class="m">251875</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:29<span class="w"> </span>/user/iabd/delta/raw/clientes/part-00000-1f226209-881f-4ff7-af04-6eedd64e1581-c000.snappy.parquet
+</code></pre></div>
+<p>Ahora vamos a añadir nuevos datos, utilizando un nuevo <em>dataframe</em> e indicando el modo de escritura con <code>append</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;customer_id&#39;</span><span class="p">,</span> <span class="s1">&#39;customer_fname&#39;</span><span class="p">,</span> <span class="s1">&#39;customer_lname&#39;</span><span class="p">]</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">datos</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="p">(</span><span class="mi">88888</span><span class="p">,</span> <span class="s2">&quot;Aitor&quot;</span><span class="p">,</span> <span class="s2">&quot;Medrano&quot;</span><span class="p">),</span> 
+<span class="linenos" data-linenos=" 4 "></span><span class="p">(</span><span class="mi">99999</span><span class="p">,</span> <span class="s2">&quot;Pedro&quot;</span><span class="p">,</span> <span class="s2">&quot;Casas&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="p">]</span>
+<span class="linenos" data-linenos=" 6 "></span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">nuevosClientes</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">datos</span><span class="p">,</span> <span class="n">cols</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># cambiamos el tipo a int pq por defecto le asigna long</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">nuevosClientes</span> <span class="o">=</span> <span class="n">nuevosClientes</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">nuevosClientes</span><span class="o">.</span><span class="n">customer_id</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="s2">&quot;int&quot;</span><span class="p">))</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="n">nuevosClientes</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Fusionando el esquema</p>
+<p>Si los tipos de los datos no cuadran con el esquema almacenado en DeltaLake, tendremos un error. Para habilitar que fusione los esquemas podemos indicarlo con <code>.option("mergeSchema", "true")</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">nuevosClientes</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;mergeSchema&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+<p>Ahora podemos ver como ha creado un nuevo archivo de log pero dos archivos de datos. En concreto, el archivo de log ha registrado las dos inserciones, y cada archivo de <em>Parquet</em> contiene únicamente cada uno de los registros:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~/datos$<span class="w"> </span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-ls<span class="w"> </span>-R<span class="w"> </span>/user/iabd/delta/raw/clientes
+<span class="linenos" data-linenos="2 "></span>drwxr-xr-x<span class="w">   </span>-<span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">          </span><span class="m">0</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:39<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log
+<span class="linenos" data-linenos="3 "></span>-rw-r--r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">2605</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log/00000000000000000000.json
+<span class="linenos" data-linenos="4 "></span>-rw-r--r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">1592</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:29<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log/00000000000000000001.json
+<span class="linenos" data-linenos="5 "></span>-rw-r--r--<span class="w">   </span><span class="m">1</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">1309</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:39<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log/00000000000000000002.json
+<span class="linenos" data-linenos="6 "></span>-rw-r--r--<span class="w">   </span><span class="m">3</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">     </span><span class="m">251875</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/part-00000-05cb7b9c-c529-4f5e-83ab-0dc79d0422bf-c000.snappy.parquet
+<span class="linenos" data-linenos="7 "></span>-rw-r--r--<span class="w">   </span><span class="m">3</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">     </span><span class="m">251875</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:29<span class="w"> </span>/user/iabd/delta/raw/clientes/part-00000-1f226209-881f-4ff7-af04-6eedd64e1581-c000.snappy.parquet
+<span class="linenos" data-linenos="8 "></span>-rw-r--r--<span class="w">   </span><span class="m">3</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">1035</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:39<span class="w"> </span>/user/iabd/delta/raw/clientes/part-00000-b7124036-ce26-4b95-a759-080e829b8de6-c000.snappy.parquet
+<span class="linenos" data-linenos="9 "></span>-rw-r--r--<span class="w">   </span><span class="m">3</span><span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">       </span><span class="m">1020</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:39<span class="w"> </span>/user/iabd/delta/raw/clientes/part-00001-6164f53a-ca34-4b73-96ef-8d2f2cfbbb47-c000.snappy.parquet
+</code></pre></div>
+<p>Por ejemplo, si descargamos y visualizamos uno de los archivos de Parquet veremos sus datos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~/Descargas$<span class="w"> </span>parquet-tools<span class="w"> </span>show<span class="w"> </span>part-00000-b7124036-ce26-4b95-a759-080e829b8de6-c000.snappy.parquet<span class="w"> </span>
+<span class="linenos" data-linenos="2 "></span>+---------------+------------------+------------------+
+<span class="linenos" data-linenos="3 "></span><span class="p">|</span><span class="w">   </span>customer_id<span class="w"> </span><span class="p">|</span><span class="w"> </span>customer_fname<span class="w">   </span><span class="p">|</span><span class="w"> </span>customer_lname<span class="w">   </span><span class="p">|</span>
+<span class="linenos" data-linenos="4 "></span><span class="p">|</span>---------------+------------------+------------------<span class="p">|</span>
+<span class="linenos" data-linenos="5 "></span><span class="p">|</span><span class="w">         </span><span class="m">88888</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Aitor<span class="w">            </span><span class="p">|</span><span class="w"> </span>Medrano<span class="w">          </span><span class="p">|</span>
+<span class="linenos" data-linenos="6 "></span>+---------------+------------------+------------------+
+</code></pre></div>
+<p>Finalmente, si queremos comprobar los datos, a partir del <em>dataframe</em> que habíamos leído desde <em>HDFS</em>, podemos comprobar como los datos ya aparecen:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfdeltahdfs</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># +-----------+--------------+--------------+--------------+-----------------+----------------+-------------+--------------+----------------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># |customer_id|customer_fname|customer_lname|customer_email|customer_password| customer_street|customer_city|customer_state|customer_zipcode|</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># +-----------+--------------+--------------+--------------+-----------------+----------------+-------------+--------------+----------------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># |      99999|         Pedro|         Casas|          null|             null|            null|         null|          null|            null|</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># |      88888|         Aitor|       Medrano|          null|             null|            null|         null|          null|            null|</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># |      12435|         Laura|        Horton|     XXXXXXXXX|        XXXXXXXXX|5736 Honey Downs|  Summerville|            SC|           29483|</span>
+<span class="linenos" data-linenos="8 "></span><span class="c1"># +-----------+--------------+--------------+--------------+-----------------+----------------+-------------+--------------+----------------+</span>
+<span class="linenos" data-linenos="9 "></span><span class="c1"># only showing top 3 rows</span>
+</code></pre></div>
+<h3 id="trabajando-con-tablas-delta">Trabajando con tablas Delta<a class="headerlink" href="#trabajando-con-tablas-delta" title="Permanent link">&para;</a></h3>
+<p>Para trabajar con tablas <em>Delta</em>, aunque podemos realizar todas las operaciones mediante <em>SQL</em>, <em>Delta Lake</em> ofrece un API para realizar modificaciones condicionales, borrados o <em>upserts</em> de datos en las tablas.</p>
+<p>Para ello, el primer paso obtener una tabla <em>delta</em> mediante el método <a href="https://docs.delta.io/latest/api/python/index.html#module-delta.tables"><code>Delta.forPath</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">delta.tables</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="linenos" data-linenos="2 "></span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dtabla</span> <span class="o">=</span> <span class="n">DeltaTable</span><span class="o">.</span><span class="n">forPath</span><span class="p">(</span><span class="n">spark</span><span class="p">,</span> <span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Una vez tenemos la tabla, ya podemos, por ejemplo, modificar las ciudades haciendo uso del método <a href="https://docs.delta.io/latest/api/python/index.html#delta.tables.DeltaTable.update"><code>update(condición, valor)</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dtabla</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;customer_city = &#39;Bruklyn&#39;&quot;</span><span class="p">,</span>  <span class="p">{</span><span class="s2">&quot;customer_city&quot;</span><span class="p">:</span> <span class="s2">&quot;&#39;Brooklyn&#39;&quot;</span><span class="p">})</span>
+</code></pre></div>
+<p>O borrar los clientes de <code>Brownsville</code>, mediante el método <a href="https://docs.delta.io/latest/api/python/index.html#delta.tables.DeltaTable.delete"><code>delete(condición)</code></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dtabla</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;customer_city = &#39;Brownsville&#39;&quot;</span><span class="p">})</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># borramos los últimos clientes insertados</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">dtabla</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;customer_id &gt; 33333&quot;</span><span class="p">)</span>
+</code></pre></div>
 <!--
-https://www.bbva.com/es/delta-lake-dale-potencia-a-tus-datos/
+FIXME: continuar 
+https://docs.delta.io/latest/delta-update.html#language-python
+https://learning.oreilly.com/library/view/learning-spark-2nd/9781492050032/ch09.html#:-:text=Upserting%20change%20data%20to%20a%20table%20using%20merge()
 -->
 
-<h3 id="vacuum">vacuum<a class="headerlink" href="#vacuum" title="Permanent link">&para;</a></h3>
-<p>Cuando hacemos un overwrite de los datos, cada vez guarda una copia de lo que había y lo nuevo ... esto puede provocar que se llene el disco de los workers .... para eso está el vacuum, por ejemplo, 7 días, y significa que va a guardar el histórico de los últimos 7 días.</p>
-<p>Por cada 10 operaciones que aparezca en los logs con json, se crea un archivo Parquet.</p>
+<h3 id="viajando-en-el-tiempo">Viajando en el tiempo<a class="headerlink" href="#viajando-en-el-tiempo" title="Permanent link">&para;</a></h3>
+<p>Podemos realizar consultas sobre <em>snapshots</em> de nuestras tablas delta mediante el <a href="https://docs.delta.io/latest/delta-batch.html#-deltatimetravel"><em>time travel</em></a>.</p>
+<p>Si queremos acceder a datos que hemos sobrescrito, podemos viajar al pasado de la tabla antes de que se sobrescribieran los datos mediante la opción <code>versionAsOf</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;delta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;versionAsOf&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<p>Si comprobamos los datos, veremos que tenemos los datos iniciales tras realizar la carga de los datos.</p>
+<!--
+FIXME: continuar 
+https://learning.oreilly.com/library/view/learning-spark-2nd/9781492050032/ch09.html#auditing_data_changes_with_operation_his
+-->
+
+<!--
+!!! info "vacuum"
+
+    Si comprobamos cuando hemos sobrescrito los datos, cada vez se guarda una copia de lo que había y lo nuevo. Esto puede provocar que se llene el disco de los *workers*. Para ello, Delta Lake utiliza  .... para eso está el vacuum, por ejemplo, 7 días, y significa que va a guardar el histórico de los últimos 7 días.
+
+    Por cada 10 operaciones que aparezca en los logs con json, se crea un archivo Parquet.
+-->
+
 <!--
 Spark DeltaLake:
 https://towardsdatascience.com/from-data-lakes-to-data-reservoirs-aa2efebb4f25
@@ -1990,6 +2152,8 @@ https://learn.microsoft.com/es-es/azure/databricks/delta/
 
 Spark - Minio
 https://rhuanca.medium.com/on-premise-delta-lake-con-minio-da87f5f2b331
+
+https://learning.oreilly.com/library/view/learning-spark-2nd/9781492050032/ch09.html#loading_data_into_a_delta_lake_table
 -->
 
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
@@ -2000,16 +2164,16 @@ https://rhuanca.medium.com/on-premise-delta-lake-con-minio-da87f5f2b331
 <li><a href="https://www.databricks.com/wp-content/uploads/2020/08/p975-armbrust.pdf">Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
-<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.">CE4.1b</abbr>) En las siguientes actividades vamos a familiarizarnos con el uso del API de <em>Spark JDBC</em>, el acceso al catálogo y <em>DeltaLake</em>.</p>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.">CE4.1b</abbr> y <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr>) En las siguientes actividades vamos a familiarizarnos con el uso del API de <em>Spark JDBC</em>, el acceso al catálogo y <em>DeltaLake</em>.</p>
 <ol>
-<li>(1p) Vamos a repetir una actividad que realizamos durante la sesión de Hive. Para ello, se pide recuperar desde la base de datos <code>retail_db</code> las tablas <code>customers</code> y <code>orders</code> en dos dataframes, realizar un <em>join</em> de manera que contenga la información de cada pedido y la ciudad del cliente.</li>
-<li>
-<p>(1p) Sobre el <em>dataframe</em> anterior, crea una tabla gestionada en el catálogo cuyo nombre sea <code>pedidos_ciudad</code>, y añade comentarios tanto a a la tabla como a sus columnas.</p>
-</li>
-<li>
-<p>(1p) Crear un ejemplo básico con DeltaLake</p>
-</li>
+<li>(1p) Vamos a repetir una actividad que realizamos durante la sesión de Hive. Para ello, se pide recuperar desde la base de datos <code>retail_db</code> las tablas <code>customers</code> y <code>orders</code> en dos dataframes tal como hemos hecho en <a href="#leyendo-datos">el apartado Leyendo Datos</a>, y a continuación, realizar un <em>join</em> de manera que contenga la información de cada pedido y la ciudad del cliente.</li>
+<li>(1p) Sobre el <em>dataframe</em> anterior, en la base de datos <code>iabd</code>, crea una tabla gestionada en el catálogo cuyo nombre sea <code>pedidos_ciudad</code>, y añade comentarios tanto a a la tabla como a sus columnas.</li>
+<li>(1p) A partir de los <a href="02agregaciones.html#actividades">ejercicios 3 y 4 de la sesión anterior</a> donde tras consumir unos datos de ventas, realizábamos una limpieza de los datos, renombrábamos columnas y posteriormente una serie de agregaciones para visualizar en gráficos el resultado, se pide crear tantas tablas en <em>Delta Lake</em> como consideres, siguiendo la arquitectura <em>Medallion</em>, utilizando una nomenclatura adecuada.</li>
+<li>(1p) Tras una auditoria, hemos descubierto que había un libro oculto de contabilidad con ciertas ventas que no habían sido registradas en el sistema. Así pues, crea datos ficticios extra de ventas para el año 2019, colócalo en la capa <em>raw</em>, y a continuación, actualiza los datos del resto de tablas.</li>
 </ol>
+<!--
+Configurar DeltaLake con S3
+-->
 
 
   
