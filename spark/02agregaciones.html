@@ -1493,30 +1493,30 @@
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="nb">sum</span>
-<span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="linenos" data-linenos=" 3 "></span><span class="c1"># +-------+--------------------+</span>
-<span class="linenos" data-linenos=" 4 "></span><span class="c1"># |Country|        sum(Revenue)|</span>
-<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +-------+--------------------+</span>
-<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |Germany|1.4982119999999512E7|</span>
-<span class="linenos" data-linenos=" 7 "></span><span class="c1"># | France|1.2087942100000832E7|</span>
-<span class="linenos" data-linenos=" 8 "></span><span class="c1"># | Mexico| 1.139459870000116E7|</span>
-<span class="linenos" data-linenos=" 9 "></span><span class="c1"># | Canada|1.1642614200001905E7|</span>
-<span class="linenos" data-linenos="10 "></span><span class="c1"># +-------+--------------------+</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="c1"># +-------+--------------------+</span>
+<span class="linenos" data-linenos="3 "></span><span class="c1"># |Country|        sum(Revenue)|</span>
+<span class="linenos" data-linenos="4 "></span><span class="c1"># +-------+--------------------+</span>
+<span class="linenos" data-linenos="5 "></span><span class="c1"># |Germany|1.4982119999999512E7|</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># | France|1.2087942100000832E7|</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># | Mexico| 1.139459870000116E7|</span>
+<span class="linenos" data-linenos="8 "></span><span class="c1"># | Canada|1.1642614200001905E7|</span>
+<span class="linenos" data-linenos="9 "></span><span class="c1"># +-------+--------------------+</span>
 </code></pre></div>
 </div>
 </div>
 </div>
 <p>Si necesitamos realizar más de un agregación sobre el mismo grupo, mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.GroupedData.agg.html">agg</a> podemos indicar una o más expresiones de columnas:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">),</span> <span class="n">count</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="linenos" data-linenos="2 "></span><span class="c1"># +-------+--------------------+--------------+</span>
-<span class="linenos" data-linenos="3 "></span><span class="c1"># |Country|        sum(Revenue)|count(Revenue)|</span>
-<span class="linenos" data-linenos="4 "></span><span class="c1"># +-------+--------------------+--------------+</span>
-<span class="linenos" data-linenos="5 "></span><span class="c1"># |Germany|1.4982119999999512E7|         30059|</span>
-<span class="linenos" data-linenos="6 "></span><span class="c1"># | France|1.2087942100000832E7|         30060|</span>
-<span class="linenos" data-linenos="7 "></span><span class="c1"># | Mexico| 1.139459870000116E7|         30060|</span>
-<span class="linenos" data-linenos="8 "></span><span class="c1"># | Canada|1.1642614200001905E7|         30060|</span>
-<span class="linenos" data-linenos="9 "></span><span class="c1"># +-------+--------------------+--------------+</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="nb">sum</span><span class="p">,</span> <span class="n">count</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">),</span> <span class="n">count</span><span class="p">(</span><span class="s2">&quot;Revenue&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># +-------+--------------------+--------------+</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># |Country|        sum(Revenue)|count(Revenue)|</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +-------+--------------------+--------------+</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |Germany|1.4982119999999512E7|         30059|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># | France|1.2087942100000832E7|         30060|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># | Mexico| 1.139459870000116E7|         30060|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># | Canada|1.1642614200001905E7|         30060|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +-------+--------------------+--------------+</span>
 </code></pre></div>
 <p>También podemos indicar los elementos a calcular mediante un diccionario donde las claves son los campos y los valores la función a calcular:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;Zip&quot;</span><span class="p">:</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;Revenue&quot;</span><span class="p">:</span><span class="s2">&quot;avg&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1726,7 +1726,7 @@
 <span class="linenos" data-linenos="8 "></span><span class="c1"># +---------------+---------------+---+---------------+---------------+</span>
 <span class="linenos" data-linenos="9 "></span><span class="c1"># only showing top 1 row</span>
 </code></pre></div>
-<p>O funciones para poner la inicial en mayúsculas (<a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.initcap.html"><code>initcap</code></a>), darle la vuelta (<a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.reverse.html"><code>reverse</code></a>), obtener su tamaño o reemplazar caracteres (<a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.translate.html"><code>translate</code></a>):</p>
+<p>O funciones para poner la inicial en mayúsculas (<a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.initcap.html"><code>initcap</code></a>), darle la vuelta (<a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.reverse.html"><code>reverse</code></a>), obtener su tamaño (<a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.length.html"><code>length</code></a>)o reemplazar caracteres (<a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.translate.html"><code>translate</code></a>):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="n">initcap</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">),</span> <span class="n">reverse</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">),</span>
 <span class="linenos" data-linenos="2 "></span>          <span class="n">length</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">),</span> <span class="n">translate</span><span class="p">(</span><span class="s2">&quot;Country&quot;</span><span class="p">,</span> <span class="s2">&quot;na&quot;</span><span class="p">,</span> <span class="s2">&quot;pe&quot;</span><span class="p">)</span>
 <span class="linenos" data-linenos="3 "></span>         <span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">trim</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Country</span><span class="p">)</span><span class="o">==</span><span class="s2">&quot;Canada&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -1952,14 +1952,14 @@
 <span class="linenos" data-linenos="10 "></span><span class="c1"># +---------+-------+-----+---------------------+</span>
 <span class="linenos" data-linenos="11 "></span><span class="c1"># only showing top 5 rows</span>
 </code></pre></div>
-<p>Si queremos definir la función para poder utilizarla dentro de Spark SQL y obtener el mismo resultado, hemos de registrar la función mediante <strong><em><code>spark.udf.register</code></em></strong>, la cual recibe el nombre que le asignaremos a la función, el nombre de la función Python a invocar, y el tipo de dato que devuelve:</p>
+<p>Si queremos definir la función para poder utilizarla dentro de Spark SQL y obtener el mismo resultado, hemos de registrar la función mediante <strong><em><code>spark.udf.register</code></em></strong>, la cual recibe el nombre que le asignaremos a la función, el nombre de la función <em>Python</em> a invocar, y el tipo de dato que devuelve:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span><span class="o">.</span><span class="n">udf</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;udfBonus&quot;</span><span class="p">,</span> <span class="n">bonus</span><span class="p">,</span> <span class="n">DoubleType</span><span class="p">())</span>
 <span class="linenos" data-linenos="2 "></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;select ProductID, Revenue, Units,  udfBonus(Units, Revenue) as bonus from ventas order by Units desc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 </code></pre></div>
 <div class="admonition caution">
 <p class="admonition-title">UDF y Python</p>
-<p>En un principio, se desaconseja la creación de UDF mediante <em>Python</em>, ya que su uso penalizar de forma significativa el rendimiento.
-Los ejecutores son procesos en máquinas virtuales de Java que están escritos en Java, y por ello, ejecutan código Java o Scala de forma nativa. En cambio, para Python tiene que ejecutar un proceso separado para ejecutar la UDF, lo que implica un coste extra para serializar y volver a deserializar los datos para cada fila del <em>dataset</em>.</p>
+<p>En un principio, se desaconseja la creación de UDF mediante <em>Python</em>, ya que su uso penaliza de forma significativa el rendimiento.
+Los ejecutores son procesos en máquinas virtuales de Java que están escritos en Java, y por ello, ejecutan código Java o Scala de forma nativa. En cambio, para <em>Python</em> tiene que ejecutar un proceso separado para ejecutar la UDF, lo que implica un coste extra para serializar y volver a deserializar los datos para cada fila del <em>dataset</em>.</p>
 </div>
 <h2 id="persistencia">Persistencia<a class="headerlink" href="#persistencia" title="Permanent link">&para;</a></h2>
 <p>Un <em>DataFrame</em> se puede persistir/cachear en memoria conforme necesitemos (también lo podemos hacer con los RDD). Su principal propósito es cuando vamos a acceder a un DataFrame una y otra vez y no necesitamos que se vuelvan a evaluar todas las operaciones (como pueden ser los algoritmos iterativos utilizados en <em>Machine Learning</em>).</p>
