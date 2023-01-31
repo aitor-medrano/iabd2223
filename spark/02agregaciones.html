@@ -988,8 +988,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#persistencia" class="md-nav__link">
-    Persistencia
+  <a href="#cacheando" class="md-nav__link">
+    Cacheando
   </a>
   
 </li>
@@ -1336,8 +1336,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#persistencia" class="md-nav__link">
-    Persistencia
+  <a href="#cacheando" class="md-nav__link">
+    Cacheando
   </a>
   
 </li>
@@ -1961,8 +1961,13 @@
 <p>En un principio, se desaconseja la creación de UDF mediante <em>Python</em>, ya que su uso penaliza de forma significativa el rendimiento.
 Los ejecutores son procesos en máquinas virtuales de Java que están escritos en Java, y por ello, ejecutan código Java o Scala de forma nativa. En cambio, para <em>Python</em> tiene que ejecutar un proceso separado para ejecutar la UDF, lo que implica un coste extra para serializar y volver a deserializar los datos para cada fila del <em>dataset</em>.</p>
 </div>
-<h2 id="persistencia">Persistencia<a class="headerlink" href="#persistencia" title="Permanent link">&para;</a></h2>
-<p>Un <em>DataFrame</em> se puede persistir/cachear en memoria conforme necesitemos (también lo podemos hacer con los RDD). Su principal propósito es cuando vamos a acceder a un DataFrame una y otra vez y no necesitamos que se vuelvan a evaluar todas las operaciones (como pueden ser los algoritmos iterativos utilizados en <em>Machine Learning</em>).</p>
+<h2 id="cacheando">Cacheando<a class="headerlink" href="#cacheando" title="Permanent link">&para;</a></h2>
+<p>Un <em>DataFrame</em> se puede persistir/cachear en memoria conforme necesitemos (también lo podemos hacer con los RDD). Su principal propósito es cuando vamos a acceder a un <em>DataFrame</em> una y otra vez y no necesitamos que se vuelvan a evaluar todas las operaciones (como pueden ser los algoritmos iterativos utilizados en <em>Machine Learning</em>).</p>
+<div class="admonition info">
+<p class="admonition-title">Más información</p>
+<p>Si estás interesado en optimizar el uso de memoria al trabajar con <em>DataFrames</em>, 
+<a href="https://brabuitrago.medium.com">Brayan Buitrago</a> tiene una serie de artículos sobre <a href="https://medium.com/iwannabedatadriven/spark-performace-cache-persist-i-c39e0c142fe5">Spark Performace: Cache() &amp; Persist()</a> muy interesantes.</p>
+</div>
 <p>Cuando persistimos un <em>dataset</em>, cada nodo almacena sus datos particionados en memoria y/o disco y los reutiliza en otras operaciones sobre dicho <em>dataset</em>.</p>
 <p>Para ello, se emplean los métodos <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.cache.html"><code>cache</code></a> / <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.persist.html"><code>persist</code></a> y <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.unpersist.html"><code>unpersist</code></a> para cachear y liberar los datos.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span><span class="o">.</span><span class="n">persist</span><span class="p">()</span>
