@@ -1537,7 +1537,7 @@
 </div>
 </div>
 </div>
-<p>Por ejemplo, vamos a crear una copia del dataframes de clientes con sólo tres columnas, y almacenaremos este DataFrame en una nueva tabla:</p>
+<p>Por ejemplo, vamos a crear una copia del <em>DataFrame</em> de clientes con sólo tres columnas, y almacenaremos este <em>DataFrame</em> en una nueva tabla:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">jdbcSelectDF</span> <span class="o">=</span> <span class="n">jdbcDF</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;customer_id&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_fname&quot;</span><span class="p">,</span> <span class="s2">&quot;customer_lname&quot;</span><span class="p">)</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="n">jdbcSelectDF</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="c1"># +-----------+--------------+--------------+</span>

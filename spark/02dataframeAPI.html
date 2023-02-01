@@ -1796,6 +1796,11 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="6 "></span>
 <span class="linenos" data-linenos="7 "></span><span class="c1"># df = df.withColumn(&quot;fnac&quot;, to_date(df.Date, &quot;M/d/yyy&quot;))</span>
 </code></pre></div>
+<div class="admonition caution">
+<p class="admonition-title">Errores al leer datos</p>
+<p>Si tenemos un error al leer un dato que contiene un tipo no esperado, por defecto, Spark lanzará una excepción y se detendrá la lectura.</p>
+<p>Si queremos que asigne los tipos a los campos pero que no los valide, podemos pasarle un parámetro extra con <code>verifySchema=False</code>, de manera que los datos que no concuerden con el tipo se quedarán nulos, vacíos o con valor 0, dependiendo del tipo de dato.</p>
+</div>
 <h2 id="dataframe-api">DataFrame API<a class="headerlink" href="#dataframe-api" title="Permanent link">&para;</a></h2>
 <p>Una vez tenemos un <em>DataFrame</em> podemos trabajar con los datos mediante un conjunto de operaciones estructuradas, muy similares al lenguaje relacional. Estas operaciones también se clasifican en transformaciones y acciones, recordando que las transformaciones utilizan una evaluación perezosa.</p>
 <p>Es muy importante tener en cuenta que todas las operaciones que vamos a realizar a continuación son immutables, es decir, nunca van a modificar el <em>DataFrame</em> sobre el que realizamos la transformación. Así pues, realizaremos encadenamiento de transformaciones (<em>transformation chaining</em>) o asignaremos el resultado a un nuevo <em>DataFrame</em>.</p>
@@ -2096,7 +2101,7 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="14 "></span><span class="c1"># |     6666|2022-03-22| null|   33|3333.33|  Spain|</span>
 <span class="linenos" data-linenos="15 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
 <span class="linenos" data-linenos="16 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
-<span class="linenos" data-linenos="17 "></span><span class="c1"># |     6666|2022-03-25|03206| null|2222.22|   null|</span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># |     null|      null| null| null|   null|   null|</span>
 <span class="linenos" data-linenos="18 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
 </code></pre></div>
 <p>Si queremos saber si una columna contiene nulos, podemos hacer un filtrado utilizando el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Column.isNull.html">isNull</a> sobre los campos deseados (también podemos utilizar <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Column.isNotNull.html">isNotNull</a> si queremos el caso contrario):</p>
@@ -2105,7 +2110,8 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="3 "></span><span class="c1"># |ProductID|      Date| Zip|Units|Revenue|Country|</span>
 <span class="linenos" data-linenos="4 "></span><span class="c1"># +---------+----------+----+-----+-------+-------+</span>
 <span class="linenos" data-linenos="5 "></span><span class="c1"># |     6666|2022-03-22|null|   33|3333.33|  Spain|</span>
-<span class="linenos" data-linenos="6 "></span><span class="c1"># +---------+----------+----+-----+-------+-------+</span>
+<span class="linenos" data-linenos="6 "></span><span class="c1"># |     null|      null|null| null|   null|   null|</span>
+<span class="linenos" data-linenos="7 "></span><span class="c1"># +---------+----------+----+-----+-------+-------+</span>
 </code></pre></div>
 <p>Para trabajar con las filas que contengan algún dato nulo, podemos acceder a la propiedad <code>na</code>, la cual devuelve un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameNaFunctions.html">DataFrameNaFunctions</a> sobre la que podemos indicarle:</p>
 <ul>
@@ -2141,8 +2147,16 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos="28 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
 </code></pre></div>
 <p>También podemos indicar la cantidad de valores no nulos que ha de contener cada fila para eliminarla mediante el parámetro <code>thresh</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Elimina las filas que tengan menos de 3 valores rellenados</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">thresh</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="c1"># Elimina las filas que tengan menos de 3 valores rellenados</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">malDF</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">thresh</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># |     6666|2022-03-22| null|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+    </span>
 </code></pre></div>
 </li>
 <li>
@@ -2153,12 +2167,12 @@ Para más información, consultar la <a href="https://spark.apache.org/docs/late
 <span class="linenos" data-linenos=" 4 "></span><span class="c1"># malDF.fillna({&quot;Zip&quot;: &quot;99999&quot;})</span>
 <span class="linenos" data-linenos=" 5 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
 <span class="linenos" data-linenos=" 6 "></span><span class="c1"># |ProductID|      Date|  Zip|Units|Revenue|Country|</span>
-<span class="linenos" data-linenos=" 7 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
-<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
-<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |     6666|2022-03-22|99999|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># |     6666|2022-03-22|03206|   33|3333.33|  Spain|</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># |     6666|2022-03-22|99999|   33|3333.33|  Spain|</span>
 <span class="linenos" data-linenos="10 "></span><span class="c1"># |     6666|2022-03-23|03206| null|2222.22|  Spain|</span>
-<span class="linenos" data-linenos="11 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
-<span class="linenos" data-linenos="12 "></span><span class="c1"># |     null|      null|99999| null|   null|   null|</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># |     6666|2022-03-24|03206| null|   null| Espain|</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># |     null|      null|99999| null|   null|   null|</span>
 <span class="linenos" data-linenos="13 "></span><span class="c1"># +---------+----------+-----+-----+-------+-------+</span>
 </code></pre></div>
 </li>
