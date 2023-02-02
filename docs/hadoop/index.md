@@ -13,7 +13,7 @@
 | Sesión                                  | Fecha             | Duración (h) |
 | ---------                               | -----             | --------- |
 | 36.- [Arquitecturas Big Data](01arq.md) | Miércoles 23 Nov  | 1p + 1o   |
-| 36.- [ELT / ETL](02etl.md)              | Miércoles 23 Nov  | 1p + 1o   |
+| 36.- [Ingesta de datos](02etl.md)       | Miércoles 23 Nov  | 1p + 1o   |
 | 38.- [Hadoop](03hadoop.md)              | Lunes 28 Nov      | 2p + 2o   |
 | 39.- [HDFS](04hdfs.md)                  | Miércoles 30 Nov  | 1p + 1o   |
 | 39.- [Formatos de datos](04formatos.md) | Miércoles 30 Nov  | 1p + 1o   |
