@@ -1,9 +1,9 @@
 ---
-title: Spark Catalog. DeltaLake. 
-description: Acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore, 
+title: Spark Catalog. Delta Lake. 
+description: Apuntes y ejercicios sobre el acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore. Uso de Delta Lake, creación de tablas y operaciones DML sobre los datos.
 ---
 
-# Spark JDBC y uso del catálogo. Delta Lake.
+# Spark JDBC y uso del catálogo. Delta Lake
 
 ## Conectando con bases de datos
 
@@ -121,7 +121,7 @@ df.show(2)
 
 Si necesitamos configurar en más detalle la forma de recoger los datos, es mejor acceder mediante el método `format` (cuidado con el nombre de la tabla que ahora utiliza el atributo `dbtable`):
 
-``` python hl_lines="1 3"
+``` python hl_lines="1 3" hl_lines="3"
 df_format = spark.read.format("jdbc") \
   .option("url", url_iabd) \
   .option("dbtable", "customers") \
@@ -132,7 +132,7 @@ df_format = spark.read.format("jdbc") \
 
 Un caso particular es cuando queremos asignarle a un *dataframe* el resultado de una consulta. Para ello, podemos indicarle en el parámetro `query` la consulta SQL con la información a recoger:
 
-``` python
+``` python hl_lines="3"
 df_query = spark.read.format("jdbc") \
   .option("url", url_iabd) \
   .option("query", "(select customer_id, customer_fname, customer_lname from customers where customer_city='Las Vegas')") \
@@ -182,7 +182,7 @@ Si lo que queremos es almacenar el resultado en una base de datos, utilizaremos 
       .save()
     ```
 
-Por ejemplo, vamos a crear una copia del dataframes de clientes con sólo tres columnas, y almacenaremos este DataFrame en una nueva tabla:
+Por ejemplo, vamos a crear una copia del *DataFrame* de clientes con sólo tres columnas, y almacenaremos este *DataFrame* en una nueva tabla:
 
 ``` python hl_lines="13 17"
 jdbcSelectDF = jdbcDF.select("customer_id", "customer_fname", "customer_lname")
@@ -210,7 +210,7 @@ Si accedemos a *MySQL*, podremos comprobar cómo se han insertado 12435 registro
 
 Si volvemos a realizar la persistencia de los datos, obtendremos un error porque la tabla ya existe. Para evitar este error, podemos añadir los datos a una tabla existente mediante el método [`mode`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameWriter.mode.html) con valor `append`, o para machacarlos con el valor `overwrite`:
 
-``` python hl_lines="87"
+``` python hl_lines="8"
 jdbcSelectDF.write \
     .format("jdbc") \
     .option("driver", "com.mysql.cj.jdbc.Driver") \
@@ -279,19 +279,61 @@ El catálogo de datos por excelencia es el que forma parte de *Apache Hive*, y s
 
 ### Bases de datos
 
-El catálogo se organiza, en su primer nivel, en **bases de datos**, la cuales agrupan y categorizan las tablas que utiliza nuestro equipo de trabajo, permitiendo identificar su propietario y restringir el acceso. Dentro del *Hive Metastore*, una base de datos funciona como un prefijo dentro de una ruta física dentro de nuestro *data warehouse*, evitando colisiones entre nombres de tablas.
+El catálogo se organiza, en su primer nivel, en **bases de datos**, la cuales agrupan y categorizan las tablas que utiliza nuestro equipo de trabajo, permitiendo identificar su propietario y restringir el acceso. Dentro del *Hive Metastore*, una base de datos funciona como un prefijo dentro de una ruta física de nuestro *data warehouse*, evitando colisiones entre nombres de tablas.
 
 !!! tip "Una base de datos por equipo"
     Es conveniente que cada equipo de trabajo o unidad de negocio utilice sus propias bases de datos en Spark.
 
+#### Configurando Spark con Hive
+
+En nuestra máquina virtual ya tenemos configurado el uso del *Hive Metastore* como catálogo de *Spark*. Para ello, hemos colocado dentro de `$SPARK_HOME/conf` una copia del archivo `hive-site.xml` con la información de acceso:
+
+``` xml title="hive-site.xml"
+<configuration>
+   <property>
+    <name>javax.jdo.option.ConnectionURL</name>
+    <value>jdbc:mysql://localhost:3306/hive?createDatabaseIfNotExist=true</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionDriverName</name>
+    <value>com.mysql.cj.jdbc.Driver</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionUserName</name>
+    <value>iabd</value>
+  </property>
+  <property>
+    <name>javax.jdo.option.ConnectionPassword</name>
+    <value>iabd</value>
+  </property>
+</configuration>
+```
+
+Y en el archivo de configuración de *Spark*, en `$SPARK_HOME/conf/spark-defaults.conf` hemos añadido dos propiedades para indicarle que vamos a utilizar la implementación del catálogo de *Hive* y que queremos que almacene las bases de datos que creemos en `/opt/spark-3.3.1/warehouse/`:
+
+``` properties hl_lines="3 6" title="spark-defaults.conf"
+# The default location to read and write distributed SQL tables.
+# This location can be located on the local file system and on any HDFS compatible file system.
+spark.sql.warehouse.dir /opt/spark-3.3.1/warehouse/
+
+# Defines the backing SQL catalog for the Spark session.
+spark.sql.catalogImplementation hive
+```
+
+Si hubiésemos querido que las bases de datos que creemos desde Spark también lo hicieran dentro de HDFS (que sería lo recomendable), deberíamos indicar la ruta:
+
+``` properties
+spark.sql.warehouse.dir hdfs://iabd-virtualbox:9000/user/hive/warehouse/
+```
+
 #### Accediendo al catálogo
 
-En nuestra máquina virtual ya tenemos configurado el uso del *Hive Metastore* como catálogo de *Spark*. A partir de la sesión de *Spark*, podemos acceder al objeto [`catalog`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/catalog.html) que contiene un conjunto de métodos para interactuar con él.
+A partir de la sesión de *Spark*, podemos acceder al objeto [`catalog`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/catalog.html) que contiene un conjunto de métodos para interactuar con él.
 
 Podemos comprobar su uso mediante una consulta a `show databases` o accediendo al método [`listDatabases()`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.listDatabases.html) del [`catalog`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/catalog.html):
 
 ``` python
-spark.sql("show databases;").show()
+spark.sql("show databases").show()
 # +---------+
 # |namespace|
 # +---------+
@@ -305,7 +347,7 @@ spark.catalog.listDatabases()
 
 De manera que obtenemos las bases de datos que está utilizando actualmente (como puedes observar, son las bases de datos que hemos creado previamente en la sesión de [Hive](../hadoop/06hive.md)).
 
-Si queremos vel cual nuestra base de datos activa, utilizaremos el método [`currentDatabase`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.currentDatabase.html):
+Si queremos ver cual es nuestra base de datos activa, utilizaremos el método [`currentDatabase`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.Catalog.currentDatabase.html):
 
 ``` python
 spark.catalog.currentDatabase()
@@ -326,7 +368,23 @@ Una vez creada, la activamos mediante `use`:
 spark.sql("use s8a")
 ```
 
+Si comprobamos la ruta, podemos ver cómo la ha creado en el almacén de Spark que hemos indicado previamente en la configuración:
+
+``` python hl_lines="4"
+spark.catalog.listDatabases()
+# [Database(name='default', description='Default Hive database', locationUri='hdfs://iabd-virtualbox:9000/user/hive/warehouse'),
+#  Database(name='iabd', description='', locationUri='hdfs://iabd-virtualbox:9000/user/hive/warehouse/iabd.db'),
+#  Database(name='s8a', description='', locationUri='file:/opt/spark-3.3.1/warehouse/s8a.db')]
+```
+
+<!--
 FIXME: continuar https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_6_Chapter.xhtml#PC17
+
+https://towardsdatascience.com/3-ways-to-create-tables-with-apache-spark-32aed0f355ab
+
+https://cca175.itversity.com/spark-python/08_spark_metastore.html
+https://jaceklaskowski.gitbooks.io/mastering-spark-sql/content/demo/demo-connecting-spark-sql-to-hive-metastore.html
+-->
 
 ### Trabajando con tablas
 
@@ -384,23 +442,53 @@ jdbcDF.write.format("json").mode("overwrite").saveAsTable("clientesj")
 
 #### Tablas externas
 
-FIXME: revisar y reescribir ... probar con la MV
+Si queremos crear una tabla no gestionada, también conocida como tabla externa, la cual se almacena como [tablas en Hive](https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html), necesitamos indicar la ruta de los datos en el momento de la creación mediante la clausula `LOCATION`.
 
-Si queremos crear una tabla no gestionada, también conocida como tabla externa, la cual puede que se almacenen como [tablas en Hive](https://spark.apache.org/docs/latest/sql-data-sources-hive-tables.html),necesitamos indicar la ruta de los datos en el momento de creación:
+Vamos a crear una tabla de clientes con los datos que tenemos almacenados en HDFS que [cargamos mediante Sqoop en la sesión de Hive](../hadoop/06hive.md#caso-de-uso-1-creación-y-borrado-de-tablas) en la ruta `/user/iabd/hive/customer`.
+
+Así pues, nuestra sentencia DDL sería:
 
 ``` python
-spark.sql("""CREATE TABLE ventasext(ProductID INT, Date STRING, 
-  Zip STRING, Units INT, Revenue DOUBLE, Country STRING) 
-  USING csv OPTIONS (PATH 
-  '/pdi_sales_small.csv')""")
+spark.sql("""
+CREATE EXTERNAL TABLE IF NOT EXISTS clientese
+(
+  custId INT,
+  fName STRING,
+  lName STRING,
+  city STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '|'
+STORED AS TEXTFILE
+LOCATION 'hdfs://iabd-virtualbox:9000/user/iabd/hive/customer'""")
 ```
 
-Para ello, necesitamos colocar el archivo de datos dentro del almacén del *metastore*, que en nuestro caso es `spark-warehouse/s8a.db/`
+Si volvemos a comprobar las tablas, veremos que que la ha marcado `EXTERNAL`:
 
-También podemos crear la tabla indicando la [opción `path`](https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#saving-to-persistent-tables):
+``` python hl_lines="3"
+spark.catalog.listTables()
+# [Table(name='clientes', database='s8a', description='Datos de clientes obtenidos desde retail_db.customers', tableType='MANAGED', isTemporary=False),
+#  Table(name='clientese', database='s8a', description=None, tableType='EXTERNAL', isTemporary=False),
+#  Table(name='clientesj', database='s8a', description=None, tableType='MANAGED', isTemporary=False)]
+```
+
+Y si realizamos una consulta, obtenemos los mismos datos que hay almacenados en HDFS:
 
 ``` python
-df.write.option("path", "/user/iabd/clientes").saveAsTable("clientes_ext")
+spark.sql("select * from clientese limit 3").show();
+# +------+-------+---------+-----------+
+# |custId|  fName|    lName|       city|
+# +------+-------+---------+-----------+
+# |     1|Richard|Hernandez|Brownsville|
+# |     2|   Mary|  Barrett|  Littleton|
+# |     3|    Ann|    Smith|     Caguas|
+# +------+-------+---------+-----------+
+```
+
+También podemos crear una tabla externa indicando la [opción `path`](https://spark.apache.org/docs/latest/sql-data-sources-load-save-functions.html#saving-to-persistent-tables), de manera que nos creará los datos en HDFS (recuerda que por defecto almacena los datos en formato *Parquet*):
+
+``` python
+jdbcDF.write.option("path", "hdfs://iabd-virtualbox:9000/user/iabd/spark/customer").saveAsTable("clienteses")
 ```
 
 #### Cargando tablas
@@ -467,7 +555,7 @@ spark.sql("DROP TABLE IF EXISTS cliente")
 
 ### Spark y el Metastore
 
-Para comprender cómo se almancenan los metadatos de las bases de datos y las tablas gestionadas es importante conocer donde se almacenan los metadatos.
+Para comprender cómo se almacenan los metadatos de las bases de datos y las tablas gestionadas es importante conocer donde se almacenan los metadatos.
 
 Si abrimos un terminal y accedemos al MySQL de nuestra máquina virtual, podemos ver todas las tablas que utiliza el Hive Metastore:
 
@@ -640,11 +728,11 @@ Podemos ejecutarlo sobre *data lakes* ya existentes y es completamente compatibl
 
     Para conseguir un gran rendimiento en las consultas SQL es necesario ofrecer servicios de caché, estructuras de datos auxiliares como índices y estadísticas para poder optimizar la capa de datos.
 
-    La herramienta final es el desarrollo de un API estándar, como es la DataFrame API, la cual soportan herramientas como TensorFlow o Spark MLlib, la cual, de forma declarativa, permite la construcción de un grafo DAG con su ejecución. 
+    La herramienta final es el desarrollo de un API estándar, como es la DataFrame API, la cual soportan herramientas como *TensorFlow* o *Spark MLlib*, la cual permite, de forma declarativa, la construcción de un grafo DAG con su ejecución. 
 
     Otros productos alternativos como implementación del concepto de *data lakehouse* son [Apache Iceberg](https://iceberg.apache.org/) y [Apache Hudi](https://hudi.apache.org/).
 
-Formalmente, podemos decir que *Delta Lake* ofrece una capa de metadatos, caché e indexación sobre el almacenamiento de un data lake, de manera que ofrece un nivel de abstracción con soporte para transacciones ACID y versionado de los datos.
+Formalmente, podemos decir que *Delta Lake* ofrece una capa de metadatos, caché e indexación sobre el almacenamiento de un *data lake*, de manera que ofrece un nivel de abstracción con soporte para transacciones ACID y versionado de los datos.
 
 Se trata de un proyecto *open-source* desde que en 2019 *Databricks* lo liberó. Por supuesto, *Databricks* ofrece soporte completo de *Delta Lake* como capa de persistencia de datos.
 
@@ -659,7 +747,26 @@ Se trata de un proyecto *open-source* desde que en 2019 *Databricks* lo liberó.
 * ^^Evolución y aplicación de esquemas^^, al provocar el cumplimiento de un esquema a la hora de leer o escribir datos desde el lago, permitiendo una evolución segura del esquema para casos de uso donde los datos necesitan evolucionar.
 * ^^Soporte de metadatos ricos y escalables^^, ya que los metadatos pueden crecer y convertirse en *big data* y no escalar correctamente, de manera que *Delta Lake* facilita el escalado y procesamiento eficiente mediante Spark pudiendo manejar petabytes de datos.
 
+### Arquitectura Medallion
+
+La [arquitectura *Medallion*](https://www.databricks.com/glossary/medallion-architecture) es un patrón de diseño de datos que se utiliza para organizar los datos en un *lakehouse*, con el objetivo de mejorar progresivamente la estructura y calidad de los datos conforme fluyen a través de las diferentes capas de la arquitectura (de la capa *raw*/bronce a la plata, y de ahí a la oro.)
+
+<figure style="align: center">
+    <img src="images/02delta-lake-medallion-architecture.jpeg">
+    <figcaption>Arquitectura Medallion de un lago de datos - databricks.com</figcaption>
+</figure>
+
+Conforme los datos transicionan de la capa bronce y plata a la de oro (conforme evolución los datos valen más, y de ahí su material) obtenemos datos más precisos. Cuando realizamos la ingesta de datos mediante procesos *batch* o en *streaming* los almacenamos en la capa de bronce en su formato crudo (*raw*), tras limpiarlos, normalizarlos y realizar el procesado necesario para realizar nuestras consultas, los volvemos a almacenar en la capa de plata (*curated*). Finalmente, en la capa de oro almacenamos los datos agregados, con las tablas de sumario que contienen los KPI o las tablas necesarias para la visualización de los datos por parte de las herramientas de negocio como *PowerBI* o *Tableau*.
+
+<!--
+FIXME: https://learn.microsoft.com/es-es/azure/databricks/lakehouse/medallion
+-->
+
+Para este flujo de datos entre capas, *Databricks* ofrece las tablas *Delta Live* y el uso de *pipelines* (esta opción no está habilitada en la versión educativa y no la vamos a poder probar). Tenéis un ejemplo completo en [Getting Started with Delta Live Tables](https://www.databricks.com/discover/pages/getting-started-with-delta-live-tables).
+
 ### Arquitectura de un Lakehouse
+
+El uso de la arquitectura que propone *Delta Lake* permite el procesamiento simultáneos de los datos *batch* y en *streaming*, de manera que podemos tener escribir los datos *batch* y los flujos en *streaming* en la misma tabla, y a su vez, se escriben de manera progresiva en otras tablas más limpias y refinadas.
 
 La arquitectura de un *lakehouse* se compone de tres capas, y en nuestro caso, se concreta en:
 
@@ -674,58 +781,51 @@ La arquitectura de un *lakehouse* se compone de tres capas, y en nuestro caso, s
 
 ### El ecosistema Delta
 
-Delta Lake se utiliza en su mayor medida como *lakehouse* por más de 7000 empresas, procesando exabytes de datos por día.
+*Delta Lake* se utiliza en su mayor medida como *lakehouse* por más de 7000 empresas, procesando exabytes de datos por día.
 
-Sin embargo, los *data warehouses* y las aplicaciones de *machine learning* no son el único objetivo de *Delta Lake*, ya que el soporte transaccional ACID aporta confiabilidad al *data lake* y permite ingestar y consumir datos tanto en streaming como por lotes.
+Sin embargo, los *data warehouses* y las aplicaciones de *machine learning* no son el único objetivo de *Delta Lake*, ya que el soporte transaccional ACID aporta confiabilidad al *data lake* y permite ingestar y consumir datos tanto en *streaming* como por lotes.
 
-Otro componente importante es *Delta Sharing*, el cual permite a las compañías compartir conjuntos de datos con otros de una forma segura.
+El ecosistema de *DeltaLake* se compone de una conjunto de componentes individuales entre los que destacan *Delta Lake Storage*, *Delta Sharing*, y *Delta Connectors*.
 
-----
+#### Delta Lake Storage
 
-Delta Lake 2.0 now also supports standalone readers and writers, enabling any client (Python, Ruby or Rust) to write data directly to Delta Lake without requiring any big data engine such as Spark or Flink.
+Se trata de una capa de almacenamiento que corre sobre los lagos de datos basados en el cloud, como son *Azure Data Lake Storage* (ADLS), *AWS S3* o *Google Cloud Storage* (GCS), añadiendo transaccionalidad al lago de datos y las tablas, y por tanto, ofreciendo características de un *data warehouse* a un *data lake*.
 
-Data Lake ships with an extended set of open-source connectors, including Presto, Flink and Trino.
-
-The Delta Lake storage layer is now used extensively on many different platforms, include Azure Data Lake Storage Gen 2, Amazon s3 and Google’s Cloud Storage. All components of Delta Lake 2.0 have been open sourced by Databricks.
-
-The success of Delta Lake and data lakehouses has spawned a completely new ecosystem, build around the Delta technology. This ecosystem is made up of a variety of individual components including Delta Lake Storage, Delta Sharing, and Delta Connectors.
-
-#### Delta lake storage
-
-Delta lake storage is an open-source storage layer that runs on top of cloud-based data lakes. It adds transactional capabilities to data lake files and tables, thereby bringing data warehouse-like features to a standard data lake. Delta lake storage is the core component of the ecosystem because all other components depend on this layer.
+Se trata del componente principal, ya que el resto de elementos del ecosistema dependen de él.
 
 #### Delta Sharing
 
-Data sharing is a very common use case in the business world. For example, for preventative maintenance and diagnostic purposes, a mining company might want to securely share IoT information from their massive mining truck engines with the manufacturer. A thermostat manufacturer might want to securely share HVAC data with a public utility to optimize the power grid load on high-usage days. However, in the past, implementing a secure, reliable data sharing solution was very challenging, and required expensive, custom development.
+Todo lago de datos va a tener que compartir sus datos en algún momento, lo que requiere una solución segura y confiable que nos asegure la privacidad deseada en los datos.
 
-Delta Sharing is an open-source protocol for securely sharing large datasets of Delta Lake data. It allows a user to securely share data stored in S3, ADLS or GCS. With Delta Sharing users can directly connect to the shared data, using their favorite toolsets like Spark, Rust, Power BI, without having to deploy any additional components. Notice that the data can be shared across cloud providers, without any custom development.
+*Delta Sharing* es un protocolo para compartir datos seguros para grandes conjuntos de datos almacenados en el *data lake*, de manera que podemos compartir los datos almacenados en S3 o *ADLS* y acceder mediante *Spark* o *PowerBI* sin necesidad de desplegar ningún componente adicional, facilitando compartir los datos incluso entre diferentes proveedores cloud sin necesidad de ningún desarrollo.
 
-Delta sharing enables use cases such as:
+<figure style="align: center">
+    <img src="images/02delta-sharing.png">
+    <figcaption>Delta Sharing</figcaption>
+</figure>
 
-Data stored in Azure ADLS can be processed by a Spark Engine on AWS.
+Por ejemplo, podemos:
 
-Data stored in AWS S3 can be processed by Rust on GCP.
+* Procesar en AWS mediante Spark datos que están almacenados en Azure ADLS.
+* Procesar en Google mediante Rust datos que están almacenados en S3.
+
+Más información sobre el ecosistema de *Delta Sharing* en la página de [*Sharing*](https://delta.io/sharing) de *Delta Lake*.
 
 #### Delta Connectors
 
-The main goal of Delta Connectors was to bring Delta Lake to other big data engines outside of Apache Spark.
+El principal objetivo de los conectores *Delta* es llevar *Delta Lake* a otros motores de procesamiento ajenos a *Spark*. Para ello, ofrece conectores open source que realizan la conexión directa a *DeltaLake* sin necesidad de pasar por *Spark*.
 
-Delta connectors are open-source connectors that directly connect to Delta Lake. The framework includes Delta Standalone which is a Java native library which allows direct reading and writing the Delta Lake tables without requiring an Apache Spark cluster. Consuming Applications can use Delta Standalone to directly connect to Delta files written by their big data infrastructure. This eliminates the need for data duplication into another format before it can be consumed.
+Los conectores más destacados son:
 
-Other native libraries are available for:
+* *Delta Standalone*: librerías Java/Python/Rust/etc... para desarrollar aplicaciones que leen y escriben en Delta Lake.
+* *Hive*. Lectura de datos desde *Apache Hive*.
+* *Flink*. Lectura y escritura de datos desde *Apache Flink*.
+* *Sql-delta-import*. Permite importar datos desde cualquier fuente de datos JDBC.
+* *Power BI*. Función de Power Query que permite la lectura  de una tabla Delta desde cualquier fuente de datos soportado por Power BI.
 
-* Hive. The Hive Connector reads Delta tables directly from Apache Hive.
-* Flink. The Flink/Delta Connector reads and writes Delta tables from Apache Flink application. The connector includes a sink for writing to Delta tables from Apache Flink, and a source for reading Delta tables using Flink.
-* Sql-delta-import. This connector allows for importing data from a JDBC data source directly into a Delta table.
-* Power BI. The Power BI connector is a custom Power Query function which allows Power BI to read a Delta table from any file-based data source supported by Microsoft Power BI.
+Más información sobre los conectores existentes, donde cada día hay más, en la página de [Integrations](https://delta.io/integrations) de *Delta Lake*.
 
-Delta connectors is a fast-growing ecosystem, with more connectors becoming available on a regular basis. The integrations page on the Delta Lake home page describes the currently available integrations.
-
-## Hola Delta
-
-Al arrancar Spark, le pone como package io.delta:delta-core_2.12:1.1.0
-
-A la hora de escribir un df, le indicamos como format("delta")
+### Hola Delta
 
 !!! info "Probando Delta Lake"
     Para poder realizar los ejemplos y practicar *DeltaLake*, en esta sesión nos vamos a centrar en la máquina virtual o mediante *DataBricks*, ya que no existe (de momento) una imagen de *DeltaLake* para *Docker*.
@@ -736,31 +836,190 @@ Si nos centramos en nuestra instalación de la máquina virtual, cuando lanzamos
 pyspark --packages io.delta:delta-core_2.12:2.1.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
 ```
 
-Alias pysparkdl
+Para facilitar su uso, en nuestro máquina virtual hemos creado un alias:
 
-Una vez hemos arrancado, creamos una sesión xxxx.
-Si partimos de los datos que teníamos en el *DataFrame* de clientes, podemos persistirlos en Delta:
-
-``` python
-ejemplo con persistencia en Delta de clientes
+``` bash
+pysparkdl
 ```
 
-Si queremos sobrescribir los datos, necesitamos indicarle el modo `overwrite`:
+Si partimos de los datos que teníamos en el *DataFrame* de clientes, podemos persistirlos en Delta indicando su formato mediante `format("delta")`:
 
 ``` python
+spark.sql("use s8a")
+df = spark.table("clientes")
+# DeltaLake el Local
+df.write.format("delta").save("/tmp/raw/clientes")
+# DeltaLake el DataBricks
+df.write.format("delta").save("/delta/raw/clientes")
+# DeltaLake el HDFS
+df.write.format("delta").save("hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes")
 ```
 
---
+Si intentamos volver a escribir los datos en la misma ruta, obtendremos un error. Si queremos sobrescribir los datos, necesitamos indicarle el modo `overwrite`:
+
+``` python
+df.write.format("delta").mode("overwrite").save("/tmp/raw/clientes")
+```
+
+Para recuperar los datos, realizamos una lectura indicando siempre el formato `delta'`:
+
+``` python
+# DeltaLake el Local
+dfdeltal = spark.read.format("delta").load("/tmp/raw/clientes")
+dfdeltahdfs = spark.read.format("delta").load("hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes")
+```
 
 ### Por dentro
 
-https://www.bbva.com/es/delta-lake-dale-potencia-a-tus-datos/
+Si accedemos al sistema de archivos local, HDFS o Databricks DBFS, podemos analizar la estructura de archivos que ha utilizado para almacenar la información.
 
-### vacuum
+*Delta Lake* almacena los datos en formato *Parquet* en la ruta indicada (y si hubiéramos indicando particiones, en sus subcarpetas), y luego crea una carpeta denominada `_delta_log` donde almacena el *DeltaLog* o log transaccional en formato JSON, en el cual va registrando los cambios *delta* que se realizan sobre los datos. 
 
-Cuando hacemos un overwrite de los datos, cada vez guarda una copia de lo que había y lo nuevo ... esto puede provocar que se llene el disco de los workers .... para eso está el vacuum, por ejemplo, 7 días, y significa que va a guardar el histórico de los últimos 7 días.
+Vamos a comprobar qué datos se han almacenado en HDFS:
 
-Por cada 10 operaciones que aparezca en los logs con json, se crea un archivo Parquet.
+``` bash
+iabd@iabd-virtualbox:~/datos$ hdfs dfs -ls -R /user/iabd/delta/raw/clientes
+drwxr-xr-x   - iabd supergroup          0 2023-01-29 12:23 /user/iabd/delta/raw/clientes/_delta_log
+-rw-r--r--   1 iabd supergroup       2605 2023-01-29 12:23 /user/iabd/delta/raw/clientes/_delta_log/00000000000000000000.json
+-rw-r--r--   3 iabd supergroup     251875 2023-01-29 12:23 /user/iabd/delta/raw/clientes/part-00000-05cb7b9c-c529-4f5e-83ab-0dc79d0422bf-c000.snappy.parquet
+```
+
+Si realizamos otra operación, por ejemplo, sobrescribimos la tabla, generará nuevos datos y otro fichero de log:
+
+``` python
+df.write.format("delta").mode("overwrite").save("hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes")
+```
+
+Lo comprobamos volviendo a listar los archivos almacenados:
+
+``` bash hl_lines="4 6"
+iabd@iabd-virtualbox:~/datos$ hdfs dfs -ls -R /user/iabd/delta/raw/clientes
+drwxr-xr-x   - iabd supergroup          0 2023-01-29 12:29 /user/iabd/delta/raw/clientes/_delta_log
+-rw-r--r--   1 iabd supergroup       2605 2023-01-29 12:23 /user/iabd/delta/raw/clientes/_delta_log/00000000000000000000.json
+-rw-r--r--   1 iabd supergroup       1592 2023-01-29 12:29 /user/iabd/delta/raw/clientes/_delta_log/00000000000000000001.json
+-rw-r--r--   3 iabd supergroup     251875 2023-01-29 12:23 /user/iabd/delta/raw/clientes/part-00000-05cb7b9c-c529-4f5e-83ab-0dc79d0422bf-c000.snappy.parquet
+-rw-r--r--   3 iabd supergroup     251875 2023-01-29 12:29 /user/iabd/delta/raw/clientes/part-00000-1f226209-881f-4ff7-af04-6eedd64e1581-c000.snappy.parquet
+```
+
+Ahora vamos a añadir nuevos datos, utilizando un nuevo *dataframe* e indicando el modo de escritura con `append`:
+
+``` python
+cols = ['customer_id', 'customer_fname', 'customer_lname']
+datos = [
+(88888, "Aitor", "Medrano"), 
+(99999, "Pedro", "Casas")
+]
+
+nuevosClientes = spark.createDataFrame(datos, cols)
+# cambiamos el tipo a int pq por defecto le asigna long
+nuevosClientes = nuevosClientes.withColumn("customer_id", nuevosClientes.customer_id.cast("int"))
+
+nuevosClientes.write.format("delta").mode("append").save("hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes")
+```
+
+!!! warning "Fusionando el esquema"
+    Si los tipos de los datos no cuadran con el esquema almacenado en DeltaLake, tendremos un error. Para habilitar que fusione los esquemas podemos indicarlo con `.option("mergeSchema", "true")`:
+
+    ``` python
+    nuevosClientes.write.format("delta").mode("append").option("mergeSchema", "true").save("hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes")
+    ```
+
+Ahora podemos ver como ha creado un nuevo archivo de log pero dos archivos de datos. En concreto, el archivo de log ha registrado las dos inserciones, y cada archivo de *Parquet* contiene únicamente cada uno de los registros:
+
+``` bash hl_lines="5 8 9"
+iabd@iabd-virtualbox:~/datos$ hdfs dfs -ls -R /user/iabd/delta/raw/clientes
+drwxr-xr-x   - iabd supergroup          0 2023-01-29 12:39 /user/iabd/delta/raw/clientes/_delta_log
+-rw-r--r--   1 iabd supergroup       2605 2023-01-29 12:23 /user/iabd/delta/raw/clientes/_delta_log/00000000000000000000.json
+-rw-r--r--   1 iabd supergroup       1592 2023-01-29 12:29 /user/iabd/delta/raw/clientes/_delta_log/00000000000000000001.json
+-rw-r--r--   1 iabd supergroup       1309 2023-01-29 12:39 /user/iabd/delta/raw/clientes/_delta_log/00000000000000000002.json
+-rw-r--r--   3 iabd supergroup     251875 2023-01-29 12:23 /user/iabd/delta/raw/clientes/part-00000-05cb7b9c-c529-4f5e-83ab-0dc79d0422bf-c000.snappy.parquet
+-rw-r--r--   3 iabd supergroup     251875 2023-01-29 12:29 /user/iabd/delta/raw/clientes/part-00000-1f226209-881f-4ff7-af04-6eedd64e1581-c000.snappy.parquet
+-rw-r--r--   3 iabd supergroup       1035 2023-01-29 12:39 /user/iabd/delta/raw/clientes/part-00000-b7124036-ce26-4b95-a759-080e829b8de6-c000.snappy.parquet
+-rw-r--r--   3 iabd supergroup       1020 2023-01-29 12:39 /user/iabd/delta/raw/clientes/part-00001-6164f53a-ca34-4b73-96ef-8d2f2cfbbb47-c000.snappy.parquet
+```
+
+Por ejemplo, si descargamos y visualizamos uno de los archivos de Parquet veremos sus datos:
+
+``` bash
+iabd@iabd-virtualbox:~/Descargas$ parquet-tools show part-00000-b7124036-ce26-4b95-a759-080e829b8de6-c000.snappy.parquet 
++---------------+------------------+------------------+
+|   customer_id | customer_fname   | customer_lname   |
+|---------------+------------------+------------------|
+|         88888 | Aitor            | Medrano          |
++---------------+------------------+------------------+
+```
+
+Finalmente, si queremos comprobar los datos, a partir del *dataframe* que habíamos leído desde *HDFS*, podemos comprobar como los datos ya aparecen:
+
+``` python
+dfdeltahdfs.sort("customer_id", ascending=False).show(3)
+# +-----------+--------------+--------------+--------------+-----------------+----------------+-------------+--------------+----------------+
+# |customer_id|customer_fname|customer_lname|customer_email|customer_password| customer_street|customer_city|customer_state|customer_zipcode|
+# +-----------+--------------+--------------+--------------+-----------------+----------------+-------------+--------------+----------------+
+# |      99999|         Pedro|         Casas|          null|             null|            null|         null|          null|            null|
+# |      88888|         Aitor|       Medrano|          null|             null|            null|         null|          null|            null|
+# |      12435|         Laura|        Horton|     XXXXXXXXX|        XXXXXXXXX|5736 Honey Downs|  Summerville|            SC|           29483|
+# +-----------+--------------+--------------+--------------+-----------------+----------------+-------------+--------------+----------------+
+# only showing top 3 rows
+```
+
+### Trabajando con tablas Delta
+
+Para trabajar con tablas *Delta*, aunque podemos realizar todas las operaciones mediante *SQL*, *Delta Lake* ofrece un API para realizar modificaciones condicionales, borrados o *upserts* de datos en las tablas.
+
+Para ello, el primer paso obtener una tabla *delta* mediante el método [`DeltaTable.forPath`](https://docs.delta.io/latest/api/python/index.html#module-delta.tables):
+
+``` python
+from delta.tables import *
+
+dtabla = DeltaTable.forPath(spark, "hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes")
+```
+
+Una vez tenemos la tabla, ya podemos, por ejemplo, modificar las ciudades haciendo uso del método [`update(condición, valor)`](https://docs.delta.io/latest/api/python/index.html#delta.tables.DeltaTable.update):
+
+``` python
+dtabla.update("customer_city = 'Bruklyn'",  {"customer_city": "'Brooklyn'"})
+```
+
+O borrar los clientes de `Brownsville`, mediante el método [`delete(condición)`](https://docs.delta.io/latest/api/python/index.html#delta.tables.DeltaTable.delete):
+
+``` python
+dtabla.delete("customer_city = 'Brownsville'"})
+# borramos los últimos clientes insertados
+dtabla.delete("customer_id > 33333")
+```
+
+<!--
+FIXME: continuar 
+https://docs.delta.io/latest/delta-update.html#language-python
+https://learning.oreilly.com/library/view/learning-spark-2nd/9781492050032/ch09.html#:-:text=Upserting%20change%20data%20to%20a%20table%20using%20merge()
+-->
+
+### Viajando en el tiempo
+
+Podemos realizar consultas sobre *snapshots* de nuestras tablas delta mediante el [*time travel*](https://docs.delta.io/latest/delta-batch.html#-deltatimetravel).
+
+Si queremos acceder a datos que hemos sobrescrito, podemos viajar al pasado de la tabla antes de que se sobrescribieran los datos mediante la opción `versionAsOf`:
+
+``` python
+df = spark.read.format("delta").option("versionAsOf", 0).load("hdfs://iabd-virtualbox:9000/user/iabd/delta/raw/clientes")
+df.show()
+```
+
+Si comprobamos los datos, veremos que tenemos los datos iniciales tras realizar la carga de los datos.
+
+<!--
+FIXME: continuar 
+https://learning.oreilly.com/library/view/learning-spark-2nd/9781492050032/ch09.html#auditing_data_changes_with_operation_his
+-->
+
+<!--
+!!! info "vacuum"
+
+    Si comprobamos cuando hemos sobrescrito los datos, cada vez se guarda una copia de lo que había y lo nuevo. Esto puede provocar que se llene el disco de los *workers*. Para ello, Delta Lake utiliza  .... para eso está el vacuum, por ejemplo, 7 días, y significa que va a guardar el histórico de los últimos 7 días.
+
+    Por cada 10 operaciones que aparezca en los logs con json, se crea un archivo Parquet.
+-->
 
 <!--
 Spark DeltaLake:
@@ -773,19 +1032,31 @@ https://learn.microsoft.com/es-es/azure/databricks/delta/
 
 Spark - Minio
 https://rhuanca.medium.com/on-premise-delta-lake-con-minio-da87f5f2b331
--->
 
+https://learning.oreilly.com/library/view/learning-spark-2nd/9781492050032/ch09.html#loading_data_into_a_delta_lake_table
+-->
 
 ## Referencias
 
 * [Modern Data Engineering with Apache Spark - Scott Haines - Apress](https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/)
 * [Construir data lakes fiables con Delta Lake - Carlos del Cacho](https://www.youtube.com/watch?v=_pCUra3_BGA)
 * [Delta Lake: Up and Running - Bennie Haelen - O'Reilly](https://learning.oreilly.com/library/view/delta-lake-up/9781098139711/)
-* [Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores]https://www.databricks.com/wp-content/uploads/2020/08/p975-armbrust.pdf
+* [Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores](https://www.databricks.com/wp-content/uploads/2020/08/p975-armbrust.pdf)
 
 ## Actividades
 
-1. Cargar un par de tablas desde retail_db. Realizar un join en un nuevo DataFrame. Persistir en una nueva tabla de la BD.
-2. Crear una tabla gestionada a partir del ejercicio anterior. Añadir un comentario a la tabla y a todas las columnas.
-Cachear la tabla.
-3. Crear un ejemplo básico con DeltaLake
+(RA5074.1 / CE4.1b y CE4.1d) En las siguientes actividades vamos a familiarizarnos con el uso del API de *Spark JDBC*, el acceso al catálogo y *DeltaLake*.
+
+1. (1p) Vamos a repetir una actividad que realizamos durante la sesión de Hive. Para ello, se pide recuperar desde la base de datos `retail_db` las tablas `customers` y `orders` en dos dataframes tal como hemos hecho en [el apartado Leyendo Datos](#leyendo-datos), y a continuación, realizar un *join* de manera que contenga la información de cada pedido y la ciudad del cliente.
+2. (1p) Sobre el *dataframe* anterior, en la base de datos `iabd`, crea una tabla gestionada en el catálogo cuyo nombre sea `pedidos_ciudad`, y añade comentarios tanto a a la tabla como a sus columnas.
+3. (1p) A partir de los [ejercicios 3 y 4 de la sesión anterior](02agregaciones.md#actividades) donde tras consumir unos datos de ventas, realizábamos una limpieza de los datos, renombrábamos columnas y posteriormente una serie de agregaciones para visualizar en gráficos el resultado, se pide crear tantas tablas en *Delta Lake* como consideres, siguiendo la arquitectura *Medallion*, utilizando una nomenclatura adecuada.
+4. (1p) Tras una auditoria, hemos descubierto que había un libro oculto de contabilidad con ciertas ventas que no habían sido registradas en el sistema. Así pues, crea datos ficticios extra de ventas para el año 2019, colócalo en la capa *raw*, y a continuación, actualiza los datos del resto de tablas.
+
+*[RA5074.1]: Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.
+*[CE4.1b]: Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.
+*[CE4.1d]: Se ha construido un conjunto de datos complejos y se han relacionado entre sí.
+
+<!--
+Configurar DeltaLake con S3
+Crear una bd directamente en Hive, no en la ruta de Spark
+-->
