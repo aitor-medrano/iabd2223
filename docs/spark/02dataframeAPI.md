@@ -195,7 +195,7 @@ nom = df.collect()[0][0]        # 'Aitor'
 
 ### Cargando diferentes formatos
 
-Lo más usual es cargar los datos desde una archivo externo. Para ello, mediante el API de *DataFrameReader* cargaremos los datos directamente en un *Dataframe* mediante diferentes métodos dependiendo del formato (admite tanto el nombre de un recurso como una ruta de una carpeta).
+Lo más usual es cargar los datos desde una archivo externo. Para ello, mediante el API de [`DataFrameReader`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameReader.html) cargaremos los datos directamente en un *Dataframe* mediante diferentes métodos dependiendo del formato (admite tanto el nombre de un recurso como una ruta de una carpeta).
 
 Para cada formato, existe un método corto que se llama como el formato en sí, y un método general donde mediante `format` indicamos el formato y que finaliza con el método `load` siempre dentro de `spark.read`:
 
@@ -209,7 +209,7 @@ Para cada formato, existe un método corto que se llama como el formato en sí, 
     dfCSV = spark.read.option("header", True).option("inferSchema", True).csv("datos.csv")
     dfCSV = spark.read.options(sep=";", header=True, inferSchema=True).csv("pdi_sales.csv")
     dfCSV = spark.read.format("csv").load("datos.csv") 
-    dfCSV = spark.read.load(format="csv", header="true", inferSchema="true").csv("datos.csv")
+    dfCSV = spark.read.load(path="datos.csv", format="csv", header="true", sep=";", inferSchema="true")
     ```
 
     Más información en la [documentación oficial](https://spark.apache.org/docs/latest/sql-data-sources-csv.html)
@@ -251,7 +251,27 @@ Para cada formato, existe un método corto que se llama como el formato en sí, 
 
     Más información en la [documentación oficial](https://spark.apache.org/docs/latest/sql-data-sources-parquet.html)
 
-Si lo que queremos es persistir los datos, en vez de `read`, utilizaremos `write` y si usamos la forma general usaremos el método `save`:
+!!! info "Avro"
+    La fuente de datos en formato *Avro* se incluye como un módulo externo, y por lo tanto, para poder leer o escribir datos en dicho formato, previamente hemos de cargar una librería.
+
+    Para ello, al arrancar *PySpark*, le pasaremos como parámetro `--packages org.apache.spark:spark-avro_2.12:3.3.1`:
+
+    ``` bash
+    pyspark --packages org.apache.spark:spark-avro_2.12:3.3.1
+    ```
+
+    Una vez arrancado, ya podemos leer y escribir datos en formato *Avro* de forma similar al resto:
+
+    ``` python
+    df = spark.read.format("avro").load("datos.avro")
+    df.write.format("avro").save("archivo.avro")
+    ```
+
+    La librería también nos permite convertir columnas y estructuras de datos con las operaciones `to_avro()` y `from_avro()`. Más información en la [documentación oficial](https://spark.apache.org/docs/latest/sql-data-sources-avro.html).
+
+### Persistiendo diferentes formatos
+
+Si lo que queremos es persistir los datos, en vez de `read`, utilizaremos `write` (de manera que obtenemos un [`DataFrameWriter`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameWriter.html)) y si usamos la forma general usaremos el método `save`:
 
 === "CSV"
 
@@ -286,7 +306,8 @@ Si lo que queremos es persistir los datos, en vez de `read`, utilizaremos `write
 
     ``` python
     dfParquet.write.parquet("datos.parquet")
-    dfParquet.write.format("json").save("datos.parquet")
+    dfParquet.write.mode("overwrite").partitionBy("fecha").parquet("datos/")
+    dfParquet.write.format("parquet").save("datos.parquet")
     ```
 
     Más información en la [documentación oficial](https://spark.apache.org/docs/latest/sql-data-sources-parquet.html)
@@ -342,7 +363,7 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 ```
 
 !!! info "Tipos"
-    Además de cadenas y enteros, flotantes (`FloatType`) o dobles (`DoubleType`), tenemos tipos booleanos (`BooleanType`), de fecha (DateType y TimestampType), así como tipos complejos como `ArrayType`, `MapType` y `StructType`.
+    Además de cadenas y enteros, flotantes (`FloatType`) o dobles (`DoubleType`), tenemos tipos booleanos (`BooleanType`), de fecha (`DateType` y `TimestampType`), así como tipos complejos como `ArrayType`, `MapType` y `StructType`.
     Para más información, consultar la [documentación oficial](https://spark.apache.org/docs/latest/sql-ref-datatypes.html).
 
 Volvamos al ejemplo anterior donde tenemos ciertos datos de clientes, como son su nombre y apellidos, ciudad y sueldo:
@@ -368,7 +389,7 @@ esquema = StructType([
 ])
 ```
 
-A continuación ya podemos crear un *DataFrame* con datos propios que cumplen un esquema haciendo uso del método `createDataFrame`:
+A continuación ya podemos crear un *DataFrame* con datos propios que cumplen un esquema haciendo uso del método [`createDataFrame`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.createDataFrame.html):
 
 ``` python
 df = spark.createDataFrame(data=clientes, schema=esquema)
@@ -415,7 +436,7 @@ df.schema
 # StructType(List(StructField(nombre,StringType,false),StructField(apellidos,StringType,false),StructField(ciudad,StringType,true),StructField(sueldo,IntegerType,false)))
 ```
 
-Si una vez hemos cargado un *DataFrame* queremos cambiar el tipo de una de sus columnas, podemos hacer uso del método `withColumn`:
+Si una vez hemos cargado un *DataFrame* queremos cambiar el tipo de una de sus columnas, podemos hacer uso del método [`withColumn`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.withColumn.html):
 
 ``` python
 # Forma larga
@@ -426,6 +447,15 @@ df = df.withColumn("sueldo", df.sueldo.cast("double"))
 
 # df = df.withColumn("fnac", to_date(df.Date, "M/d/yyy"))
 ```
+
+!!! caution "Errores al leer datos"
+    Si tenemos un error al leer un dato que contiene un tipo no esperado, por defecto, Spark lanzará una excepción y se detendrá la lectura.
+
+    Si queremos que asigne los tipos a los campos pero que no los valide, podemos pasarle el parámetro extra `verifySchema` a `False` al crear un DataFrame mediante [spark.createDataFrame](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.createDataFrame.html?highlight=verifyschema) o `enforceSchema` también a `False` al cargar desde una fuente externa mediante [`spark.read`](https://spark.apache.org/docs/3.1.3/api/python/reference/api/pyspark.sql.DataFrameReader.csv.html?highlight=enforceschema), de manera que los datos que no concuerden con el tipo se quedarán nulos, vacíos o con valor 0, dependiendo del tipo de dato que tiene asignada la columna en el esquema.
+
+    ``` python
+    dfClientes = spark.read.option("header", True).option("enforceSchema",False).schema(esquema).csv("clientes.csv")
+    ```
 
 ## DataFrame API
 
@@ -531,8 +561,6 @@ df.select(df["ProductID"], df["Revenue"]).show()
 df.select(col("ProductID"), col("Revenue")).show()
 ```
 
-https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.join.html
-
 #### col vs expr
 
 En ocasiones se confunde el uso de la función [`col`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.col.html) con [`expr`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.expr.html). Aunque podemos referenciar a una columna haciendo uso de `expr`, su uso provoca que se parseé la cadena recibida para interpretarla.
@@ -568,7 +596,7 @@ dfNuevo.show()
 ```
 
 !!! info "withColumn"
-    Anteriormente hemos utilizado el método `withColumn` para cambiarle el tipo a un campo ya existente. Así pues, si referenciamos a una columna que ya existe, en vez de crearla, la sustituirá.
+    Anteriormente hemos utilizado el método [withColumn](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.withColumn.html) para cambiarle el tipo a un campo ya existente. Así pues, si referenciamos a una columna que ya existe, en vez de crearla, la sustituirá.
 
 Otra forma de añadir una columna con una expresión es mediante la transformación [`selectExpr`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.selectExpr.html). Por ejemplo, podemos conseguir el mismo resultado que en el ejemplo anterior de la siguiente manera:
 
@@ -694,7 +722,9 @@ df.sort(df.Revenue.asc()).show(5)
 # Ordenación descendiente
 df.sort(df.Revenue.desc()).show(5)
 df.sort("Revenue", ascending=False).show(5)
+
 from pyspark.sql.functions import desc
+df.sort(desc("Revenue")).show(5)
 
 # Ordenación diferente en cada columna
 df.sort(df.Revenue.desc(), df.Units.asc()).show(5)
@@ -738,6 +768,9 @@ nvDF = spark.createDataFrame(nuevasVenta)
 # Unimos los dos DataFrames
 dfUpdated = df.union(nvDF)
 ```
+
+!!! info "Trabajando con conjuntos"
+    Considerando dos DataFrames como dos conjuntos, podemos emplear las operaciones [union](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.union.html), [intersect](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.intersect.html), [intersectAll](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.intersectAll.html) (mantiene los duplicados), [exceptAll](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.exceptAll.html) (mantiene los duplicados) y [subtract](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.subtract.html) .
 
 ### Cogiendo muestras
 
@@ -794,7 +827,7 @@ malDF.show()
 # |     6666|2022-03-22| null|   33|3333.33|  Spain|
 # |     6666|2022-03-23|03206| null|2222.22|  Spain|
 # |     6666|2022-03-24|03206| null|   null| Espain|
-# |     6666|2022-03-25|03206| null|2222.22|   null|
+# |     null|      null| null| null|   null|   null|
 # +---------+----------+-----+-----+-------+-------+
 ```
 
@@ -806,6 +839,7 @@ malDF.filter(malDF.Zip.isNull()).show()
 # |ProductID|      Date| Zip|Units|Revenue|Country|
 # +---------+----------+----+-----+-------+-------+
 # |     6666|2022-03-22|null|   33|3333.33|  Spain|
+# |     null|      null|null| null|   null|   null|
 # +---------+----------+----+-----+-------+-------+
 ```
 
@@ -844,11 +878,19 @@ Para trabajar con las filas que contengan algún dato nulo, podemos acceder a la
     # +---------+----------+-----+-----+-------+-------+
     ```
 
-    También podemos indicar la cantidad de nulos que ha de contener cada fila para eliminarla mediante el parámetro `thresh`:
+    También podemos indicar la cantidad de valores no nulos que ha de contener cada fila para eliminarla mediante el parámetro `thresh`:
 
     ``` python
-    # Elimina las filas con 3 o más nulos
+    # Elimina las filas que tengan menos de 3 valores rellenados
     malDF.dropna(thresh = 3)
+    # +---------+----------+-----+-----+-------+-------+
+    # |ProductID|      Date|  Zip|Units|Revenue|Country|
+    # +---------+----------+-----+-----+-------+-------+
+    # |     6666|2022-03-22|03206|   33|3333.33|  Spain|
+    # |     6666|2022-03-22| null|   33|3333.33|  Spain|
+    # |     6666|2022-03-23|03206| null|2222.22|  Spain|
+    # |     6666|2022-03-24|03206| null|   null| Espain|
+    # +---------+----------+-----+-----+-------+-------+    
     ```
 
 * que la rellene mediante el método [`fill`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrameNaFunctions.fill.html) / [`fillna`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.fillna.html), indicando el valor y si queremos, sobre qué columnas aplicar la modificación:
@@ -860,12 +902,12 @@ Para trabajar con las filas que contengan algún dato nulo, podemos acceder a la
     # malDF.fillna({"Zip": "99999"})
     # +---------+----------+-----+-----+-------+-------+
     # |ProductID|      Date|  Zip|Units|Revenue|Country|
-    # +---------+----------+-----+-----+-------+-------+
-    # |     6666|2022-03-22|03206|   33|3333.33|  Spain|
-    # |     6666|2022-03-22|99999|   33|3333.33|  Spain|
+    # +---------+----------+-----+-----+-------+-------+
+    # |     6666|2022-03-22|03206|   33|3333.33|  Spain|
+    # |     6666|2022-03-22|99999|   33|3333.33|  Spain|
     # |     6666|2022-03-23|03206| null|2222.22|  Spain|
-    # |     6666|2022-03-24|03206| null|   null| Espain|
-    # |     null|      null|99999| null|   null|   null|
+    # |     6666|2022-03-24|03206| null|   null| Espain|
+    # |     null|      null|99999| null|   null|   null|
     # +---------+----------+-----+-----+-------+-------+
     ```
 
@@ -965,7 +1007,7 @@ spark.catalog.dropGlobalTempView("ventasg")
 
 ## Trabajando con *Databricks*
 
-En la sesión anterior ya vimos como crear RDDs con *Databricks*. En esta ocasión, vamos a trabajar mediante *DataFrames* y SQL para ver toda la flexibilidad que nos aporta.
+En la sesión anterior ya vimos como crear RDDs con [*Databricks*](https://community.cloud.databricks.com/login.html). En esta ocasión, vamos a trabajar mediante *DataFrames* y SQL para ver toda la flexibilidad que nos aporta.
 
 Una vez creado de nuevo el cluster, vamos a cargar los datos mediante la opción *Data*, subiendo el archivo [`pdi_sales_small.csv`](resources/pdi_sales_small.csv):
 
@@ -1066,24 +1108,24 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 1. (1.5p) A partir del archivo [nombres.json](resources/nombres.json), crea un *DataFrame* y realiza las siguientes operaciones:
 
     1. Crea una nueva columna (columna `Mayor30`) que indique si la persona es mayor de 30 años.
-    2. Crea una nueva columna (columna `FaltanJubilación`) que calcule cuantos años le faltan para jubilarse (supongamos que se jubila a los 67 años)
+    2. Crea una nueva columna (columna `FaltanJubilacion`) que calcule cuantos años le faltan para jubilarse (supongamos que se jubila a los 67 años)
     3. Crea una nueva columna (columna `Apellidos`) que contenga `XYZ` (puedes utilizar la función [`lit`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.lit.html))
-    4. Elimina las columna `Mayor30` y `Apellidos`?
+    4. Elimina las columna `Mayor30` y `Apellidos`.
     5. Crea una nueva columna (columna `AnyoNac`) con el año de nacimiento de cada persona (puedes utilizar la función [`current_date`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.current_date.html)).
     6. Añade un id incremental para cada fila (campo `Id`) y haz que al hacer un `show` se vea en primer lugar (puedes utilizar la función [`monotonically_increasing_id`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.monotonically_increasing_id.html)) seguidos del `Nombre`, `Edad`, `AnyoNac`, `FaltaJubilacion` y `Ciudad`
 
     Al realizar los seis pasos, el resultado del DataFrame será similar a :
 
     ``` text
-    +---+------+----+-------+----------------+--------+
-    | Id|Nombre|Edad|AnyoNac|FaltanJubilacion|  Ciudad|
-    +---+------+----+-------+----------------+--------+
-    |  0| Aitor|  45|   1977|              22|   Elche|
-    |  1| María|  23|   1999|              44|Alicante|
-    |  2| Laura|  19|   2003|              48|   Elche|
-    |  3| Sonia|  45|   1977|              22|    Aspe|
-    |  4| Pedro|null|   null|            null|   Elche|
-    +---+------+----+-------+----------------+--------+
+    +---+-------+----+-------+----------------+--------+
+    | Id|Nombre |Edad|AnyoNac|FaltanJubilacion|  Ciudad|
+    +---+-------+----+-------+----------------+--------+
+    |  0|  Aitor|  45|   1977|              22|   Elche|
+    |  1| Marina|  14|   2008|              53|Alicante|
+    |  2|  Laura|  19|   2003|              48|   Elche|
+    |  3|  Sonia|  45|   1977|              22|    Aspe|
+    |  4|  Pedro|null|   null|            null|   Elche|
+    +---+-------+----+-------+----------------+--------+
     ```
 
 2. (1p) A partir del archivo [`VentasNulos.csv`](resources/VentasNulos.csv):
@@ -1093,14 +1135,21 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
     2. Con las filas restantes, sustituye:
 
         1. Los nombres nulos por `Empleado`
-        2. Las ventas nulas por la media de las ventas de los compañeros(redondeado a entero).
-        3. Los euros nulos por el valor del compañero que menos € ha ganado
-        4. La ciudad nula por `C.V.`
-        5. El identificador nulo por `XYZ`
+        2. Las ventas nulas por la media de las ventas de los compañeros (redondeado a entero).
+
+            !!! tip "Agrupando"
+                Para obtener la media, aunque lo veremos en la próxima sesión, debes agrupar y luego obtener la media de la columna:
+
+                ``` python
+                valor = df.groupBy().avg('Ventas')
+                ```
+
+        3. Los euros nulos por el valor del compañero que menos € ha ganado. (tras agrupar, puedes usar la función `min`)
+        4. La ciudad nula por `C.V.` y el identificador nulo por `XYZ`
 
         Para los pasos ii) y iii) puedes crear un *DataFrame* que obtenga el valor a asignar y luego pasarlo como parámetro al método para rellenar los nulos.
 
-3. (1.5p) A partir del archivo [`movies.tsv`](resources/movies.tsv), crea una esquema de forma declarativa con los campos:
+3. (0.5p) A partir del archivo [`movies.tsv`](resources/movies.tsv), crea una esquema de forma declarativa con los campos:
 
     * `interprete` de tipo `string`
     * `pelicula` de tipo `string`
@@ -1109,13 +1158,8 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
     Cada fila del fichero implica que el actor/actriz ha trabajado en dicha película en el año indicado.
 
     1. Una vez creado el esquema, carga los datos en un *DataFrame*.
-    2. ¿Cuantas películas diferentes hay?
-    3. ¿En cuantas películas ha trabajado `Murphy, Eddie (I)`?
-    4. Muestra los intérpretes que aparecen tanto en `Superman` como en `Superman II`.
-    5. ¿Cuáles son los actores que han aparecido en más de 30 películas?
-    6. ¿En que película anterior a 1980 aparecen al menos 25 intérpretes?
-    7. Muestra la cantidad de películas producidas cada año (solo debe mostrar el año y la cantidad), ordenando el listado por la cantidad de forma descendente.
-    8. A partir de la consulta anterior, crea un gráfico de barras que muestre el año y la cantidad de películas, ordenados por fecha.
+    2. Muestra las películas en las que ha trabajado `Murphy, Eddie (I)`.
+    3. Muestra los intérpretes que aparecen tanto en `Superman` como en `Superman II`.
 
 *[RA5074.1]: Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.
 *[CE4.1b]: Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.
