@@ -1,6 +1,6 @@
 ---
 title: Spark RDDs
-description: Uso de RDD en Spark, acciones y transformaciones (narrow y wide), tanto con RDD sencillos como de pares. Actividades sobre listas de palabras, ficheros de texto y uso de Spark Submit para la ejecución de scripts Python en Spark.
+description: Uso de RDD en Spark, acciones y transformaciones (narrow y wide), tanto con RDD sencillos como de pares. Actividades sobre listas de palabras y ficheros de texto.
 ---
 
 # RDD
@@ -329,7 +329,7 @@ Mediante [`intersection`](https://spark.apache.org/docs/latest/api/python/refere
 rdd1 = sc.parallelize([1,2,3,4])
 rdd2 = sc.parallelize([3,4,5,6])
 resultRDD = rdd1.intersection(rdd2)
-resultRDD.collect()     # [1, 2, 3, 4, 5, 6, 7, 8]
+resultRDD.collect()     # [3, 4]
 ```
 
 #### Subtract
@@ -393,7 +393,7 @@ Para generar un RDD de pares, además de crearlo nosotros a partir de una lista,
 
     ``` python
     lista  = ['Hola', 'Adiós', 'Hasta luego']
-    rddMap = sc.parallelize(lista).map(lambda x: (x, len(c))
+    rddMap = sc.parallelize(lista).map(lambda x: (x, len(x)))
     # [('Hola', 4), ('Adiós', 5), ('Hasta luego', 11)]
     ```
 
@@ -903,7 +903,7 @@ print("")
     1. Crear un RDD a partir del fichero y crea una lista con todas las palabras del documento.
     2. ¿Cuantas veces aparece la palabra `Dulcinea` (independientemente de si está en mayúsculas o minúsculas)? ¿Y `Rocinante`? (86 y 120 ocurrencias respectivamente)
     3. Devuelve una lista ordenada según el número de veces que sale cada palabra de más a menos (las primeras ocurrencias deben ser `[('que', 10731), ('de', 9035), ('y', 8668), ('la', 5014), ...`).
-    4. Almacena el resultado en HDFS en  `/user/iabd/spark/wcQuijote`.
+    4. Almacena el resultado en HDFS en  `/user/iabd/spark/wcQuijote` (investiga el método [`saveAsTextFile`](https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.RDD.saveAsTextFile.html)).
 
 4. (0.75p) Dada una cadena que contiene una lista de nombres `Juan, Jimena, Luis, Cristian, Laura, Lorena, Cristina, Jacobo, Jorge`, una vez transformada la cadena en una lista y luego en un RDD:
 
@@ -974,11 +974,7 @@ https://github.com/PacktPublishing/Apache-Spark-3-for-Data-Engineering-and-Analy
 <!--
 <https://www.analyticsvidhya.com/blog/2021/10/a-comprehensive-guide-to-apache-spark-rdd-and-pyspark/>
 <https://donnemartin.com/apache-spark-tutorial.html>
-
-
-
 -->
-
 
 <!--
 A RDD acts like a graph of transformational pointers, so in the case of a partial failure, the RDD representing a specific phase of processing can be recomputed efficiently. The RDD itself stores no physical data, simply metadata, making it a means to coordinate data processing across a distributed cluster of network connected computers
