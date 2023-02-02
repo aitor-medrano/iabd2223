@@ -58,7 +58,7 @@ Además, contiene otros 4 grandes componentes construidos sobre el *core*:
     Por ejemplo, con este fragmento leemos un fichero JSON desde nuestro sistema de almacenamiento, creamos una tabla temporal y mediante una consulta SQL cargamos los datos en un *DataFrame* de *Spark*:
 
     ``` python
-    df_zips = spark.read.csv("zips.json")
+    df_zips = spark.read.json("zips.json")
     df_zips.createOrReplaceTempView("zips")
     df_resultado = spark.sql("""SELECT city, state
         FROM zips WHERE pop > 10000
@@ -118,12 +118,17 @@ iabd@iabd-virtualbox:~/Spark$ pyspark
     >>>
     ```
     
-    
     Para que se abra automáticamente *Jupyter Lab*, necesitamos exportar las siguientes variables de entorno:
 
     ``` bash title="~/.bashrc"
     export PYSPARK_DRIVER_PYTHON=jupyter
     export PYSPARK_DRIVER_PYTHON_OPTS='notebook'
+    ```
+
+    Es conveniente actualizar siempre *Jupyter Lab* a la última versión:
+
+    ``` bash
+    pip install --upgrade jupyterlab
     ```
 
     Más información en <https://www.sicara.ai/blog/2017-05-02-get-started-pyspark-jupyter-notebook-3-minutes>
@@ -220,6 +225,13 @@ El cual podemos observar cómo se ejecuta en Colab:
 
 Para poder trabajar con *Databricks* de forma gratuita, podemos hacer uso de [Databricks Community Edition](https://community.cloud.databricks.com/login.html), donde podemos crear nuestros propios cuadernos *Jupyter* y trabajar con *Spark* sin necesidad de instalar nada.
 
+Para crear una cuenta gratuita, clickando sobre *Sign up*, tras rellenar los datos personales, antes de seleccionar el proveedor *cloud*, en la parte inferior, hemos de pulsar sobre *Get started with Community Edition*:
+
+<figure style="align: center;">
+    <img src="images/01spark-databricks-signup.png">
+    <figcaption>Creación de una cuenta Community en Databricks</figcaption>
+</figure>
+
 El único paso inicial tras registrarnos, es crear un clúster básico (con 15.3GB de memoria y dos núcleos) desde la opción *Create* del menú de la izquierda:
 
 <figure style="align: center;">
@@ -235,6 +247,10 @@ Tras un par de minutos se habrá creado y lanzado el clúster, ya estaremos list
 </figure>
 
 Si queremos, podemos hacer [público](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/258974416188569/67277107946785/7969755578738041/latest.html) el cuaderno y compartirlo con la comunidad.
+
+!!! tip "Navegador de archivos DBFS"
+    Por defecto, el navegador del sistema de archivos de DataBricks está oculto.
+    Para facilitar el acceso a los datos y visualizar la estructura y ruta de los mismos, lo podemos activar desde: *Settings* → *Admin Console* → *Workspace Settings* → *Advanced*, y ponemos la opción ***DBFS File Browser*** a *Enabled*.
 
 ### SparkContext vs SparkSession
 
@@ -472,7 +488,6 @@ Si pulsamos por ejemplo sobre la fase de `groupBy` obtendremos sus estadísticas
         <img src="images/01spark-databricks-ui.png">
         <figcaption>Spark UI en Databricks</figcaption>
     </figure>
-
 
 ## Referencias
 
