@@ -97,7 +97,7 @@ Cloudera con Docker: https://github.com/rubensa/hortonworks-sandbox-hdp
 
 Es la capa de almacenamiento de *Hadoop*, y como tal, es un sistema de ficheros distribuido y tolerante a fallos que puede almacenar gran cantidad de datos, escalar de forma incremental y sobrevivir a fallos de hardware sin perder datos. Se basa en el [*paper*](https://static.googleusercontent.com/media/research.google.com/es//archive/gfs-sosp2003.pdf) que publicó *Google* detallando su *Google File System* en 2003.
 
-En un sistema que reparte los datos entre todos los nodos del clúster de *Hadoop*, dividiendo los ficheros en bloques (cada bloque por defecto es de 128MB) y almacenando copias duplicadas a través de los nodos. Por defecto se replica en 3 nodos distintos (esto se conoce como el **factor de replicación**).
+Es un sistema que reparte los datos entre todos los nodos del clúster de *Hadoop*, dividiendo los ficheros en bloques (cada bloque por defecto es de 128MB) y almacenando copias duplicadas a través de los nodos. Por defecto se replica en 3 nodos distintos (esto se conoce como el **factor de replicación**).
 
 HDFS asegura que se puedan añadir servidores para incrementar el tamaño de almacenamiento de forma lineal, de manera que al introducir un nuevo nodo, se incrementa tanto la redundancia como la capacidad de almacenamiento.
 
@@ -113,13 +113,15 @@ No ofrece buen rendimiento para:
 Así pues, los datos, una vez escritos en HDFS son immutables. Cada fichero de HDFS solo permite añadir contenido (*append-only*). Una vez se ha creado y escrito en él, solo podemos añadir contenido o eliminarlo. Es decir, a priori, no podemos modificar los datos.
 
 !!! tip "HBase / Hive"
-    Tanto HBase como Hive ofrecen una capa por encima de HDFS para dar soporte a la modificación de los datos, como en cualquier base de datos.
+    Tanto *HBase* como *Hive* ofrecen una capa por encima de HDFS para dar soporte a la modificación de los datos, como en cualquier base de datos.
 
 ### Bloques
 
 Un bloque es la cantidad mínima de datos que puede ser leída o escrita. El tamaño predeterminado de HDFS son 128 MB, ya que como hemos comentado, *Hadoop* está pensado para trabajar con ficheros de gran tamaño.
 
 Todos los ficheros están divididos en bloques. Esto quiere decir que si subimos un fichero de 600MB, lo dividirá en 5 bloques de 128MB. Estos bloques se distribuyen por todos los nodos de datos del clúster de *Hadoop*.
+
+Si un fichero de HDFS es menor que el tamaño de un bloque, es decir, menor de 128MB, ocupará un bloque lógico pero en disco únicamente ocupará el espacio necesario. Es decir, un archivo de 1MB ocupará un bloque de 128MB, pero utilizará 1MB en disco.
 
 A partir del *factor de replicación*, cada bloque se almacena varias veces en máquinas distintas. El valor por defecto es 3. Por lo tanto, el archivo de 600MB que teníamos dividido en 5 bloques de 128MB, si lo replicamos tres veces, lo tendremos repartido en 15 bloques entre todos los nodos del clúster.
 
