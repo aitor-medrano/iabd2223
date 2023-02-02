@@ -1,6 +1,6 @@
 ---
 title: Agregaciones, joins y uso de funciones con Spark DataFrames / SQL
-description: Agregaciones con Spark DataFrames, joins y uso de Pandas para la generación de gráficos. Creación de vistas en Spark SQL. Empleo de funciones y creación de UDF en Spark.
+description: Apuntes y ejercicios sobre agregaciones con Spark DataFrames, joins y uso de Pandas para la generación de gráficos. Creación de vistas en Spark SQL. Empleo de funciones y creación de UDF en Spark.
 ---
 
 # Spark DataFrames II
@@ -141,7 +141,6 @@ Sobre un *DataFrame*, podemos agrupar los datos por la columna que queramos util
 === "sum"
 
     ``` python
-    from pyspark.sql.functions import sum
     df.groupBy("Country").sum("Revenue").show()
     # +-------+--------------------+
     # |Country|        sum(Revenue)|
@@ -156,6 +155,7 @@ Sobre un *DataFrame*, podemos agrupar los datos por la columna que queramos util
 Si necesitamos realizar más de un agregación sobre el mismo grupo, mediante [agg](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.GroupedData.agg.html) podemos indicar una o más expresiones de columnas:
 
 ``` python
+from pyspark.sql.functions import sum, count
 df.groupBy("Country").agg(sum("Revenue"), count("Revenue")).show()
 # +-------+--------------------+--------------+
 # |Country|        sum(Revenue)|count(Revenue)|
@@ -440,7 +440,7 @@ df.select("Zip", ltrim("Zip").alias("l"), rtrim("Zip").alias("r"),
 # only showing top 1 row
 ```
 
-O funciones para poner la inicial en mayúsculas ([`initcap`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.initcap.html)), darle la vuelta ([`reverse`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.reverse.html)), obtener su tamaño o reemplazar caracteres ([`translate`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.translate.html)):
+O funciones para poner la inicial en mayúsculas ([`initcap`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.initcap.html)), darle la vuelta ([`reverse`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.reverse.html)), obtener su tamaño ([`length`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.length.html))o reemplazar caracteres ([`translate`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.functions.translate.html)):
 
 ``` python
 df.select("Country", initcap("Country"), reverse("Country"),
@@ -716,7 +716,7 @@ df.select("ProductID", "Revenue", "Units", udfBonus(df.Units, df.Revenue)).sort(
 # only showing top 5 rows
 ```
 
-Si queremos definir la función para poder utilizarla dentro de Spark SQL y obtener el mismo resultado, hemos de registrar la función mediante ***`spark.udf.register`***, la cual recibe el nombre que le asignaremos a la función, el nombre de la función Python a invocar, y el tipo de dato que devuelve:
+Si queremos definir la función para poder utilizarla dentro de Spark SQL y obtener el mismo resultado, hemos de registrar la función mediante ***`spark.udf.register`***, la cual recibe el nombre que le asignaremos a la función, el nombre de la función *Python* a invocar, y el tipo de dato que devuelve:
 
 ``` python
 spark.udf.register("udfBonus", bonus, DoubleType())
@@ -724,12 +724,16 @@ spark.sql("select ProductID, Revenue, Units,  udfBonus(Units, Revenue) as bonus 
 ```
 
 !!! caution "UDF y Python"
-    En un principio, se desaconseja la creación de UDF mediante *Python*, ya que su uso penalizar de forma significativa el rendimiento.
-    Los ejecutores son procesos en máquinas virtuales de Java que están escritos en Java, y por ello, ejecutan código Java o Scala de forma nativa. En cambio, para Python tiene que ejecutar un proceso separado para ejecutar la UDF, lo que implica un coste extra para serializar y volver a deserializar los datos para cada fila del *dataset*.
+    En un principio, se desaconseja la creación de UDF mediante *Python*, ya que su uso penaliza de forma significativa el rendimiento.
+    Los ejecutores son procesos en máquinas virtuales de Java que están escritos en Java, y por ello, ejecutan código Java o Scala de forma nativa. En cambio, para *Python* tiene que ejecutar un proceso separado para ejecutar la UDF, lo que implica un coste extra para serializar y volver a deserializar los datos para cada fila del *dataset*.
 
-## Persistencia
+## Cacheando
 
-Un *DataFrame* se puede persistir/cachear en memoria conforme necesitemos (también lo podemos hacer con los RDD). Su principal propósito es cuando vamos a acceder a un DataFrame una y otra vez y no necesitamos que se vuelvan a evaluar todas las operaciones (como pueden ser los algoritmos iterativos utilizados en *Machine Learning*).
+Un *DataFrame* se puede persistir/cachear en memoria conforme necesitemos (también lo podemos hacer con los RDD). Su principal propósito es cuando vamos a acceder a un *DataFrame* una y otra vez y no necesitamos que se vuelvan a evaluar todas las operaciones (como pueden ser los algoritmos iterativos utilizados en *Machine Learning*).
+
+!!! info "Más información"
+    Si estás interesado en optimizar el uso de memoria al trabajar con *DataFrames*, 
+    [Brayan Buitrago](https://brabuitrago.medium.com) tiene una serie de artículos sobre [Spark Performace: Cache() & Persist()](https://medium.com/iwannabedatadriven/spark-performace-cache-persist-i-c39e0c142fe5) muy interesantes.
 
 Cuando persistimos un *dataset*, cada nodo almacena sus datos particionados en memoria y/o disco y los reutiliza en otras operaciones sobre dicho *dataset*.
 
@@ -864,14 +868,25 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 
 ## Actividades
 
-1. Vamos a seguir realizando analíticas de datos sobre las películas, ya que nos han enviado un nuevo archivo llamado [`movie-ratings.tsv`](resources/movie-ratings.tsv) que contiene las calificaciones de las películas.
+(RA5075.1 / CE5.1d y CE5.1e) En las siguientes actividades vamos a realizar agregaciones mediante el uso del API de *DataFrames* de *Spark* (cada apartado vale 0,25p).
 
-    1. Crea un DataFrame que contenga los datos de ambos *datasets*.
+1. (1p) Sobre las películas de la sesión anterior:
+
+    1. ¿Cuantas películas diferentes hay?
+    2. ¿En cuantas películas ha trabajado `Murphy, Eddie (I)`?
+    3. ¿Cuáles son los actores que han aparecido en más de 30 películas?
+    4. ¿En que película anterior a 1980 aparecen al menos 25 intérpretes?
+    5. Muestra la cantidad de películas producidas cada año (solo debe mostrar el año y la cantidad), ordenando el listado por la cantidad de forma descendente.
+    6. A partir de la consulta anterior, crea un gráfico de barras que muestre el año y la cantidad de películas, ordenados por fecha.
+
+2. (1p) Nos han enviado un nuevo archivo llamado [`movie-ratings.tsv`](resources/movie-ratings.tsv) que contiene las calificaciones de las películas.
+
+    1. Crea un *DataFrame* que contenga los datos de ambos *datasets*.
     2. Muestra para cada año, la película con mayor puntuación (año, título de la película, puntuación)
     3. Sobre los datos anteriores, obtén también una lista con los nombres de los intérpretes.
     4. Averigua las tres parejas de intérpretes han trabajado juntos en más ocasiones. La salida debe tener tres columnas: `interprete1`, `interprete2` y `cantidad`. (necesitas utilizar un *self-join*)
 
-2. Hemos recibido un dataset con las ventas de 2019 de una tienda americana de productos de tecnología, mediante un conjunto de ficheros en formato CSV comprimidos en [salesdata.zip](resources/salesdata.zip).
+2. (1.5p) Hemos recibido un dataset con las ventas de 2019 de una tienda americana de productos de tecnología, mediante un conjunto de ficheros en formato CSV comprimidos en [salesdata.zip](resources/salesdata.zip).
 
     1. Una vez descomprimidos los datos, crea un *DataFrame* con todos los datos, infiriendo el esquema.
     2. Vuelve a realizar la lectura de los datos pero con el siguiente esquema:
@@ -894,30 +909,32 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
     6. A partir del campo dirección, crea dos nuevas columnas para almacenar la ciudad (`City`) y el estado (`State`). Por ejemplo, para la dirección `136 Church St, New York City, NY 10001`, la ciudad es `New York City` y el estado es `NY`.
     7. Modifica el campo con la fecha del pedido para que su formato sea *timestamp*.
     8. Sobre el campo anterior, crea dos nuevas columnas, con el mes (`Month`) y el año (`Year`) del pedido.
-    9. Almacena los datos en formato Parquet en la carpeta `salesoutput` particionando los datos por año y mes. Tras ejecutar esta operación, comprueba en disco la estructura de archivos creada.
-    10. Sobre los datos almacenados, realiza una nueva lectura pero solo leyendo los datos de 2019 los cuales deberían estar almacenados en `./salesdataoutput/Year=2019`.
-    11. Averigua cual ha sido el mes que ha recaudado más. Para ello, deberás multiplicar el precio por la cantidad de unidades, y posteriormente, realizar alguna agregación. Sobre el resultado, crea un gráfico similar al siguiente:
+
+3. (1.5p) Una vez realizada la transformación de los datos, vamos a realizar su carga y extraer información`, utilizando Spark SQL siempre que sea posible:
+    1. Almacena los datos en formato *Parquet* en la carpeta `salesoutput` particionando los datos por año y mes. Tras ejecutar esta operación, comprueba en disco la estructura de archivos creada.
+    2. Sobre los datos almacenados, realiza una nueva lectura pero solo leyendo los datos de 2019 los cuales deberían estar almacenados en `./salesdataoutput/Year=2019`.
+    3. Averigua cual ha sido el mes que ha recaudado más. Para ello, deberás multiplicar el precio por la cantidad de unidades, y posteriormente, realizar alguna agregación. Sobre el resultado, crea un gráfico similar al siguiente:
 
         <figure style="align: center;">
             <img src="images/02ventas01.png">
             <figcaption>Ventas por mes</figcaption>
         </figure>
 
-    12. Obtén un gráfico con las 10 ciudades que más unidades han vendido.
+    4. Obtén un gráfico con las 10 ciudades que más unidades han vendido.
 
         <figure style="align: center;">
             <img src="images/02ventas02.png">
             <figcaption>Ciudades con más unidades vendidas</figcaption>
         </figure>
 
-    13. Cantidad de pedidos por Horas en las que se ha realizado un pedido que contenía al menos dos productos:
+    5. Cantidad de pedidos por Horas en las que se ha realizado un pedido que contenía al menos dos productos:
 
         <figure style="align: center;">
             <img src="images/02ventas03.png">
             <figcaption>Pedidos de al menos dos productos por horas</figcaption>
         </figure>
 
-    14. Listado con los productos del estado de `NY` que se han comprado a la vez, obteniendo un resultado similar a:
+    6. Listado con los productos del estado de `NY` que se han comprado a la vez, obteniendo un resultado similar a:
 
         ``` text
         +------------------------------------------------------------+-----+
@@ -929,4 +946,9 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
         ...
         ```
 
-3. (opcional) Vuelve a realizar todo el ejercicio anterior pero utilizando únicamente Spark SQL.
+*[RA5074.1]: Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.
+*[CE4.1b]: Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.
+
+*[RA5075.1]: Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos
+*[CE5.1d]: Se han procesado los datos almacenados.
+*[CE5.1e]: Se han presentado los resultados y las soluciones al cliente final en una forma fácil de interpretar.
