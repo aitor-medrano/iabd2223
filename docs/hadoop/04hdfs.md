@@ -203,14 +203,39 @@ Una vez creado subimos el archivo con las calificaciones de las películas:
 hdfs dfs -put ratings.csv  /user/iabd/prueba-hdfs
 ```
 
-Con el fichero subido nos vamos al interfaz gráfico de Hadoop (<http://iabd-virtualbox:9870/explorer.html#/>), localizamos el archivo y obtenemos el *Block Pool ID* del *block information*:
+Si queremos saber cuantos bloques ha creado y cuanto ocupa cada uno de ellos, por ejemplo, podemos utilizar la utilidad `fsck` que permite comprobar la salud del sistema de archivos. Si le pasamos las opciones `-files` y `-blocks` nos mostrará información tanto de los archivos como de los bloques contenidos:
+
+``` bash hl_lines="7"
+iabd@iabd-virtualbox:$ hdfs fsck /user/iabd/prueba-hdfs -files -blocks
+Connecting to namenode via http://iabd-virtualbox:9870/fsck?ugi=iabd&files=1&blocks=1&path=%2Fuser%2Fiabd%2Fprueba-hdfs
+FSCK started by iabd (auth:SIMPLE) from /127.0.0.1 for path /user/iabd/prueba-hdfs at Sun Jan 22 18:11:45 CET 2023
+
+/user/iabd/prueba-hdfs <dir>
+/user/iabd/prueba-hdfs/ratings.csv 678260987 bytes, replicated: replication=1, 6 block(s):  OK
+0. BP-481169443-127.0.1.1-1639217848073:blk_1073750565_9750 len=134217728 Live_repl=1
+1. BP-481169443-127.0.1.1-1639217848073:blk_1073750566_9751 len=134217728 Live_repl=1
+2. BP-481169443-127.0.1.1-1639217848073:blk_1073750567_9752 len=134217728 Live_repl=1
+3. BP-481169443-127.0.1.1-1639217848073:blk_1073750568_9753 len=134217728 Live_repl=1
+4. BP-481169443-127.0.1.1-1639217848073:blk_1073750569_9754 len=134217728 Live_repl=1
+5. BP-481169443-127.0.1.1-1639217848073:blk_1073750570_9755 len=7172347 Live_repl=1
+
+
+Status: HEALTHY
+ Number of data-nodes:  1
+ Number of racks:               1
+ Total dirs:                    1
+ Total symlinks:                0
+...
+```
+
+Si queremos utilizar el interfaz gráfico de Hadoop (<http://iabd-virtualbox:9870/explorer.html#/>), tras localizar el archivo, obtenemos el *Block Pool ID* del *block information*:
 
 <figure style="align: center;">
     <img src="images/04hdfs-ratings-blockpoolid.png" width="500px">
     <figcaption>Identificador de bloque</figcaption>
 </figure>
 
-Si desplegamos el combo de *block information*, podremos ver cómo ha partido el archivo CSV en 5 bloques (566 MB que ocupa el fichero CSV / 128 del tamaño del bloque).
+Si desplegamos el combo de *block information*, podremos ver cómo ha partido el archivo CSV en 6 bloques (650 MB aproximadamente que ocupa el fichero CSV / 128 del tamaño del bloque).
 
 <figure style="align: center;">
     <img src="images/04hdfs-ratings-blocks.png" width="500px">
@@ -223,7 +248,8 @@ Así pues, con el código del *Block Pool Id*, podemos confirmar que debe existi
 iabd@iabd-virtualbox:~$ ls /opt/hadoop-data/hdfs/datanode/current
 BP-481169443-127.0.1.1-1639217848073  VERSION
 ```
-El valor que aparece coincide con el que hemos recuperado en la imagen.
+
+El valor que aparece coincide con el que hemos recuperado tanto en la imagen como mediante `fsck`.
 
 Dentro de este subdirectorio existe otro `finalized`, donde *Hadoop* irá creando una estructura de subdirectorios `subdir` donde albergará los bloques de datos:
 
@@ -233,13 +259,7 @@ total 172
 drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir0
 drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir1
 drwxrwxr-x 2 iabd iabd 20480 dic 22  2021 subdir2
-drwxrwxr-x 2 iabd iabd 12288 feb  9  2022 subdir3
-drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir4
-drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir5
-drwxrwxr-x 2 iabd iabd 12288 nov 28 20:16 subdir6
-drwxrwxr-x 2 iabd iabd 20480 nov 28 20:03 subdir7
-drwxrwxr-x 2 iabd iabd 20480 mar 16  2022 subdir8
-drwxrwxr-x 2 iabd iabd  4096 nov 30 17:31 subdir9
+...
 ```
 
 Una vez en este nivel, vamos a buscar el archivo que coincide con el *block id* poniéndole como prefijo `blk_`:
@@ -247,16 +267,16 @@ Una vez en este nivel, vamos a buscar el archivo que coincide con el *block id* 
 ``` bash hl_lines="3"
 iabd@iabd-virtualbox:~$ cd /opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0
 iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ \
-> find -name blk_1073744314
+> find -name blk_1073750565
 ```
 
-En mi caso devuelve `./subdir9/blk_1073744314`. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:
+En mi caso devuelve `./subdir2/blk_1073750565`. De manera que ya podemos comprobar como el inicio del documento se encuentra en dicho archivo:
 
 ``` bash hl_lines="4"
 iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0$ \
-> cd subdir9
+> cd subdir2
 iabd@iabd-virtualbox:/opt/hadoop-data/hdfs/datanode/current/BP-481169443-127.0.1.1-1639217848073/current/finalized/subdir0/subdir9$ \
-> head blk_1073744314
+> head blk_1073750565
 userId,movieId,rating,timestamp
 1,296,5.0,1147880044
 1,306,3.5,1147868817
@@ -274,7 +294,7 @@ userId,movieId,rating,timestamp
 Algunas de las opciones más útiles para administrar HDFS son:
 
 * `hdfs dfsadmin -report`: Realiza un resumen del sistema HDFS, similar al que aparece en el interfaz web, donde podemos comprobar el estado de los diferentes nodos.
-* `hdfs fsck`: Comprueba el estado del sistema de ficheros. Si queremos comprobar el estado de un determinado directorio, lo indicamos mediante un segundo parámetro: `hdfs fsck /datos/prueba`
+* `hdfs fsck`: como acabamos de ver, comprueba el estado del sistema de ficheros. Si queremos comprobar el estado de un determinado directorio, lo indicamos mediante un segundo parámetro: `hdfs fsck /datos/prueba`
 * `hdfs dfsadmin -printTopology`: Muestra la topología, identificando los nodos que tenemos y al rack al que pertenece cada nodo.
 * `hdfs dfsadmin -listOpenFiles`: Comprueba si hay algún fichero abierto.
 * `hdfs dfsadmin -safemode enter`: Pone el sistema en modo seguro, el cual evita la modificación de los recursos del sistema de archivos.
@@ -459,6 +479,24 @@ Una vez dentro, por ejemplo, podemos visualizar e interactuar con HDFS:
     <img src="images/04hue-hdfs.png">
     <figcaption>HDFS en Hue</figcaption>
 </figure>
+
+<!--
+1. Abrir DBeaver, y crear una base de datos llamada hue.
+2. Abrir el archivo de configuración de Hue:
+    nano /opt/hue-4.10.0/desktop/conf/hue.ini
+3. En la sección [database], copiar estos valores:
+    engine=mysql
+    host=localhost
+    port=3306
+    user=iabd
+    password=iabd
+    name=hue
+
+4. Guardar el fichero
+5. Ejecutar las migraciones para la creación de las tablas de Hue. Desde la carpeta de Hue:
+    ./build/env/bin/hue migrate
+6. Arrancar Hadoop, HiveServer2 y Hue y probar que funciona.
+-->
 
 ## Referencias
 
