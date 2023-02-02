@@ -5,7 +5,7 @@ description: Apuntes sobre el uso de Sqoop para leer y escribir datos en HDFS y 
 
 # Sqoop / Flume
 
-Las dos herramientas principales utilizadas para importar/exportar datos en *HDFS* son Sqoop y Flume, las cuales vamos a estudiar a continuación.
+Las dos herramientas principales utilizadas para importar/exportar datos en *HDFS* son *Sqoop* y *Flume*, las cuales vamos a estudiar a continuación.
 
 ## Sqoop
 
@@ -240,10 +240,12 @@ Note: Recompile with -Xlint:deprecation for details.
 Vamos a repasar la salida del log para entender el proceso:
 
 * En la línea 5 vemos como se lanza el generador de código.
-* En las líneas 6, 7 y 15 vemos como ejecuta la consulta para obtener todos los datos de profesores.
+* En las líneas 6, 7 y 15 vemos como ejecuta la consulta para obtener todos los metadatos de la tabla de profesores.
 * En la línea 20 obtiene los valores mínimo y máximo para calcular como dividir los datos.
-* De las líneas 29 a la 34 se ejecuta el proceso *MapReduce*.
+* De las líneas 29 a la 34 se ejecuta el proceso *MapReduce*, donde realmente recupera los datos.
 * En el resto se puede observar un resumen estadístico.
+
+#### Monitorizando Sqoop
 
 Si accedemos al interfaz gráfico de YARN (en `http://iabd-virtualbox:8088/cluster`) podemos ver cómo aparece el proceso como realizado:
 
@@ -267,7 +269,7 @@ Si entramos a ver los datos, podemos visualizar el contenido del primer fragment
 </figure>
 
 !!! tip "Importándolo todo"
-    Si queremos importar todas las tablas de una base de datos, podemos emplear el comando [`sqoop import-all-tables`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_all_tables_literal), en el cual ya no indicamos la tabla a importar:
+    Si queremos importar todas las tablas de una base de datos, podemos emplear el comando [`sqoop import-all-tables`](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_literal_sqoop_import_all_tables_literal), en el cual ya no indicamos la tabla a importar, sino la carpeta (`warehouse-dir`) donde creará una carpeta por cada tabla que encuentra en la base de datos:
 
     ``` bash
     sqoop import-all-tables --connect jdbc:mysql://localhost/mi_bd \
@@ -301,6 +303,15 @@ Para exportar los datos de HDFS y cargarlos en esta nueva tabla lanzamos la sigu
 sqoop export --connect jdbc:mysql://localhost/sqoopCaso2 \
     --username=iabd --password=iabd \
     --table=profesores2 --export-dir=/user/iabd/sqoop/profesores_hdfs
+```
+
+Si quisiéramos exportar los datos sobre la misma tabla del caso de uso anterior, nos daría error ya que tendríamos registros duplicados por la clave primaria. Para evitar el error, podemos indicarle una clave de actualización mediante `--update-key`, de manera que en el caso de que el registro ya existiese, modificara sus datos, realizando [actualizaciones de datos en vez de inserciones](https://sqoop.apache.org/docs/1.4.7/SqoopUserGuide.html#_inserts_vs_updates). Si queremos que su comportamiento sea el de un *upsert*, le añadiremos la opción `--update-mode allowinsert`:
+
+``` bash hl_lines="4"
+sqoop export --connect jdbc:mysql://localhost/sqoopCaso1 \
+    --username=iabd --password=iabd \
+    --table=profesores --export-dir=/user/iabd/sqoop/profesores_hdfs \
+    --update-key id --update-mode allowinsert
 ```
 
 ### Formatos Avro y Parquet
@@ -370,7 +381,7 @@ Obteniendo el esquema y los datos en formato *Avro*:
 ```
 
 !!! question "Autoevaluación"
-    ¿Qué sucede si ejectuamos el comando `hdfs dfs -tail /user/iabd/sqoop/profesores_avro/part-m-00000.avro`? ¿Por qué aparece contenido en binario?
+    ¿Qué sucede si ejecutamos el comando `hdfs dfs -tail /user/iabd/sqoop/profesores_avro/part-m-00000.avro`? ¿Por qué aparece contenido en binario?
 
 En el caso de ficheros *Parquet*, primero listamos los archivos generados:
 
@@ -508,7 +519,7 @@ Después de ejecutarlo, si vemos la información que nos devuelve, en las últim
 
 ### Trabajando con Hive
 
-Podemos importar los datos en HDFS para que luego puedan ser consultables desde *Hive*. Para ello hemos de utilizar el parámetro `--hive-import` e indicar el nombre de la base de datos mediante `--hive-database` así como la opción de `--create-hive-table`para que cree la tabla indicada en el parámetro `hive-table`.
+Podemos importar los datos en HDFS para que luego puedan ser consultables desde *Hive*. Para ello hemos de utilizar el parámetro `--hive-import` e indicar el nombre de la base de datos mediante `--hive-database` así como la opción de `--create-hive-table` para que cree la tabla indicada en el parámetro `hive-table`.
 
 Es importante destacar que ya no ponemos destino con `target-dir`:
 
@@ -547,18 +558,24 @@ Exportar datos con updates
     <figcaption>Logo de Apache Flume</figcaption>
 </figure>
 
-Allá por el año 2010 *Cloudera* presentó ***Flume*** que posteriormente pasó a formar parte de Apache (<https://flume.apache.org/>) como un software para tratamiento e ingesta de datos masivo. *Flume* permite crear desarrollos complejos que permiten el tratamiento en *streaming* de datos masivos.
+Allá por el año 2010 *Cloudera* presentó ***Flume*** que posteriormente pasó a formar parte de Apache (<https://flume.apache.org/>) como un software para tratamiento e ingesta de datos masivo, facilitando crear desarrollos complejos que permiten el tratamiento de datos en *streaming*. Inicialmente se diseñó para recolectar ficheros de log de una granja de servidores web y mover los eventos almacenados en esos ficheros a HDFS para su posterior procesamiento.
 
-*Flume* funciona como un buffer entre los productores de datos y el destino final. Al utilizar un buffer, evitamos que un productor sature a un consumidor, sin necesidad de preocuparnos de que algún destino esté inalcanzable o inoperable (por ejemplo, en el caso de que haya caído HDFS), etc...
+*Flume* funciona como un *buffer* entre los productores de datos y el destino final. Al utilizar un buffer, evitamos que un productor sature a un consumidor, sin necesidad de preocuparnos de que algún destino esté inalcanzable o inoperable (por ejemplo, en el caso de que haya caído HDFS), etc...
 
 !!! info "Instalación"
     Aunque en la máquina virtual con la que trabajamos también tenemos instalado *Flume*, podemos descargar la última versión desde <https://dlcdn.apache.org/flume/1.11.0/apache-flume-1.11.0-bin.tar.gz>.
 
     A nivel de configuración sólo hemos definido la variable de entorno `$FLUME_HOME` que apunta a `/opt/flume-1.11.0`.
 
+Algunas de sus características son:
+
+* Diseño flexible basado en flujos de datos de transmisión.
+* Resistente a fallos y robusto con múltiples conmutaciones por error y  mecanismos de recuperación.
+* Lleva datos desde origen a destino: incluidos HDFS y *HBase*.
+
 ### Arquitectura
 
-Su arquitectura es sencilla, y se basa en el uso de agentes que se dividen en tres componentes los cuales podemos configurar:
+Su arquitectura es sencilla, y se basa en el uso de agentes que se dividen en tres componentes, los cuales podemos configurar:
 
 * *Source* (fuente): Fuente de origen de los datos, ya sea *Twitter*, *Kafka*, una petición *Http*, etc...  
 Las fuentes son un componente activo que recibe datos desde otra aplicación que produce datos (aunque también existen fuentes que pueden producir datos por sí mismos, cuyo objetivo es poder probar ciertos flujos de datos). Las fuentes puedes escuchar uno o más puertos de red para recibir o leer datos del sistema de archivos. Cada fuente debe conectar a al menos un canal. Una fuente puede escribir en varios canales, replicando los eventos a todos o algunos canales en base a algún criterio.
@@ -590,13 +607,9 @@ Es muy recomendable acceder a la [guía de usuario](https://flume.apache.org/Flu
 | Multiport Syslog TCP Source |                     | ElasticSearchSink |
 | Syslog UDP Source         |                       | Kite Dataset Sink |
 
+Una instalación de *Flume* consiste en una colección de agentes conectados los cuales se ejecutan en una arquitectura distribuida. Los agentes del borde del sistema (situados, por ejemplo, en los mismos servidores web que generan los datos) recogen los datos y los reenvían a los agentes responsables de agregar y ordenar los datos en el destino final.
+
 *Flume* se complica cuando queremos utilizarlo para obtener datos de manera paralela (o multiplexada) y/o necesitamos crear nuestros propios sumideros o interceptores. Pero por lo general, su uso es sencillo y se trata de una herramienta muy recomendada como ayuda/alternativa a herramientas como *Pentaho*.
-
-Algunas de sus características son:
-
-* Diseño flexible basado en flujos de datos de transmisión.
-* Resistente a fallos y robusto con múltiples conmutaciones por error y  mecanismos de recuperación.
-* Lleva datos desde origen a destino: incluidos HDFS y *HBase*.
 
 #### Agentes
 
@@ -606,22 +619,22 @@ Para lanzar un tarea en *Flume*, debemos definir un agente, el cual funciona com
 
 Estos agentes tienen cuatro partes bien diferenciadas asociadas a la arquitectura de Flume. En la primera parte, definiremos los componente del agente (*sources*, *channels* y *sinks*), y luego, para cada uno de ellos, configuraremos sus propiedades:
 
-* `sources`: responsables de colocar los eventos/datos en el agente
-* `channels`: *buffer* que almacena los eventos/datos recibidos por los *sources* hasta que un *sink* lo saca para enviarlo al siguiente destino.
-* `sinks`: responsable de sacar los eventos/datos del agente y reenviarlo al siguiente agente (HDFS, HBase, etc...)
+* **`sources`**: responsables de colocar los eventos/datos en el agente
+* **`channels`**: *buffer* que almacena los eventos/datos recibidos por los *sources* hasta que un *sink* lo saca para enviarlo al siguiente destino.
+* **`sinks`**: responsable de sacar los eventos/datos del agente y reenviarlo al siguiente agente (HDFS, HBase, etc...)
 
 #### Evento
 
-El evento es la unidad más pequeña del procesamiento de eventos de Flume. Cuando Flume lee una fuente de datos, envuelve una fila de datos (es decir, encuentra los saltos de línea) en un evento.
+El evento es la unidad más pequeña del procesamiento de eventos de *Flume*. Cuando *Flume* lee una fuente de datos, envuelve una fila de datos (es decir, encuentra los saltos de línea) en un evento.
 
 Un evento es una estructura de datos que se compone de dos partes:
 
-* Encabezado, se utiliza principalmente para registrar información mediante un mapa en forma de clave y valor. No transfieren datos, pero contienen información util para el enrutado y gestión de la prioridad o importancia de los mensajes.
-* Cuerpo: array de bytes que almacena los datos reales.
+* Encabezado (*header*), se utiliza principalmente para registrar información mediante un mapa en forma de clave y valor. No transfieren datos, pero contienen información util para el enrutado y gestión de la prioridad o importancia de los mensajes.
+* Cuerpo (*payload*): array de bytes que almacena los datos reales.
 
 ### Probando Flume
 
-Por ejemplo, vamos a crear un agente el cual llamaremos `ExecLoggerAgent` el cual va a ejecutar un comando y mostrará el resultado por el log de *Flume*.
+Por ejemplo, vamos a crear un agente el cual llamaremos `ExecLoggerAgent` el cual va a ejecutar un comando y mostrará el resultado por el log de *Flume*, utilizando como canal la memoria.
 
 Para ello, creamos la configuración del agente en el fichero `agente.conf` (todas las propiedades comenzarán con el nombre del agente):
 
@@ -648,21 +661,73 @@ ExecLoggerAgent.sources.Exec.channels = MemChannel
 ExecLoggerAgent.sinks.LoggerSink.channel = MemChannel
 ```
 
-Antes de lanzar el agente Flume, recuerda que debes arrancar tanto *Hadoop* como *YARN*, por ejemplo, mediante el comando `start-all.sh`.
-
 A continuación ya podemos lanzar *Flume* con el agente mediante el comando (la opción `-n` sirve para indicar el nombre del agente, y con `-f` indicamos el nombre del archivo de configuración):
 
 ``` bash
 flume-ng agent --name ExecLoggerAgent --conf ./conf/ --conf-file conf/agente.conf 
 ```
 
+Tras su ejecución, si consultamos el fichero `flume.log` podremos ver cómo ha creado primero el canal del agente `MemChannel`, así como la instancia de la fuente `Exec` y el sumidero `LoggerSink` y los conecta:
+
+``` log hl_lines="6-8"
+21 ene 2023 19:28:25,006 INFO  [main] (org.apache.flume.conf.FlumeConfiguration$AgentConfiguration.addComponentConfig:1203)  - Processing:LoggerSink
+21 ene 2023 19:28:25,014 INFO  [main] (org.apache.flume.conf.FlumeConfiguration$AgentConfiguration.addComponentConfig:1203)  - Processing:MemChannel
+...
+21 ene 2023 19:28:25,041 INFO  [main] (org.apache.flume.node.AbstractConfigurationProvider.loadChannels:154)  - Creating channels
+21 ene 2023 19:28:25,049 INFO  [main] (org.apache.flume.channel.DefaultChannelFactory.create:42)  - Creating instance of channel MemChannel type memory
+21 ene 2023 19:28:25,054 INFO  [main] (org.apache.flume.node.AbstractConfigurationProvider.loadChannels:208)  - Created channel MemChannel
+21 ene 2023 19:28:25,055 INFO  [main] (org.apache.flume.source.DefaultSourceFactory.create:41)  - Creating instance of source Exec, type exec
+21 ene 2023 19:28:25,113 INFO  [main] (org.apache.flume.sink.DefaultSinkFactory.create:42)  - Creating instance of sink: LoggerSink, type: logger
+21 ene 2023 19:28:25,127 INFO  [main] (org.apache.flume.node.AbstractConfigurationProvider.getConfiguration:123)  - Channel MemChannel connected to [Exec, LoggerSink]
+```
+
+A continuación, inicializa los componentes y los arranca:
+
+``` log hl_lines="3-6"
+21 ene 2023 19:28:25,128 INFO  [main] (org.apache.flume.node.Application.initializeAllComponents:177)  - Initializing components
+21 ene 2023 19:28:25,173 INFO  [main] (org.apache.flume.node.Application.startAllComponents:207)  -
+    Starting new configuration:{
+        sourceRunners:{Exec=EventDrivenSourceRunner: { source:org.apache.flume.source.ExecSource{name:Exec,state:IDLE} }}
+        sinkRunners:{LoggerSink=SinkRunner: { policy:org.apache.flume.sink.DefaultSinkProcessor@4b7dc788 counterGroup:{ name:null counters:{} } }}
+        channels:{MemChannel=org.apache.flume.channel.MemoryChannel{name: MemChannel}} }
+21 ene 2023 19:28:25,174 INFO  [main] (org.apache.flume.node.Application.startAllComponents:214)  - Starting Channel MemChannel
+21 ene 2023 19:28:25,188 INFO  [main] (org.apache.flume.node.Application.startAllComponents:229)  - Waiting for channel: MemChannel to start. Sleeping for 500 ms
+21 ene 2023 19:28:25,190 INFO  [lifecycleSupervisor-1-0] (org.apache.flume.instrumentation.MonitoredCounterGroup.register:119)  - Monitored counter group for type: CHANNEL, name: MemChannel: Successfully registered new MBean.
+21 ene 2023 19:28:25,190 INFO  [lifecycleSupervisor-1-0] (org.apache.flume.instrumentation.MonitoredCounterGroup.start:95)  - Component type: CHANNEL, name: MemChannel started
+21 ene 2023 19:28:25,692 INFO  [main] (org.apache.flume.node.Application.startAllComponents:241)  - Starting Sink LoggerSink
+21 ene 2023 19:28:25,714 INFO  [main] (org.apache.flume.node.Application.startAllComponents:252)  - Starting Source Exec
+```
+
+Una vez arrancados, podemos ver cómo ha ejecutado el comando `ls /home/iabd/` y mediante el `LoggerSink`, muestra cada uno de los archivos de la carpeta en un evento, donde podemos ver que tiene la cabecera vacía `headers:{}`, luego los datos en una representación en hexadecimal y por último el nombre del archivo/carpeta:
+
+``` log hl_lines="7-8"
+21 ene 2023 19:28:25,716 INFO  [lifecycleSupervisor-1-2] (org.apache.flume.source.ExecSource.start:170)  -
+    Exec source starting with command: ls /home/iabd/
+21 ene 2023 19:28:25,722 INFO  [lifecycleSupervisor-1-2] (org.apache.flume.instrumentation.MonitoredCounterGroup.register:119)  -
+    Monitored counter group for type: SOURCE, name: Exec: Successfully registered new MBean.
+21 ene 2023 19:28:25,729 INFO  [lifecycleSupervisor-1-2] (org.apache.flume.instrumentation.MonitoredCounterGroup.start:95)  -
+    Component type: SOURCE, name: Exec started
+21 ene 2023 19:28:25,892 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  -
+    Event: { headers:{} body: 64 61 74 6F 73                                  datos }
+21 ene 2023 19:28:25,893 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  -
+    Event: { headers:{} body: 44 65 73 63 61 72 67 61 73                      Descargas }
+21 ene 2023 19:28:25,893 INFO  [pool-3-thread-1] (org.apache.flume.source.ExecSource$ExecRunnable.run:379)  - 
+    Command [ls /home/iabd/] exited with 0
+21 ene 2023 19:28:25,900 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+    Event: { headers:{} body: 44 65 73 6B 74 6F 70                            Desktop }
+21 ene 2023 19:28:25,905 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+    Event: { headers:{} body: 44 6F 63 75 6D 65 6E 74 6F 73                   Documentos }
+21 ene 2023 19:28:25,906 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+    Event: { headers:{} body: 66 6C 75 6D 65                                  flume }
+21 ene 2023 19:28:25,908 INFO  [SinkRunner-PollingRunner-DefaultSinkProcessor] (org.apache.flume.sink.LoggerSink.process:95)  - 
+    Event: { headers:{} body: 49 6D C3 A1 67 65 6E 65 73                      Im..genes }
+...
+```
+
 ### Configurando un agente
 
 Si te has fijado en el ejemplo anterior, los ficheros de configuración de los agentes siguen el mismo formato.
 Para definir un flujo dentro de un agente, necesitamos enlazar las fuentes y los sumideros con un canal. Para ello, listaremos las fuentes, sumideros y canales del agente, y entonces apuntaremos la fuente y el sumidero a un canal.
-
-!!! important "1 - N - 1"
-    Una fuente puede indicar múltiples canales, pero un sumidero sólo puede indicar un único canal.
 
 Así pues, el formato será similar al siguiente archivo:
 
@@ -678,6 +743,12 @@ Así pues, el formato será similar al siguiente archivo:
 # Configuramos el canal para el sumidero
 <Agent>.sinks.<Sink>.channel = <Channel1>
 ```
+
+!!! warning "channel y channels"
+    Destacar que una fuente tiene una propiedad `channels`(en plural), pero un sumidero tiene la propiedad `channel` (en singular). Esto se debe a que una fuente puede alimentar más de un canal (*fan out*), pero un sumidero sólo puede obtener datos de un único canal.
+    También es posible que un canal alimente a varios sumideros.
+
+    En resumen, siguen una relación 1 - N - 1, de manera que una fuente puede indicar múltiples canales, pero un sumidero sólo puede indicar un único canal.
 
 Además de definir el flujo, es necesario configurar las propiedades de cada fuente, sumidero y canal. Para elo se sigue la misma nomenclatura donde fijamos el tipo de componente (mediante la propiedad `type`) y el resto de propiedades específicas de cada componente:
 
@@ -727,6 +798,9 @@ SeqGenAgent.sources.SeqSource.channels = MemChannel
 SeqGenAgent.sinks.HDFS.channel = MemChannel
 ```
 
+!!! caution "Arrancamos Hadoop"
+    Antes de lanzar el agente *Flume*, recuerda que debes arrancar tanto *Hadoop* como *YARN*, por ejemplo, mediante el comando `start-all.sh`.
+
 Ejecutamos el siguiente comando desde `$FLUME_HOME` y a los pocos segundo lo paramos mediante `CTRL + C` para que detenga la generación de números, ya que si no seguirá generando archivos en HDFS:
 
 ``` bash
@@ -772,6 +846,8 @@ Y si comprobamos el contenido del primero (`hdfs dfs -cat /user/iabd/flume/seqge
 
 Ahora vamos a crear otro ejemplo de generación de información, pero esta vez, en vez de utilizar la memoria del servidor como canal, vamos a utilizar el sistema de archivos. Además, para generar la información nos basamos en una fuente [Netcat](https://flume.apache.org/FlumeUserGuide.html#netcat-tcp-source), en la cual debemos especificar un puerto de escucha. Mediante esta fuente, *Flume* quedará a la escucha en dicho puerto y recibirá cada línea introducida como un evento individual que transferirá al canal especificado.
 
+En este caso, vamos a utilizar un canal de tipo fichero para hacer los eventos durables, de manera que si se cayese *Flume* a mitad de una operación, no se perderían los datos, y al volver a funcionar, el agente finalizará la ingesta.
+
 En el mismo directorio `$FLUME_HOME\conf`, creamos un nuevo fichero con el nombre `netcat.conf` y creamos otro agente que se va a encargar de generar información:
 
 ``` properties title="netcat.conf"
@@ -798,6 +874,13 @@ NetcatAgent.channels.FileChannel.type = file
 NetcatAgent.channels.FileChannel.dataDir = /home/iabd/flume/data
 NetcatAgent.channels.FileChannel.checkpointDir = /home/iabd/flume/checkpoint
 ```
+
+!!! info "Eventos, ficheros y HDFS"
+    Al trabajar con HDFS, el fichero se mantendrá abierto durante un tiempo (normalmente 30 segundos, lo podemos configurar mediante la propiedad `hdfs.rollInterval`), hasta que llegue a un determinado tamaño (por defecto 1024b, configurado `hdfs.rollSize`) o que haya escrito un determinado número de eventos (por defecto 10, configurado mediante `hdfs.rollCount`).
+
+    Mientras está abierto, se renombrará con el prefijo `_` y el sufijo `.tmp`. Al finalizar alguno de los criterios, volverá a su nombre original y se cierra el fichero. 
+
+Los nuevos eventos se escribirán en un nuevo fichero.
 
 Lanzamos al agente:
 
@@ -840,7 +923,7 @@ Es muy común definir un pipeline de flujos encadenados, uniendo la salida de un
 
 En este caso, vamos a crear un primer agente (`NetcatAvroAgent`) que ingeste datos desde *Netcat* y los coloque en un *sink* de tipo *Avro*. Para ello, creamos el agente `netcat-avro.conf`:
 
-``` properties title="netcat-avro.conf"
+``` properties title="netcat-avro.conf" hl_lines="12-14"
 # Nombramos a los componentes del agente
 NetcatAvroAgent.sources = Netcat
 NetcatAvroAgent.channels = FileChannel
@@ -864,9 +947,9 @@ NetcatAvroAgent.channels.FileChannel.dataDir = /home/iabd/flume/data
 NetcatAvroAgent.channels.FileChannel.checkpointDir = /home/iabd/flume/checkpoint
 ```
 
-A continuación, creamos un segundo agente (`AvroHdfsAgent`) que utilice como fuente Avro y que almacene los eventos recibidos en HDFS. Para ello, creamos el agente `avro-hdfs.conf`:
+A continuación, creamos un segundo agente (`AvroHdfsAgent`) que utilice como fuente *Avro* capturando los datos desde el mismo host y puerto que el *sink* anterior, y que almacene los eventos recibidos en HDFS. Para ello, creamos el agente `avro-hdfs.conf`:
 
-``` properties title="avro-hdfs.conf"
+``` properties title="avro-hdfs.conf" hl_lines="7-9"
 # Nombramos a los componentes del agente
 AvroHdfsAgent.sources = AvroSource
 AvroHdfsAgent.channels = MemChannel
@@ -876,7 +959,6 @@ AvroHdfsAgent.sinks = HdfsSink
 AvroHdfsAgent.sources.AvroSource.type = avro
 AvroHdfsAgent.sources.AvroSource.bind = localhost
 AvroHdfsAgent.sources.AvroSource.port = 10003
-
 
 # Describimos el destino HDFS 
 AvroHdfsAgent.sinks.HdfsSink.type = hdfs
@@ -890,7 +972,7 @@ AvroHdfsAgent.sinks.HdfsSink.channel = MemChannel
 AvroHdfsAgent.channels.MemChannel.type = memory
 ```
 
-Primero lanzamos este último agente, para que Flume quede a la espera de mensajes Avro en `localhost:10003`:
+Primero lanzamos este último agente, para que *Flume* quede a la espera de mensajes *Avro* en `localhost:10003`:
 
 ``` bash
 ./bin/flume-ng agent --conf ./conf/ --conf-file ./conf/avro-hdfs.conf \
@@ -906,11 +988,11 @@ Una vez ha arrancado, en nueva pestaña, lanzamos el primer agente:
     -Dflume.root.logger=INFO,console
 ```
 
-Finalmente, en otro terminal, escribimos mensajes Netcat accediendo a `curl telnet://localhost:44444`. Si accedéis a la carpeta `/user/iabd/flume/avro_data` en HDFS podremos comprobar cómo se van creando archivos que agrupan los mensajes enviados.
+Finalmente, en otro terminal, escribimos mensajes *Netcat* accediendo a `curl telnet://localhost:44444`. Si accedéis a la carpeta `/user/iabd/flume/avro_data` en HDFS podremos comprobar cómo se van creando archivos que agrupan los mensajes enviados.
 
 ### Caso 5 - Flujo multi-agente
 
-Para demostrar como varios agentes pueden conectarse entre sí, vamos a realizar un caso de uso donde vamos a leer información de tres fuentes distintas: una fuente de Netcat con un canal basado en ficheros, otra que realice *spooling* de una carpeta (vigile una carpeta y cuando haya algún archivo, lo ingeste y lo elimine) utilizando un canal en memoria y un tercero que ejecute un comando utilizando también un canal en memoria.
+Para demostrar como varios agentes pueden conectarse entre sí, vamos a realizar un caso de uso donde leeremos información de tres fuentes distintas: una fuente de *Netcat* con un canal basado en ficheros, otra que realice *spooling* de una carpeta (vigila una carpeta y cuando haya algún archivo, lo ingesta y lo renombra añadiéndole el sufijo `COMPLETED`) utilizando un canal en memoria y un tercero que ejecute un comando utilizando también un canal en memoria.
 
 Como agente de consolidación que una la información de las tres fuentes de datos, vamos a reutilizar el agente *AvroHdfsAgent* que hemos creado en el caso de uso anterior.
 
@@ -935,7 +1017,6 @@ MultiAgent.sources.Netcat.port = 10004
 # Describimos el segundo agente
 MultiAgent.sources.Spooldir.type = spooldir
 MultiAgent.sources.Spooldir.spoolDir = /home/iabd/flume/spoolDir
-MultiAgent.sources.Spooldir.deletePolicy = immediate
 
 # Describimos el tercer agente
 MultiAgent.sources.Exec.type = exec
@@ -1038,9 +1119,26 @@ En este caso, para poder probarlo, además de enviar comandos *Netstat* en `curl
     Para ello, necesitaréis las claves de desarrollo de *Twitter*. Adjunta una captura de pantalla donde se visualice el contenido de uno de los bloques de HDFS.
 
     !!! tip "Cuidado con el espacio de almacenamiento"
-        Una vez lances el agente, detenlo a los tres segundos para no llenar de datos HDFS.
+        Una vez lances el agente, páralo a los tres segundos para no llenar de datos HDFS.
+
+    *Cloudera* tiene su propia librería para acceder a *Twitter* donde podemos configurar qué mensajes descargar. Puedes consultar un ejemplo completo [aquí](https://github.com/cloudera/cdh-twitter-example).
 
 *[RA5074.3]: Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.
 *[CE4.3a]: Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.
 *[CE4.3b]: Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.
 *[CE4.3c]: Se ha comprobado que la revolución digital exige poder almacenar y procesar ingentes cantidades de datos de distinto tipo y descubrir su valor.
+
+<!--
+Flume: interceptors
+Añade información a cada evento
+https://data-flair.training/blogs/flume-interceptors/
+Por ejemplo, timestampInterceptor
+
+Revisar: https://learning.oreilly.com/library/view/hadoop-the-definitive/9781491901687/ch14.html#id995726
+
+Al hacer exec ls, explicar el formato de un evento, donde podemos ver el header (HECHO)... hacer esto antes de explicar los interceptores, y luego, al poner un timestamp, volver a comprobar que en el header se ve
+
+Probar spoolDir ... completed?
+
+Explicar transacciones y confiabilidad - libro The Hadoop Definitive Guide
+-->
