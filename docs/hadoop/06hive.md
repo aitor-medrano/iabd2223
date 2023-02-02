@@ -59,7 +59,7 @@ https://aws.amazon.com/es/emr/faqs/#Using_Impala
 Otras alternativas *open source* son :
 
 * [Presto de Facebook](http://prestodb.io/) y [Apache Drill](http://drill.apache.org/), con arquitecturas muy similares a *Impala*.
-* [Spark SQL](https://spark.apache.org/sql/): utiliza *Spark* como motor de ejecución y permite utilizar consultas SQL embebidas. La estudiaremos m,en sesiones futuras.
+* [Spark SQL](https://spark.apache.org/sql/): utiliza *Spark* como motor de ejecución y permite utilizar consultas SQL embebidas. La estudiaremos en sesiones futuras.
 
 !!! info "Pig"
     [Apache Pig](https://pig.apache.org) es una herramienta que abstrae el acceso a *MapReduce* de forma similar a como lo realiza *Hive*, pero en vez de SQL, utiliza su propio lenguaje de *scripting* (*PigLatin*) para expresar los flujos de datos.
@@ -78,25 +78,41 @@ A continuación podemos ver un gráfico que relaciona los diferentes componentes
 
 #### Hive Server
 
-*HiveServer 2* (HS2) es la última versión del servicio. Se compone de una interfaz que permite a clientes externos ejecutar consultas contra *Apache Hive* y obtener los resultados. Está basado en *Thrift RPC* y soporta clientes concurrentes. Para arrancar el servidor, ejecutaremos el comando `hiveserver2`, el cual quedará a la escucha en el puerto `10000.`
+*HiveServer 2* (HS2) es la última versión del servicio. Se compone de una interfaz que permite a clientes externos ejecutar consultas contra *Apache Hive* y obtener los resultados. Está basado en *Thrift RPC* y soporta clientes concurrentes. Para arrancar el servidor, ejecutaremos el comando `hiveserver2`, el cual quedará a la escucha en el puerto `10000`.
+
+``` bash
+iabd@iabd-virtualbox:~$ hiveserver2
+2023-01-20 09:39:51: Starting HiveServer2
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: ...
+Hive Session ID = 9e39b0c8-45a6-46ca-bfb0-6e320c85f989
+```
 
 A este servidor nos conectaremos mediante la herramienta *Beeline* (Beeline CLI).
 
 #### Hive Metastore
 
-Es el repositorio central para los metatados de *Hive*, y se almacena en una base de datos relacional como *MySQL*, *PostgreSQL* o *Apache Derby* (embebida). Mantiene los metadatos, las tablas y sus tipos mediante *Hive DDL* (*Data Definition Language*). Además, el sistema se puede configurar para que también almacene estadísticas de las operaciones y registros de autorización para optimizar las consultas.
+Es el repositorio central para los metadatos de *Hive*, y se almacena en una base de datos relacional como *MySQL*, *PostgreSQL* o *Apache Derby* (embebida). Mantiene los metadatos, las tablas y sus tipos mediante *Hive DDL* (*Data Definition Language*). Además, el sistema se puede configurar para que también almacene estadísticas de las operaciones y registros de autorización para optimizar las consultas.
 
-En las últimas versiones de *Hive*, este componente se puede desplegar de forma remota e independiente, para no compartir la misma JVM con *HiveServer*. Dentro del *metastore* podemos encontrar el *Hive Catalog* (*HCatalog*), que permite acceder a sus metadatos, actuando como una API. Al poder desplegarse de forma aislada e independiente, permite que otras aplicaciones hagan uso del *schema* sin tener que desplegar el motor de consultas de Hive.
+En las últimas versiones de *Hive*, este componente se puede desplegar de forma remota e independiente, para no compartir la misma JVM con *HiveServer*. Dentro del *metastore* podemos encontrar el *Hive Catalog* (*HCatalog*), que permite acceder a sus metadatos, actuando como una API. Al poder desplegarse de forma aislada e independiente, permite que otras aplicaciones hagan uso del *schema* sin tener que desplegar el motor de consultas de Hive. En la sesión de [*Spark Catalog*](../spark/02catalog.md), veremos cómo desde una herramienta externa a *Hive*, se accede y utilizan los metadatos almacenados.
 
 Así pues, al *Metastore* podremos acceder mediante *HiveCLI*, o a través del *Hive Server* mediante una conexión remota mediante *Beeline*.
 
 #### Beeline
 
-*Hive* incorpora *Beeline*, el cual actúa como un cliente basado en JDBC para hacer consultas por línea de comandos contra el *Hive Server*, sin necesitar las dependencias de *Hive*.
+*Hive* incorpora *Beeline*, el cual actúa como un cliente basado en JDBC para hacer consultas por línea de comandos contra el *Hive Server*, sin necesitar las dependencias de *Hive*, mediante el comando `beeline`:
+
+``` bash
+iabd@iabd-virtualbox:~$ beeline
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: ...
+Beeline version 3.1.2 by Apache Hive
+beeline> 
+```
 
 Por otro lado, también podemos utilizar *Hive CLI*, un cliente basado en *Apache Thrift*, que usa los mismos drivers que *Hive*.
 
-!!! info "Apache Tez"
+!!! info "Apache Tez y Spark"
     Hive 3 deja de soportar *MapReduce*. *Apache Tez* lo reemplaza como el motor de ejecución por defecto, de manera que mejora el rendimiento y se ejecuta sobre *Hadoop Yarn*, que encola y planifica los trabajos en el clúster. Además de *Tez*, *Hive* también puede utilizar *Apache Spark* como motor de ejecución.
 
     Para indicar que queremos ejecutar *Tez* como motor de ejecución, ejecutaríamos el siguiente comando:
@@ -106,6 +122,8 @@ Por otro lado, también podemos utilizar *Hive CLI*, un cliente basado en *Apach
     ```
 
     En nuestro caso no tenemos *Tez* instalado en la máquina virtual, quedando fuera del alcance del presente curso.
+
+    Conviene distinguir que *Spark SQL* no tiene nada que ver con utilizar el motor de ejecución de *Spark* dentro de *Hive*. Al utilizar el motor de *Hive*, podemos hacer un uso completo de las características de Hive, mientras que *Spark SQL* es un motor diferente que ofrece una alta compatibilidad con *Hive*, pero tiene sus particularidades.
 
 ### Tipos de datos
 
@@ -129,7 +147,7 @@ Respecto a los tipos compuestos, tenemos tres tipos:
 !!! important "Máquina virtual"
     Los siguientes pasos no son necesarios ya que nuestra máquina virtual ya tiene *Hive* instalado y configurado correctamente. Si quieres hacer tu propia instalación sigue los siguientes pasos de la [documentación oficial](https://cwiki.apache.org/confluence/display/Hive//GettingStarted).
 
-Una vez instalado, vamos a configurarlo. Para ello, debemos crear los ficheros de configuración a partir de las plantilla que ofrece *Hive*. Para ello, desde la carpeta `$HIVE_HOME/conf`, ejecutaremos los siguientes comandos:
+Una vez instalado vamos a configurarlo. Para ello, debemos crear los ficheros de configuración a partir de las plantilla que ofrece *Hive*. Para ello, desde la carpeta `$HIVE_HOME/conf`, ejecutaremos los siguientes comandos:
 
 ``` bash
 cp hive-default.xml.template hive-site.xml
@@ -151,7 +169,15 @@ Para que funcione la ingesta de datos en *Hive* mediante *Sqoop*, necesitamos a�
 cp $HIVE_HOME/lib/hive-common-3.1.2.jar $SQOOP_HOME/lib
 ```
 
-Preparamos HDFS para crear la estructura de archivos:
+Y configuramos las variables de entorno de nuestro *path* para exportar las rutas de Hive y del *metastore*:
+
+``` sh title="~/.bashrc"
+export HIVE_HOME=/opt/hive-3.1.2
+export HIVE_CONF_DIR=$HIVE_HOME/conf
+export HCAT_HOME=$HIVE_HOME/hcatalog
+```
+
+A continuación, preparamos HDFS para crear la estructura de archivos:
 
 ``` bash
 hdfs dfs -mkdir /tmp
@@ -228,17 +254,17 @@ Si quisiéramos ejecutar un script, podemos hacerlo desde el propio comando `hiv
 hive -f script.sql
 ```
 
-Además, tenemos la opción de pasar una consulta desde la propia línea de comandos mediante la opción `-e`:
+Además, tenemos la opción de pasar una consulta desde la propia línea de comandos mediante la opción `-e`. Supongamos que queremos recuperar los datos de la tabla `categories` de la base de datos `iabd` haríamos:
 
 ``` bash
-hive -e 'select * from tablaEjemplo`
+hive -e 'select * from iabd.categories'
 ```
 
 ### Acceso remoto
 
 *HiveServer2* (desde Hive 0.11) tiene su propio cliente conocido como *Beeline*. En entornos reales, el cliente *Hive* está en desuso a favor de *Beeline*, por la falta de múltiples usuarios, seguridad y otras características de *HiveServer2*.
 
-Arrancamos *HiveServer2* (lo hará en el puerto `10000`) y *Beeline* en dos pestañas diferentes mediante los comandos `hiveserver2` y `beeline`. Una vez dentro de *Beeline*, tras esperar unos segundo a que *HiveServer2* haya arrancando completamente, nos conectamos al servidor:
+Arrancamos *HiveServer2* (lo hará en el puerto `10000`) y *Beeline* en dos pestañas diferentes mediante los comandos `hiveserver2` y `beeline`. Una vez dentro de *Beeline*, tras esperar unos segundos a que *HiveServer2* haya arrancando completamente, nos conectamos al servidor:
 
 ``` hive
 !connect jdbc:hive2://iabd-virtualbox:10000
@@ -298,10 +324,21 @@ sqoop import --connect "jdbc:mysql://localhost/retail_db" \
   --columns "customer_id,customer_fname,customer_lname,customer_city"
 ```
 
-Una vez nos hemos conectado con el cliente `hive` o mediante `beeline`, creamos una base de datos llamada `iabd`:
+Si comprobamos el contenido en HDFS, veremos cómo se han cargado los datos:
+
+``` bash
+hdfs dfs -head /user/iabd/hive/customer/part-m-00000
+# 1|Richard|Hernandez|Brownsville
+# 2|Mary|Barrett|Littleton
+# 3|Ann|Smith|Caguas
+# 4|Mary|Jones|San Marcos
+...
+```
+
+A continuación, tras habernos conectado con el cliente `hive` o mediante `beeline`, creamos una base de datos llamada `iabd`:
 
 ``` sql
-create database iabd;
+create database if not exists iabd;
 ```
 
 Nos conectamos a la base de datos que acabamos de crear:
@@ -331,7 +368,7 @@ LOCATION '/user/iabd/hive/customer';  -- (4)!
 
 1. Indica el formato de cada fila como delimitado (con un salto del línea)
 2. Los campos están separados por el carácter `|` (es el mismo que habíamos indicado en Sqoop)
-3. El contenido está almacenado en HDFS en  formato texto
+3. El contenido está almacenado en HDFS en formato texto
 4. Ruta de HDFS donde se encuentran los datos
 
 Y ya podemos realizar algunas consultas:
@@ -357,7 +394,7 @@ En ocasiones necesitamos almacenar la salida de una consulta *Hive* en una nueva
 CREATE TABLE customers_new as SELECT * from customers;
 ```
 
-En el caso de la consulta falle por algún motivo, la tabla no se crearía.
+En el caso de que la consulta falle por algún motivo, la tabla no se crearía.
 
 Otra posibilidad es crear una tabla con la misma estructura que otra ya existente (pero sin datos):
 
@@ -383,11 +420,11 @@ drop table customers2;
 
 Si ejecutamos el comando `!tables` (o `show tables` en el cliente `hive`) veremos que ya no aparecen dichas tablas.
 
-En el caso de que queramos eliminar una base de datos, de la misma manera que en SQL, ejecutaríamos el comando `drop database iabd;`.
+En el caso de que queramos eliminar una base de datos, de la misma manera que en SQL, ejecutaríamos el comando `drop database iabd`. Si nuestra base de datos contiene tablas y las queremos borrar igualmente, entonces necesitamos un borrado en cascada mediante `drop database iabd cascade`.
 
 ## Caso de uso 2: Insertando datos
 
-Para insertar datos en las tablas de Hive lo podemos hacer de varias formas:
+Para insertar datos en las tablas de *Hive* podemos hacerlo de varias formas:
 
 * Cargando los datos mediante sentencias `LOAD DATA`.
 * Insertando los datos mediante sentencias `INSERT`.
@@ -411,16 +448,40 @@ LOAD DATA LOCAL INPATH '/home/iabd/datos'
 
 ### Insertando datos
 
-Aunque podemos insertar datos de forma atómica (es decir, registro a registro mediante `INSERT INTO TABLE ... VALUES`), realmente las inserciones que se realizan en *Hive* se hacen a partir de los datos de otras tablas mediante el comando *insert-select* a modo de ETL:
+Aunque podemos insertar datos de forma atómica (es decir, registro a registro mediante `INSERT INTO [TABLE] ... VALUES`), realmente las inserciones que se realizan en *Hive* se hacen a partir de los datos de otras tablas mediante el comando *insert-select* a modo de ETL:
 
 ``` sql
-INSERT OVERWRITE TABLE destino
+INSERT INTO destino
+  SELECT col1, col2 FROM fuente;
+INSERT OVERWRITE destino
   SELECT col1, col2 FROM fuente;
 ```
 
 Mediante la opción `OVERWRITE`, en cada ejecución se vacía la tabla y se vuelve a rellenar. Si no lo indicamos o utilizamos `INTO`, los datos se añadirían a los ya existentes.
 
-Si necesitamos insertar datos en múltiples tablas a la vez lo haremos mediante el comando *from-insert*:
+Por ejemplo, vamos a crear una nueva tabla de clientes, pero la vamos a almacenar en formato Parquet:
+
+``` sql
+CREATE TABLE customersp
+(
+  custId INT,
+  fName STRING,
+  lName STRING,
+  city STRING
+)
+STORED AS PARQUET;
+```
+
+Y a continuación la cargamos con los datos de la tabla `customers`:
+
+``` sql
+INSERT INTO customersp SELECT * FROM customers;
+```
+
+!!! question "Rendimiento"
+    Prueba a realizar una consulta que cuente la cantidad de clientes en cada una de las tablas ¿Cuál tarda menos? ¿Por qué?
+
+Si necesitamos insertar datos en múltiples tablas a la vez lo haremos mediante el comando *from-insert*, ya que ofrece un mejor rendimiento al sólo necesitar un escaneado de los datos:
 
 ``` sql
 FROM fuente
@@ -445,6 +506,49 @@ INSERT OVERWRITE TABLE customers_brooklyn
   SELECT custId, fName, lName, city WHERE city = "Brooklyn"
 INSERT OVERWRITE TABLE customers_caguas
   SELECT custId, fName, lName, city WHERE city = "Caguas";
+```
+
+### Modificando datos
+
+Acabamos de añadir datos, y en teoría podemos realizar operaciones `UPDATE` y `DELETE` sobre las filas de una tabla.
+
+HDFS no se diseñó pensando en las modificaciones de archivos, con lo que los cambios resultantes de las inserciones, modificaciones y borrados se almacenan en archivos delta. Por cada transacción, se crea un conjunto de archivo delta que altera la tabla (o partición). Los ficheros delta se fusionan periódicamente con los ficheros base de las tablas mediante *jobs MapReduce* que el metastore ejecuta en *background*.
+
+Para poder modificar o borrar los datos, Hive necesita trabajar en un contexto transaccional, por lo que necesitamos activar las siguientes variables:
+
+``` conf
+set hive.support.concurrency=true;
+set hive.enforce.bucketing=true;
+set hive.exec.dynamic.partition.mode=nonstrict;
+set hive.txn.manager=org.apache.hadoop.hive.ql.lockmgr.DbTxnManager;
+```
+
+Una vez configurado, hemos de crear las tablas con el formato ORC y organizar los datos mediante *buckets* (los estudiaremos más adelante en esta [misma sesión](#buckets)). Por ejemplo, volvemos a crear la tabla de clientes:
+
+``` sql
+CREATE TABLE customerstx
+(
+  custId INT,
+  fName STRING,
+  lName STRING,
+  city STRING
+)
+CLUSTERED BY (custId) INTO 4 BUCKETS
+STORED AS ORC
+TBLPROPERTIES ('transactional' = 'true');
+```
+
+Una vez creada la tabla, la vamos a cargar con los datos de los clientes:
+
+``` sql
+INSERT INTO customerstx
+  SELECT * FROM customers;
+```
+
+Un par de minutos después, con los datos datos ya cargados, ya podemos cambiar el nombre de la ciudad `Caguas` por `Elche`:
+
+``` sql
+UPDATE customerstx SET city="Elche" WHERE city="Caguas";
 ```
 
 ### Ingestando datos
@@ -496,7 +600,7 @@ hive -e 'use iabd; set hive.cli.print.header=true; select * from customers' | \
 ```
 
 !!! question "¿Y usar *INSERT LOCAL*?"
-    Mediante `INSERT LOCAL` podemos escribir el resultado de una consulta en nuestro sistema de archivos, fuera de HDFS. El problema es que si hay muchos datos creará múltiples ficheros y necesitaremos concatenarlos para tener un único resultado:
+    Mediante `INSERT LOCAL DIRECTORY` podemos escribir el resultado de una consulta en nuestro sistema de archivos, fuera de HDFS. El problema es que si hay muchos datos creará múltiples ficheros y necesitaremos concatenarlos para tener un único resultado:
 
     ``` sql
     insert overwrite local directory '/home/iabd/datos'
@@ -507,7 +611,7 @@ hive -e 'use iabd; set hive.cli.print.header=true; select * from customers' | \
 
 ## Caso de uso 3: Consultas con *join*
 
-En este caso de uso vamos a trabajar con los datos de clientes que hemos cargado en los dos casos anteriores, tanto en `customers` como en `orders`.
+En este caso de uso vamos a trabajar con los datos de clientes y pedidos que hemos cargado en los dos casos anteriores, tanto en `customers` como en `orders`.
 
 Si queremos relacionar los datos de ambas tablas, tenemos que hacer un *join* entre la clave ajena de `orders` (`order_customer_id`) y la clave primaria de `customers` (`custid`):
 
@@ -528,7 +632,7 @@ order_status            string
 Time taken: 0.276 seconds, Fetched: 4 row(s)
 ```
 
-Para ello, para obtener la ciudad de cada pedido, podemos ejecutar la consulta:
+Para ello, para obtener la ciudad de cada pedido podemos ejecutar la consulta:
 
 ``` sql
 select o.order_id, o.order_date, c.city
@@ -698,6 +802,12 @@ Si queremos comprobar la estructura de la tabla mediante el comando `show create
 |   'transient_lastDdlTime'='1647432129')            |
 +----------------------------------------------------+
 ```
+
+!!! info "Formato de las tablas"
+    Si queremos indicarle el [formato a las tablas](https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DDL#LanguageManualDDL-StorageFormatsStorageFormatsRowFormat,StorageFormat,andSerDe), mediante `STORED AS` podemos indicar formatos:
+
+    * basados en filas, como `TEXTFILE`, `JSONFILE`, `AVRO` o en formato de secuencia mediante `SEQUENCEFILE`.
+    * basados en columnas, como `PARQUET` o `ORC`.
 
 A continuación, vamos a cargar los datos del fichero [empleados.txt](resources/empleados.txt), el cual colocaremos en nuestra carpeta de *Descargas*:
 
@@ -1087,13 +1197,13 @@ Si las columnas de `sort by` y `distribute by` son las mismas, podemos utilizar 
 
 ## Estructuras de datos en Hive
 
-*Hive* proporciona una estructura basada en tablas sobre HDFS. Soporta tres tipos de estructuras: tablas, particiones y *buckets*. Las tablas se corresponden con directorios de HDFS, las particiones son las divisiones de las tablas y los buckets son las divisiones de las particiones.
+*Hive* proporciona una estructura basada en tablas sobre HDFS. Soporta tres tipos de estructuras: tablas, particiones y *buckets*. Las tablas se corresponden con directorios de HDFS, las particiones son las divisiones de las tablas y los *buckets* son las divisiones de las particiones.
 
-Acabamos de ver en el apartado anterior que *Hive* permite crear tablas externas, similares a las tablas en una base de datos, pero a la que se les proporciona una ubicación. En este caso, cuando se elimina la tabla externa, los datos continúan en HDFS.
+Acabamos de ver en el apartado anterior que *Hive* permite crear tablas externas, similares a las tablas en una base de datos, pero a la que se les proporciona una ubicación.
 
 ### Particiones
 
-Las ***particiones*** en *Hive* consisten en dividir las tablas en varios subdirectorios. Esta estructura permite aumentar el rendimiento cuando utilizamos consultas que filtran los datos mediante la cláusula *where*.
+Las ***particiones*** en *Hive* consisten en dividir las tablas en varios subdirectorios. Esta estructura permite aumentar el rendimiento cuando utilizamos consultas que filtran los datos mediante la cláusula *where* basada en la clave de particionado.
 
 Por ejemplo, si estamos almacenado ficheros de log (tanto la línea del log como su *timestamp*), podemos pensar en agrupar por fecha los diferentes ficheros. Podríamos añadir otra partición para también dividirlos por países:
 
@@ -1154,7 +1264,7 @@ WHERE pais='ES';
 
     ``` sql
     INSERT OVERWRITE TABLE logs
-    PARTITION (dt='2022-01-01')
+    PARTITION (fecha='2022-01-01')
     SELECT col1, col2 FROM fuente;
     ```
 
@@ -1162,11 +1272,11 @@ WHERE pais='ES';
 
     ``` sql
     INSERT OVERWRITE TABLE logs
-    PARTITION (dt)
-    SELECT col1, col2 FROM fuente;
+    PARTITION (fecha)
+    SELECT fecha, col1, col2 FROM fuente;
     ```
 
-    Para ello, previamente hay que habilitarlo (por defecto está deshabilitado para evitar la creación de múltiples particiones sin querer) y configurar el modo no estricto para que no nos obligue a indicar al menos una partición estática:
+    Para ello, previamente hay que habilitarlo (por defecto está desactivado para evitar la creación de múltiples particiones sin querer) y configurar el modo no estricto para que no nos obligue a indicar al menos una partición estática:
 
     ``` bash
     set hive.exec.dynamic.partition = true
@@ -1658,9 +1768,8 @@ Resultado:
 3. (RA5074.3 / CE4.3d / 0,5p) Investiga la creación de vistas en *Hive* y crea una vista con los datos de los clientes y sus pedidos siempre y cuando superen los 200$.
 
 *[RA5074.3]: Gestiona y almacena datos facilitando la búsqueda de respuestas en grandes conjuntos de datos.
-*[CE4.3b]: Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes. 
+*[CE4.3b]: Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.
 *[CE4.3d]: Se han desarrollado sistemas de gestión, almacenamiento y procesamiento de grandes volúmenes de datos de manera eficiente y segura, teniendo en cuenta la normativa existente.
-
 
 <!--
 <https://www.analyticsvidhya.com/blog/2020/10/getting-started-with-apache-hive/>
@@ -1673,6 +1782,6 @@ Resultado:
   Vistas
   tablesample
   Transformación map/reduce ... ejemplo para rellenar tipos de datos complejos
-  Anaban -> Ejercicio dataset clima - Hadoop definitive guide
-  Investigar Tez
+  Ejemplos de particionado / bucketing ... poner resultado de las operaciones / consultas
+  Explicar mejor el bucketing
 --->
