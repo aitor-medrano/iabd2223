@@ -1703,7 +1703,8 @@ Para ello, en <a href="https://developer.twitter.com/">https://developer.twitter
 <p>Vamos a recuperar cada 100 segundos los mensajes que contengan la palabra <strong>bigdata</strong>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Procesador GetTwitter - Twitter Elevated</p>
-<p>Para poder utilizar el procesador de Nifi <em>GetTwitter</em> es necesario acceder al <em>Twitter API v1.1</em>, la cual solo está disponible para las cuentas con un nivel <em>Elevated</em>. Por ello, en vez de utilizar las credenciales habituales (API Key, API Key Secret, Access Token y Access Token Secret), vamos a realizar el acceso mediante una petición HTTP utilizando un token de validación, conocido como <em>Bearer Token</em> (lo cual es una mejor práctica de seguridad).</p>
+<p>Para poder utilizar el procesador de Nifi <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-social-media-nar/latest/org.apache.nifi.processors.twitter.GetTwitter/index.html"><em>GetTwitter</em></a> es necesario acceder al <em>Twitter API v1.1</em>, la cual solo está disponible para las cuentas con un nivel <em>Elevated</em>. Por ello, en vez de utilizar las credenciales habituales (API Key, API Key Secret, Access Token y Access Token Secret), vamos a realizar el acceso mediante una petición HTTP utilizando un token de validación, conocido como <em>Bearer Token</em> (lo cual es una mejor práctica de seguridad).</p>
+<p>Desde la versión 1.17 de Nifi (disponible desde agosto del 2022), podemos emplear el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-social-media-nar/latest/org.apache.nifi.processors.twitter.ConsumeTwitter/index.html"><em>ConsumeTwitter</em></a> que ya emplea la versión 2 del API de Twitter, y sustituye al procesador anterior.</p>
 </div>
 <p>Para ello, usamos un procesador <em>InvokeHTTP</em> y configuramos los siguientes parámetros:</p>
 <ul>
@@ -1851,10 +1852,15 @@ https://github.com/addmeaning/nifi-exercises
 
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Documentación oficial:<ul>
+<li><a href="https://nifi.apache.org/docs/nifi-docs/html/getting-started.html">Getting started with Apache Nifi</a></li>
 <li><a href="https://nifi.apache.org/docs/nifi-docs/html/user-guide.html">Apache Nifi User Guide</a></li>
 <li><a href="https://nifi.apache.org/docs/nifi-docs/html/nifi-in-depth.html">Apache Nifi in Depth</a></li>
+</ul>
+</li>
 <li><a href="https://www.tutorialspoint.com/apache_nifi/index.htm">Apache Nifi en TutorialsPoint</a></li>
-<li>Libro <a href="https://www.packtpub.com/free-ebook/data-engineering-with-python/9781839214189">Data Engineering with Python</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLkp40uss1kSI66DA_aDCfx02gXipoRQHc">Playlist de Youtube de InsightByte</a></li>
+<li>Libro <a href="https://www.packtpub.com/product/data-engineering-with-python/9781839214189">Data Engineering with Python</a></li>
 <li>Artículo de Futurespace: <a href="https://www.futurespace.es/apache-nifi-flujo-de-extraccion-validacion-transformacion-y-carga-de-ficheros-caso-de-uso-real/">Flujo de extracción, validación, transformación y carga de ficheros (Caso de uso real)</a></li>
 </ul>
 <!--

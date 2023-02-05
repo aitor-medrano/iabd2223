@@ -1080,6 +1080,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#guardando-los-datos-en-hdfs" class="md-nav__link">
+    Guardando los datos en HDFS
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1375,6 +1382,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#guardando-los-datos-en-hdfs" class="md-nav__link">
+    Guardando los datos en HDFS
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1477,44 +1491,43 @@
     <figcaption>Logo de Apache Nifi</figcaption>
 </figure>
 
-<p><a href="https://nifi.apache.org"><em>Nifi</em></a> es un proyecto de Apache (desarrollado en Java inicialmente por la NSA) que plantea un sistema distribuido dedicado a ingestar y transformar datos de nuestros sistemas mediante el paradigma <em>streaming</em>.</p>
+<p><a href="https://nifi.apache.org"><em>Nifi</em></a> es un proyecto de Apache (desarrollado en Java inicialmente por la NSA, su nombre rinde tributo a los archivos Niagara - <em>NiagaraFiles</em>) que plantea un sistema distribuido dedicado a ingestar y transformar datos mediante un modelo en <em>streaming</em>.</p>
+<p>Para ello, define un modelo de programación basado en flujos de datos, donde podemos definir aplicaciones como un conjunto de procesos (cajas negras) que intercambian datos utilizan mensajes, los cuales se envían entre conexiones predefinidas.</p>
 <p>Entre sus características principales destacamos:</p>
 <ul>
-<li>proyecto <em>Open Source</em></li>
 <li>flujos de datos escalables.</li>
 <li>más de 300 conectores.</li>
 <li>procesadores personalizados.</li>
-<li>ingesta de datos en streaming.</li>
+<li>ingesta de datos en <em>streaming</em>.</li>
 <li>usa el paradigma de programación basado en flujos.</li>
 <li>define las aplicaciones como grafos de procesos dirigidos (DAG) a través de conexiones que envían mensajes.</li>
 <li>entrega garantizada sin pérdida de datos.</li>
 </ul>
 <p>Las ventajas de utilizar Nifi son:</p>
-<ul>
-<li>multiplataforma</li>
-<li>licencia <em>Open Source</em></li>
-<li>facilidad de uso mediante un interfaz gráfica y web</li>
-<li>escalabilidad horizontal mediante un cluster de máquinas.</li>
-<li>evolución y comunidad</li>
-<li>política de usuarios (LDAP)</li>
-<li>validador de configuraciones</li>
-<li>linaje y procedencia del dato</li>
-</ul>
-<div class="admonition info">
+<div class="admonition info inline end">
 <p class="admonition-title">Linaje del dato</p>
-<p>En la sesión de <a href="../hadoop/01arq.html">Arquitecturas de big data</a>, ya vimos que el linaje de los datos indica las transformaciones que ha sufrido un dato, desde el origen hasta el estado actual, incluyendo las combinaciones con otros datos o el cambio del dato en sí a lo largo de su ciclo de vida.</p>
+<p>En la sesión de <a href="../hadoop/01arq.html">Arquitecturas de big data</a>, ya vimos que el linaje de los nos permite conocer las transformaciones que ha sufrido un dato, desde el origen hasta el estado actual, incluyendo las combinaciones con otros datos o el cambio del dato en sí a lo largo de su ciclo de vida.</p>
 </div>
+<ul>
+<li>aplicación multiplataforma con licencia <em>Open Source</em>.</li>
+<li>facilidad de uso mediante un interfaz gráfica y web.</li>
+<li>escalabilidad horizontal mediante un cluster de máquinas.</li>
+<li>evolución y comunidad.</li>
+<li>política de usuarios (LDAP).</li>
+<li>validador de configuraciones.</li>
+<li>linaje y procedencia del dato.</li>
+</ul>
 <p>Sus casos de uso son:</p>
 <ul>
 <li>transferencias de datos entre sistemas, por ejemplo, de JSON a una base de datos, de un FTP a <em>Hadoop</em>, etc..</li>
-<li>preparar y enriquecer los datos</li>
-<li>enrutar datos en función de características, con diferentes prioridades</li>
-<li>conversión de datos entre formatos</li>
+<li>preparar y enriquecer los datos.</li>
+<li>enrutar datos en función de características, con diferentes prioridades.</li>
+<li>conversión de datos entre formatos.</li>
 </ul>
 <p>En cambio, no es apropiado para:</p>
 <ul>
-<li>procesamiento y operaciones de cómputo distribuido</li>
-<li>operaciones de streaming complejas con joins o agregaciones.</li>
+<li>procesamiento y operaciones de cómputo distribuido.</li>
+<li>operaciones de <em>streaming</em> complejas con <em>joins</em> o agregaciones.</li>
 <li>procesamiento complejo de eventos.</li>
 </ul>
 <h2 id="puesta-en-marcha">Puesta en marcha<a class="headerlink" href="#puesta-en-marcha" title="Permanent link">&para;</a></h2>
@@ -1544,7 +1557,7 @@
 <li>Acceder desde un navegador a la dirección <a href="https://ipPublicaAWS:8443/nifi">https://ipPublicaAWS:8443/nifi</a></li>
 </ol>
 <h3 id="instalacion-con-docker">Instalación con Docker<a class="headerlink" href="#instalacion-con-docker" title="Permanent link">&para;</a></h3>
-<p>Si no queremos instalarlo y hacer uso de un contenedor mediante Docker, ejecutaremos el siguiente comando:</p>
+<p>Si no queremos instalarlo y hacer uso de un contenedor mediante <em>Docker</em>, ejecutaremos el siguiente comando:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>nifi<span class="w"> </span>-p<span class="w"> </span><span class="m">8443</span>:8443<span class="w"> </span>-d<span class="w"> </span>-e<span class="w"> </span><span class="nv">SINGLE_USER_CREDENTIALS_USERNAME</span><span class="o">=</span>nifi<span class="w"> </span>-e<span class="w">  </span><span class="nv">SINGLE_USER_CREDENTIALS_PASSWORD</span><span class="o">=</span>nifinifinifi<span class="w"> </span>-e<span class="w"> </span><span class="nv">NIFI_JVM_HEAP_MAX</span><span class="o">=</span>2g<span class="w"> </span>apache/nifi:latest
 </code></pre></div>
 <div class="admonition tip">
@@ -1598,13 +1611,8 @@
 <p>Así pues, los conectores van a unir la salida de un procesador con la entrada de otro (o un procesador consigo mismo, por ejemplo, para realizar reintentos sobre una operación).</p>
 <p>Las conexiones se caracterizan y nombran por el tipo de puerto de salida del procesador del que nacen. En la mayoría de los casos nos enfrentaremos a conexiones de tipo <strong><em>success</em></strong>, que recogen el FF que devuelve un procesador cuando ha terminado satisfactoriamente su tarea, o de tipo <strong><em>failure</em></strong>, que conducen el FF en los casos en los que la tarea ha fallado. También podemos crear nuestros propios conectores.
 Además, existe la posibilidad de configurar algunos aspectos de la conexión, como el número de FF que pueden viajar de forma simultánea por ella, la prioridad de salida de los FF que hay en la conexión, o el tiempo que los FF deben permanecer a la espera para ser recogidos por el procesador de destino.</p>
-<figure style="align: center;">
-    <img src="images/04nifiComponents.png">
-    <figcaption>Componentes de Nifi</figcaption>
-</figure>
-
 <h2 id="caso-1-moviendo-datos">Caso 1 - Moviendo datos<a class="headerlink" href="#caso-1-moviendo-datos" title="Permanent link">&para;</a></h2>
-<p>Vamos a hacer un pequeño ejercicio con Nifi para familiarizarnos con el entorno desarrollando un flujo de datos sencillo que mueva un fichero de un directorio a otro.</p>
+<p>Vamos a hacer un pequeño ejercicio con <em>Nifi</em> para familiarizarnos con el entorno desarrollando un flujo de datos sencillo que mueva un fichero de un directorio a otro.</p>
 <p>A continuación detallamos los pasos a realizar:</p>
 <ol>
 <li>Seleccionamos un procesador (primer icono grande) y lo arrastramos en nuestra área de trabajo.</li>
@@ -1615,11 +1623,11 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
     <figcaption>Diálogo de elección de procesador</figcaption>
 </figure></p>
 <ul>
-<li>A la izquierda una nube de etiquetas para poder filtrar los procesador.</li>
+<li>A la izquierda una nube de etiquetas para poder filtrar los procesadores.</li>
 <li>Arriba a la derecha tenemos un buscador para buscar procesadores por su nombre</li>
 <li>La parte central con el listado de procesadores, desde donde lo podemos seleccionar.</li>
 </ul>
-<p>Así pues, buscamos el procesador <em>GetFile</em> y lo añadimos al flujo.</p>
+<p>Así pues, buscamos el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.GetFile/index.html"><em>GetFile</em></a> y lo añadimos al flujo, el cual permite recuperar un fichero desde una carpeta.</p>
 </li>
 <li>
 <p>Damos doble click sobre el elemento gráfico que representa nuestro procesador, y en la pestaña <em>properties</em> indicamos el directorio de entrada de donde tendrá que recoger el fichero mediante la propiedad <em>Input Directory</em>. En nuestro caso le pondremos el valor <code>/home/iabd/Documentos/in</code>:</p>
@@ -1630,9 +1638,11 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
     <figcaption>Propiedades de GetFile</figcaption>
 </figure>
 
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>Antes de cambiar de procesador, en la pestaña *Settings*, en la caja *Name* la rellenamos con `ObtenerFichero`.
+</code></pre></div>
 <ol start="4">
-<li>Ahora añadimos un nuevo procesador de tipo <em>PutFile</em>, y en las propiedades indicamos el directorio de salida con la propiedad <em>directory</em> a <code>/home/iabd/Documentos/out</code>.</li>
-<li>Si visualizamos la pestaña <em>Settings</em>, y nos centramos en el lado derecho, podemos configurar el comportamiento a seguir si el procesador se ejecuta correctamente (<em>success</em>) o falla (<em>failure</em>). Como vamos a hacer que este procesador sea el paso final, vamos a configurar que <em>autoterminen</em> marcando ambos casos:</li>
+<li>Ahora añadimos un nuevo procesador de tipo <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.PutFile/index.html"><em>PutFile</em></a>, y en las propiedades indicamos el directorio de salida con la propiedad <em>directory</em> a <code>/home/iabd/Documentos/out</code>.</li>
+<li>Si visualizamos la pestaña <em>Settings</em>, una buena práctica es ponerle nombre a los procesadores. Así pues, la caja <em>Name</em> la rellenamos con <code>PonerFichero</code>. Si nos centramos en el lado derecho, podemos configurar el comportamiento a seguir si el procesador se ejecuta correctamente (<em>success</em>) o falla (<em>failure</em>). Como vamos a hacer que este procesador sea el paso final, vamos a configurar que <em>autoterminen</em> marcando ambos casos:</li>
 </ol>
 <figure style="align: center;">
     <img src="images/04caso1AutoTerminate.png">
@@ -1654,7 +1664,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <ol start="7">
 <li>Antes de arrancar el primer procesador, creamos un pequeño fichero en el directorio que hemos puesto como entrada:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hola Severo!&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>hola.txt
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hola IABD!&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>hola-iabd.txt
 </code></pre></div>
 <ol start="8">
 <li>
@@ -1681,7 +1691,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 </figure>
 
 <p>Aunque ahora tenemos un mecanismo para almacenar los ficheros que coinciden en nombre, sólo nos guardará uno (nos sucede lo mismo que antes, pero ahora sólo con los repetidos).</p>
-<p>Asi pues, necesitamos renombrar los ficheros que vayamos a colocar en la carpeta <code>conflictos</code> para guardar el histórico. Para ello, necesitamos introducir un procesador previo que le cambie el nombre al archivo.</p>
+<p>Así pues, necesitamos renombrar los ficheros que vayamos a colocar en la carpeta <code>conflictos</code> para guardar el histórico. Para ello, necesitamos introducir un procesador previo que le cambie el nombre al archivo.</p>
 <p>Nifi añade la propiedad <code>filename</code> a todos los FF. Esta propiedad la podemos consultar mediante el <a href="https://nifi.apache.org/docs/nifi-docs/html/expression-language-guide.html"><em>Nifi Expression Language</em> (Nifi EL)</a> y haciendo uso del procesador <em>UpdateAttribute</em> modificar su valor.</p>
 <p>Así pues, vamos a colocar el procesador <em>UpdateAttribute</em> antes de colocar los archivos en la carpeta de <code>conflictos</code>:</p>
 <figure style="align: center;">
@@ -1816,14 +1826,30 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
     <figcaption>Linaje de los datos</figcaption>
 </figure>
 
+<h3 id="guardando-los-datos-en-hdfs">Guardando los datos en HDFS<a class="headerlink" href="#guardando-los-datos-en-hdfs" title="Permanent link">&para;</a></h3>
+<div class="admonition tip inline end">
+<p class="admonition-title">Nifi y Hadoop en máquinas separadas</p>
+<p>Si trabajásemos en una máquina externa a la instalación de <em>Hadoop</em>, deberemos copiar ambos archivos (<code>core-site.xml</code> y <code>hdfs-site.xml</code>) desde uno de nuestros nodos Hadoop a la máquina donde ejecutamos Nifi.</p>
+</div>
+<p>Para colocar los datos en HDFS, necesitamos utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-hadoop-nar/latest/org.apache.nifi.processors.hadoop.PutHDFS/index.html"><em>PutHDFS</em></a> y configurar las propiedades:</p>
+<ul>
+<li>Hadoop configuration resources: con la ruta de los archivos de configuración de Hadoop, en nuestro caso: <code>/opt/hadoop-3.3.1/etc/hadoop/hdfs-site.xml, /opt/hadoop-3.3.1/etc/hadoop/core-site.xml</code></li>
+<li>Directory: con la carpeta donde queremos almacenar los datos, por ejemplo, <code>/user/iabd/nifi</code></li>
+</ul>
+<p>Así pues, vamos a añadir este procesador unido de nuevo con la relación <code>matched</code> tras la extracción del texto, para que además de escribir en el log, persista todo el contenido en HDFS.</p>
+<figure style="align: center;">
+    <img src="images/04caso2PutHdfs.png">
+    <figcaption>Persistiendo FF en HDFS</figcaption>
+</figure>
+
 <h2 id="caso-3-filtrado-de-datos">Caso 3 - Filtrado de datos<a class="headerlink" href="#caso-3-filtrado-de-datos" title="Permanent link">&para;</a></h2>
-<p>En este caso, vamos a coger los datos de <a href="resources/pdi_sales_small.csv">ventas</a> que ya utilizamos en la sesión de <em>Pentaho</em>, el cual tiene la siguiente estructura:</p>
+<p>En este caso, vamos a coger los datos de <a href="resources/pdi_sales_small.csv">ventas</a> que ya utilizamos en la sesión de <em>Spark</em>, el cual tiene la siguiente estructura:</p>
 <div class="highlight"><span class="filename">pdi_sales_small.csv</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span>ProductID;Date;Zip;Units;Revenue;Country
 <span class="linenos" data-linenos="2 "></span>725;1/15/1999;41540          ;1;115.5;Germany
 <span class="linenos" data-linenos="3 "></span>787;6/6/2002;41540          ;1;314.9;Germany
 <span class="linenos" data-linenos="4 "></span>788;6/6/2002;41540          ;1;314.9;Germany
 </code></pre></div>
-<p>Utilizando Nifi, vamos a crear un nuevo fichero CSV que contenga únicamente los datos de Francia que han realizado más de una venta.</p>
+<p>Utilizando <em>Nifi</em>, vamos a crear un nuevo fichero CSV que contenga únicamente los datos de Francia que han realizado más de una venta.</p>
 <p>Para ello, tendremos que leer el fichero haciendo uso del procesador <em>GetFile</em>, separar cada fila en un FF mediante <em>SplitRecord</em>, filtrar los datos usando el procesador <em>QueryRecord</em> y finalmente los almacenaremos en disco gracias al procesador <em>PutFile</em>.</p>
 <h3 id="lectura-y-division">Lectura y división<a class="headerlink" href="#lectura-y-division" title="Permanent link">&para;</a></h3>
 <ol>
@@ -1834,7 +1860,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li>En el <em>Record Reader</em>, seleccionamos <em>Create new service</em>, y elegimos <em>CVSReader</em>.</li>
 <li>A su vez, en el <em>Record Writer</em> elegimos <em>CVSRecordSetWriter</em>.</li>
 </ul>
-<p>Para configurar estos servicios, pulsaremos sobre la flecha, y veremos la pantalla de configuración. Para cada uno de ellos, tendremos otros tres iconos: la rueda para configurar, el rayo para activar/desactivar el servicio y la papelera para eliminarlo. Así, pues, tras comprobar los valores de <em>CVSReader</em> y <em>CSVSWriter</em> (indicamos el <code>;</code> como separador de campos tanto para la lectura como la escritura de CSV en el campo <em>value separator y marcamos como </em>true<em> que el archivo contiene la primera fila con encabezados (</em>treat first line as header*)), pulsamos sobre el rayo para activar ambos servicios.</p>
+<p>Para configurar estos servicios, pulsaremos sobre la flecha, y veremos la pantalla de configuración. Para cada uno de ellos, tendremos otros tres iconos: la rueda para configurar, el rayo para activar/desactivar el servicio y la papelera para eliminarlo. Así, pues, tras comprobar los valores de <em>CVSReader</em> y <em>CSVSWriter</em> (indicamos el <code>;</code> como separador de campos tanto para la lectura como la escritura de CSV en el campo <em>value separator</em> y marcamos como <em>true</em> que el archivo contiene la primera fila con encabezados (<em>treat first line as header</em>)), pulsamos sobre el rayo para activar ambos servicios.</p>
 <p><figure style="align: center;">
     <img src="images/04caso3SplitRecord.gif">
     <figcaption>Configuración y activación de Split Record</figcaption>
@@ -1865,15 +1891,11 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
     <figcaption>Flujo completo del caso 3</figcaption>
 </figure>
 
-<!--
-Si quisiéramos volver a unir los FF en un CSV, realizaríamos un MergeContent poniendo:
-
-* header: los campos del CSV
-* demarcator: el salto de línea
-
-Modificaríamos el QueryRecord para que utilizará un CSVWriter que no incluyese el header del CSV, si no, el resultado tendría N encabezados y N datos
--->
-
+<div class="admonition question">
+<p class="admonition-title">¿Realmente no podemos hacerlo mejor?</p>
+<p>¿Hace falta generar tantos FF con los registros que cumplen la consulta? ¿No sería mejor fusionarlos en ficheros más grandes? Por ejemplo, después de hacer la consulta, podemos utilizar un procesador <em>MergeRecord</em> para unir los registros, por ejemplo, cada 10KB de datos (aunque si fuera un ejemplo real, estaríamos hablando de cientos de megas) y acumulando los FF entrantes, por ejemplo, durante un minuto.</p>
+<p>¿Para qué hemos utilizado el <em>SplitRecord</em> si el procesador <em>QueryRecord</em> puede trabajar con un FF que contiene más de una fila? Así pues, podemos conectar el procesador <em>GetFile</em> directamente a <em>QueryRecord</em> y obtendríamos menos FF de resultado, concretamente como mucho por cada fichero que leyésemos (siempre que tuviera datos que cumplen la condición de la consulta).</p>
+</div>
 <h2 id="caso-4-fusionar-datos">Caso 4 - Fusionar datos<a class="headerlink" href="#caso-4-fusionar-datos" title="Permanent link">&para;</a></h2>
 <p>En esta caso vamos a realizar los siguientes pasos:</p>
 <ol>
@@ -1924,15 +1946,18 @@ Modificaríamos el QueryRecord para que utilizará un CSVWriter que no incluyese
 <p>En las propiedades:</p>
 <ul>
 <li><em>Merge Strategy</em>: <code>Bin-Packing Algorithm</code> (se fusionan en grupos).</li>
-<li><em>Correlation Attribute Name</em>: <code>RouteOnContent.Route</code> (crea diferentes grupos para <code>textoError</code> y <code>unmatched</code>)</li>
 <li><em>Merge Format</em>: <code>Binary Concatenation</code> (concatena los contenidos de los FF en un único FF, otra opción sería comprimirlos en un zip)</li>
+<li><em>Correlation Attribute Name</em>: <code>RouteOnContent.Route</code> (crea diferentes grupos para <code>textoError</code> y <code>unmatched</code>)</li>
 <li><em>Maximum Number of Entries</em>: <code>1000</code> (cantidad máxima de elementos por grupo, por si tuviéramos muchas peticiones HTTP)</li>
 <li><em>Maximum Bin Age</em>: <code>300s</code> (fuerza que el fichero fusionado salga como muy tarde a los 300s)</li>
-<li><em>Delimiter Strategy</em>: <code>Text</code> (para concatenar los fichero utilizando una nueva línea como carácter delimitador) y <em>Demarcator</em>: al abrir el campo, pulsar Shift/Mayús + Intro para poner el carácter del salto de línea.</li>
+<li><em>Delimiter Strategy</em>: <code>Text</code> (para concatenar los fichero utilizando una nueva línea como carácter delimitador)<ul>
+<li><em>Demarcator</em>: al abrir el campo, pulsar Shift/Mayús + Intro para poner el carácter del salto de línea.</li>
 </ul>
 </li>
 </ul>
-<p>Para poder probar como se van creando y agrupando los mensajes, podemos ejecutar los siguientes comandos:</p>
+</li>
+</ul>
+<p>Para poder probar cómo se van creando y agrupando los mensajes, ejecutaremos los siguientes comandos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl<span class="w"> </span>--data<span class="w"> </span><span class="s2">&quot;texto de prueba&quot;</span><span class="w"> </span>http://localhost:8081/iabd
 <span class="linenos" data-linenos="2 "></span>curl<span class="w"> </span>--data<span class="w"> </span><span class="s2">&quot;este sí que tiene ERROR&quot;</span><span class="w"> </span>http://localhost:8081/iabd
 <span class="linenos" data-linenos="3 "></span>curl<span class="w"> </span>--data<span class="w"> </span><span class="s2">&quot;vaya ERROR más tonto&quot;</span><span class="w"> </span>http://localhost:8081/iabd
@@ -1946,7 +1971,7 @@ Modificaríamos el QueryRecord para que utilizará un CSVWriter que no incluyese
 
 <h3 id="guardando-el-resultado-a-mongodb">Guardando el resultado a MongoDB<a class="headerlink" href="#guardando-el-resultado-a-mongodb" title="Permanent link">&para;</a></h3>
 <p>Para almacenar el resultado de las fusiones anteriores, vamos a guardar los resultados en una colección de MongoDB.</p>
-<p>Suponemos que ya tenemos instalado <em>MongoDB</em> en nuestro sistema. Si no, podemos lanzarlo mediante <em>Docker</em>:</p>
+<p>Suponemos que ya tenemos instalado <em>MongoDB</em> en nuestro sistema, como es el caso de nuestra máquina virtual (recuerda arrancarlo mediante <code>sudo service mongod start</code>). Si no, podemos lanzarlo mediante <em>Docker</em>:</p>
 <div class="admonition tip">
 <p class="admonition-title">MongoDB + Nifi via Docker</p>
 <p>Si queremos utilizarlo mediante Docker, necesitamos que MongoDB y Nifi estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo <a href="resources/nifi-mongodb/docker-compose.yml">docker-compose.yml</a> (si tuvieras alguna problema con la imagen de MongoDB y tu procesador, prueba a cambiar la línea 15 <code>mongo:latest</code> por <code>mongo:4.4</code>):</p>
@@ -2030,12 +2055,17 @@ Modificaríamos el QueryRecord para que utilizará un CSVWriter que no incluyese
 <span class="linenos" data-linenos="4 "></span>curl<span class="w"> </span>--data<span class="w"> </span><span class="s2">&quot;nifi mola mucho&quot;</span><span class="w"> </span>http://localhost:8081/iabd
 </code></pre></div>
 <p>Sólo nos queda entrar a <em>MongoDB</em> y comprobar que nos aparecen los datos:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="err">&gt;</span><span class="w"> </span><span class="err">use</span><span class="w"> </span><span class="err">iabd</span>
-<span class="linenos" data-linenos="2 "></span><span class="err">swi</span><span class="kc">t</span><span class="err">ched</span><span class="w"> </span><span class="kc">t</span><span class="err">o</span><span class="w"> </span><span class="err">db</span><span class="w"> </span><span class="err">iabd</span>
-<span class="linenos" data-linenos="3 "></span><span class="err">&gt;</span><span class="w"> </span><span class="err">db.caso</span><span class="mf">4.</span><span class="kc">f</span><span class="err">i</span><span class="kc">n</span><span class="err">d()</span>
-<span class="linenos" data-linenos="4 "></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;_id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;6197cca29c63ec4e825b8232&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;contenido&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;este sí que tiene ERROR\nvaya ERROR más tonto&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;estado&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;textoError&quot;</span><span class="w"> </span><span class="p">}</span>
-<span class="linenos" data-linenos="5 "></span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;_id&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;6197cca29c63ec4e825b8233&quot;</span><span class="err">)</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;contenido&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;texto de prueba\nnifi mola mucho&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;estado&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;unmatched&quot;</span><span class="w"> </span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="nx">iabd</span>
+<span class="linenos" data-linenos="2 "></span><span class="nx">switched</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="nx">iabd</span>
+<span class="linenos" data-linenos="3 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">caso4</span><span class="p">.</span><span class="nx">find</span><span class="p">()</span>
+<span class="linenos" data-linenos="4 "></span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;_id&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;6197cca29c63ec4e825b8232&quot;</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;contenido&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;este sí que tiene ERROR\nvaya ERROR más tonto&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;estado&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;textoError&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="linenos" data-linenos="5 "></span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;_id&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">ObjectId</span><span class="p">(</span><span class="s2">&quot;6197cca29c63ec4e825b8233&quot;</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;contenido&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;texto de prueba\nnifi mola mucho&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;estado&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;unmatched&quot;</span><span class="w"> </span><span class="p">}</span>
 </code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Fecha de los mensajes</p>
+<p>¿Y si quisiéramos añadir una campo fecha con la fecha en la que se genera el mensaje?
+En el procesador <em>UpdateAttribute</em> podemos añadir un nuevo atributo <code>fecha</code> con el valor <code>${now()}</code>, y posteriormente en <em>AttributesToJSON</em> añadiríamos dicho a atributo en <em>Attributes list</em> para mostrar los tres campos que queremos.  </p>
+</div>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
@@ -2047,10 +2077,14 @@ Modificaríamos el QueryRecord para que utilizará un CSVWriter que no incluyese
 </ol>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
+<li>Documentación oficial:<ul>
 <li><a href="https://nifi.apache.org/docs/nifi-docs/html/getting-started.html">Getting started with Apache Nifi</a></li>
 <li><a href="https://nifi.apache.org/docs/nifi-docs/html/user-guide.html">Apache Nifi User Guide</a></li>
 <li><a href="https://nifi.apache.org/docs/nifi-docs/html/nifi-in-depth.html">Apache Nifi in Depth</a></li>
+</ul>
+</li>
 <li><a href="https://www.tutorialspoint.com/apache_nifi/index.htm">Apache Nifi en TutorialsPoint</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLkp40uss1kSI66DA_aDCfx02gXipoRQHc">Playlist de Youtube de InsightByte</a></li>
 </ul>
 
 
