@@ -2054,6 +2054,15 @@ Los ejecutores son procesos en máquinas virtuales de Java que están escritos e
 <p>Mucho cuidado al utilizar Pandas, ya que al convertir el <em>DataFrame</em> nos vamos a traer todos los datos al driver, perdiendo la distribución de los datos y pudiendo provocar un error de falta de memoria.</p>
 </div>
 <p>Así pues, hay que evitar a toda costa utilizar <em>Pandas</em> para tratar los datos, ya que perdemos toda la potencia de trabajo en clúster (<em>Pandas</em> sólo puede utilizar los recursos del nodo principal). Únicamente lo utilizaremos cuando vayamos a visualizar los datos mediante <em>Matplotlib</em> / <em>Seaborn</em> como requisito de estas librerías.</p>
+<div class="admonition tip">
+<p class="admonition-title">Pandas y Koalas</p>
+<p>Desde la versión 3.2 de <em>Spark</em>, la librería de <a href="https://koalas.readthedocs.io/en/latest/">Koalas</a> se ha integrado en Spark, dando lugar a poder utilizar el API de <em>Pandas</em> directamente desde <em>Spark</em>, lo que facilita el aprendizaje de Spark para aquellos desarrolladores que ya dominan Pandas.</p>
+<p>Para ello, únicamente hemos de importar la librería:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">pyspark.pandas</span> <span class="k">as</span> <span class="nn">ps</span>
+</code></pre></div>
+<p>Y acceder a <code>ps</code> de la misma manera que usamos <code>pd</code> al trabajar con Pandas.</p>
+<p>Un artículo muy interesante es <a href="https://towardsdatascience.com/run-pandas-as-fast-as-spark-f5eefe780c45">Run Pandas as Fast as Spark</a>.</p>
+</div>
 <!--
 https://github.com/vivek-bombatkar/MyLearningNotes/tree/master/spark#from-pandas-to-spark
 -->
