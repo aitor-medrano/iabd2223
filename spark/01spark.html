@@ -1453,6 +1453,19 @@
 </code></pre></div>
 <p>Más información en <a href="https://www.sicara.ai/blog/2017-05-02-get-started-pyspark-jupyter-notebook-3-minutes">https://www.sicara.ai/blog/2017-05-02-get-started-pyspark-jupyter-notebook-3-minutes</a></p>
 </div>
+<!--
+export SPARK_HOME=/opt/spark-3.3.1
+export PATH=$PATH:$SPARK_HOME/bin
+export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
+export PYSPARK_DRIVER_PYTHON="jupyter"
+export PYSPARK_DRIVER_PYTHON_OPTS="lab"
+export PYSPARK_PYTHON=python3
+#export PATH=$PATH:$JAVA_HOME/jre/bin
+
+alias pysparkdl='pyspark --packages io.delta:delta-core_2.12:2.1.0 --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"'
+alias pysparkk='pyspark --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1'
+-->
+
 <p>Así pues, automáticamente se abrirá una ventana en el navegador web donde crear/trabajar con los cuadernos <em>Jupyter</em>:</p>
 <figure style="align: center;">
     <img src="images/01spark-pyspark.png">

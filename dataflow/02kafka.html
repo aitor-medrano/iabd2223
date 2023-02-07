@@ -1402,6 +1402,7 @@ https://medium.com/big-data-engineering/hello-kafka-world-the-complete-guide-to-
 
 <h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
 <p><a href="https://kafka.apache.org/">Apache Kafka</a> es, en pocas palabras, un <em>middleware</em> de mensajería entre sistemas heterogéneos, el cual, mediante un sistema de colas (<em>topics</em>, para ser concreto) facilita la comunicación asíncrona, desacoplando los flujos de datos de los sistemas que los producen o consumen. Funciona como un <em>broker</em> de mensajes, encargado de enrutar los mensajes entre los clientes de un modo muy rápido.</p>
+<p>Supongamos que tenemos multiples generadores de datos, ya sean servidores web, de bases de datos, un servidor de chat y que todos ellos tienen que almacenar sus datos en múltiples destinos, como pueden ser logs, métricas de rendimiento y monitorización, el carrito de la compra o los fallos ocurridos, lo que puede provocar una serie de dependencias de unos con otros. Para evitarlo, <em>Kafka</em> viene al rescate conectando todos los generadores de datos (productores) a Kafka y a su vez, a todos los consumidores de estos datos.</p>
 <figure style="align: center;">
     <img src="images/02kafka-middleware.png">
     <figcaption>Kafka como middleware/broker de mensajes</figcaption>
@@ -1410,7 +1411,7 @@ https://medium.com/big-data-engineering/hello-kafka-world-the-complete-guide-to-
 <p>En concreto, se trata de una plataforma <em>open source</em> <strong>distribuida</strong> de <strong>transmisión de eventos/mensajes</strong> en tiempo real con almacenamiento duradero y que proporciona de base un alto rendimiento (capaz de manejar billones de peticiones al día, con una latencia inferior a 10ms), tolerancia a fallos, disponibilidad y escalabilidad horizontal (mediante cientos de nodos).</p>
 <div class="admonition info">
 <p class="admonition-title">Evento / Mensaje</p>
-<p>Dentro del vocabulario asociado a arquitectura asíncronas basadas en productor/consumidor o publicador/suscriptor, se utiliza el mensaje para indicar el dato que viaja desde un punto a otro. En Kafka, además de utilizar el concepto mensaje, se emplea el término evento.</p>
+<p>Dentro del vocabulario asociado a arquitecturas asíncronas basadas en productor/consumidor o publicador/suscriptor, se utiliza el mensaje para indicar el dato que viaja desde un punto a otro. En <em>Kafka</em>, además de utilizar el concepto <strong>mensaje</strong>, se emplea el término <strong>evento</strong>.</p>
 </div>
 <p>Más del <a href="https://kafka.apache.org/powered-by">80% de las 100 compañías</a> más importantes de EEUU utilizan <em>Kafka</em>: <em>Uber</em>, <em>Twitter</em>, <em>Netflix</em>, <em>Spotify</em>, <em>Blizzard</em>, <em>LinkedIn</em>, <em>Spotify</em>, y <em>PayPal</em> procesan cada día sus mensajes con <em>Kafka</em>.</p>
 <p>Como sistema de mensajes, sigue un modelo publicador-suscriptor. Su arquitectura tiene dos directivas claras:</p>
@@ -1449,10 +1450,6 @@ Grupos de consumo: Los suscriptores se pueden agrupar por grupo, este grupo est�
 Radio Difusión: Todos los suscriptores que están escuchando el topic reciben el mensaje (cada suscriptor es responsable de interpretar el mensaje de forma independiente).
 
 Para ello se dispone de listas de temas/topics publicados específicos y un conjunto de suscriptores, el productor trata de clasificar el mensaje en base a una tipología, lo pone en la lista de un tema específico y el receptor se suscribe a la listas para recibir ese tipo de mensajes.
-
-Tiene una clave, un valor y una marca
-Los eventos se organizan de forma duradera en temas (similar a una carpeta de archivos)
-Los temas están divididos, distribuidos en varios depósitos. Los eventos con la misma clave, se escriben en la misma partición.
 -->
 
 <!--
@@ -1481,8 +1478,11 @@ https://kafka.apache.org/quickstart
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-server-start.sh<span class="w"> </span>./config/server.properties
 </code></pre></div>
 <h3 id="creando-un-topic">Creando un <em>topic</em><a class="headerlink" href="#creando-un-topic" title="Permanent link">&para;</a></h3>
-<p>A continuación, en un tercer terminal, vamos a crear un <em>topic</em> mediante el comando <code>kafka-topics.sh</code>:</p>
+<p>A continuación, en un tercer terminal, vamos a crear un <em>topic</em> mediante el comando <code>kafka-topics.sh</code>, utilizando el parámetro <code>--create</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-topic<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
+<p>Si quisiéramos comprobar los <em>^topics</em> que hemos creado, podemos obtener un listado mediante el parámetro <code>--list</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--list<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
 </code></pre></div>
 <p>Si queremos obtener la descripción del <em>topic</em> creado con la cantidad de particiones le pasamos el parámetro <code>--describe</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--describe<span class="w"> </span>--topic<span class="w"> </span>iabd-topic<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
@@ -1511,7 +1511,11 @@ https://kafka.apache.org/quickstart
 <h3 id="topic-y-particiones">Topic y Particiones<a class="headerlink" href="#topic-y-particiones" title="Permanent link">&para;</a></h3>
 <p>Un <em>topic</em> (¿tema?) es un flujo particular de datos que funciona como una cola almacenando de forma temporal o duradera los datos que se colocan en él.</p>
 <p>Podemos crear tantos <em>topics</em> como queramos y cada uno de ellos tendrá un nombre unívoco.</p>
-<p>Un <em>topic</em> se divide en <strong>particiones</strong>, las cuales se numeran, siendo la primera la 0. Al crear un <em>topic</em> hemos de indicar la cantidad de particiones inicial, la cual podemos modificar <em>a posteriori</em>. Cada partición está ordenada, de manera que cada mensaje dentro de una partición tendrá un identificador incremental, llamado <strong><em>offset</em></strong> (desplazamiento). Cada partición funciona como un <em>commit log</em> almacenando los mensajes que recibe.</p>
+<p>Un <em>topic</em> se divide en <strong>particiones</strong>, las cuales se numeran, siendo la primera la 0. Al crear un <em>topic</em> podemos indicar la cantidad de particiones inicial, la cual podemos modificar <em>a posteriori</em> (en nuestra máquina virtual, en el archivo <code>server.properties</code> tenemos configurado que, por defecto, cada <em>topic</em> tenga una sola partición mediante la propiedad <code>num.partitions=1</code>).</p>
+<p>Al crear un topic, si queremos indicar la cantidad de particiones, hemos de pasarle el parámetro <code>--partitions</code> y el número de particiones deseadas:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-topic-p3<span class="w"> </span>--partitions<span class="w"> </span><span class="m">3</span><span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
+<p>Cada partición está ordenada, de manera que cada mensaje dentro de una partición tendrá un identificador incremental, llamado <strong><em>offset</em></strong> (desplazamiento). Cada partición funciona como un <em>commit log</em> almacenando los mensajes que recibe.</p>
 <figure style="align: center;">
     <img src="images/02kafka-topic-partitions.png">
     <figcaption>Offset dentro de las particiones de un topic</figcaption>
@@ -1521,11 +1525,18 @@ https://kafka.apache.org/quickstart
 <p>Habíamos comentado que las particiones están ordenadas, pero el orden sólo se garantiza dentro de una partición (no entre particiones), es decir, el mensaje 7 de la partición 0 puede haber llegado antes, a la vez, o después que el mensaje 5 de la partición 1.</p>
 <p>Los datos de una partición tiene un tiempo de vida limitado (<em>retention period</em>) que indica el tiempo que se mantendrán los mensajes antes de eliminarlos. Por defecto es de una semana. Además, una vez que los datos se escriben en una partición, no se pueden modificar (las mensajes son immutables).</p>
 <p>Finalmente, por defecto, los datos se asignan de manera aleatoria a una partición. Sin embargo, existe la posibilidad de indicar una clave de particionado.</p>
+<div class="admonition info">
+<p class="admonition-title">Borrando un topic</p>
+<p>Para eliminar un <em>topic</em>, le pasaremos el parámetro <code>--delete</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--delete<span class="w"> </span>--topic<span class="w"> </span>iabd-topic<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
+<p>Al borrar un topic, sus índices con el histórico no se eliminan, de manera que volver a crear un <em>topic</em> con el mismo nombre es una mala idea ya que podemos obtener datos incongruentes.</p>
+</div>
 <h3 id="brokers">Brokers<a class="headerlink" href="#brokers" title="Permanent link">&para;</a></h3>
 <p>Un clúster de <em>Kafka</em> está compuesto de múltiples nodos conocidos como <em>Brokers</em>, donde cada <em>broker</em> es un servidor de <em>Kafka</em>. Cada <em>broker</em> se identifica con un id, el cual debe ser un número entero.</p>
 <p>Cada <em>broker</em> contiene un conjunto de particiones, de manera que un <em>broker</em> contiene parte de los datos, nunca los datos completos ya que Kafka es un sistema distribuido. Al conectarse a un broker del clúster (<em>bootstrap broker</em>), automáticamente nos conectaremos al clúster entero.</p>
-<p>Para comenzar se recomienda una arquitectura de 3 brokers, aunque algunos clústers lo forman cerca de un centenar de <em>brokers</em>.</p>
-<p>Por ejemplo, el siguiente gráfico muestra el <em>topic A</em> dividido en tres particiones, cada una de ellas residiendo en un broker diferente (no hay ninguna relación entre el número de la partición y el nombre del broker), y el <em>topic B</em> dividido en dos particiones:</p>
+<p>Para comenzar se recomienda una arquitectura de 3 brokers, aunque <a href="https://netflixtechblog.com/kafka-inside-keystone-pipeline-dd5aeabaf6bb">algunos clústers lo forman cerca de un centenar de <em>brokers</em></a>.</p>
+<p>Por ejemplo, el siguiente gráfico muestra un clúster con tres brokers, de manera que el <em>topic A</em> está dividido en tres particiones, cada una de ellas residiendo en un broker diferente (no hay ninguna relación entre el número de la partición y el nombre del broker), y el <em>topic B</em> está a su vez dividido en dos particiones:</p>
 <figure style="align: center;">
     <img src="images/02kafka-3brokers.png">
     <figcaption>Ejemplo de 3 brokers</figcaption>
@@ -1534,16 +1545,19 @@ https://kafka.apache.org/quickstart
 <p>En el caso de haber introducido un nuevo <em>topic</em> con 4 particiones, uno de los brokers contendría dos particiones.</p>
 <h3 id="factor-de-replicacion">Factor de replicación<a class="headerlink" href="#factor-de-replicacion" title="Permanent link">&para;</a></h3>
 <p>Para soportar la tolerancia a fallos, los <em>topics</em> deben tener un factor de replicación mayor que uno (normalmente se configura entre 2 y 3).</p>
-<p>En la siguiente imagen podemos ver como tenemos 3 brokers, y un <em>topic A</em> con dos particiones y una factor de replicación de 2, de manera que cada partición crea un replica de si misma:</p>
+<p>En la siguiente imagen podemos ver como tenemos 3 brokers, y un <em>topic A</em> con dos particiones y un factor de replicación de 2, de manera que cada partición crea un replica de si misma:</p>
 <figure style="align: center;">
     <img src="images/02kafka-replication-factor.png">
     <figcaption>Divisiones de un broker en particiones</figcaption>
 </figure>
 
+<p>Para crear la configuración del gráfico, debemos indicar el factor de replicación mediante <code>--replication-factor</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>TopicA<span class="w"> </span>--partitions<span class="w"> </span><span class="m">2</span><span class="w"> </span>--replication-factor<span class="w"> </span><span class="m">2</span><span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
 <p>Si se cayera el <em>broker 102</em>, <em>Kafka</em> podría devolver los datos al estar disponibles en los nodos 101 y 103.</p>
 <h4 id="replica-lider">Réplica líder<a class="headerlink" href="#replica-lider" title="Permanent link">&para;</a></h4>
 <p>Acabamos de ver que cada broker tiene múltiples particiones, y cada partición tiene múltiples réplicas, de manera que si se cae un nodo/broker, <em>Kafka</em> puede utilizar otro <em>broker</em> para servir los datos.</p>
-<p>En cualquier instante, una determinada partición tendrá una única réplica que será la líder, y esta réplica líder será la única que pueda recibir y servir los datos de una partición. La réplica líder es importante porque todas las lecturas y escrituras siempre van a esta réplica. El resto de brokers sincronizarán sus datos. En resume, cada partición tendrá un líder y múltiples ISR (<em>in-sync replica</em>).</p>
+<p>En cualquier instante, una determinada partición tendrá una única réplica que será la líder, y esta réplica líder será la única que pueda recibir y servir los datos de una partición. La réplica líder es importante porque todas las lecturas y escrituras siempre van a esta réplica. El resto de brokers sincronizarán sus datos. En resumen, cada partición tendrá un líder y múltiples ISR (<em>in-sync replica</em>).</p>
 <figure style="align: center;">
     <img src="images/02kafka-replicas.png">
     <figcaption>Réplicas de una partición</figcaption>
@@ -1553,7 +1567,7 @@ https://kafka.apache.org/quickstart
 <h3 id="productores">Productores<a class="headerlink" href="#productores" title="Permanent link">&para;</a></h3>
 <p>Los productores escriben datos en los <em>topics</em>, sabiendo automáticamente el <em>broker</em> y la partición en la cual deben escribir.
 En el caso de un fallo de un <em>broker</em>, los productores automáticamente se recuperan y se comunican con el <em>broker</em> adecuado.</p>
-<p>Si el productor envía los datos sin una clave determinada, <em>Kafka</em> realiza una algoritmo de <em>Round Robin</em>, de manera que cada mensaje se va alternando entre los diferentes <em>brokers</em>.</p>
+<p>Si el productor envía los datos sin una clave determinada, <em>Kafka</em> utiliza un algoritmo de <em>Round Robin</em>, de manera que cada mensaje se va alternando entre los diferentes <em>brokers</em>.</p>
 <figure style="align: center;">
     <img src="images/02kafka-producers.png">
     <figcaption>La carga se balancea entre los brokers</figcaption>
@@ -1561,8 +1575,8 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 
 <p>Podemos configurar los productores para que reciban un ACK de las escrituras de los datos con los siguientes valores:</p>
 <ul>
-<li><code>ack=0</code>: El productor no espera la confirmación (posible pérdida de datos).</li>
-<li><code>ack=1</code>: El productor espera la confirmación del líder (limitación de la pérdida de datos).</li>
+<li><code>ack=0</code>: El productor no espera la confirmación (posible pérdida de datos), lo que se traduce en un envío asíncrono.</li>
+<li><code>ack=1</code>: El productor espera la confirmación del líder (limitación de la pérdida de datos), de manera que los envíos son síncronos.</li>
 <li><code>ack=all</code>: El productores espera la confirmación del líder y de todas las réplicas (sin pérdida de datos).</li>
 </ul>
 <h4 id="clave-de-mensaje">Clave de mensaje<a class="headerlink" href="#clave-de-mensaje" title="Permanent link">&para;</a></h4>

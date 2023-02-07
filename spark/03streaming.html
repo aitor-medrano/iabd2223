@@ -2255,7 +2255,10 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
     <figcaption>Arquitectura caso 3</figcaption>
 </figure>
 
-<p>FIXME: corregir</p>
+<!--
+FIXME: corregir, ahora con packages
+-->
+
 <p>Antes de comenzar, necesitamos configurar el paquete <code>spark-sql-kafka</code> en <em>Spark</em>. Para ello, lo configuraremos en el archivo <code>spark-defaults.conf</code> que tenemos en <code>/opt/spark-3.3.1/conf</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>spark.jars.packages     org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1
 </code></pre></div>
@@ -3128,7 +3131,10 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 </code></pre></div>
 <p>Así pues, <code>loginDF</code> es un <em>DataFrame</em> que realiza <em>streaming</em> sobre Kafka.</p>
 <h3 id="lectura-estatica">Lectura estática<a class="headerlink" href="#lectura-estatica" title="Permanent link">&para;</a></h3>
-<p>FIXME: reescribir</p>
+<!--
+FIXME: reescribir - ahora con packages
+-->
+
 <p>El segundo paso es crear otro <em>DataFrame</em> que obtenga los datos desde MariaDB (en esta caso un <em>DataFrame</em> estático, sin <em>streaming</em>). Para ello, primero hemos de copiar el <a href="resources/mysql-connector-j-8.0.31.jar">driver JDBC de Mysql</a> en nuestro sistema (en mi caso lo he hecho en <code>/opt/spark-3.2.0/conf</code> y configurar en <code>spark-defaults.conf</code> que vamos a emplear dicho <em>driver</em> JDBC:</p>
 <div class="highlight"><span class="filename">spark-defaults.conf</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span>spark.driver.extraClassPath<span class="w"> </span><span class="o">=</span><span class="w"> </span>/opt/spark-3.2.0/conf/mysql-connector-java-5.1.49-bin.jar
 <span class="linenos" data-linenos="2 "></span>spark.executor.extraClassPath<span class="w"> </span><span class="o">=</span><span class="w"> </span>/opt/spark-3.2.0/conf/mysql-connector-java-5.1.49-bin.jar
