@@ -1102,6 +1102,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#en-resumen" class="md-nav__link">
+    En Resumen
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1325,6 +1332,13 @@
           <li class="md-nav__item">
   <a href="#zookeeper" class="md-nav__link">
     Zookeeper
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#en-resumen" class="md-nav__link">
+    En Resumen
   </a>
   
 </li>
@@ -1735,8 +1749,12 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 </figure>
 
 <p>Pese a su dependencia, los productores y consumidores no interactúan nunca con <em>Zookeeper</em>, sólo lo hacen con <em>Kafka</em>.</p>
-<div class="admonition important">
-<p class="admonition-title">Kafka garantiza que...</p>
+<div class="admonition info">
+<p class="admonition-title">Kraft</p>
+<p>Aunque podemos decir que todavía no es la opción más recomendable en producción, también podemos utilizar una instalación de Kafka sin Zookeeper haciendo uso de <a href="https://kafka.apache.org/documentation/#kraft">Kraft</a>, el cual ofrece un nuevo protocolo de consenso y evita tener una infraestructura extra para Zookeeper.</p>
+</div>
+<h3 id="en-resumen">En Resumen<a class="headerlink" href="#en-resumen" title="Permanent link">&para;</a></h3>
+<p>Kafka garantiza que...</p>
 <ul>
 <li>Los mensajes se añaden a una partición/<em>topic</em> en el orden en el que se envían</li>
 <li>Los consumidores leen los mensajes en el orden en que se almacenaron en la partición/<em>topic</em></li>
@@ -1746,7 +1764,6 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 </li>
 <li>Mientras el número de particiones de un <em>topic</em> permanezca constante (no se hayan creado nuevas particiones), la misma clave implicará que los mensajes vayan a la misma partición.</li>
 </ul>
-</div>
 <h2 id="caso-1-kafka-y-python">Caso 1: Kafka y Python<a class="headerlink" href="#caso-1-kafka-y-python" title="Permanent link">&para;</a></h2>
 <p>Para poder producir y consumir mensajes desde Python necesitamos instalar la librería <a href="https://kafka-python.readthedocs.io/en/master/">Kafka-python</a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip<span class="w"> </span>install<span class="w"> </span>kafka-python
