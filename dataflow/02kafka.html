@@ -1477,11 +1477,16 @@ https://kafka.apache.org/quickstart
 <p>Una vez comprobado, en un nuevo terminal, arrancamos el servidor de <em>Kafka</em> mediante el comando <code>kafka-server-start.sh</code> (de manera que tenemos corriendo a la vez <em>Zookeeper</em> y <em>Kafka</em>):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-server-start.sh<span class="w"> </span>./config/server.properties
 </code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Instalación de pruebas</p>
+<p>En nuestra máquina virtual, en los archivos de configuración, hemos puesto que todas las rutas utilicen <code>/tmp</code> para no llenar el disco duro de datos, en concreto la propiedad <code>log.dirs</code>.</p>
+<p>Por ello, entre cada reinicio de la máquina virtual, tendremos que volver a crear los diferentes topics, habiendo perdido los mensajes que no se hubieran consumido.</p>
+</div>
 <h3 id="creando-un-topic">Creando un <em>topic</em><a class="headerlink" href="#creando-un-topic" title="Permanent link">&para;</a></h3>
 <p>A continuación, en un tercer terminal, vamos a crear un <em>topic</em> mediante el comando <code>kafka-topics.sh</code>, utilizando el parámetro <code>--create</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-topic<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
 </code></pre></div>
-<p>Si quisiéramos comprobar los <em>^topics</em> que hemos creado, podemos obtener un listado mediante el parámetro <code>--list</code>:</p>
+<p>Si quisiéramos comprobar los <em>topics</em> que hemos creado, podemos obtener un listado mediante el parámetro <code>--list</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--list<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
 </code></pre></div>
 <p>Si queremos obtener la descripción del <em>topic</em> creado con la cantidad de particiones le pasamos el parámetro <code>--describe</code>:</p>
