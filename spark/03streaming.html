@@ -1077,8 +1077,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#join" class="md-nav__link">
-    Join
+  <a href="#joins-en-streaming" class="md-nav__link">
+    Joins en streaming
   </a>
   
 </li>
@@ -1106,7 +1106,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#join_1" class="md-nav__link">
+  <a href="#join" class="md-nav__link">
     Join
   </a>
   
@@ -1560,8 +1560,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#join" class="md-nav__link">
-    Join
+  <a href="#joins-en-streaming" class="md-nav__link">
+    Joins en streaming
   </a>
   
 </li>
@@ -1589,7 +1589,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#join_1" class="md-nav__link">
+  <a href="#join" class="md-nav__link">
     Join
   </a>
   
@@ -2541,7 +2541,7 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 <span class="linenos" data-linenos="4 "></span><span class="p">{</span><span class="nt">&quot;CustomerCardNo&quot;</span><span class="p">:</span><span class="s2">&quot;4629185211&quot;</span><span class="p">,</span><span class="nt">&quot;TotalAmount&quot;</span><span class="p">:</span><span class="mf">11114.0</span><span class="p">,</span><span class="nt">&quot;EarnedLoyaltyPoints&quot;</span><span class="p">:</span><span class="mf">2222.8</span><span class="p">}</span>
 </code></pre></div>
 <p>Más información en la <a href="https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html">documentación oficial</a> sobre integración de <em>Kafka</em> con <em>Spark Streaming</em>.</p>
-<h2 id="join">Join<a class="headerlink" href="#join" title="Permanent link">&para;</a></h2>
+<h2 id="joins-en-streaming">Joins en streaming<a class="headerlink" href="#joins-en-streaming" title="Permanent link">&para;</a></h2>
 <p>Una de las cosas más <em>curiosas</em> que podemos hacer con un <em>DataFrame</em> en <em>streaming</em> es realizar un <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#join-operations"><em>join</em></a> con otro <em>DataFrame</em> estático u otro en <em>streaming</em>, es decir, con datos que todavía no existen.</p>
 <p>Realizar un <em>join</em> es una operación compleja y la parte divertida es que no todos los datos están disponibles en el momento de realizar el <em>join</em>, por lo tanto su resultado se genera de forma incremental tras cada <em>trigger</em>, de forma similar a como se generan las agregaciones.</p>
 <p>Unir un stream con un DataFrame estático es una operación sin estado, ya que Spark no necesita mantener el estado y sólo está uniendo los datos de un único micro-batch.</p>
@@ -2684,7 +2684,7 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 <span class="linenos" data-linenos="7 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;password&quot;</span><span class="p">,</span> <span class="s2">&quot;iabd&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="8 "></span>    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </code></pre></div>
-<h3 id="join_1">Join<a class="headerlink" href="#join_1" title="Permanent link">&para;</a></h3>
+<h3 id="join">Join<a class="headerlink" href="#join" title="Permanent link">&para;</a></h3>
 <p>Finalmente, un vez leídos los datos desde MariaDB, ya podemos hacer el <em>join</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="n">joinExpr</span> <span class="o">=</span> <span class="n">loginDF</span><span class="o">.</span><span class="n">login_id</span> <span class="o">==</span> <span class="n">jdbcDF</span><span class="o">.</span><span class="n">id</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="n">joinType</span> <span class="o">=</span> <span class="s2">&quot;inner&quot;</span>
