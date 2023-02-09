@@ -1759,32 +1759,35 @@
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span> \
 <span class="linenos" data-linenos=" 3 "></span>        <span class="o">.</span><span class="n">builder</span> \
-<span class="linenos" data-linenos=" 4 "></span>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Streaming s8a WordCount&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos=" 5 "></span>        <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[2]&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos=" 6 "></span>        <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 4 "></span>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Streaming IABD WordCount&quot;</span><span class="p">)</span> \
+<span class="hll"><span class="linenos" data-linenos=" 5 "></span>        <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[2]&quot;</span><span class="p">)</span> \
+</span><span class="linenos" data-linenos=" 6 "></span>        <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="linenos" data-linenos=" 7 "></span>
-<span class="linenos" data-linenos=" 8 "></span><span class="c1"># Creamos un flujo de escucha sobre netcat en localhost:9999 (read)</span>
-<span class="linenos" data-linenos=" 9 "></span><span class="n">lineasDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
-<span class="linenos" data-linenos="10 "></span>        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;socket&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="11 "></span>        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="12 "></span>        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="s2">&quot;9999&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="13 "></span>        <span class="o">.</span><span class="n">load</span><span class="p">()</span>
-<span class="linenos" data-linenos="14 "></span>
-<span class="linenos" data-linenos="15 "></span><span class="c1"># Leemos las líneas y las pasamos a palabras.</span>
-<span class="linenos" data-linenos="16 "></span><span class="c1"># Sobre ellas, realizamos la agrupación count (transformación)</span>
-<span class="linenos" data-linenos="17 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">explode</span><span class="p">,</span> <span class="n">split</span>
-<span class="linenos" data-linenos="18 "></span><span class="n">palabrasDF</span> <span class="o">=</span> <span class="n">lineasDF</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">explode</span><span class="p">(</span><span class="n">split</span><span class="p">(</span><span class="n">lineasDF</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;palabra&#39;</span><span class="p">))</span>
-<span class="linenos" data-linenos="19 "></span><span class="n">cantidadDF</span> <span class="o">=</span> <span class="n">palabrasDF</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;palabra&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-<span class="linenos" data-linenos="20 "></span>
-<span class="linenos" data-linenos="21 "></span><span class="c1"># Mostramos las palabras por consola (sink)</span>
-<span class="linenos" data-linenos="22 "></span><span class="n">wordCountQuery</span> <span class="o">=</span> <span class="n">cantidadDF</span><span class="o">.</span><span class="n">writeStream</span> \
-<span class="linenos" data-linenos="23 "></span>        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="24 "></span>        <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;complete&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="25 "></span>        <span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="linenos" data-linenos="26 "></span>
-<span class="linenos" data-linenos="27 "></span><span class="c1"># dejamos Spark a la escucha</span>
-<span class="linenos" data-linenos="28 "></span><span class="n">wordCountQuery</span><span class="o">.</span><span class="n">awaitTermination</span><span class="p">()</span>
-</code></pre></div>
+<span class="linenos" data-linenos=" 8 "></span><span class="c1"># Creamos un flujo de escucha sobre netcat en localhost:9999</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="c1"># En Spark Streaming, la lectura se realiza mediante readStream</span>
+<span class="hll"><span class="linenos" data-linenos="10 "></span><span class="n">lineasDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
+</span><span class="linenos" data-linenos="11 "></span>        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;socket&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="12 "></span>        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="13 "></span>        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="s2">&quot;9999&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="14 "></span>        <span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># Leemos las líneas y las pasamos a palabras.</span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># Sobre ellas, realizamos la agrupación count (transformación)</span>
+<span class="linenos" data-linenos="18 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">explode</span><span class="p">,</span> <span class="n">split</span>
+<span class="linenos" data-linenos="19 "></span><span class="n">palabrasDF</span> <span class="o">=</span> <span class="n">lineasDF</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">explode</span><span class="p">(</span><span class="n">split</span><span class="p">(</span><span class="n">lineasDF</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;palabra&#39;</span><span class="p">))</span>
+<span class="linenos" data-linenos="20 "></span><span class="n">cantidadDF</span> <span class="o">=</span> <span class="n">palabrasDF</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">&quot;palabra&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span><span class="c1"># Mostramos las palabras por consola (sink)</span>
+<span class="linenos" data-linenos="23 "></span><span class="c1"># En Spark Streaming, la persistencia se realiza mediante writeStream</span>
+<span class="linenos" data-linenos="24 "></span><span class="c1">#  y en vez de realizar un save, ahora utilizamos start</span>
+<span class="hll"><span class="linenos" data-linenos="25 "></span><span class="n">wordCountQuery</span> <span class="o">=</span> <span class="n">cantidadDF</span><span class="o">.</span><span class="n">writeStream</span> \
+</span><span class="linenos" data-linenos="26 "></span>        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="27 "></span>        <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;complete&quot;</span><span class="p">)</span> \
+<span class="hll"><span class="linenos" data-linenos="28 "></span>        <span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span><span class="linenos" data-linenos="29 "></span>
+<span class="linenos" data-linenos="30 "></span><span class="c1"># dejamos Spark a la escucha</span>
+<span class="hll"><span class="linenos" data-linenos="31 "></span><span class="n">wordCountQuery</span><span class="o">.</span><span class="n">awaitTermination</span><span class="p">()</span>
+</span></code></pre></div>
 <p>Conforme escribamos en el terminal de <em>Netcat</em> irán apareciendo en la consola de <em>Spark</em> los resultados:</p>
 <figure style="align: center;">
     <img src="images/03streaming-wc.gif">
@@ -1809,7 +1812,7 @@
 </span><span class="linenos" data-linenos="5 "></span>        <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="elementos">Elementos<a class="headerlink" href="#elementos" title="Permanent link">&para;</a></h2>
-<p>La idea básica al trabajar los datos en <em>streaming</em> es como una tabla de entrada de tamaño ilimitado, y conforme llegan nuevos datos, tratarlos como un nuevo conjunto de filas que se adjuntan a la tabla.</p>
+<p>La idea básica al trabajar los datos en <em>streaming</em> es similar a tener una tabla de entrada de tamaño ilimitado, y conforme llegan nuevos datos, tratarlos como un nuevo conjunto de filas que se adjuntan a la tabla.</p>
 <figure style="align: center;">
     <img src="images/03streaming-datatable.png">
     <figcaption>Datos como registros</figcaption>
@@ -1822,17 +1825,17 @@
     <img src="images/03streaming-event-vs-processing.jpg" width="300">
     <figcaption>Eventos vs Procesamiento</figcaption>
 </figure></p>
-<p>Existen dos tipos de tiempo, el tiempo del evento (<em>event time</em>) que representa cuando se crea el dato y el de procesado (<em>processing time</em>), que representa el momento en el que el motor de procesamiento/analítica de datos procesa el dato.
+<p>Existen dos tipos de tiempo, el tiempo del evento (<strong><em>event time</em></strong>) que representa cuando se crea el dato y el de procesado (<strong><em>processing time</em></strong>), que representa el momento en el que el motor de procesamiento/analítica de datos procesa el dato.
 Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuando se toma el dato del sensor, y el de procesamiento cuando nuestro motor de <em>streaming</em> realiza la transformación/agregación sobre los datos del sensor.</p>
 <p>A la hora de trabajar con los datos, hemos de realizarlo siempre con el tiempo de los eventos, ya que representan el instante en el que se crean los datos. En un estado ideal, los datos llegan y se procesan casi de forma instantánea, pero la realidad es otra, y la latencia existente provoca la necesidad de descartar el tiempo de procesamiento.</p>
-<p>Para manejar los flujos de entrada ajenos a un flujo constante, una práctica muy común es dividr los datos en trozos utilizando el tiempo inicial y final como límites de una ventana temporal.</p>
+<p>Para manejar los flujos de entrada ajenos a un flujo constante, una práctica muy común es dividir los datos en trozos utilizando el tiempo inicial y final como límites de una ventana temporal.</p>
 </div>
 <h3 id="fuentes-de-datos">Fuentes de Datos<a class="headerlink" href="#fuentes-de-datos" title="Permanent link">&para;</a></h3>
 <p>Mientras que en el procesamiento <em>batch</em> las fuentes de datos son <em>dataset</em> estáticos que residen en un almacenamiento como pueda ser un sistema local, HDFS o S3, al hablar de procesamiento en <em>streaming</em> las fuentes de datos generan los datos de forma continuada, por lo que necesitamos otro tipo de fuentes.</p>
-<p><em>Structured Streaming</em> ofrece un conjunto predefinido de <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#input-sources">fuentes de datos</a> que se leen a partir de un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.streaming.DataStreamReader.html">DataStreamReader</a>. Los tipos existentes son:</p>
+<p><em>Structured Streaming</em> ofrece un conjunto predefinido de <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#input-sources">fuentes de datos</a> que se leen a partir de un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.DataStreamReader.html">DataStreamReader</a>. Los tipos existentes son:</p>
 <ul>
 <li>
-<p><ins>Fichero</ins>: permite leer ficheros desde un directorio como un flujo de datos, con soporte para ficheros de texto, CSV, JSON, Parquet, etc...</p>
+<p><ins>Fichero</ins>: permite leer ficheros desde un directorio como un flujo de datos, con soporte para ficheros de texto, CSV, JSON, Parquet, ORC, etc...</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Lee todos los ficheros csv de un directorio</span>
 <span class="linenos" data-linenos="2 "></span><span class="n">esquemaUsuario</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">()</span> \
 <span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nombre&quot;</span><span class="p">,</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;edad&quot;</span><span class="p">,</span> <span class="s2">&quot;integer&quot;</span><span class="p">)</span>
@@ -1844,7 +1847,13 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 <p>Podemos configurar otras opciones como <code>maxFilesPerTrigger</code> con la cantidad de archivos a cargar en cada <em>trigger</em>, así como la política de lectura cuando su número sea mayor de uno mediante la propiedad booleana <code>latestFirst</code>.</p>
 </li>
 <li>
-<p><ins>Kafka</ins>: para leer datos desde brokers <em>Kafka</em> (versiones 0.10 o superiores). Realizaremos un ejemplo en las siguientes secciones.</p>
+<p><ins>Kafka</ins>: para leer datos desde brokers <em>Kafka</em> (versiones 0.10 o superiores). Realizaremos un par de ejemplos en los siguientes apartados.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">kafkaDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
+<span class="linenos" data-linenos="2 "></span>    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="s2">&quot;iabd-virtualbox:9092&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="4 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;iabd-topic&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="5 "></span>    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</code></pre></div>
 </li>
 <li>
 <p><ins>Socket</ins>: lee texto UTF8 desde una conexión <em>socket</em> (es el que hemos utilizado en el caso de uso 1). Sólo se debe utilizar para pruebas ya que no ofrece garantía de tolerancia de fallos de punto a punto.</p>
@@ -1866,11 +1875,15 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 </code></pre></div>
 </li>
 <li>
-<p><ins>Tabla</ins> (desde <em>Spark 3.1</em>): Almacena los datos en una tabla temporal de SparkSQL, la cual podemos utilizar tanto para cargar como para persistir los cálculos realizados. Más información en la <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#streaming-table-apis">documentación oficial</a>.</p>
+<p><ins>Tabla</ins> (desde <em>Spark 3.1</em>): Almacena los datos en una tabla temporal de <em>SparkSQL</em>, la cual podemos utilizar tanto para cargar como para persistir los cálculos realizados. Más información en la <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#streaming-table-apis">documentación oficial</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">tablaDF</span> <span class="o">=</span> <span class="n">spark</span> \
+<span class="linenos" data-linenos="2 "></span>    <span class="o">.</span><span class="n">readStream</span> \
+<span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s2">&quot;clientes&quot;</span><span class="p">)</span>
+</code></pre></div>
 </li>
 </ul>
 <h3 id="sinks"><em>Sinks</em><a class="headerlink" href="#sinks" title="Permanent link">&para;</a></h3>
-<p>De la misma manera, también tenemos un conjunto de <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#output-sinks"><em>Sinks</em></a> predefinidos como destino de los datos:</p>
+<p>De la misma manera, también tenemos un conjunto de <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#output-sinks"><em>Sinks</em></a> predefinidos como destino de los datos, que se escriben a partir de un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.DataStreamWriter.html">DataStreamWriter</a>.:</p>
 <ul>
 <li>
 <p><ins>Fichero</ins>: Podemos almacenar los resultados en un sistema de archivos, HDFS o S3, con soporte para los formatos CSV, JSON, ORC y Parquet.</p>
@@ -1889,7 +1902,7 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 </code></pre></div>
 </li>
 <li>
-<p><ins>Foreach</ins> y <ins>ForeachBatch</ins>: permiten realizar operaciones y escribir lógica sobre la salida de una consulta de streaming, ya sea a nivel de fila (<em>foreach</em>) como a nivel de micro-batch (<em>foreachBatch</em>). Más información en la <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#using-foreach-and-foreachbatch">documentación oficial</a>.</p>
+<p><ins>Foreach</ins> y <ins>ForeachBatch</ins>: permiten realizar operaciones y escribir lógica sobre la salida de una consulta de <em>streaming</em>, ya sea a nivel de fila (<em>foreach</em>) como a nivel de micro-batch (<em>foreachBatch</em>). Más información en la <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#using-foreach-and-foreachbatch">documentación oficial</a>.</p>
 </li>
 <li>
 <p><ins>Consola</ins>: se emplea para pruebas y depuración y permite mostrar el resultado por consola.</p>
@@ -2255,27 +2268,23 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
     <figcaption>Arquitectura caso 3</figcaption>
 </figure>
 
-<!--
-FIXME: corregir, ahora con packages
--->
-
-<p>Antes de comenzar, necesitamos configurar el paquete <code>spark-sql-kafka</code> en <em>Spark</em>. Para ello, lo configuraremos en el archivo <code>spark-defaults.conf</code> que tenemos en <code>/opt/spark-3.3.1/conf</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>spark.jars.packages     org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1
+<p>Antes de comenzar, necesitamos configurar el paquete <code>spark-sql-kafka</code> en <em>Spark</em>. De manera similar a como realizamos al arrancar <em>PySpark</em>, necesitamos arrancarlo pasándole el paquete con la librería:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pyspark<span class="w"> </span>--packages<span class="w"> </span>org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1
 </code></pre></div>
-<p>Una vez configurado, ya podemos arrancar <code>pyspark</code> y crear la sesión y el <em>DataFrame</em> de lectura:</p>
+<p>Una vez arrancado, creamos la sesión y el <em>DataFrame</em> de lectura:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span> \
-<span class="linenos" data-linenos=" 3 "></span>        <span class="o">.</span><span class="n">builder</span> \
-<span class="linenos" data-linenos=" 4 "></span>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Kafka Streaming&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos=" 5 "></span>        <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[3]&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos=" 6 "></span>        <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span>    <span class="o">.</span><span class="n">builder</span> \
+<span class="linenos" data-linenos=" 4 "></span>    <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Kafka Streaming&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 5 "></span>    <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[3]&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 6 "></span>    <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 <span class="linenos" data-linenos=" 7 "></span>
 <span class="linenos" data-linenos=" 8 "></span><span class="n">kafkaDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
-<span class="hll"><span class="linenos" data-linenos=" 9 "></span>        <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span> \
-</span><span class="hll"><span class="linenos" data-linenos="10 "></span>        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="s2">&quot;iabd-virtualbox:9092&quot;</span><span class="p">)</span> \
-</span><span class="hll"><span class="linenos" data-linenos="11 "></span>        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;facturas&quot;</span><span class="p">)</span> \
-</span><span class="hll"><span class="linenos" data-linenos="12 "></span>        <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;startingOffsets&quot;</span><span class="p">,</span> <span class="s2">&quot;earliest&quot;</span><span class="p">)</span> \
-</span><span class="linenos" data-linenos="13 "></span>        <span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="hll"><span class="linenos" data-linenos=" 9 "></span>    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;kafka&quot;</span><span class="p">)</span> \
+</span><span class="hll"><span class="linenos" data-linenos="10 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="s2">&quot;iabd-virtualbox:9092&quot;</span><span class="p">)</span> \
+</span><span class="hll"><span class="linenos" data-linenos="11 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;subscribe&quot;</span><span class="p">,</span> <span class="s2">&quot;facturas&quot;</span><span class="p">)</span> \
+</span><span class="hll"><span class="linenos" data-linenos="12 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;startingOffsets&quot;</span><span class="p">,</span> <span class="s2">&quot;earliest&quot;</span><span class="p">)</span> \
+</span><span class="linenos" data-linenos="13 "></span>    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </code></pre></div>
 <p>De esta manera nos subscribimos al topic <code>facturas</code> y realizamos la lectura desde el inicio.</p>
 <p>Antes de poder ejecutar el <em>reader</em>, hemos de arrancar Kafka y crear el topic <code>facturas</code>. Para ello, una vez estamos en la carpeta de instalación de Kafka (en nuestro caso <code>/opt/kafka_2.13-2.8.1</code>), ejecutaremos los siguientes comandos:</p>
