@@ -2673,18 +2673,11 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 </code></pre></div>
 <p>Así pues, <code>loginDF</code> es un <em>DataFrame</em> que realiza <em>streaming</em> sobre Kafka.</p>
 <h3 id="lectura-estatica">Lectura estática<a class="headerlink" href="#lectura-estatica" title="Permanent link">&para;</a></h3>
-<!--
-FIXME: reescribir - ahora con packages
--->
-
-<p>El segundo paso es crear otro <em>DataFrame</em> que obtenga los datos desde MariaDB (en esta caso un <em>DataFrame</em> estático, sin <em>streaming</em>). Para ello, primero hemos de copiar el <a href="resources/mysql-connector-j-8.0.31.jar">driver JDBC de Mysql</a> en nuestro sistema (en mi caso lo he hecho en <code>/opt/spark-3.2.0/conf</code> y configurar en <code>spark-defaults.conf</code> que vamos a emplear dicho <em>driver</em> JDBC:</p>
-<div class="highlight"><span class="filename">spark-defaults.conf</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span>spark.driver.extraClassPath<span class="w"> </span><span class="o">=</span><span class="w"> </span>/opt/spark-3.2.0/conf/mysql-connector-java-5.1.49-bin.jar
-<span class="linenos" data-linenos="2 "></span>spark.executor.extraClassPath<span class="w"> </span><span class="o">=</span><span class="w"> </span>/opt/spark-3.2.0/conf/mysql-connector-java-5.1.49-bin.jar
-</code></pre></div>
+<p>El segundo paso es crear otro <em>DataFrame</em> que obtenga los datos desde MariaDB (en esta caso un <em>DataFrame</em> estático, sin <em>streaming</em>) haciendo uso del acceso a base de datos relacionales mediante JDBC, tal como vimos en una <a href="02catalog.html#conectando-con-bases-de-datos">sesión anterior</a>.</p>
 <p>Con el driver JDBC ya cargado en <em>Spark</em>, realizamos la lectura de los datos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">jdbcDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span> \
 <span class="linenos" data-linenos="2 "></span>    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;jdbc&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;driver&quot;</span><span class="p">,</span> <span class="s2">&quot;com.mysql.jdbc.Driver&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;driver&quot;</span><span class="p">,</span> <span class="s2">&quot;com.mysql.cj.jdbc.Driver&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="4 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;jdbc:mysql://localhost&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="5 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;dbtable&quot;</span><span class="p">,</span> <span class="s2">&quot;spark.usuarios&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;iabd&quot;</span><span class="p">)</span> \
