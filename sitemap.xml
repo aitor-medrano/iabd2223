@@ -71,11 +71,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://aitor-medrano.github.io/iabd2223/dataflow/resources/confluent/confluent.html</loc>
-         <lastmod>2023-02-09</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://aitor-medrano.github.io/iabd2223/hadoop/index.html</loc>
          <lastmod>2023-02-09</lastmod>
          <changefreq>daily</changefreq>
