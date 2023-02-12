@@ -1490,7 +1490,7 @@
 
 
 <h1 id="spark-streaming-i">Spark Streaming I<a class="headerlink" href="#spark-streaming-i" title="Permanent link">&para;</a></h1>
-<p>Aunque ya estudiamos el concepto de <em>Streaming</em> en la sesión sobre <a href="../hadoop/02etl.html">Ingesta de Datos</a> no viene mal recordar que cuando el procesamiento se realiza en <em>streaming</em>:</p>
+<p>Aunque ya estudiamos el concepto de <em>Streaming</em> en la sesión sobre <a href="../hadoop/02etl.html">Ingesta de Datos</a>, no viene mal recordar que cuando el procesamiento se realiza en <em>streaming</em>:</p>
 <ul>
 <li>Los datos se generan de manera continuada desde una o más fuentes de datos.</li>
 <li>Las fuentes de datos, por lo general, envían los datos de forma simultánea.</li>
@@ -1498,8 +1498,8 @@
 </ul>
 <p>Vamos a considerar un <em>stream</em> como un flujo de datos continuo e ilimitado, sin un final definido que aporta datos a nuestros sistemas cada segundo.</p>
 <p>El desarrollo de aplicaciones que trabajan con datos en <em>streaming</em> suponen un mayor reto que las aplicaciones <em>batch</em>, dada la impredecibilidad de los datos, tanto su ritmo de llegada como su orden.</p>
-<p>Uno de los casos de uso más comunes del procesamiento en streaming es realizar algún calculo agregado sobre los datos que llegan y resumirlos/sintetizarlos en un destino externo para que luego ya sea un aplicación web o un motor de analítica de datos los consuma.</p>
-<p>Las principales herramientas para el tratamiento de datos en streaming son <a href="https://samza.apache.org/">Apache Samza</a>, <a href="https://flink.apache.org/">Apache Flink</a>, <a href="https://kafka.apache.org/">Apache Kafka</a> (de manera conjunta con Kafka Streams) y por supuesto, <a href="https://spark.apache.org/">Apache Spark</a>.</p>
+<p>Uno de los casos de uso más comunes del procesamiento en <em>streaming</em> es realizar algún cálculo agregado sobre los datos que llegan y resumirlos/sintetizarlos en un destino externo para que luego ya sea un aplicación web o un motor de analítica de datos los consuman.</p>
+<p>Las principales herramientas para el tratamiento de datos en <em>streaming</em> son <a href="https://samza.apache.org/">Apache Samza</a>, <a href="https://flink.apache.org/">Apache Flink</a>, <a href="https://kafka.apache.org/">Apache Kafka</a> (de manera conjunta con Kafka Streams) y por supuesto, <a href="https://spark.apache.org/">Apache Spark</a>.</p>
 <h2 id="streaming-en-spark"><em>Streaming</em> en <em>Spark</em><a class="headerlink" href="#streaming-en-spark" title="Permanent link">&para;</a></h2>
 <p><em>Spark Streaming</em> es una extensión del núcleo de <em>Spark</em> que permite el procesamiento de flujos de datos en vivo ofreciendo tolerancia a fallos, un alto rendimiento y altamente escalable.</p>
 <p>Los datos se pueden ingestar desde diversas fuentes de datos, como <em>Kafka</em>, <em>sockets</em> TCP, etc.. y se pueden procesar mediante funciones de alto nivel, ya sea mediante el uso de RDD y algoritmos <em>MapReduce</em>, o utilizando <em>DataFrames</em> y la sintaxis SQL. Finalmente, los datos procesados se almacenan en sistemas de ficheros, bases de datos o cuadros de mandos.</p>
