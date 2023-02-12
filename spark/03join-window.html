@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka, uso de ventanas de tamaño fijo (tumbling) o deslizante (sliding) y marcas de aguas (watermarking). Join entre DataFrames batch y streaming.">
+        <meta name="description" content="Apuntes sobre Spark Streaming, estudiando el join entre DataFrames batch y streaming, así como el uso de ventanas de tamaño fijo (tumbling) o deslizante (sliding) y marcas de aguas (watermarking).">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Analítica de datos con Spark Streaming - Inteligencia Artificial y Big Data</title>
+        <title>Spark Streaming Avanzado - Inteligencia Artificial y Big Data</title>
       
     
     
@@ -69,9 +69,9 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Analítica de datos con Spark Streaming - Inteligencia Artificial y Big Data" >
+        <meta  property="og:title"  content="Spark Streaming Avanzado - Inteligencia Artificial y Big Data" >
       
-        <meta  property="og:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka, uso de ventanas de tamaño fijo (tumbling) o deslizante (sliding) y marcas de aguas (watermarking). Join entre DataFrames batch y streaming." >
+        <meta  property="og:description"  content="Apuntes sobre Spark Streaming, estudiando el join entre DataFrames batch y streaming, así como el uso de ventanas de tamaño fijo (tumbling) o deslizante (sliding) y marcas de aguas (watermarking)." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/03join-window.png" >
       
@@ -85,9 +85,9 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Analítica de datos con Spark Streaming - Inteligencia Artificial y Big Data" >
+        <meta  name="twitter:title"  content="Spark Streaming Avanzado - Inteligencia Artificial y Big Data" >
       
-        <meta  name="twitter:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka, uso de ventanas de tamaño fijo (tumbling) o deslizante (sliding) y marcas de aguas (watermarking). Join entre DataFrames batch y streaming." >
+        <meta  name="twitter:description"  content="Apuntes sobre Spark Streaming, estudiando el join entre DataFrames batch y streaming, así como el uso de ventanas de tamaño fijo (tumbling) o deslizante (sliding) y marcas de aguas (watermarking)." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/03join-window.png" >
       
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Analítica de datos con Spark Streaming
+              Spark Streaming Avanzado
             
           </span>
         </div>
@@ -957,19 +957,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-6-windowing" class="md-nav__link">
-    Caso 6: Windowing
-  </a>
-  
-    <nav class="md-nav" aria-label="Caso 6: Windowing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ventana-fija" class="md-nav__link">
-    Ventana fija
+  <a href="#windowing" class="md-nav__link">
+    Windowing
   </a>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-6-trabajando-con-ventanas" class="md-nav__link">
+    Caso 6: Trabajando con ventanas
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 6: Trabajando con ventanas">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#ventanas-deslizantes" class="md-nav__link">
@@ -1263,19 +1263,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-6-windowing" class="md-nav__link">
-    Caso 6: Windowing
-  </a>
-  
-    <nav class="md-nav" aria-label="Caso 6: Windowing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ventana-fija" class="md-nav__link">
-    Ventana fija
+  <a href="#windowing" class="md-nav__link">
+    Windowing
   </a>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-6-trabajando-con-ventanas" class="md-nav__link">
+    Caso 6: Trabajando con ventanas
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 6: Trabajando con ventanas">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#ventanas-deslizantes" class="md-nav__link">
@@ -1586,7 +1586,7 @@
 <span class="linenos" data-linenos="17 "></span>
 <span class="linenos" data-linenos="18 "></span><span class="n">queryWriter</span><span class="o">.</span><span class="n">awaitTermination</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="caso-6-windowing">Caso 6: Windowing<a class="headerlink" href="#caso-6-windowing" title="Permanent link">&para;</a></h2>
+<h2 id="windowing">Windowing<a class="headerlink" href="#windowing" title="Permanent link">&para;</a></h2>
 <p>Al realizar agregaciones basadas en el tiempo, es importante aclarar el concepto de ventana temporal (<em>windowing</em>). Una ventana temporal puede durar una semana, una hora, un minuto o incluso un segundo.</p>
 <p>Estas ventanas permiten acotar los datos sobre un flujo que en principio no tiene un inicio ni un fin predefinidos.</p>
 <p>Existen diferentes tipos de ventanas temporales:</p>
@@ -1600,7 +1600,7 @@
     <figcaption>Tipos de ventanas temporales</figcaption>
 </figure>
 
-<h3 id="ventana-fija">Ventana fija<a class="headerlink" href="#ventana-fija" title="Permanent link">&para;</a></h3>
+<h2 id="caso-6-trabajando-con-ventanas">Caso 6: Trabajando con ventanas<a class="headerlink" href="#caso-6-trabajando-con-ventanas" title="Permanent link">&para;</a></h2>
 <p>Del código del caso 1, vamos a modificar algunos aspectos para agrupar los datos recibidos en una ventana de dos minutos. Al leer los datos, vamos a indicar que queremos obtener el <em>timestamp</em> de cada dato:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">lines_df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
 <span class="linenos" data-linenos="2 "></span>    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;socket&quot;</span><span class="p">)</span> \
