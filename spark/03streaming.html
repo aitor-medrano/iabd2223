@@ -1499,7 +1499,7 @@
 <p>Vamos a considerar un <em>stream</em> como un flujo de datos continuo e ilimitado, sin un final definido que aporta datos a nuestros sistemas cada segundo.</p>
 <p>El desarrollo de aplicaciones que trabajan con datos en <em>streaming</em> suponen un mayor reto que las aplicaciones <em>batch</em>, dada la impredecibilidad de los datos, tanto su ritmo de llegada como su orden.</p>
 <p>Uno de los casos de uso más comunes del procesamiento en <em>streaming</em> es realizar algún cálculo agregado sobre los datos que llegan y resumirlos/sintetizarlos en un destino externo para que luego ya sea un aplicación web o un motor de analítica de datos los consuman.</p>
-<p>Las principales herramientas para el tratamiento de datos en <em>streaming</em> son <a href="https://samza.apache.org/">Apache Samza</a>, <a href="https://flink.apache.org/">Apache Flink</a>, <a href="https://kafka.apache.org/">Apache Kafka</a> (de manera conjunta con Kafka Streams) y por supuesto, <a href="https://spark.apache.org/">Apache Spark</a>.</p>
+<p>Las principales herramientas para el tratamiento de datos en <em>streaming</em> son <a href="https://samza.apache.org/">Apache Samza</a>, <a href="https://flink.apache.org/">Apache Flink</a>, <a href="https://kafka.apache.org/">Apache Kafka</a> (de manera conjunta con <em>Kafka Streams</em>) y por supuesto, <a href="https://spark.apache.org/">Apache Spark</a>.</p>
 <h2 id="streaming-en-spark"><em>Streaming</em> en <em>Spark</em><a class="headerlink" href="#streaming-en-spark" title="Permanent link">&para;</a></h2>
 <p><em>Spark Streaming</em> es una extensión del núcleo de <em>Spark</em> que permite el procesamiento de flujos de datos en vivo ofreciendo tolerancia a fallos, un alto rendimiento y altamente escalable.</p>
 <p>Los datos se pueden ingestar desde diversas fuentes de datos, como <em>Kafka</em>, <em>sockets</em> TCP, etc.. y se pueden procesar mediante funciones de alto nivel, ya sea mediante el uso de RDD y algoritmos <em>MapReduce</em>, o utilizando <em>DataFrames</em> y la sintaxis SQL. Finalmente, los datos procesados se almacenan en sistemas de ficheros, bases de datos o cuadros de mandos.</p>
@@ -1525,24 +1525,31 @@
 </figure>
 
 <h3 id="structured-streaming">Structured Streaming<a class="headerlink" href="#structured-streaming" title="Permanent link">&para;</a></h3>
-<p><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html"><em>Spark Structured Streaming</em></a> es la segunda generación de motor para el tratamiento de datos en <em>streaming</em>, y fue diseñado para ser más rápido, escalable y con mayor tolerancia a los errores que <em>DStream</em>, ya que utiliza el motor de Spark SQL.</p>
-<p>Además, podemos expresar los procesos en streaming de la misma manera que realizaríamos un proceso <em>batch</em> con datos estáticos. El motor de Spark SQL se encarga de ejecutar los datos de forma continua e incremental, y actualizar el resultado final como datos streaming. Para ello, podemos utilizar el API de Java, Scala, Python o R para expresar las agregaciones, ventanas de eventos, joins de <em>stream</em> a <em>batch</em>, etc.... Finalmente, el sistema asegura la tolerancia de fallos mediante la entrega de cada mensaje una sola vez (<strong><em>exactly-once</em></strong>) a través de <em>checkpoints</em> y logs.</p>
-<p>Los pasos esenciales a realizar al codificar una aplicación en streaming consiste en especificar uno o más fuentes de datos, ofreciendo la lógica para manipular los flujos de entrada de datos mediante transformaciones de <em>DataFrames</em>, definir el <em>trigger</em> que provoca la lectura y el modo de salida, y finalmente indicar el destino de los datos (<em>data sink</em>) donde escribir los resultados.</p>
+<p><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html"><em>Spark Structured Streaming</em></a> es la segunda generación de motor para el tratamiento de datos en <em>streaming</em>, y fue diseñado para ser más rápido, escalable y con mayor tolerancia a los errores que <em>DStream</em>, ya que utiliza el motor de <em>Spark SQL</em>.</p>
+<p>Además, podemos expresar los procesos en streaming de la misma manera que realizaríamos un proceso <em>batch</em> con datos estáticos. El motor de <em>Spark SQL</em> se encarga de ejecutar los datos de forma continua e incremental, y actualizar el resultado final como datos streaming. Para ello, podemos utilizar el API de Java, Scala, Python o R para expresar las agregaciones, ventanas de eventos, joins de <em>stream</em> a <em>batch</em>, etc.... Finalmente, el sistema asegura la tolerancia de fallos mediante la entrega de cada mensaje una sola vez (<strong><em>exactly-once</em></strong>) a través de <em>checkpoints</em> y logs.</p>
+<p>Los pasos esenciales a realizar al codificar una aplicación en <em>streaming</em> son:</p>
+<ol>
+<li>Especificar uno o más fuentes de datos</li>
+<li>Desarrollar la lógica para manipular los flujos de entrada de datos mediante transformaciones de <em>DataFrames</em>,</li>
+<li>Definir el modo de salida</li>
+<li>Definir el <em>trigger</em> que provoca la lectura</li>
+<li>Indicar el destino de los datos (<em>data sink</em>) donde escribir los resultados.</li>
+</ol>
 <figure style="align: center;">
     <img src="images/03streaming-fases.jpg">
     <figcaption>Elementos para procesar datos en Streaming</figcaption>
 </figure>
 
-<p>Debido a que tanto el modo de salida como el trigger tienen valores por defecto, es posible que no tengamos que indicarlos ni configurarlos, lo que reduce el desarrollo de procesos a un bucle infinito de leer, transformar y enviar al destino (<em>read + transform + sink</em>). Cada una de las iteraciones de ese bucle infinito se conoce como un <strong><em>micro-batch</em></strong>, las cuales tienen unas latencias situadas alrededor de los 100 ms. Desde Spark 2.3 existe un nuevo modo de procesamiento de baja latencia conocido como <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#continuous-processing">Procesamiento Continuo</a>, que puede obtener latencias de 1ms. Al tratarse todavía de un tecnología en fase de experimentación, queda fuera de la presente sesión.</p>
+<p>Debido a que tanto el modo de salida como el <em>trigger</em> tienen valores por defecto, es posible que no tengamos que indicarlos ni configurarlos, lo que reduce el desarrollo de procesos a un bucle infinito de leer, transformar y enviar al destino (<em>read + transform + sink</em>). Cada una de las iteraciones de ese bucle infinito se conoce como un <strong><em>micro-batch</em></strong>, las cuales tienen unas latencias situadas alrededor de los 100 ms. Desde Spark 2.3 existe un nuevo modo de procesamiento de baja latencia conocido como <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#continuous-processing">Procesamiento Continuo</a>, que puede obtener latencias de 1ms. Al tratarse todavía de un tecnología en fase de experimentación, queda fuera de la presente sesión.</p>
 <h2 id="caso-1-hola-spark-streaming">Caso 1: Hola Spark Streaming<a class="headerlink" href="#caso-1-hola-spark-streaming" title="Permanent link">&para;</a></h2>
 <p>Para ver nuestro primer caso de uso, vamos a realizar un proceso de contar palabras sobre un flujo continuo de datos que proviene de un socket.</p>
-<p>Para ello, en un terminal, abrimos un <em>listener</em> de Netcat en el puerto 9999:</p>
+<p>Para ello, en un terminal, abrimos un <em>listener</em> de <em>Netcat</em> en el puerto 9999:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>nc<span class="w"> </span>-lk<span class="w"> </span><span class="m">9999</span>
 </code></pre></div>
 <p>Tras arrancar <em>Netcat</em>, ya podemos crear nuestra aplicación <em>Spark</em> (vamos a indicar que cree 2 hilos, lo cual es el mínimo necesario para realizar <em>streaming</em>, uno para recibir y otro para procesar), en la cual tenemos diferenciadas:</p>
 <ul>
 <li>la fuente de datos: creación del flujo de lectura mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.readStream.html"><code>readStream</code></a> que devuelve un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.DataStreamReader.html">DataStreamReader</a> que utilizaremos para cargar un <em>DataFrame</em>.</li>
-<li>la lógica de procesamiento, ya sea mediante DataFrames API o Spark SQL.</li>
+<li>la lógica de procesamiento, ya sea mediante <em>DataFrames API</em> o <em>Spark SQL</em>.</li>
 <li>la persistencia de los datos mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.SparkSession.writeStream.html">writeStream</a> que devuelve un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.DataStreamWriter.html">DataStreamWriter</a> donde indicamos el modo de salida, el cual, al iniciarlo con <code>start</code> nos devuelve un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.StreamingQuery.html">StreamingQuery</a></li>
 <li>y finalmente el cierre del flujo de datos a partir de la consulta en <em>streaming</em> mediante <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.StreamingQuery.awaitTermination.html?highlight=awaittermination"><code>awaitTermination</code></a>.</li>
 </ul>
@@ -1811,6 +1818,12 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 <span class="hll"><span class="linenos" data-linenos="4 "></span>    <span class="o">.</span><span class="n">trigger</span><span class="p">(</span><span class="n">processingTime</span><span class="o">=</span><span class="s2">&quot;1 minute&quot;</span><span class="p">)</span> \
 </span><span class="linenos" data-linenos="5 "></span>    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div>
+<!--
+### Ejecución
+
+FIXME: start() materializes the complete job description into a streaming computation and initiates the internal scheduling process that results in data being consumed from the source, processed, and produced to the sink. start() returns a StreamingQuery object, which is a handle to manage the individual life cycle of each query. This means that we can simultaneously start and stop multiple queries independently of one other within the same sparkSession.
+-->
+
 <h2 id="caso-2-facturas">Caso 2: Facturas<a class="headerlink" href="#caso-2-facturas" title="Permanent link">&para;</a></h2>
 <p>En este caso de uso vamos a poner en práctica algunos de los conceptos que acabamos de ver.</p>
 <p>Vamos a suponer que tenemos un empresa compuesta de diferentes sucursales. Cada una de ellas, cada 5 minutos genera un fichero con los datos de las facturas (<a href="resources/invoices.zip"><em>invoices.zip</em></a>) que han generado. Cada una de las facturas contiene una o más líneas de factura, las cuales queremos separar en facturas simples.</p>
