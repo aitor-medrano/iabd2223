@@ -23,7 +23,7 @@
     
     
       
-        <title>Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - Inteligencia Artificial y Big Data</title>
+        <title>Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - IABD</title>
       
     
     
@@ -69,7 +69,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - Inteligencia Artificial y Big Data" >
+        <meta  property="og:title"  content="Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - IABD" >
       
         <meta  property="og:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT. Gestión de los atributos de un flowfile, uso de procesadores y conectores. Apuntes y ejercicios." >
       
@@ -85,7 +85,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - Inteligencia Artificial y Big Data" >
+        <meta  name="twitter:title"  content="Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - IABD" >
       
         <meta  name="twitter:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT. Gestión de los atributos de un flowfile, uso de procesadores y conectores. Apuntes y ejercicios." >
       
@@ -129,7 +129,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabecera">
-    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-header__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+    <a href="../index.html" title="IABD" class="md-header__button md-logo" aria-label="IABD" data-md-component="logo">
       
   <img src="../images/logoIABD3.png" alt="logo">
 
@@ -141,7 +141,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Inteligencia Artificial y Big Data
+            IABD
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -234,12 +234,12 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="Inteligencia Artificial y Big Data" class="md-nav__button md-logo" aria-label="Inteligencia Artificial y Big Data" data-md-component="logo">
+    <a href="../index.html" title="IABD" class="md-nav__button md-logo" aria-label="IABD" data-md-component="logo">
       
   <img src="../images/logoIABD3.png" alt="logo">
 
     </a>
-    Inteligencia Artificial y Big Data
+    IABD
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -1502,7 +1502,7 @@
 
 <h1 id="nifi">Nifi<a class="headerlink" href="#nifi" title="Permanent link">&para;</a></h1>
 <figure style="float: right;">
-    <img src="images/04nifiLogo.svg" width="200">
+    <img src="images/04nifiLogo.svg" alt="logo de Apache Nifi" width="200">
     <figcaption>Logo de Apache Nifi</figcaption>
 </figure>
 
@@ -1582,7 +1582,7 @@
 <h3 id="acceso">Acceso<a class="headerlink" href="#acceso" title="Permanent link">&para;</a></h3>
 <p>Esperaremos un par de minutos tras arrancar Nifi para acceder al entorno de trabajo. Para ello, introduciremos en el navegador la URL <a href="https://localhost:8443/nifi">https://localhost:8443/nifi</a> y tras aceptar la alerta de seguridad respecto al certificado veremos un interfaz similar a la siguiente imagen:</p>
 <figure style="align: center;">
-    <img src="images/04nifiStart.png">
+    <img alt="Página de inicio en Nifi" src="images/04nifiStart.png">
     <figcaption>Página de inicio en Nifi</figcaption>
 </figure>
 
@@ -1609,7 +1609,7 @@
 <p class="admonition-title">Tipos de procesadores</p>
 <p>Además de en la documentación oficial (<a href="https://nifi.apache.org/docs.html">https://nifi.apache.org/docs.html</a>), puedes consultar información extra en <a href="https://www.nifi.rocks/apache-nifi-processors/">https://www.nifi.rocks/apache-nifi-processors/</a>. A <em>grosso modo</em>, los más utilizados son:</p>
 <ul>
-<li>Tranformación de datos: <code>ReplaceText</code>, <code>JoltTransformJSON</code>, <code>CompressContent</code>.</li>
+<li>Transformación de datos: <code>ReplaceText</code>, <code>JoltTransformJSON</code>, <code>CompressContent</code>.</li>
 <li>Enrutado y mediación: <code>RouteOnAttribute</code>, <code>RouteOnContent</code></li>
 <li>Acceso a base de datos: <code>ExecuteSQL</code>, <code>ConvertJSONToSQL</code>, <code>PutSQL</code></li>
 <li>Extracción de atributos: <code>EvaluateJsonPath</code>, <code>ExtractText</code>, <code>UpdateAttribute</code></li>
@@ -1634,7 +1634,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li>
 <p>Nos aparece un dialogo con tres partes diferenciadas:</p>
 <p><figure style="align: center;">
-    <img src="images/04caso1Dialog.png">
+    <img alt="Diálogo de elección de procesador en Nifi" src="images/04caso1Dialog.png">
     <figcaption>Diálogo de elección de procesador</figcaption>
 </figure></p>
 <ul>
@@ -1647,7 +1647,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li>
 <p>Damos doble click sobre el elemento gráfico que representa nuestro procesador, y en la pestaña <em>properties</em> indicamos el directorio de entrada de donde tendrá que recoger el fichero mediante la propiedad <em>Input Directory</em>. En nuestro caso le pondremos el valor <code>/home/iabd/Documentos/in</code>:</p>
 <p><figure style="align: center;">
-    <img src="images/04caso1GetFileProperties.png">
+    <img alt="Propiedades de GetFile en Nifi" src="images/04caso1GetFileProperties.png">
     <figcaption>Propiedades de GetFile</figcaption>
 </figure></p>
 <p>Antes de cambiar de procesador, en la pestaña <em>Settings</em>, en la caja <em>Name</em> la rellenamos con <code>ObtenerFichero</code>.</p>
@@ -1658,7 +1658,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li>
 <p>Si visualizamos la pestaña <em>Settings</em>, una buena práctica es ponerle nombre a los procesadores. Así pues, la caja <em>Name</em> la rellenamos con <code>PonerFichero</code>. Si nos centramos en el lado derecho, podemos configurar el comportamiento a seguir si el procesador se ejecuta correctamente (<em>success</em>) o falla (<em>failure</em>). Como vamos a hacer que este procesador sea el paso final, vamos a configurar que <em>autoterminen</em> marcando ambos casos:</p>
 <p><figure style="align: center;">
-    <img src="images/04caso1AutoTerminate.png">
+    <img alt="Finalización de PutFile en Nifi" src="images/04caso1AutoTerminate.png">
     <figcaption>Finalización de PutFile</figcaption>
 </figure></p>
 <div class="admonition danger">
@@ -1669,7 +1669,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li>
 <p>Unimos ambos procesadores creando una conexión. Para ello, tras pulsar sobre el icono de la flecha que aparece al dejar el ratón sobre el primer procesador y lo arrastramos hasta el segundo.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso1.png">
+    <img alt="Conexión mediante un conector entre procesadores en Nifi" src="images/04caso1.png">
     <figcaption>Conexión mediante un conector entre procesadores</figcaption>
 </figure></p>
 </li>
@@ -1690,14 +1690,14 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <p>¿Qué sucede si leemos dos veces un archivo con el mismo nombre? Tal como lo hemos definido en nuestro flujo, sólo se guardará la primera copia.</p>
 <p>Si vamos a la pestaña <em>Properties</em> del procesador <em>PonerFichero</em>, podemos cambiar este comportamiento en la propiedad <em>Conflict Resolution Strategy</em> a <em>replace</em>, de esta manera, se guardará el último archivo.</p>
 <figure style="align: center;">
-    <img src="images/04caso1PutFileProperties.png">
+    <img alt="Propiedades de PutFile - gestión de conflictos en Nifi" src="images/04caso1PutFileProperties.png">
     <figcaption>Propiedades de PutFile - gestión de conflictos</figcaption>
 </figure>
 
 <p>Realmente, en vez de decidir si lo ignora o lo sobrescribe, lo ideal es definir un nuevo flujo que dependa del estado de finalización del procesador. De esta manera, podremos almacenar todos los archivos que han llegado con el mismo nombre para su posterior estudio.</p>
 <p>Así pues, vamos a quitar la <em>autoterminación</em> que antes habíamos puesto al procesador de <em>PonerFichero</em>, para que cuando falle, redirija el flujo a un nuevo procesador <em>PutFile</em> que coloque el archivo en una nueva carpeta (en nuestro caso en <code>/home/iabd/Documentos/conflictos</code>):</p>
 <figure style="align: center;">
-    <img src="images/04caso1PutFileConflicto.png">
+    <img alt="Flujo failure para los ficheros repetidos en Nifi" src="images/04caso1PutFileConflicto.png">
     <figcaption>Flujo failure para los ficheros repetidos</figcaption>
 </figure>
 
@@ -1706,14 +1706,14 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <p>Nifi añade la propiedad <code>filename</code> a todos los FF. Esta propiedad la podemos consultar mediante el <a href="https://nifi.apache.org/docs/nifi-docs/html/expression-language-guide.html"><em>Nifi Expression Language</em> (Nifi EL)</a> y haciendo uso del procesador <em>UpdateAttribute</em> modificar su valor.</p>
 <p>Así pues, vamos a colocar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-update-attribute-nar/latest/org.apache.nifi.processors.attributes.UpdateAttribute/index.html"><em>UpdateAttribute</em></a> antes de colocar los archivos en la carpeta de <code>conflictos</code>:</p>
 <figure style="align: center;">
-    <img src="images/04caso1UpdateAttribute.png">
+    <img alt="Añadimos el procesador UpdateAttribute en Nifi" src="images/04caso1UpdateAttribute.png">
     <figcaption>Añadimos el procesador UpdateAttribute</figcaption>
 </figure>
 
 <p>Hemos decidido añadir como prefijo al nombre del archivo la fecha del sistema en formato de milisegundos, de manera que obtendremos archivos similares a <code>1637151536113-fichero.txt</code>. Para ello, añadimos un nuevo atributo que llamaremos <code>filename</code> haciendo clic sobre el icono de <code>+</code> que aparece arriba a la derecha y en su valor utilizaremos la expresión <code>${now():toNumber()}-${filename}</code>:</p>
 <figure style="align: center;">
-    <img src="images/04caso1UpdateAttributeProperties.png">
-    <figcaption>Añadimos el procesador UpdateAttribute</figcaption>
+    <img alt="Añadimos el atributo filename en Nifi" src="images/04caso1UpdateAttributeProperties.png">
+    <figcaption>Añadimos el atributo filename</figcaption>
 </figure>
 
 <h2 id="caso-2-trabajando-con-atributos">Caso 2 - Trabajando con atributos<a class="headerlink" href="#caso-2-trabajando-con-atributos" title="Permanent link">&para;</a></h2>
@@ -1731,7 +1731,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li><code>Unique Flowfiles: true</code> e indicamos que los FF van a ser únicos.</li>
 </ul>
 <p><figure style="align: center;">
-    <img src="images/04caso2GenerateFlowFile.png">
+    <img alt="Configuración del procesador GenerateFlowFile en Nifi" src="images/04caso2GenerateFlowFile.png">
     <figcaption>Configuración del procesador GenerateFlowFile</figcaption>
 </figure></p>
 <p>A continuación, en la configuración de planificación (<em>Scheduling</em>) de este procesador vamos a indicar que se ejecute cada 3 segundos (en el campo <em>Run Schedule</em> le ponemos como valor <code>3s</code>).</p>
@@ -1739,36 +1739,36 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li>
 <p>Una vez tenemos listo el generador, vamos a añadir el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ReplaceText/index.html"><em>ReplaceText</em></a> con el que cambiaremos el texto. Tras ello, conectamos ambos procesadores.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2ReplaceText.png">
+    <img alt="Conexión con ReplaceText en Nifi" src="images/04caso2ReplaceText.png">
     <figcaption>Conexión con ReplaceText</figcaption>
 </figure></p>
 </li>
 <li>
 <p>Si nos fijamos, a la izquierda del nombre del procesador, aparece un icono de aviso, el cual nos indica que necesitamos configurar el nuevo procesador, además de indicarnos que ambas relaciones no están conectadas o que faltan por autocompletar.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2ReplaceTextWarning.png">
-    <figcaption>Avisos que aparecen</figcaption>
+    <img alt="Avisos de un procesador en Nifi" src="images/04caso2ReplaceTextWarning.png">
+    <figcaption>Avisos que aparecen en un Procesador</figcaption>
 </figure></p>
 <p>Para ello, configuramos la estrategia de reemplazo para que lo haga siempre (en el campo <em>Replacement Value</em> seleccionamos <em>Always Replace</em>), y al hacer esto el campo  Search Value se invalida. Además, en el <em>Replacement Value</em> vamos a indicar simplemente <code>prueba</code>. Finalmente, marcamos para que autotermine la conexión <code>failure</code>.</p>
 </li>
 <li>
 <p>Añadimos un procesador de tipo <em>LogAttribute</em> para mostrar en el log los atributos del FF, y conectamos el procesador anterior (<em>ReplaceText</em>) a éste mediante la relación <code>success</code>.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2LogAttribute.png">
+    <img alt="Log con los atributos en Nifi" src="images/04caso2LogAttribute.png">
     <figcaption>Log con los atributos</figcaption>
 </figure></p>
 </li>
 <li>
 <p>Arrancamos el primer procesador y visualizamos la cola para comprobar qué ha generado. Para ello, sobre la cola elegimos la opción <em>list queue</em> para ver su contenido, y tras elegir uno, sobre el icono del ojo, visualizamos su contenido y comprobado que ha generado datos aleatorios:</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2ListQueue.gif">
+    <img alt="Acceso y visualización de la cola en Nifi" src="images/04caso2ListQueue.gif">
     <figcaption>Acceso y visualización de la cola</figcaption>
 </figure></p>
 </li>
 <li>
 <p>Si ejecutamos el siguiente procesador, vemos que saca el FF de la cola anterior y aparecerá en la siguiente. Si comprobamos su valor, veremos que ha cambiado el valor original por <code>prueba</code>.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2ReplaceQueue.png">
+    <img alt="Resultado de visualizar la cola tras ReplaceText en Nifi" src="images/04caso2ReplaceQueue.png">
     <figcaption>Resultado de visualizar la cola tras ReplaceText</figcaption>
 </figure></p>
 </li>
@@ -1806,21 +1806,21 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <li>
 <p>En las propiedades, creamos una nueva propiedad (botón <code>+</code> de la esquina superior derecha) que llamaremos <code>contenido</code>, y en cuyo valor vamos a poner la expresión <code>.*</code> que indica que queremos que coincida con todo.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2ExtractText.gif">
+    <img alt="Añadimos la propiedad contenido a ExtractText en Nifi" src="images/04caso2ExtractText.gif">
     <figcaption>Añadimos la propiedad contenido a ExtractText</figcaption>
 </figure></p>
 </li>
 <li>
 <p>Una vez creado, vamos a colocar este procesador entre los dos anteriores (para el segundo con el caso <code>matched</code>, que es cuando ha coincidido con la expresión regular). En la conexión <code>unmatched</code> la marcamos para que autotermine, y comprobamos que no tenemos ningún advertencia en ningún procesador.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2Completo.png">
+    <img alt="Flujo completo del caso 2 en Nifi" src="images/04caso2Completo.png">
     <figcaption>Flujo completo del caso 2</figcaption>
 </figure></p>
 </li>
 <li>
-<p>Finalmente, ejecutamos todos los procesadores y comprobamos como en el log aparece el nuevo atributo creado. También podemos acceder a la cola, y en la parte izquierda de cada flujo, en el icono de la <code>i</code>, pulsar y comprobar la pestaña <em>Atributes</em>.</p>
+<p>Finalmente, ejecutamos todos los procesadores y comprobamos como en el log aparece el nuevo atributo creado. También podemos acceder a la cola, y en la parte izquierda de cada flujo, en el icono de la <code>i</code>, pulsar y comprobar la pestaña <em>Attributes</em>.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso2QueueFFAttribute.png">
+    <img alt="Comprobación de los atributos de un FF en Nifi" src="images/04caso2QueueFFAttribute.png">
     <figcaption>Comprobación de los atributos de un FF</figcaption>
 </figure></p>
 </li>
@@ -1833,7 +1833,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 </div>
 <p>Para ello, sobre el procesador final, con el botón derecho, elegimos la opción <em>View data provenance</em>. Si elegimos uno de los flujos, a la derecha de cada flujo, podemos pulsar sobre el primer icono podremos ver un grafo y un <em>slider</em> que modifica el grafo respecto al instante temporal (en cada uno de los pasos, podemos hacer doble clik y ver la información y el contenido del FF en dicho momento exacto):</p>
 <figure style="align: center;">
-    <img src="images/04caso2DataProvenance.gif">
+    <img alt="Linaje de los datos en Nifi" src="images/04caso2DataProvenance.gif">
     <figcaption>Linaje de los datos</figcaption>
 </figure>
 
@@ -1849,7 +1849,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 </ul>
 <p>Así pues, vamos a añadir este procesador unido de nuevo con la relación <code>matched</code> tras la extracción del texto, para que además de escribir en el log, persista todo el contenido en HDFS.</p>
 <figure style="align: center;">
-    <img src="images/04caso2PutHdfs.png">
+    <img alt="Persistiendo FF en HDFS en Nifi" src="images/04caso2PutHdfs.png">
     <figcaption>Persistiendo FF en HDFS</figcaption>
 </figure>
 
@@ -1879,7 +1879,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 </ul>
 <p>Para configurar estos servicios, pulsaremos sobre la flecha, y veremos la pantalla de configuración. Para cada uno de ellos, tendremos otros tres iconos: la rueda para configurar, el rayo para activar/desactivar el servicio y la papelera para eliminarlo. Así, pues, tras comprobar los valores de <em>CVSReader</em> y <em>CSVSWriter</em> (indicamos el <code>;</code> como separador de campos tanto para la lectura como la escritura de CSV en el campo <em>value separator</em> y marcamos como <em>true</em> que el archivo contiene la primera fila con encabezados (<em>treat first line as header</em>)), pulsamos sobre el rayo para activar ambos servicios.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso3SplitRecord.gif">
+    <img alt="Configuración y activación de Split Record en Nifi" src="images/04caso3SplitRecord.gif">
     <figcaption>Configuración y activación de Split Record</figcaption>
 </figure></p>
 <p>Finalmente, en el campo <em>Records per Split</em> le indicamos <code>1</code> para que coloque cada fila en un FF.</p>
@@ -1904,7 +1904,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 </ol>
 <p>El resultado del flujo de datos será similar a:</p>
 <figure style="align: center;">
-    <img src="images/04caso3Completo.png">
+    <img alt="Flujo completo del caso 3 en Nifi" src="images/04caso3Completo.png">
     <figcaption>Flujo completo del caso 3</figcaption>
 </figure>
 
@@ -1937,7 +1937,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <li>Y añadimos la propiedad <code>textoError</code> con el valor <code>ERROR</code>.</li>
 </ul>
 <p><figure style="align: center;">
-    <img src="images/04caso4RouteContent.png">
+    <img alt="Propiedades de RouteOnContent en Nifi" src="images/04caso4RouteContent.png">
     <figcaption>Propiedades de RouteOnContent</figcaption>
 </figure></p>
 </li>
@@ -1953,7 +1953,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <p>Vamos a añadir el procesador <em>MergeContent</em>, el cual recibe un conjunto de FF y los fusiona en uno a partir de la estrategia de fusión que defina el usuario. Las diferentes opciones incluye agrupando ciertos atributos de forma similar a como se realiza la fase <em>reduce</em> de un algoritmo <em>MapReduce</em>.</p>
 <p>Así pues, vamos a conectar las relaciones <code>textoError</code> y <code>unmatched</code> con <em>MergeContent</em>:</p>
 <p><figure style="align: center;">
-    <img src="images/04caso4MergeContent.png">
+    <img alt="Conexión con MergeContent en Nifi" src="images/04caso4MergeContent.png">
     <figcaption>Conexión con MergeContent</figcaption>
 </figure></p>
 <p>Tras conectar los procesadores, vamos a configurar el procesador <em>MergeContent</em>:</p>
@@ -1984,7 +1984,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 </code></pre></div>
 <p>Por ejemplo, si abrimos uno de los flujos podemos ver cómo se han agrupado varias peticiones en un único FF:</p>
 <figure style="align: center;">
-    <img src="images/04caso4MergeContentQueue.png">
+    <img alt="Resultado de MergeContent en Nifi" src="images/04caso4MergeContentQueue.png">
     <figcaption>Resultado de MergeContent</figcaption>
 </figure>
 
@@ -2018,7 +2018,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <p>Para poder crear el formato JSON, utilizaremos el procesador <em>AttributesToJSON</em>. Así pues, previamente necesitamos pasar los mensajes desde el contenido de los FF a los atributos (para ello, igual que en el caso anterior, utilizaremos el procesador <em>ExtracText</em>). A su vez, también crearemos un nuevo atributo con el nombre del enrutador mediante el procesador <em>UpdateAttribute</em>.</p>
 <p>El resultado final será similar al siguiente flujo:</p>
 <figure style="align: center;">
-    <img src="images/04caso4Completo.png">
+    <img alt="Resultado completo del caso 4 en Nifi" src="images/04caso4Completo.png">
     <figcaption>Resultado completo del caso 4</figcaption>
 </figure>
 
@@ -2032,9 +2032,9 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <p>Una vez creado, conectamos <em>MergeContent</em> con <em>ExtractText</em> mediante la conexión <em>merged</em>, y el resto de conexiones las marcamos para que autoterminen.</p>
 </li>
 <li>
-<p>Añadimos el procesador <em>UpdateAttribute</em>, y dentro de las propiedades, añadirmos una nueva propiedad que vamos a llamar <code>estado</code> cuyo valor será <code>${RouteOnContent.Route}</code>, es decir, le ponemos el mismo que contenga el atributo <em>RouteOnContent.Route</em>.</p>
+<p>Añadimos el procesador <em>UpdateAttribute</em>, y dentro de las propiedades, añadiremos una nueva propiedad que vamos a llamar <code>estado</code> cuyo valor será <code>${RouteOnContent.Route}</code>, es decir, le ponemos el mismo que contenga el atributo <em>RouteOnContent.Route</em>.</p>
 <p><figure style="align: center;">
-    <img src="images/04caso4UpdateAttribute.png">
+    <img alt="Creando el atributo estado en Nifi" src="images/04caso4UpdateAttribute.png">
     <figcaption>Creando el atributo estado</figcaption>
 </figure></p>
 <p>Una vez creado, conectamos <em>ExtractText</em> con <em>UpdateAttribute</em> mediante la conexión <em>matched</em>, y el resto de conexiones las marcamos para que autoterminen.</p>
@@ -2047,13 +2047,13 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <li><em>Destination</em>: <code>flowfile-content</code></li>
 </ul>
 <p><figure style="align: center;">
-    <img src="images/04caso4AttributeToJSON.png">
+    <img alt="Creando el atributo estado en Nifi" src="images/04caso4AttributeToJSON.png">
     <figcaption>Creando el atributo estado</figcaption>
 </figure></p>
 <p>Una vez creado, conectamos <em>UpdateAttribute</em> con <em>AttributesToJSON</em> mediante la conexión <em>success</em>, y el resto de conexiones las marcamos para que autoterminen.</p>
 <p>Si ejecutamos los procesadores anteriores y comprobamos la salida, veremos como se están creando FF cuyo contenido es la petición introducida más el estado:</p>
 <p><figure style="align: center;">
-    <img src="images/04caso4QueueJSON.png">
+    <img alt="Mensaje JSON creado en Nifi" src="images/04caso4QueueJSON.png">
     <figcaption>Mensaje JSON creado</figcaption>
 </figure></p>
 </li>
