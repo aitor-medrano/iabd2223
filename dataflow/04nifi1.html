@@ -23,7 +23,7 @@
     
     
       
-        <title>Apache Nifi / Flujos de datos y ETL/ELT en streaming - IABD</title>
+        <title>Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - IABD</title>
       
     
     
@@ -69,7 +69,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Apache Nifi / Flujos de datos y ETL/ELT en streaming - IABD" >
+        <meta  property="og:title"  content="Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - IABD" >
       
         <meta  property="og:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT. Gestión de los atributos de un flowfile, uso de procesadores y conectores. Apuntes y ejercicios." >
       
@@ -85,7 +85,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Apache Nifi / Flujos de datos y ETL/ELT en streaming - IABD" >
+        <meta  name="twitter:title"  content="Apache Nifi. Flujos de datos y ETL/ELT en Streaming. - IABD" >
       
         <meta  name="twitter:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT. Gestión de los atributos de un flowfile, uso de procesadores y conectores. Apuntes y ejercicios." >
       
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Apache Nifi / Flujos de datos y ETL/ELT en streaming
+              Apache Nifi. Flujos de datos y ETL/ELT en Streaming.
             
           </span>
         </div>
@@ -1507,7 +1507,7 @@
 </figure>
 
 <p><a href="https://nifi.apache.org"><em>Nifi</em></a> es un proyecto de Apache (desarrollado en Java inicialmente por la NSA, su nombre rinde tributo a los archivos Niagara - <em>NiagaraFiles</em>) que plantea un sistema distribuido dedicado a ingestar y transformar datos mediante un modelo en <em>streaming</em>.</p>
-<p>Para ello, define un modelo de programación basado en flujos de datos, donde podemos definir aplicaciones como un conjunto de procesos (cajas negras) que intercambian datos utilizan mensajes, los cuales se envían entre conexiones predefinidas.</p>
+<p>Para ello, define un modelo de programación basado en flujos de datos, donde podemos definir aplicaciones como un conjunto de procesos (cajas negras) que intercambian datos utilizando mensajes los cuales se envían entre conexiones predefinidas.</p>
 <p>Entre sus características principales destacamos:</p>
 <ul>
 <li>flujos de datos escalables.</li>
@@ -1557,19 +1557,29 @@
 <h3 id="instalacion-con-aws">Instalación con AWS<a class="headerlink" href="#instalacion-con-aws" title="Permanent link">&para;</a></h3>
 <p>Si quieres trabajar con una máquina en AWS has de seguir los siguientes pasos:</p>
 <ol>
-<li>Crear una instancia EC2 (se recomienda elegir el tipo <code>t3.large</code>  para tener 8GB RAM), con un grupo de seguridad que permita tanto las conexiones SSH como el puerto 8443.</li>
-<li>Conectarnos via SSH a la <em>ipPublicaAWS</em> y descargar Nifi:
+<li>
+<p>Crear una instancia EC2 (se recomienda elegir el tipo <code>t3.large</code>  para tener 8GB RAM), con un grupo de seguridad que permita tanto las conexiones SSH como el puerto 8443.</p>
+</li>
+<li>
+<p>Conectarnos via SSH a la <em>ipPublicaAWS</em> y descargar Nifi:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>wget<span class="w"> </span>https://dlcdn.apache.org/nifi/1.19.1/nifi-1.19.1-bin.zip
 <span class="linenos" data-linenos="2 "></span>unzip<span class="w"> </span>nifi-1.19.1-bin.zip
-</code></pre></div></li>
-<li>Tras meternos dentro de la carpeta recién creada, configurar el archivo <code>conf/nifi.properties</code> para permitir el acceso remoto. Para ello, modificaremos las siguientes propiedades:
+</code></pre></div>
+</li>
+<li>
+<p>Tras meternos dentro de la carpeta recién creada, configurar el archivo <code>conf/nifi.properties</code> para permitir el acceso remoto. Para ello, modificaremos las siguientes propiedades:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">nifi.web.https.host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0.0.0.0</span>
 <span class="linenos" data-linenos="2 "></span><span class="na">nifi.web.proxy.host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt;ipPublicaAWS&gt;:8443</span>
-</code></pre></div></li>
-<li>Configurar el usuario con las credenciales de acceso
+</code></pre></div>
+</li>
+<li>
+<p>Configurar el usuario con las credenciales de acceso</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>./bin/nifi.sh<span class="w"> </span>set-single-user-credentials<span class="w"> </span>nifi<span class="w"> </span>nifinifinifi
-</code></pre></div></li>
-<li>Acceder desde un navegador a la dirección <a href="https://ipPublicaAWS:8443/nifi">https://ipPublicaAWS:8443/nifi</a></li>
+</code></pre></div>
+</li>
+<li>
+<p>Acceder desde un navegador a la dirección <a href="https://ipPublicaAWS:8443/nifi">https://ipPublicaAWS:8443/nifi</a></p>
+</li>
 </ol>
 <h3 id="instalacion-con-docker">Instalación con Docker<a class="headerlink" href="#instalacion-con-docker" title="Permanent link">&para;</a></h3>
 <p>Si no queremos instalarlo y hacer uso de un contenedor mediante <em>Docker</em>, ejecutaremos el siguiente comando:</p>
@@ -2073,7 +2083,13 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <span class="linenos" data-linenos="3 "></span>curl<span class="w"> </span>--data<span class="w"> </span><span class="s2">&quot;vaya ERROR más tonto&quot;</span><span class="w"> </span>http://localhost:8081/iabd
 <span class="linenos" data-linenos="4 "></span>curl<span class="w"> </span>--data<span class="w"> </span><span class="s2">&quot;nifi mola mucho&quot;</span><span class="w"> </span>http://localhost:8081/iabd
 </code></pre></div>
-<p>Sólo nos queda entrar a <em>MongoDB</em> y comprobar que nos aparecen los datos:</p>
+<div class="admonition caution">
+<p class="admonition-title">Mongosh</p>
+<p>Si no tenemos instalado mongosh en nuestro sistema, podemos <a href="https://www.mongodb.com/docs/mongodb-shell/install/">instalarlo</a> mediante:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>mongodb-mongosh
+</code></pre></div>
+</div>
+<p>Sólo nos queda entrar a <em>MongoDB</em> mediante <code>mongosh</code> y comprobar que nos aparecen los datos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">use</span><span class="w"> </span><span class="nx">iabd</span>
 <span class="linenos" data-linenos="2 "></span><span class="nx">switched</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">db</span><span class="w"> </span><span class="nx">iabd</span>
 <span class="linenos" data-linenos="3 "></span><span class="o">&gt;</span><span class="w"> </span><span class="nx">db</span><span class="p">.</span><span class="nx">caso4</span><span class="p">.</span><span class="nx">find</span><span class="p">()</span>

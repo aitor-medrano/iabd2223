@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi.">
+        <meta name="description" content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios.">
       
       
       
@@ -23,7 +23,7 @@
     
     
       
-        <title>Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch. - IABD</title>
+        <title>Apache Nifi Avanzado. Grupos, funnels y plantillas. - IABD</title>
       
     
     
@@ -69,9 +69,9 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch. - IABD" >
+        <meta  property="og:title"  content="Apache Nifi Avanzado. Grupos, funnels y plantillas. - IABD" >
       
-        <meta  property="og:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi." >
+        <meta  property="og:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/05nifi2.png" >
       
@@ -85,9 +85,9 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch. - IABD" >
+        <meta  name="twitter:title"  content="Apache Nifi Avanzado. Grupos, funnels y plantillas. - IABD" >
       
-        <meta  name="twitter:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi." >
+        <meta  name="twitter:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/05nifi2.png" >
       
@@ -147,7 +147,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch.
+              Apache Nifi Avanzado. Grupos, funnels y plantillas.
             
           </span>
         </div>
@@ -1143,6 +1143,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#api-rest" class="md-nav__link">
+    API REST
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#actividades" class="md-nav__link">
     Actividades
   </a>
@@ -1386,6 +1393,13 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-rest" class="md-nav__link">
+    API REST
+  </a>
   
 </li>
       
@@ -1830,7 +1844,7 @@ Para ello, en <a href="https://developer.twitter.com/">https://developer.twitter
 <li>Mongo Collection Name: <code>tweets</code></li>
 </ul>
 <p>Tras ello, lo conectamos mediante la conexión <code>lang-es</code> (y si queremos, también podemos añadir la conexión <code>unmatched</code> de manera que almacenerá los también los mensajes que no estén ni en inglés ni en español. Cuando Twitter no reconoce el lenguaje del mensaje, le asigna como lenguaje <em>undetermined</em> mediante el código <code>und</code>).</p>
-<p>Para comprobar que los datos se están insertando correctamente, una vez conectados a <code>mongo</code>, podemos realizar la siguiente consulta:</p>
+<p>Para comprobar que los datos se están insertando correctamente, una vez conectados a <code>mongosh</code>, podemos realizar la siguiente consulta:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">use</span><span class="w"> </span><span class="nx">iabd</span><span class="p">;</span>
 <span class="linenos" data-linenos="2 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">find</span><span class="p">();</span>
 </code></pre></div>
@@ -1844,12 +1858,86 @@ Para ello, en <a href="https://developer.twitter.com/">https://developer.twitter
 <p class="admonition-title">Renombrando id</p>
 <p>Si queremos que <em>MongoDB</em> utilice el id del tweet como la clave de los documentos en <em>MongoDB</em> y así asegurar que no tenemos mensajes repetidos, debemos renombrar el campo a <code>_id</code>. Para ello, podemos utilizar el procesador <em>UpdateAttribute</em> para renombrar <code>twitter.id</code> a <code>_id</code> y luego el procesador <em>AttritubesToJSON</em> para generar la información a almacenar.</p>
 </div>
-<div class="admonition info">
-<p class="admonition-title">REST API</p>
-<p>Nifi ofrece un API REST con el cual podemos interactuar de forma similar al interfaz gráfico.
-Teniendo Nifi arrancado, prueba con las siguientes URL: <a href="https://localhost:8443/nifi-api/access">https://localhost:8443/nifi-api/access</a> y <a href="https://localhost:8443/nifi-api/flow/about">https://localhost:8443/nifi-api/flow/about</a>.<br />
-Más información en <a href="https://nifi.apache.org/docs/nifi-docs/rest-api/index.html">https://nifi.apache.org/docs/nifi-docs/rest-api/index.html</a></p>
+<h2 id="api-rest">API REST<a class="headerlink" href="#api-rest" title="Permanent link">&para;</a></h2>
+<p>Nifi ofrece un API REST con el cual podemos interactuar de forma similar al interfaz gráfico.</p>
+<p>A partir del host donde tenemos Nifi instalado, las peticiones siguen al nomenclatura <code>/nifi-api/&lt;servicio&gt;</code>, de manera que con nuestra máquina virtual podríamos acceder a información sobre la instalación mediante <a href="https://localhost:8443/nifi-api/flow/about">https://localhost:8443/nifi-api/flow/about</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nt">&quot;about&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NiFi&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1.19.1&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="nt">&quot;uri&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://localhost:8443/nifi-api/&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="nt">&quot;contentViewerUrl&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;../nifi-content-viewer/&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="nt">&quot;timezone&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CET&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="nt">&quot;buildTag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nifi-1.19.1-RC2&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">    </span><span class="nt">&quot;buildRevision&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a7236ec&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="nt">&quot;buildBranch&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UNKNOWN&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="nt">&quot;buildTimestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;12/05/2022 09:57:12 CET&quot;</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">  </span><span class="p">}</span>
+<span class="linenos" data-linenos="13 "></span><span class="p">}</span>
+</code></pre></div>
+<p>Podemos consultar todas los servicios disponibles en la <a href="https://nifi.apache.org/docs/nifi-docs/rest-api/index.html">documentación oficial</a>.</p>
+<div class="admonition info inline end">
+<p class="admonition-title">Peticiones REST</p>
+<p>Para el posterior ejemplo, hemos realizado las peticiones REST mediante el comando <code>curl</code>, aunque para probar sería más ágil utilizar <a href="https://www.postman.com/">Postman</a>, o directamente mediante Python y la librería request.</p>
 </div>
+<p>Los <em>endpoints</em> más destacados son:</p>
+<ul>
+<li><code>/access</code>: para autenticarnos y obtener el token de acceso a Nifi</li>
+<li><code>/controller</code>: permite obtener la configuración de los controladores, gestionar el cluster y crear tareas para informes.</li>
+<li><code>/controller-services</code>: permite gestionar los servicios de controlador y modificar sus referencias.</li>
+<li><code>/flow</code>: para obtener metadatos de los flujos de datos, estado de los componentes y el histórico de consultas.</li>
+<li><code>/process-groups</code>: Para cargar e iniciar plantillas y crear componentes.</li>
+<li><code>/processors</code>: Permite crear y planificar un procesador y definir sus propiedades.</li>
+<li><code>/connections</code>: Para crear conexiones, definir las prioridades de las colas y modificar el destino de las conexiones.</li>
+<li><code>/flowfile-queues</code>: Permite ver el contenido de loas colas, descargar sus <em>flowfiles</em> y vaciar las colas.</li>
+<li><code>/remote-process-groups</code>: Para crear un grupo remoto y habilitar la transmisión.</li>
+<li><code>/provenance</code>: Para consultar el linaje de los datos.</li>
+</ul>
+<p>Si por ejemplo, quisiéramos lanzar un grupo de procesadores mediante el interfaz REST necesitamos:</p>
+<ol>
+<li>
+<p>Autenticarnos para obtener un token de sesión mediante <code>/access/token</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl<span class="w"> </span>--tlsv1.2<span class="w"> </span>https://localhost:8443/nifi-api/access/token<span class="w"> </span>--data<span class="w"> </span><span class="s1">&#39;username=nifi&amp;password=nifinifinifi&#39;</span><span class="w"> </span>-k
+</code></pre></div>
+<p>El cual nos devuelve el token:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>eyJraWQiOiI3...
+</code></pre></div>
+</li>
+<li>
+<p>Recuperamos el <em>uuid</em> del grupo de procesadores que queremos lanzar (hemos elegido uno que previamente hemos comprobado que está detenido):</p>
+<p><figure style="align: center;">
+    <img alt="Identificador de un grupo de procesadores en Nifi" src="images/05RESTidGrupoProcesadores.png">
+    <figcaption>Identificador de un grupo de procesadores</figcaption>
+</figure></p>
+<p>En este caso, el identificador del grupo de procesadores que queremos lanzar es <code>b1a0a805-0186-1000-8b83-2033ab7036c9</code>.</p>
+</li>
+<li>
+<p>Mediante <code>flow/process-groups/{id}</code> con una petición PUT modificamos el grupo de procesadores y ponemos su estado en ejecución (<code>RUNNING</code>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>curl<span class="w"> </span>--tlsv1.2<span class="w"> </span>-ik<span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Authorization:Bearer eyJraWQiOiI3...&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos" data-linenos="2 "></span>-XPUT<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;id&quot;:&quot;b1a0a805-0186-1000-8b83-2033ab7036c9&quot;,&quot;state&quot;:&quot;RUNNING&quot;}&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="linenos" data-linenos="3 "></span>https://localhost:8443/nifi-api/flow/process-groups/b1a0a805-0186-1000-8b83-2033ab7036c9
+</code></pre></div>
+<p>Obteniendo como resultado el nuevo estado del grupo de procesadores:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="na">Date</span><span class="o">:</span> <span class="l">Mon, 06 Mar 2023 11:28:49 GMT</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="na">Set-Cookie</span><span class="o">:</span> <span class="l">__Secure-Request-Token=4e531dfb-45fb-4fd4-aed9-c2a4a6a00b04; Path=/; Secure</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="na">Expires</span><span class="o">:</span> <span class="l">Thu, 01 Jan 1970 00:00:00 GMT</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="na">Cache-Control</span><span class="o">:</span> <span class="l">private, no-cache, no-store, no-transform</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="na">Vary</span><span class="o">:</span> <span class="l">Accept-Encoding</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="na">Content-Security-Policy</span><span class="o">:</span> <span class="l">frame-ancestors &#39;self&#39;</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="na">Strict-Transport-Security</span><span class="o">:</span> <span class="l">max-age=31536000 ; includeSubDomains</span>
+<span class="linenos" data-linenos="10 "></span><span class="na">X-Content-Type-Options</span><span class="o">:</span> <span class="l">nosniff</span>
+<span class="linenos" data-linenos="11 "></span><span class="na">X-Frame-Options</span><span class="o">:</span> <span class="l">SAMEORIGIN</span>
+<span class="linenos" data-linenos="12 "></span><span class="na">X-XSS-Protection</span><span class="o">:</span> <span class="l">1; mode=block</span>
+<span class="linenos" data-linenos="13 "></span><span class="na">Vary</span><span class="o">:</span> <span class="l">User-Agent</span>
+<span class="linenos" data-linenos="14 "></span><span class="na">Content-Length</span><span class="o">:</span> <span class="l">63</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="hll"><span class="linenos" data-linenos="16 "></span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;b1a0a805-0186-1000-8b83-2033ab7036c9&quot;</span><span class="p">,</span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="s2">&quot;RUNNING&quot;</span><span class="p">}</span>
+</span></code></pre></div>
+</li>
+</ol>
+<p>Si entramos al interfaz de <em>Nifi</em>, veremos como ese grupo de procesadores ahora aparece arrancado.</p>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
@@ -1890,6 +1978,10 @@ Revisar canal Nifi de InsightByte
 Libro de Data Engineering with Python
 ¿rehacer ejemplo de procesadores de grupo?
 Ejecutar un procesador desde el terminal
+
+https://www.clearpeaks.com/exposing-data-in-a-restful-api-with-nifi/?lang=es
+
+Mirar ETL:https://www.velotio.com/engineering-blog/building-an-etl-workflow-using-apache-nifi-and-hive
 -->
 
 
