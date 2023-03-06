@@ -1150,15 +1150,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
+  <a href="#referencias" class="md-nav__link">
+    Referencias
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
+  <a href="#actividades" class="md-nav__link">
+    Actividades
   </a>
   
 </li>
@@ -1404,15 +1404,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#actividades" class="md-nav__link">
-    Actividades
+  <a href="#referencias" class="md-nav__link">
+    Referencias
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
+  <a href="#actividades" class="md-nav__link">
+    Actividades
   </a>
   
 </li>
@@ -1531,7 +1531,7 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 <li>Procesador de registros:<ul>
 <li><code>ConvertRecord</code>: convierte entre formatos y/o esquemas similares. Por ejemplo, la conversión de CSV a Avro se puede realizar configurando <code>ConvertRecord</code> con un <code>CsvReader</code> y un <code>AvroRecordSetWriter</code>. Además, la conversión de esquemas entre esquemas similares se puede realizar cuando el esquema de escritura es un subconjunto de los campos del esquema de lectura o si el esquema de escritura tiene campos adicionales con valores propuestos.</li>
 <li><code>LookupRecord</code>: extrae uno o más campos de un registro y busca un valor para esos campos en un <code>LookupService</code> (ya sea a un fichero CSV, XML, accediendo a una base de datos o un servicio REST, etc...). Estos servicios funcionan como un mapa, de manera que reciben la clave y el servicio devuelve el valor. Puedes consultar más información en la serie de artículos <a href="https://community.cloudera.com/t5/Community-Articles/Data-flow-enrichment-with-NiFi-part-1-LookupRecord-processor/ta-p/246940">Data flow enrichment with NiFi part: LookupRecord processor</a> y un ejemplo completo en <a href="https://alasdairb.com/2021/05/16/enriching-records-with-lookuprecord-rest-apis-in-nifi/">Enriching Records with LookupRecord &amp; REST APIs in NiFi</a>.</li>
-<li><code>QueryRecord</code>: ejecuta una declaración SQL contra los registros y escribe los resultados en el contenido del archivo de flujo. Este es el procesador que usamos en el <a href="04nifi1.html#caso-3---filtrado-de-datos">caso 3 de la sesión anterior</a>.</li>
+<li><code>QueryRecord</code>: ejecuta una declaración SQL contra los registros y escribe los resultados en el contenido del archivo de flujo. Este es el procesador que usamos en el <a href="04nifi1.html#caso-3-filtrado-de-datos">caso 3 de la sesión anterior</a>.</li>
 <li><code>ConsumeKafkaRecord_N_M</code>: utiliza el <em>Reader</em> de registros configurado para deserializar los datos sin procesar recuperados de Kafka, y luego utiliza el <em>Writer</em> de registros configurado para serializar los registros al contenido del archivo de flujo.</li>
 <li><code>PublishKafkaRecord_N_M</code>: utiliza el <em>Reader</em> de registros configurado para leer el archivo de flujo entrante como registros, y luego utiliza el <em>Writer</em> de registros configurado para serializar cada registro para publicarlo en Kafka.</li>
 </ul>
@@ -1843,7 +1843,7 @@ Para ello, en <a href="https://developer.twitter.com/">https://developer.twitter
 <li>Mongo Database Name: <code>iabd</code></li>
 <li>Mongo Collection Name: <code>tweets</code></li>
 </ul>
-<p>Tras ello, lo conectamos mediante la conexión <code>lang-es</code> (y si queremos, también podemos añadir la conexión <code>unmatched</code> de manera que almacenerá los también los mensajes que no estén ni en inglés ni en español. Cuando Twitter no reconoce el lenguaje del mensaje, le asigna como lenguaje <em>undetermined</em> mediante el código <code>und</code>).</p>
+<p>Tras ello, lo conectamos mediante la conexión <code>lang-es</code> (y si queremos, también podemos añadir la conexión <code>unmatched</code> de manera que almacenará también los mensajes que no estén ni en inglés ni en español. Cuando Twitter no reconoce el lenguaje del mensaje, le asigna como lenguaje <em>undetermined</em> mediante el código <code>und</code>).</p>
 <p>Para comprobar que los datos se están insertando correctamente, una vez conectados a <code>mongosh</code>, podemos realizar la siguiente consulta:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="nx">use</span><span class="w"> </span><span class="nx">iabd</span><span class="p">;</span>
 <span class="linenos" data-linenos="2 "></span><span class="nx">db</span><span class="p">.</span><span class="nx">tweets</span><span class="p">.</span><span class="nx">find</span><span class="p">();</span>
@@ -1938,21 +1938,11 @@ Para ello, en <a href="https://developer.twitter.com/">https://developer.twitter
 </li>
 </ol>
 <p>Si entramos al interfaz de <em>Nifi</em>, veremos como ese grupo de procesadores ahora aparece arrancado.</p>
-<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
-<ol>
-<li>
-<p>Realiza los casos de uso del 5 al 7. En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la plantilla de cada flujo.</p>
-</li>
-<li>
-<p>(opcional) Modifica el caso 7 para que los tweets que no están ni en castellano ni en inglés se inserten en una base de datos <em>MySQL</em>/<em>MariaDB</em>.</p>
-<p>Para ello, debes recoger la información de los atributos que hemos separado y generar un nuevo JSON con los datos que quieres almacenar (<em>id</em>, <em>text</em>, <em>created_at</em>, <em>rt</em> y <em>likes</em>) mediante el procesador <em>AttributestoJSON</em>. Una vez tengas el JSON, utiliza los procesadores <em>ConvertJSONToSQL</em> y <em>ExecuteSQL</em> para insertar los datos. Antes deberás crear la tabla en la base de datos. Tienes un ejemplo parecido en el artículo <a href="https://medium.com/@moha.ajori/using-apache-nifi-to-load-tweets-from-twitter-api-to-memsql-19e19a3be20e">Using Apache Nifi to Load Tweets from Twitter API to MemSQL</a>.</p>
-<p>Adjunta capturas de pantalla de la configuración de los procesadores que has añadido, así como de una consulta sobre la base de datos donde aparezcan mensajes insertados y la plantilla del caso de uso completo.</p>
-</li>
-</ol>
-<!--
-https://github.com/addmeaning/nifi-exercises
--->
-
+<div class="admonition info">
+<p class="admonition-title">Elasticsearch y Twitter</p>
+<p>En la edición de 21/22, en estas sesiones, realizamos diferentes casos de uso con <em>Elasticsearch</em> y <em>Twitter</em>. </p>
+<p>Este curso no hemos visto <em>Elasticsearch</em>, y además, el API de <em>Twitter</em> ha dejado de ser gratuita. Si tienes curiosidad, puedes consultar dichos casos de uso en los <a href="https://aitor-medrano.github.io/bigdata2122/apuntes/ingesta04nifi2.html">apuntes del curso pasado</a>.</p>
+</div>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Documentación oficial:<ul>
@@ -1964,25 +1954,21 @@ https://github.com/addmeaning/nifi-exercises
 <li><a href="https://www.tutorialspoint.com/apache_nifi/index.htm">Apache Nifi en TutorialsPoint</a></li>
 <li><a href="https://www.youtube.com/playlist?list=PLkp40uss1kSI66DA_aDCfx02gXipoRQHc">Playlist de Youtube de InsightByte</a></li>
 <li>Libro <a href="https://www.packtpub.com/product/data-engineering-with-python/9781839214189">Data Engineering with Python</a></li>
-<li>Artículo de Futurespace: <a href="https://www.futurespace.es/apache-nifi-flujo-de-extraccion-validacion-transformacion-y-carga-de-ficheros-caso-de-uso-real/">Flujo de extracción, validación, transformación y carga de ficheros (Caso de uso real)</a></li>
+<li>Artículo de <em>Futurespace</em>: <a href="https://www.futurespace.es/apache-nifi-flujo-de-extraccion-validacion-transformacion-y-carga-de-ficheros-caso-de-uso-real/">Flujo de extracción, validación, transformación y carga de ficheros (Caso de uso real)</a></li>
 </ul>
-<!--
-https://courses.cs.ut.ee/2021/cloud/spring/Main/Practice10
-https://courses.cs.ut.ee/2021/cloud/spring/Main/Practice11
-https://www.theninjacto.xyz/tags/apache-nifi/
-https://github.com/tjaensch/nifi_docker_elasticsearch_demo
-
-TODO: Monitorización: Status History
-Rehacer ejemplo de Twitter con Mastodon ¿?
-Revisar canal Nifi de InsightByte
-Libro de Data Engineering with Python
-¿rehacer ejemplo de procesadores de grupo?
-Ejecutar un procesador desde el terminal
-
-https://www.clearpeaks.com/exposing-data-in-a-restful-api-with-nifi/?lang=es
-
-Mirar ETL:https://www.velotio.com/engineering-blog/building-an-etl-workflow-using-apache-nifi-and-hive
--->
+<h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la definición de cada flujo (sobre el área de trabajo, con el botón derecho, <em>Download flow definition</em>).</p>
+<ol>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha determinado el formato de datos adecuado para el almacenamiento.">CE5.1c</abbr> / 2p) Realiza el caso de uso 5, colocando los procesadores <em>ConvertRecord</em> y <em>UpdateAttribute</em> dentro de un grupo de procesadores, al que denominaras <code>caso5&lt;nombre&gt;</code> (con tu nombre).</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 6.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 7.</p>
+</li>
+</ol>
 
 
   
