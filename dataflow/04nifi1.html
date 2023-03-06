@@ -1762,7 +1762,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <p>Para ello, configuramos la estrategia de reemplazo para que lo haga siempre (en el campo <em>Replacement Value</em> seleccionamos <em>Always Replace</em>), y al hacer esto el campo  Search Value se invalida. Además, en el <em>Replacement Value</em> vamos a indicar simplemente <code>prueba</code>. Finalmente, marcamos para que autotermine la conexión <code>failure</code>.</p>
 </li>
 <li>
-<p>Añadimos un procesador de tipo <em>LogAttribute</em> para mostrar en el log los atributos del FF, y conectamos el procesador anterior (<em>ReplaceText</em>) a éste mediante la relación <code>success</code>.</p>
+<p>Añadimos un procesador de tipo <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.LogAttribute/index.html"><em>LogAttribute</em></a> para mostrar en el log los atributos del FF, y conectamos el procesador anterior (<em>ReplaceText</em>) a éste mediante la relación <code>success</code>.</p>
 <p><figure style="align: center;">
     <img alt="Log con los atributos en Nifi" src="images/04caso2LogAttribute.png">
     <figcaption>Log con los atributos</figcaption>
@@ -1811,7 +1811,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <span class="linenos" data-linenos="25 "></span>--------------------------------------------------
 </code></pre></div>
 <h3 id="anadiendo-un-atributo">Añadiendo un atributo<a class="headerlink" href="#anadiendo-un-atributo" title="Permanent link">&para;</a></h3>
-<p>Ahora vamos a extraer el contenido del FF a un atributo mediante el procesador <em>ExtractText</em>.</p>
+<p>Ahora vamos a extraer el contenido del FF a un atributo mediante el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ExtractText/index.html"><em>ExtractText</em></a>.</p>
 <ol start="7">
 <li>
 <p>En las propiedades, creamos una nueva propiedad (botón <code>+</code> de la esquina superior derecha) que llamaremos <code>contenido</code>, y en cuyo valor vamos a poner la expresión <code>.*</code> que indica que queremos que coincida con todo.</p>
@@ -1850,7 +1850,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <h3 id="guardando-los-datos-en-hdfs">Guardando los datos en HDFS<a class="headerlink" href="#guardando-los-datos-en-hdfs" title="Permanent link">&para;</a></h3>
 <div class="admonition tip inline end">
 <p class="admonition-title">Nifi y Hadoop en máquinas separadas</p>
-<p>Si trabajásemos en una máquina externa a la instalación de <em>Hadoop</em>, deberemos copiar ambos archivos (<code>core-site.xml</code> y <code>hdfs-site.xml</code>) desde uno de nuestros nodos Hadoop a la máquina donde ejecutamos Nifi.</p>
+<p>Si trabajásemos en una máquina externa a la instalación de <em>Hadoop</em>, deberemos copiar ambos archivos (<code>core-site.xml</code> y <code>hdfs-site.xml</code>) desde uno de nuestros nodos <em>Hadoop</em> a la máquina donde ejecutamos Nifi.</p>
 </div>
 <p>Para colocar los datos en HDFS, necesitamos utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-hadoop-nar/latest/org.apache.nifi.processors.hadoop.PutHDFS/index.html"><em>PutHDFS</em></a> y configurar las propiedades:</p>
 <ul>
@@ -1898,7 +1898,7 @@ Además, existe la posibilidad de configurar algunos aspectos de la conexión, c
 <h3 id="filtrado-de-ff">Filtrado de FF<a class="headerlink" href="#filtrado-de-ff" title="Permanent link">&para;</a></h3>
 <ol start="3">
 <li>
-<p>En este paso, mediante el procesador <em>QueryRecord</em> vamos a ejecutar una consulta SQL contra el FF. El resultado del nuevo FF será el resultado de la consulta. En nuestro caso, como hemos comentado antes, vamos a quedarnos con las ventas de más de una unidad realizadas en Francia.</p>
+<p>En este paso, mediante el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.QueryRecord/index.html"><em>QueryRecord</em></a> vamos a ejecutar una consulta SQL contra el FF. El resultado del nuevo FF será el resultado de la consulta. En nuestro caso, como hemos comentado antes, vamos a quedarnos con las ventas de más de una unidad realizadas en Francia.</p>
 <p>Igual que antes, configuramos los mismos <em>Record Reader</em> y <em>Record Writer</em>. Además, hemos de poner la propiedad <em>Include Zero Record FlowFiles</em> a <em>false</em> para que no vuelva a enrutar los FF que no cumplan la consulta.
 Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro caso la hemos denominado <code>FranciaMayor1</code> y en el contenido ponemos la consulta:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">Flowfile</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">Country</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;France&#39;</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">Units</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span>
@@ -1920,7 +1920,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 
 <div class="admonition question">
 <p class="admonition-title">¿Realmente no podemos hacerlo mejor?</p>
-<p>¿Hace falta generar tantos FF con los registros que cumplen la consulta? ¿No sería mejor fusionarlos en ficheros más grandes? Por ejemplo, después de hacer la consulta, podemos utilizar un procesador <em>MergeRecord</em> para unir los registros, por ejemplo, cada 10KB de datos (aunque si fuera un ejemplo real, estaríamos hablando de cientos de megas) y acumulando los FF entrantes, por ejemplo, durante un minuto.</p>
+<p>¿Hace falta generar tantos FF con los registros que cumplen la consulta? ¿No sería mejor fusionarlos en ficheros más grandes? Por ejemplo, después de hacer la consulta, podemos utilizar un procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeRecord/index.html"><em>MergeRecord</em></a> para unir los registros, por ejemplo, cada 10KB de datos (aunque si fuera un ejemplo real, estaríamos hablando de cientos de megas) y acumulando los FF entrantes, por ejemplo, durante un minuto.</p>
 <p>¿Para qué hemos utilizado el <em>SplitRecord</em> si el procesador <em>QueryRecord</em> puede trabajar con un FF que contiene más de una fila? Así pues, podemos conectar el procesador <em>GetFile</em> directamente a <em>QueryRecord</em> y obtendríamos menos FF de resultado, concretamente como mucho por cada fichero que leyésemos (siempre que tuviera datos que cumplen la condición de la consulta).</p>
 </div>
 <h2 id="caso-4-fusionar-datos">Caso 4 - Fusionar datos<a class="headerlink" href="#caso-4-fusionar-datos" title="Permanent link">&para;</a></h2>
@@ -1934,14 +1934,14 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <h3 id="recibiendo-datos-via-http">Recibiendo datos via HTTP<a class="headerlink" href="#recibiendo-datos-via-http" title="Permanent link">&para;</a></h3>
 <ol>
 <li>
-<p>Vamos a utilizar el procesador <em>ListenHTTP</em> para escuchar peticiones HTTP. Para ello, lo añadimos a nuestro flujo de trabajo y configuramos:</p>
+<p>Vamos a utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ListenHTTP/index.html"><em>ListenHTTP</em></a> para escuchar peticiones HTTP. Para ello, lo añadimos a nuestro flujo de trabajo y configuramos:</p>
 <ul>
 <li><em>Listening port</em> (puerto de escucha): <code>8081</code></li>
 <li><em>Base Path</em> (<em>endpoint</em> de la petición): <code>iabd</code></li>
 </ul>
 </li>
 <li>
-<p>A continuación, para distinguir entre los diferentes datos de entrada, utilizaremos el procesador <em>RouteOnContent</em>, con el objetivo de separar en dos flujos de datos, los que contienen la cadena <code>error</code> y los que no. Para ello, tras añadir el procesador, le conectamos al flujo <code>success</code> que viene de <em>ListenHTTP</em>, y configuramos:</p>
+<p>A continuación, para distinguir entre los diferentes datos de entrada, utilizaremos el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.RouteOnContent/index.html"><em>RouteOnContent</em></a>, con el objetivo de separar en dos flujos de datos, los que contienen la cadena <code>error</code> y los que no. Para ello, tras añadir el procesador, le conectamos al flujo <code>success</code> que viene de <em>ListenHTTP</em>, y configuramos:</p>
 <ul>
 <li>Cambiamos el <em>Match Requirement</em> (requisito de coincidencia) a: <code>content must contain match</code> (no tienen que coincidir exactamente, sino contener el valor).</li>
 <li>Y añadimos la propiedad <code>textoError</code> con el valor <code>ERROR</code>.</li>
@@ -1960,7 +1960,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <p>Si nos fijamos en las propiedades del procesador <em>RouteOnContent</em>, tenemos dos flujos de salida <code>textoError</code> (para los mensajes que contienen el texto <code>ERROR</code>) y <code>unmatched</code> (para los que no).</p>
 <ol start="3">
 <li>
-<p>Vamos a añadir el procesador <em>MergeContent</em>, el cual recibe un conjunto de FF y los fusiona en uno a partir de la estrategia de fusión que defina el usuario. Las diferentes opciones incluye agrupando ciertos atributos de forma similar a como se realiza la fase <em>reduce</em> de un algoritmo <em>MapReduce</em>.</p>
+<p>Vamos a añadir el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeContent/index.html"><em>MergeContent</em></a>, el cual recibe un conjunto de FF y los fusiona en uno a partir de la estrategia de fusión que defina el usuario. Las diferentes opciones incluye agrupando ciertos atributos de forma similar a como se realiza la fase <em>reduce</em> de un algoritmo <em>MapReduce</em>.</p>
 <p>Así pues, vamos a conectar las relaciones <code>textoError</code> y <code>unmatched</code> con <em>MergeContent</em>:</p>
 <p><figure style="align: center;">
     <img alt="Conexión con MergeContent en Nifi" src="images/04caso4MergeContent.png">
@@ -1999,11 +1999,11 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 </figure>
 
 <h3 id="guardando-el-resultado-a-mongodb">Guardando el resultado a MongoDB<a class="headerlink" href="#guardando-el-resultado-a-mongodb" title="Permanent link">&para;</a></h3>
-<p>Para almacenar el resultado de las fusiones anteriores, vamos a guardar los resultados en una colección de MongoDB.</p>
+<p>Para almacenar el resultado de las fusiones anteriores, vamos a guardar los resultados en una colección de <em>MongoDB</em>.</p>
 <p>Suponemos que ya tenemos instalado <em>MongoDB</em> en nuestro sistema, como es el caso de nuestra máquina virtual (recuerda arrancarlo mediante <code>sudo service mongod start</code>). Si no, podemos lanzarlo mediante <em>Docker</em>:</p>
 <div class="admonition tip">
-<p class="admonition-title">MongoDB + Nifi via Docker</p>
-<p>Si queremos utilizarlo mediante Docker, necesitamos que MongoDB y Nifi estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo <a href="resources/nifi-mongodb/docker-compose.yml">docker-compose.yml</a> (si tuvieras alguna problema con la imagen de MongoDB y tu procesador, prueba a cambiar la línea 15 <code>mongo:latest</code> por <code>mongo:4.4</code>):</p>
+<p class="admonition-title">Nifi + MongoDB via Docker</p>
+<p>Si queremos utilizarlo mediante <em>Docker</em>, necesitamos que <em>MongoDB</em> y <em>Nifi</em> estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo <a href="resources/nifi-mongodb/docker-compose.yml">docker-compose.yml</a> (si tuvieras alguna problema con la imagen de <em>MongoDB</em> y tu procesador, prueba a cambiar la línea 15 <code>mongo:latest</code> por <code>mongo:4.4</code>):</p>
 <div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nt">services</span><span class="p">:</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">nifi</span><span class="p">:</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
@@ -2025,7 +2025,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 </code></pre></div>
 </div>
 <p>Para poder meter los mensajes en <em>MongoDB</em>, vamos a preparar el contenido para que esté en formato JSON. Además del contenido, vamos a crear un atributo con el nombre del enrutador utilizado para posteriormente poder filtrar los mensajes de error.</p>
-<p>Para poder crear el formato JSON, utilizaremos el procesador <em>AttributesToJSON</em>. Así pues, previamente necesitamos pasar los mensajes desde el contenido de los FF a los atributos (para ello, igual que en el caso anterior, utilizaremos el procesador <em>ExtracText</em>). A su vez, también crearemos un nuevo atributo con el nombre del enrutador mediante el procesador <em>UpdateAttribute</em>.</p>
+<p>Para poder crear el formato JSON, utilizaremos el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.AttributesToJSON/index.html"><em>AttributesToJSON</em></a>. Así pues, previamente necesitamos pasar los mensajes desde el contenido de los FF a los atributos (para ello, igual que en el caso anterior, utilizaremos el procesador <em>ExtracText</em>). A su vez, también crearemos un nuevo atributo con el nombre del enrutador mediante el procesador <em>UpdateAttribute</em>.</p>
 <p>El resultado final será similar al siguiente flujo:</p>
 <figure style="align: center;">
     <img alt="Resultado completo del caso 4 en Nifi" src="images/04caso4Completo.png">
@@ -2068,7 +2068,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 </figure></p>
 </li>
 <li>
-<p>Finalmente, añadimos el procesador <em>PutMongo</em> para introducir el contenido JSON. Las propiedades que hay que configurar son:</p>
+<p>Finalmente, añadimos el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongo/index.html"><em>PutMongo</em></a> para introducir el contenido JSON. Las propiedades que hay que configurar son:</p>
 <ul>
 <li>Mongo URI: <code>mongodb://localhost</code></li>
 <li>Mongo Database Name: <code>iabd</code></li>
