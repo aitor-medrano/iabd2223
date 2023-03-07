@@ -1,4 +1,4 @@
-site_name: Inteligencia Artificial y Big Data
+site_name: IABD
 site_url: https://aitor-medrano.github.io/iabd2223
 use_directory_urls: false
 
@@ -37,7 +37,8 @@ nav:
       - "DataFrames API": "spark/02dataframeAPI.md"
       - "Agregaciones": "spark/02agregaciones.md"
       - "Spark Catalog": "spark/02catalog.md"
-      - " Streaming": "spark/03streaming.md"
+      - "Streaming I": "spark/03streaming.md"
+      - "Streaming II": "spark/03join-window.md"
   - "Flujo de datos":
       - "dataflow/index.md"
       - "Nifi I": "dataflow/04nifi1.md"
@@ -117,6 +118,7 @@ plugins:
   - search
   - social:
       cards: true
+#  - with-pdf
 #  - git-revision-date-localized:
 #      enable_creation_date: true
 
