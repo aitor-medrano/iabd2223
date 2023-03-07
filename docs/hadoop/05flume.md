@@ -1127,18 +1127,3 @@ En este caso, para poder probarlo, además de enviar comandos *Netstat* en `curl
 *[CE4.3a]: Se han extraído y almacenado datos de diversas fuentes, para ser tratados en distintos escenarios.
 *[CE4.3b]: Se ha fijado el objetivo de extraer valor de los datos para lo que es necesario contar con tecnologías eficientes.
 *[CE4.3c]: Se ha comprobado que la revolución digital exige poder almacenar y procesar ingentes cantidades de datos de distinto tipo y descubrir su valor.
-
-<!--
-Flume: interceptors
-Añade información a cada evento
-https://data-flair.training/blogs/flume-interceptors/
-Por ejemplo, timestampInterceptor
-
-Revisar: https://learning.oreilly.com/library/view/hadoop-the-definitive/9781491901687/ch14.html#id995726
-
-Al hacer exec ls, explicar el formato de un evento, donde podemos ver el header (HECHO)... hacer esto antes de explicar los interceptores, y luego, al poner un timestamp, volver a comprobar que en el header se ve
-
-Probar spoolDir ... completed?
-
-Explicar transacciones y confiabilidad - libro The Hadoop Definitive Guide
--->

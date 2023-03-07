@@ -480,24 +480,6 @@ Una vez dentro, por ejemplo, podemos visualizar e interactuar con HDFS:
     <figcaption>HDFS en Hue</figcaption>
 </figure>
 
-<!--
-1. Abrir DBeaver, y crear una base de datos llamada hue.
-2. Abrir el archivo de configuración de Hue:
-    nano /opt/hue-4.10.0/desktop/conf/hue.ini
-3. En la sección [database], copiar estos valores:
-    engine=mysql
-    host=localhost
-    port=3306
-    user=iabd
-    password=iabd
-    name=hue
-
-4. Guardar el fichero
-5. Ejecutar las migraciones para la creación de las tablas de Hue. Desde la carpeta de Hue:
-    ./build/env/bin/hue migrate
-6. Arrancar Hadoop, HiveServer2 y Hue y probar que funciona.
--->
-
 ## Referencias
 
 * Documentación de [Apache Hadoop](https://hadoop.apache.org/docs/stable/).
