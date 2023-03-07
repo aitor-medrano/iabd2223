@@ -846,6 +846,19 @@ Obteniendo:
 
 Así pues, hay que evitar a toda costa utilizar *Pandas* para tratar los datos, ya que perdemos toda la potencia de trabajo en clúster (*Pandas* sólo puede utilizar los recursos del nodo principal). Únicamente lo utilizaremos cuando vayamos a visualizar los datos mediante *Matplotlib* / *Seaborn* como requisito de estas librerías.
 
+!!! tip "Pandas y Koalas"
+    Desde la versión 3.2 de *Spark*, la librería de [Koalas](https://koalas.readthedocs.io/en/latest/) se ha integrado en Spark, dando lugar a poder utilizar el API de *Pandas* directamente desde *Spark*, lo que facilita el aprendizaje de Spark para aquellos desarrolladores que ya dominan Pandas.
+
+    Para ello, únicamente hemos de importar la librería:
+
+    ``` python
+    import pyspark.pandas as ps
+    ```
+
+    Y acceder a `ps` de la misma manera que usamos `pd` al trabajar con Pandas.
+
+    Un artículo muy interesante es [Run Pandas as Fast as Spark](https://towardsdatascience.com/run-pandas-as-fast-as-spark-f5eefe780c45).
+
 <!--
 https://github.com/vivek-bombatkar/MyLearningNotes/tree/master/spark#from-pandas-to-spark
 -->
@@ -952,3 +965,9 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
 *[RA5075.1]: Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos
 *[CE5.1d]: Se han procesado los datos almacenados.
 *[CE5.1e]: Se han presentado los resultados y las soluciones al cliente final en una forma fácil de interpretar.
+
+<!--
+TODO: Funciones Window en Spark
+Data Analysis with Python and PySpark
+https://learning.oreilly.com/library/view/data-analysis-with/9781617297205/OEBPS/Text/10.htm#heading_id_9
+-->
