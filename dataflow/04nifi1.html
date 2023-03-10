@@ -2008,17 +2008,18 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">nifi</span><span class="p">:</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
 <span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8443:8443&quot;</span>
-<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache/nifi:latest</span>
-<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
-<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_USERNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifi</span>
-<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifinifinifi</span>
-<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">NIFI_JVM_HEAP_MAX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2g</span>
-<span class="linenos" data-linenos="10 "></span><span class="w">        </span><span class="nt">links</span><span class="p">:</span>
-<span class="linenos" data-linenos="11 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb</span>
-<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="nt">mongodb</span><span class="p">:</span>
-<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="linenos" data-linenos="14 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;27017:27017&quot;</span>
-<span class="linenos" data-linenos="15 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongo:latest</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8081:8081&quot;</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache/nifi:latest</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_USERNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifi</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifinifinifi</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="nt">NIFI_JVM_HEAP_MAX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2g</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">        </span><span class="nt">links</span><span class="p">:</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="nt">mongodb</span><span class="p">:</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;27017:27017&quot;</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongo:latest</span>
 </code></pre></div>
 <p>Una vez creado el archivo, construimos el contenedor mediante:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker-compose<span class="w"> </span>-p<span class="w"> </span>nifimongodb<span class="w"> </span>up<span class="w"> </span>-d

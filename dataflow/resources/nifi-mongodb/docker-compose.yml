@@ -3,6 +3,7 @@ services:
   nifi:
     ports:
       - "8443:8443"
+      - "8081:8081"
     image: apache/nifi:latest
     environment:
       SINGLE_USER_CREDENTIALS_USERNAME: nifi

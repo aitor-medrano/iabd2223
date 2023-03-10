@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios.">
+        <meta name="description" content="Casos de usos resueltos mediante Apache Nifi entre MySQL y MongoDB. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios.">
       
       
       
@@ -71,7 +71,7 @@
       
         <meta  property="og:title"  content="Apache Nifi Avanzado. Grupos, funnels y plantillas. - IABD" >
       
-        <meta  property="og:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios." >
+        <meta  property="og:description"  content="Casos de usos resueltos mediante Apache Nifi entre MySQL y MongoDB. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/05nifi2.png" >
       
@@ -87,7 +87,7 @@
       
         <meta  name="twitter:title"  content="Apache Nifi Avanzado. Grupos, funnels y plantillas. - IABD" >
       
-        <meta  name="twitter:description"  content="Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios." >
+        <meta  name="twitter:description"  content="Casos de usos resueltos mediante Apache Nifi entre MySQL y MongoDB. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/05nifi2.png" >
       
@@ -1009,6 +1009,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#importando-un-flujo" class="md-nav__link">
+    Importando un flujo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#puertos" class="md-nav__link">
     Puertos
   </a>
@@ -1097,8 +1104,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configurando-putmongo" class="md-nav__link">
-    Configurando PutMongo
+  <a href="#dividiendo-los-datos" class="md-nav__link">
+    Dividiendo los datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistiendo-en-mongodb" class="md-nav__link">
+    Persistiendo en MongoDB
   </a>
   
 </li>
@@ -1243,6 +1257,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#importando-un-flujo" class="md-nav__link">
+    Importando un flujo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#puertos" class="md-nav__link">
     Puertos
   </a>
@@ -1331,8 +1352,15 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configurando-putmongo" class="md-nav__link">
-    Configurando PutMongo
+  <a href="#dividiendo-los-datos" class="md-nav__link">
+    Dividiendo los datos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistiendo-en-mongodb" class="md-nav__link">
+    Persistiendo en MongoDB
   </a>
   
 </li>
@@ -1408,7 +1436,7 @@
 <p>Para ello, vamos a conectar un procesador <em>GetFile</em> con un <em>SplitText</em> y finalmente con <em>LogAttribute</em>.
 El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en fragmentos a partir del número de líneas que queramos (pudiendo tener encabezados, ignorar las líneas en blanco, etc...)</p>
 <figure style="align: center;">
-    <img src="images/05caso0.png">
+    <img alt="Dividimos un archivo en fragmentos en Nifi" src="images/05caso0.png">
     <figcaption>Dividimos un archivo en fragmentos</figcaption>
 </figure>
 
@@ -1416,8 +1444,17 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 <p>Una vez lo tenemos funcionando, vamos a colocar el procesador <em>SplitText</em> dentro de un grupo. Así pues, un grupo encapsula la lógica de un procesador haciéndolo funcionar como una caja negra.</p>
 <p>Para ello, desde la barra superior arrastramos el icono de <em>Process Group</em> y lo nombramos como <em>grupo</em>.</p>
 <figure style="align: center;">
-    <img src="images/05caso0group.gif">
+    <img alt="Creación de un grupo en Nifi" src="images/05caso0group.gif">
     <figcaption>Creación de un grupo</figcaption>
+</figure>
+
+<h3 id="importando-un-flujo">Importando un flujo<a class="headerlink" href="#importando-un-flujo" title="Permanent link">&para;</a></h3>
+<p>Otra manera de crear un grupo es a partir de una definición de flujo, tal como hemos entregando los ejercicios de la sesión anterior.</p>
+<p>En cualquier momento, sobre el área de trabajo de un flujo, con el botón derecho, podemos seleccionar la opción <em>Download flow definition</em>, el cual nos descarga un archivo JSON con la definición del flujo.</p>
+<p>Cuando arrastramos un grupo de procesadores al área de trabajo, nos aparece la opción de ponerle un nombre o, si pulsamos sobre el icono, cargar uno ya existente:</p>
+<figure style="align: center;">
+    <img alt="Importando un flujo en Nifi" src="images/05import-process-group.png">
+    <figcaption>Importando un flujo en Nifi</figcaption>
 </figure>
 
 <h3 id="puertos">Puertos<a class="headerlink" href="#puertos" title="Permanent link">&para;</a></h3>
@@ -1572,15 +1609,55 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
     <figcaption>Flujo del caso 6</figcaption>
 </figure>
 
-<p>Así pues, veamos paso a paso como configuramos cada procesador.</p>
+<p>Así pues, veamos paso a paso cómo configuramos cada procesador.</p>
 <h3 id="ejecutando-la-consulta">Ejecutando la consulta<a class="headerlink" href="#ejecutando-la-consulta" title="Permanent link">&para;</a></h3>
+<p>Tal como hemos dicho, el primer paso es crear un procesador de tipo <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ExecuteSQLRecord/index.html"><em>ExecuteSQLRecord</em></a> que será el encargado de realizar la consulta a la base de datos.</p>
+<p>Los dos elementos principales que debemos configurar en el procesador son:</p>
+<ul>
+<li>la entrada de los datos, mediante un <em>DBCPConnectionPool</em></li>
+<li>la consulta SQL donde recuperamos todos los datos de la tabla <code>customers</code>.</li>
+<li>la salida de los datos, que en nuestro caso, hemos elegido <em>JSONRecordSetWriter</em> para facilitar su posterior inserción en MongoDB.</li>
+</ul>
+<figure style="align: center;">
+    <img alt="Caso 6 - Procesador ExecuteSQLRecord en Nifi" src="images/05caso6execute-sql-record.png">
+    <figcaption>Caso 6 - Procesador ExecuteSQLRecord</figcaption>
+</figure>
+
+<h4 id="configurando-la-conexion-a-la-base-de-datos">Configurando la conexión a la base de datos<a class="headerlink" href="#configurando-la-conexion-a-la-base-de-datos" title="Permanent link">&para;</a></h4>
+<p>Al crear el servicio para la conexión a la base de datos, seleccionaremos un <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-dbcp-service-nar/latest/org.apache.nifi.dbcp.DBCPConnectionPool/index.html">DBCPConnectionPool</a> donde indicaremos:</p>
+<ul>
+<li>la URL para conectarnos a la base de datos: <code>jdbc:mysql://localhost/retail_db</code></li>
+<li>el driver empleado: <code>com.mysql.cj.jdbc.Driver</code></li>
+<li>la ruta donde encontrar el driver: <code>/opt/mysql-connector-j-8.0.31.jar</code> (podéis <a href="resources/mysql-connector-j-8.0.31.jar">descargarlo desde aquí</a> y colocarlo en la carpeta)</li>
+<li>usuario y contraseña de la base de datos: <code>iabd</code> / <code>iabd</code></li>
+</ul>
 <figure style="align: center;">
     <img alt="Configuración de DBCPConnectionPool en Nifi" src="images/05caso6dbcp.png">
     <figcaption>Configuración de DBCPConnectionPool</figcaption>
 </figure>
 
-<h3 id="configurando-putmongo">Configurando PutMongo<a class="headerlink" href="#configurando-putmongo" title="Permanent link">&para;</a></h3>
-<p>A diferencia de la sesión anterior, en este caso vamos a utilizar un servicio de cliente donde previamente hemos configurado la conexión con MongoDB. De esta manera, ya no necesitamos configurar la URI ni la autenticación:</p>
+<h4 id="salida-en-json">Salida en JSON<a class="headerlink" href="#salida-en-json" title="Permanent link">&para;</a></h4>
+<p>Respecto al <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-record-serialization-services-nar/1.20.0/org.apache.nifi.json.JsonRecordSetWriter/index.html">JSONRecordSetWriter</a>, únicamente vamos a configurar la propiedad <em>Outgoing grouping</em> con el valor <code>One Line per Object</code>, para que cada documento JSON ocupe una única línea.</p>
+<h3 id="dividiendo-los-datos">Dividiendo los datos<a class="headerlink" href="#dividiendo-los-datos" title="Permanent link">&para;</a></h3>
+<p>Tras conectar el procesador <em>ExecuteSQLRecord</em> con <em>SplitText</em>, en éste último configuraremos:</p>
+<ul>
+<li><em>Line Split Count</em> a <code>1</code>, tal como acabamos de configurar, cada documento sólo ocupa una línea.</li>
+<li><em>Header Line Count</em> a <code>0</code>, ya que los datos no contiene encabezado.</li>
+</ul>
+<h3 id="persistiendo-en-mongodb">Persistiendo en MongoDB<a class="headerlink" href="#persistiendo-en-mongodb" title="Permanent link">&para;</a></h3>
+<figure style="float: right;">
+    <img alt="Configuración de MongoDBControllerService en Nifi" src="images/05caso6mongodb-controller-service.png">
+    <figcaption>Configuración de MongoDBControllerService</figcaption>
+</figure>
+
+<p>Para guardar los datos en <em>MongoDB</em>, volvemos a utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongo/index.html">PutMongo</a>, pero a diferencia de la sesión anterior, en este caso vamos a utilizar un servicio de cliente donde previamente hemos configurado la conexión con MongoDB. De esta manera, ya no necesitamos configurar la URI ni la autenticación.</p>
+<p>Para ello, si nos centramos en la instalación de nuestra máquina virtual donde no tenemos activado ningún tipo de autenticación, creamos un <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-services-nar/1.20.0/org.apache.nifi.mongodb.MongoDBControllerService/index.html">MongoDBControllerService</a> y configuramos:</p>
+<ul>
+<li>la URI: <code>mongodb://localhost</code></li>
+<li>el usuario y la contraseña: no los rellenamos</li>
+<li>el tipo de autenticación: <code>NONE</code></li>
+</ul>
+<p>Una vez activado el servicio, en nuestro procesador <em>PutMongo</em> ya no necesitamos configurar los datos anteriores, y por lo tanto, será similar a:</p>
 <figure style="align: center;">
     <img alt="Configuración de PutMongo en Nifi" src="images/05caso6putmongo.png">
     <figcaption>Configuración de PutMongo</figcaption>
@@ -1588,10 +1665,16 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 
 <h3 id="trabajando-solo-con-registros">Trabajando sólo con registros<a class="headerlink" href="#trabajando-solo-con-registros" title="Permanent link">&para;</a></h3>
 <p>¿Para qué transformamos los datos a JSON cuando podemos directamente persistir los datos en MongoDB como conjuntos de registros?</p>
-<p>Nifi ofrece el procesador PutMongoRecord que espera como entrada un conjunto de registros y realiza la misma lógica que PutMongo. Así pues, vamos a conectar directamente la salida de la ejecución de SQL con un procesador de tipo <em>PutMongoRecord</em>:</p>
+<p>Nifi ofrece el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongoRecord/index.html">PutMongoRecord</a> que espera como entrada un conjunto de registros y realiza la misma lógica que <em>PutMongo</em>. Así pues, vamos a conectar directamente la salida de la ejecución de SQL con un procesador de tipo <em>PutMongoRecord</em>:</p>
 <figure style="align: center;">
     <img alt="Uso de PutMongoRecord en Nifi" src="images/05caso6mariadb-mongodb-record.png" width="350px">
     <figcaption>Uso de PutMongoRecord</figcaption>
+</figure>
+
+<p>Y configuramos el procesador:</p>
+<figure style="align: center;">
+    <img alt="Configuración de PutMongoRecord en Nifi" src="images/05caso6putmongorecord.png">
+    <figcaption>Configuración de PutMongoRecord</figcaption>
 </figure>
 
 <h2 id="caso-7-de-reddit-a-mongodb-y-s3">Caso 7: de Reddit a MongoDB y S3<a class="headerlink" href="#caso-7-de-reddit-a-mongodb-y-s3" title="Permanent link">&para;</a></h2>
@@ -1700,11 +1783,18 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 <p>En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la definición de cada flujo (sobre el área de trabajo, con el botón derecho, <em>Download flow definition</em>).</p>
 <ol>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha determinado el formato de datos adecuado para el almacenamiento.">CE5.1c</abbr> / 2p) Realiza el caso de uso 5, colocando los procesadores <em>ConvertRecord</em> y <em>UpdateAttribute</em> dentro de un grupo de procesadores, al que denominaras <code>caso5&lt;nombre&gt;</code> (con tu nombre).</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha determinado el formato de datos adecuado para el almacenamiento.">CE5.1c</abbr> / 1.5p) Realiza el caso de uso 5, colocando los procesadores <em>ConvertRecord</em> y <em>UpdateAttribute</em> dentro de un grupo de procesadores, al que denominaras <code>caso5&lt;nombre&gt;</code> (con tu nombre).</p>
 <p>A continuación, exporta todo el ejercicio como una plantilla, y adjúntala a la entrega.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 6.</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1.5p) En la base de datos <code>retail_db</code>, además de <code>customers</code>, podemos utilizar las tablas <code>orders</code> y <code>order_items</code> para obtener la cantidad de productos que contiene un pedido. Se pide almacenar en <em>MongoDB</em> los pedidos:</p>
+<ul>
+<li>Código y fecha del pedido.</li>
+<li>Precio del pedido (sumando las líneas de pedido).</li>
+<li>Código, nombre y apellidos del cliente.</li>
+</ul>
+<p>Dichos datos se tienen que persistir en dos colecciones las cuales se rellenen automáticamente utilizando tanto el uso de registros (en la colección <code>caso6-records</code>) como los <em>flowfile</em> separados de forma individual (<code>caso6-split</code>).</p>
+<p>Además, indica que cambios habría que realizar en Nifi para ingestar de forma continua los pedidos de la última hora.</p>
 </li>
 <li>
 <p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 7.</p>

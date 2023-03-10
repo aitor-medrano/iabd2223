@@ -21,3 +21,9 @@ for predicciones in p.prediccion:
 
 # for observacion in observaciones:
 #     print(observacion.__dict__)
+
+
+https://www.el-tiempo.net/api
+
+https://github.com/schibsted/jslt/blob/master/tutorial.md
+https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065
