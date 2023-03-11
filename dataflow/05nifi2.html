@@ -1130,9 +1130,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-7-de-reddit-a-mongodb-y-s3" class="md-nav__link">
-    Caso 7: de Reddit a MongoDB y S3
+  <a href="#caso-7-de-emet-a-mongodb-y-s3" class="md-nav__link">
+    Caso 7: de EMET a MongoDB y S3
   </a>
+  
+    <nav class="md-nav" aria-label="Caso 7: de EMET a MongoDB y S3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#peticion-rest" class="md-nav__link">
+    Petición REST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#de-json-a-atributos" class="md-nav__link">
+    De JSON a atributos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#de-atributos-a-json" class="md-nav__link">
+    De atributos a JSON
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia-en-mongodb" class="md-nav__link">
+    Persistencia en MongoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia-en-s3" class="md-nav__link">
+    Persistencia en S3
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1378,9 +1419,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-7-de-reddit-a-mongodb-y-s3" class="md-nav__link">
-    Caso 7: de Reddit a MongoDB y S3
+  <a href="#caso-7-de-emet-a-mongodb-y-s3" class="md-nav__link">
+    Caso 7: de EMET a MongoDB y S3
   </a>
+  
+    <nav class="md-nav" aria-label="Caso 7: de EMET a MongoDB y S3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#peticion-rest" class="md-nav__link">
+    Petición REST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#de-json-a-atributos" class="md-nav__link">
+    De JSON a atributos
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#de-atributos-a-json" class="md-nav__link">
+    De atributos a JSON
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia-en-mongodb" class="md-nav__link">
+    Persistencia en MongoDB
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#persistencia-en-s3" class="md-nav__link">
+    Persistencia en S3
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1637,7 +1719,7 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 </figure>
 
 <h4 id="salida-en-json">Salida en JSON<a class="headerlink" href="#salida-en-json" title="Permanent link">&para;</a></h4>
-<p>Respecto al <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-record-serialization-services-nar/1.20.0/org.apache.nifi.json.JsonRecordSetWriter/index.html">JSONRecordSetWriter</a>, únicamente vamos a configurar la propiedad <em>Outgoing grouping</em> con el valor <code>One Line per Object</code>, para que cada documento JSON ocupe una única línea.</p>
+<p>Respecto al <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-record-serialization-services-nar/latest/org.apache.nifi.json.JsonRecordSetWriter/index.html">JSONRecordSetWriter</a>, únicamente vamos a configurar la propiedad <em>Outgoing grouping</em> con el valor <code>One Line per Object</code>, para que cada documento JSON ocupe una única línea.</p>
 <h3 id="dividiendo-los-datos">Dividiendo los datos<a class="headerlink" href="#dividiendo-los-datos" title="Permanent link">&para;</a></h3>
 <p>Tras conectar el procesador <em>ExecuteSQLRecord</em> con <em>SplitText</em>, en éste último configuraremos:</p>
 <ul>
@@ -1651,7 +1733,7 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 </figure>
 
 <p>Para guardar los datos en <em>MongoDB</em>, volvemos a utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongo/index.html">PutMongo</a>, pero a diferencia de la sesión anterior, en este caso vamos a utilizar un servicio de cliente donde previamente hemos configurado la conexión con MongoDB. De esta manera, ya no necesitamos configurar la URI ni la autenticación.</p>
-<p>Para ello, si nos centramos en la instalación de nuestra máquina virtual donde no tenemos activado ningún tipo de autenticación, creamos un <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-services-nar/1.20.0/org.apache.nifi.mongodb.MongoDBControllerService/index.html">MongoDBControllerService</a> y configuramos:</p>
+<p>Para ello, si nos centramos en la instalación de nuestra máquina virtual donde no tenemos activado ningún tipo de autenticación, creamos un <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-services-nar/latest/org.apache.nifi.mongodb.MongoDBControllerService/index.html">MongoDBControllerService</a> y configuramos:</p>
 <ul>
 <li>la URI: <code>mongodb://localhost</code></li>
 <li>el usuario y la contraseña: no los rellenamos</li>
@@ -1677,9 +1759,55 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
     <figcaption>Configuración de PutMongoRecord</figcaption>
 </figure>
 
-<h2 id="caso-7-de-reddit-a-mongodb-y-s3">Caso 7: de Reddit a MongoDB y S3<a class="headerlink" href="#caso-7-de-reddit-a-mongodb-y-s3" title="Permanent link">&para;</a></h2>
-<p>Para este caso de uso, vamos a recoger datos de <em>Reddit</em> y los vamos a meter tanto en <em>MongoDB</em> como <em>S3</em> a la vez.</p>
-<p>El primer paso es obtener unas credenciales de desarrollador por parte de <em>Reddit</em> para poder acceder a su API.</p>
+<h2 id="caso-7-de-emet-a-mongodb-y-s3">Caso 7: de EMET a MongoDB y S3<a class="headerlink" href="#caso-7-de-emet-a-mongodb-y-s3" title="Permanent link">&para;</a></h2>
+<p>Para este caso de uso, vamos a recoger datos de un servicio REST, en concreto, datos climatológicos de la Agencia Estatal de METeorología (AEMET) y los vamos a meter tanto en <em>MongoDB</em> como <em>S3</em> a la vez.</p>
+<p>Aunque <a href="https://www.aemet.es/">AEMET</a> ofrece su <a href="https://opendata.aemet.es/centrodedescargas/inicio">propia API</a> para obtener datos, vamos a utilizar el <a href="https://www.el-tiempo.net/api">API pública</a> de <a href="https://www.el-tiempo.net">https://www.el-tiempo.net</a>, la cual simplifica su uso.</p>
+<p>En concreto, nos vamos a centrar en realizar llamadas a la  URL <a href="https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065">https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065</a>, en la cual vamos a recuperar los datos del municipio de Elche (<code>03065</code>) que pertenece a la provincia de Alicante (<code>03</code>), obteniendo datos similares a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">  </span><span class="nt">&quot;origin&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nt">&quot;productor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Agencia Estatal de Meteorología - AEMET. Gobierno de España&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">    </span><span class="nt">&quot;web&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://www.aemet.es&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="err">...</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">  </span><span class="p">},</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">  </span><span class="nt">&quot;title&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;elTiempo.net | El tiempo en Elche/Elx (Alacant/Alicante)&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">  </span><span class="err">...</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="nt">&quot;municipio&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">    </span><span class="nt">&quot;CODIGOINE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;03065000000&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="nt">&quot;ID_REL&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1030651&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="nt">&quot;COD_GEO&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;03320&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="nt">&quot;CODPROV&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;03&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="nt">&quot;NOMBRE_PROVINCIA&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alacant/Alicante&quot;</span><span class="p">,</span>
+<span class="hll"><span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="nt">&quot;NOMBRE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Elche/Elx&quot;</span><span class="p">,</span>
+</span><span class="linenos" data-linenos="16 "></span><span class="w">    </span><span class="nt">&quot;POBLACION_MUNI&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">228647</span><span class="p">,</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">    </span><span class="nt">&quot;SUPERFICIE&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">32606.7487</span><span class="p">,</span>
+<span class="linenos" data-linenos="18 "></span><span class="w">    </span><span class="nt">&quot;PERIMETRO&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">91751</span><span class="p">,</span>
+<span class="linenos" data-linenos="19 "></span><span class="w">    </span><span class="err">...</span>
+<span class="linenos" data-linenos="20 "></span><span class="w">  </span><span class="p">},</span>
+<span class="linenos" data-linenos="21 "></span><span class="w">  </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-10&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="22 "></span><span class="w">  </span><span class="nt">&quot;stateSky&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="23 "></span><span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nubes altas&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="24 "></span><span class="w">    </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;17&quot;</span>
+<span class="linenos" data-linenos="25 "></span><span class="w">  </span><span class="p">},</span>
+<span class="hll"><span class="linenos" data-linenos="26 "></span><span class="w">  </span><span class="nt">&quot;temperatura_actual&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;24&quot;</span><span class="p">,</span>
+</span><span class="linenos" data-linenos="27 "></span><span class="w">  </span><span class="nt">&quot;temperaturas&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="linenos" data-linenos="28 "></span><span class="w">    </span><span class="nt">&quot;max&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;27&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="29 "></span><span class="w">    </span><span class="nt">&quot;min&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;15&quot;</span>
+<span class="linenos" data-linenos="30 "></span><span class="w">  </span><span class="p">},</span>
+<span class="hll"><span class="linenos" data-linenos="31 "></span><span class="w">  </span><span class="nt">&quot;humedad&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;24&quot;</span><span class="p">,</span>
+</span><span class="linenos" data-linenos="32 "></span><span class="w">  </span><span class="nt">&quot;viento&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;18&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="33 "></span><span class="w">  </span><span class="nt">&quot;precipitacion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="34 "></span><span class="w">  </span><span class="nt">&quot;lluvia&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="35 "></span><span class="w">  </span><span class="err">...</span>
+<span class="linenos" data-linenos="36 "></span><span class="p">}</span>
+</code></pre></div>
+<p>Nos vamos a centrar en recuperar la ciudad, la temperatura y la humedad.</p>
+<h3 id="peticion-rest">Petición REST<a class="headerlink" href="#peticion-rest" title="Permanent link">&para;</a></h3>
+<p>Para recuperar los datos a partir del servicio REST necesitamos utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.InvokeHTTP/index.html">InvokeHTTP</a>, mediante el cual hacemos la petición GET a la </p>
+<h3 id="de-json-a-atributos">De JSON a atributos<a class="headerlink" href="#de-json-a-atributos" title="Permanent link">&para;</a></h3>
+<h3 id="de-atributos-a-json">De atributos a JSON<a class="headerlink" href="#de-atributos-a-json" title="Permanent link">&para;</a></h3>
+<h3 id="persistencia-en-mongodb">Persistencia en MongoDB<a class="headerlink" href="#persistencia-en-mongodb" title="Permanent link">&para;</a></h3>
+<h3 id="persistencia-en-s3">Persistencia en S3<a class="headerlink" href="#persistencia-en-s3" title="Permanent link">&para;</a></h3>
+<p>Para almacenar los datos en S3, previamente hemos creado un bucket que hemos llamado <code>iabd-nifi</code>, y le hemos habilitado el acceso público y añadido la política para insertar objetos.</p>
 <h2 id="api-rest">API REST<a class="headerlink" href="#api-rest" title="Permanent link">&para;</a></h2>
 <p><em>Nifi</em> ofrece un API REST con el cual podemos interactuar de forma similar al interfaz gráfico.</p>
 <p>A partir del host donde tenemos <em>Nifi</em> instalado, las peticiones siguen al nomenclatura <code>/nifi-api/&lt;servicio&gt;</code>, de manera que con nuestra máquina virtual podríamos acceder a información sobre la instalación mediante <a href="https://localhost:8443/nifi-api/flow/about">https://localhost:8443/nifi-api/flow/about</a>.</p>
