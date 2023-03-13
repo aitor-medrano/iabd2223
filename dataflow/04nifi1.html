@@ -1960,7 +1960,7 @@ Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro c
 <p>Si nos fijamos en las propiedades del procesador <em>RouteOnContent</em>, tenemos dos flujos de salida <code>textoError</code> (para los mensajes que contienen el texto <code>ERROR</code>) y <code>unmatched</code> (para los que no).</p>
 <ol start="3">
 <li>
-<p>Vamos a añadir el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeContent/index.html"><em>MergeContent</em></a>, el cual recibe un conjunto de FF y los fusiona en uno a partir de la estrategia de fusión que defina el usuario. Las diferentes opciones incluye agrupando ciertos atributos de forma similar a como se realiza la fase <em>reduce</em> de un algoritmo <em>MapReduce</em>.</p>
+<p>Vamos a añadir el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeContent/index.html">MergeContent</a>, el cual recibe un conjunto de FF y los fusiona en uno a partir de la estrategia de fusión que defina el usuario. Las diferentes opciones incluye agrupando ciertos atributos de forma similar a como se realiza la fase <em>reduce</em> de un algoritmo <em>MapReduce</em>.</p>
 <p>Así pues, vamos a conectar las relaciones <code>textoError</code> y <code>unmatched</code> con <em>MergeContent</em>:</p>
 <p><figure style="align: center;">
     <img alt="Conexión con MergeContent en Nifi" src="images/04caso4MergeContent.png">

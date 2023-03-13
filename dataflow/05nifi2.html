@@ -1130,44 +1130,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-7-de-emet-a-mongodb-y-s3" class="md-nav__link">
-    Caso 7: de EMET a MongoDB y S3
+  <a href="#caso-7-de-aemet-a-mongodb-y-s3" class="md-nav__link">
+    Caso 7: de AEMET a MongoDB y S3
   </a>
   
-    <nav class="md-nav" aria-label="Caso 7: de EMET a MongoDB y S3">
+    <nav class="md-nav" aria-label="Caso 7: de AEMET a MongoDB y S3">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#peticion-rest" class="md-nav__link">
-    Petición REST
+  <a href="#bronze-peticion-rest-y-s3" class="md-nav__link">
+    Bronze: Petición REST y S3
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#de-json-a-atributos" class="md-nav__link">
-    De JSON a atributos
+  <a href="#silver-de-rest-a-json" class="md-nav__link">
+    Silver: De REST a JSON
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#de-atributos-a-json" class="md-nav__link">
-    De atributos a JSON
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persistencia-en-mongodb" class="md-nav__link">
-    Persistencia en MongoDB
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persistencia-en-s3" class="md-nav__link">
-    Persistencia en S3
+  <a href="#gold-agregando-datos" class="md-nav__link">
+    Gold: agregando datos
   </a>
   
 </li>
@@ -1419,44 +1405,30 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-7-de-emet-a-mongodb-y-s3" class="md-nav__link">
-    Caso 7: de EMET a MongoDB y S3
+  <a href="#caso-7-de-aemet-a-mongodb-y-s3" class="md-nav__link">
+    Caso 7: de AEMET a MongoDB y S3
   </a>
   
-    <nav class="md-nav" aria-label="Caso 7: de EMET a MongoDB y S3">
+    <nav class="md-nav" aria-label="Caso 7: de AEMET a MongoDB y S3">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#peticion-rest" class="md-nav__link">
-    Petición REST
+  <a href="#bronze-peticion-rest-y-s3" class="md-nav__link">
+    Bronze: Petición REST y S3
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#de-json-a-atributos" class="md-nav__link">
-    De JSON a atributos
+  <a href="#silver-de-rest-a-json" class="md-nav__link">
+    Silver: De REST a JSON
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#de-atributos-a-json" class="md-nav__link">
-    De atributos a JSON
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persistencia-en-mongodb" class="md-nav__link">
-    Persistencia en MongoDB
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#persistencia-en-s3" class="md-nav__link">
-    Persistencia en S3
+  <a href="#gold-agregando-datos" class="md-nav__link">
+    Gold: agregando datos
   </a>
   
 </li>
@@ -1733,6 +1705,10 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 </figure>
 
 <p>Para guardar los datos en <em>MongoDB</em>, volvemos a utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongo/index.html">PutMongo</a>, pero a diferencia de la sesión anterior, en este caso vamos a utilizar un servicio de cliente donde previamente hemos configurado la conexión con MongoDB. De esta manera, ya no necesitamos configurar la URI ni la autenticación.</p>
+<div class="admonition caution">
+<p class="admonition-title">Arrancar MongoDB</p>
+<p>Recuerda arrancar <em>MongoDB</em> mediante <code>sudo service mongod start</code></p>
+</div>
 <p>Para ello, si nos centramos en la instalación de nuestra máquina virtual donde no tenemos activado ningún tipo de autenticación, creamos un <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-services-nar/latest/org.apache.nifi.mongodb.MongoDBControllerService/index.html">MongoDBControllerService</a> y configuramos:</p>
 <ul>
 <li>la URI: <code>mongodb://localhost</code></li>
@@ -1759,8 +1735,8 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
     <figcaption>Configuración de PutMongoRecord</figcaption>
 </figure>
 
-<h2 id="caso-7-de-emet-a-mongodb-y-s3">Caso 7: de EMET a MongoDB y S3<a class="headerlink" href="#caso-7-de-emet-a-mongodb-y-s3" title="Permanent link">&para;</a></h2>
-<p>Para este caso de uso, vamos a recoger datos de un servicio REST, en concreto, datos climatológicos de la Agencia Estatal de METeorología (AEMET) y los vamos a meter tanto en <em>MongoDB</em> como <em>S3</em> a la vez.</p>
+<h2 id="caso-7-de-aemet-a-mongodb-y-s3">Caso 7: de AEMET a MongoDB y S3<a class="headerlink" href="#caso-7-de-aemet-a-mongodb-y-s3" title="Permanent link">&para;</a></h2>
+<p>Para este caso de uso, vamos a recoger datos de un servicio REST, en concreto, datos climatológicos de la Agencia Estatal de METeorología (AEMET) y los vamos a persistir tanto en <em>MongoDB</em> como en un lago de datos almacenado en <em>S3</em>.</p>
 <p>Aunque <a href="https://www.aemet.es/">AEMET</a> ofrece su <a href="https://opendata.aemet.es/centrodedescargas/inicio">propia API</a> para obtener datos, vamos a utilizar el <a href="https://www.el-tiempo.net/api">API pública</a> de <a href="https://www.el-tiempo.net">https://www.el-tiempo.net</a>, la cual simplifica su uso.</p>
 <p>En concreto, nos vamos a centrar en realizar llamadas a la  URL <a href="https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065">https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065</a>, en la cual vamos a recuperar los datos del municipio de Elche (<code>03065</code>) que pertenece a la provincia de Alicante (<code>03</code>), obteniendo datos similares a:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span>
@@ -1800,14 +1776,252 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 <span class="linenos" data-linenos="35 "></span><span class="w">  </span><span class="err">...</span>
 <span class="linenos" data-linenos="36 "></span><span class="p">}</span>
 </code></pre></div>
-<p>Nos vamos a centrar en recuperar la ciudad, la temperatura y la humedad.</p>
-<h3 id="peticion-rest">Petición REST<a class="headerlink" href="#peticion-rest" title="Permanent link">&para;</a></h3>
-<p>Para recuperar los datos a partir del servicio REST necesitamos utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.InvokeHTTP/index.html">InvokeHTTP</a>, mediante el cual hacemos la petición GET a la </p>
-<h3 id="de-json-a-atributos">De JSON a atributos<a class="headerlink" href="#de-json-a-atributos" title="Permanent link">&para;</a></h3>
-<h3 id="de-atributos-a-json">De atributos a JSON<a class="headerlink" href="#de-atributos-a-json" title="Permanent link">&para;</a></h3>
-<h3 id="persistencia-en-mongodb">Persistencia en MongoDB<a class="headerlink" href="#persistencia-en-mongodb" title="Permanent link">&para;</a></h3>
-<h3 id="persistencia-en-s3">Persistencia en S3<a class="headerlink" href="#persistencia-en-s3" title="Permanent link">&para;</a></h3>
-<p>Para almacenar los datos en S3, previamente hemos creado un bucket que hemos llamado <code>iabd-nifi</code>, y le hemos habilitado el acceso público y añadido la política para insertar objetos.</p>
+<p>De todos los datos recuperados, nos vamos a centrar en recuperar la ciudad, la temperatura y la humedad.</p>
+<h3 id="bronze-peticion-rest-y-s3">Bronze: Petición REST y S3<a class="headerlink" href="#bronze-peticion-rest-y-s3" title="Permanent link">&para;</a></h3>
+<p>Para recuperar los datos a partir del servicio REST necesitamos utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.InvokeHTTP/index.html">InvokeHTTP</a>, mediante el cual hacemos la petición GET a la URL <a href="https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065">https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065</a>.</p>
+<p>En este ejemplo, hemos definido que se ejecute cada 60 segundos (en la pestaña <em>Scheduling</em>, completamos la propiedad <em>Run Schedule</em> a <code>60 sec</code>).</p>
+<p>Para seguir el enfoque de <em>data lake</em>, vamos a almacenar en crudo el resultado de la petición en S3, utilizando el procesador <em>PutS3Object</em>, pero previamente necesitamos añadir el atributo <code>filename</code> para ponerle un nombre el archivo guardado.</p>
+<div class="admonition info">
+<p class="admonition-title">Data Lake</p>
+<p>Respecto a la estructura del <em>data lake</em>, vamos a crear un <em>bucket</em> que llamaremos <code>iabd-nifi</code> donde añadiremos a su vez tres carpetas:</p>
+<ul>
+<li><code>iabd-nifi/bronze</code>: donde colocaremos los documentos JSON tal cual los recibimos de la petición REST.</li>
+<li>
+<p><code>iabd-nifi/silver</code>: donde guardaremos cada minuto documentos JSON con la siguiente estructura:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="s2">&quot;2023-03-13 10:17:20&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="nt">&quot;ciudad&quot;</span><span class="p">:</span><span class="s2">&quot;Elche/Elx&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="nt">&quot;temp&quot;</span><span class="p">:</span><span class="s2">&quot;20&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="nt">&quot;humedad&quot;</span><span class="p">:</span><span class="s2">&quot;47&quot;</span>
+<span class="linenos" data-linenos="6 "></span><span class="p">}</span>
+</code></pre></div>
+</li>
+<li>
+<p><code>iabd-nifi/gold</code>: donde guardaremos cada diez minutos documentos <em>Parquet</em> con la misma estructura que antes, pero con las medias de las temperaturas y las humedades:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos="2 "></span><span class="w">    </span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-13T08:17:20.000Z&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="3 "></span><span class="w">    </span><span class="nt">&quot;ciudad&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Elche/Elx&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="4 "></span><span class="w">    </span><span class="nt">&quot;temp&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<span class="linenos" data-linenos="5 "></span><span class="w">    </span><span class="nt">&quot;humedad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">47</span>
+<span class="linenos" data-linenos="6 "></span><span class="p">}</span>
+</code></pre></div>
+</li>
+</ul>
+</div>
+<h4 id="creando-el-bucket">Creando el bucket<a class="headerlink" href="#creando-el-bucket" title="Permanent link">&para;</a></h4>
+<p>Tras entrar a la consola de AWS creamos el <em>bucket</em> y le damos acceso público y, en la pestaña <em>Permisos</em>, configuramos la política del <em>bucket</em> para permitir tanto el almacenamiento como la recuperación de datos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="p">{</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">    </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">        </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">            </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UploadNifi&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">            </span><span class="nt">&quot;Principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">                </span><span class="s2">&quot;s3:ListMultipartUploadParts&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">                </span><span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">                </span><span class="s2">&quot;s3:GetObject&quot;</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">            </span><span class="p">],</span>
+<span class="hll"><span class="linenos" data-linenos="13 "></span><span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::iabd-nifi/*&quot;</span>
+</span><span class="linenos" data-linenos="14 "></span><span class="w">        </span><span class="p">},</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">        </span><span class="p">{</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">            </span><span class="nt">&quot;Sid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UploadNifiListBucket&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="18 "></span><span class="w">            </span><span class="nt">&quot;Principal&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+<span class="linenos" data-linenos="19 "></span><span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:ListBucketMultipartUploads&quot;</span><span class="p">,</span>
+<span class="hll"><span class="linenos" data-linenos="20 "></span><span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::iabd-nifi&quot;</span>
+</span><span class="linenos" data-linenos="21 "></span><span class="w">        </span><span class="p">}</span>
+<span class="linenos" data-linenos="22 "></span><span class="w">    </span><span class="p">]</span>
+<span class="linenos" data-linenos="23 "></span><span class="p">}</span>
+</code></pre></div>
+<h4 id="nombrando-el-fichero">Nombrando el fichero<a class="headerlink" href="#nombrando-el-fichero" title="Permanent link">&para;</a></h4>
+<p>Tras recibir la petición REST vamos a crear dos nuevos atributos mediante el procesador <em>UpdateAttribute</em> para darle un nombre a los ficheros que vamos a almacenar y crear un atributo con la fecha de la petición:</p>
+<ul>
+<li><code>fecha</code>: <code>${now():format("yyyy-MM-dd HH:mm:ss")}</code></li>
+<li><code>filename</code>: <code>${now():format("yyyy-MM-dd HH:mm:ss")}.json</code></li>
+</ul>
+<p>Podemos observar como ademas hemos creado un atributo <code>fecha</code> para poder almacenar el <em>timestamp</em> de cada mensaje (dicha información no viene en la respuesta de la petición REST, únicamente viene la fecha).</p>
+<h4 id="persistiendo-en-s3">Persistiendo en S3<a class="headerlink" href="#persistiendo-en-s3" title="Permanent link">&para;</a></h4>
+<div class="admonition tip inline end">
+<p class="admonition-title">Clave en AWS Academy</p>
+<p>Recuerda que puedes recuperar las claves desde <em>AWS CLI</em> en <em>AWS Details</em> al arrancar el laboratorio de <em>Learner Labs</em>.</p>
+</div>
+<p>Para conectar <em>Nifi</em> con <em>S3</em> necesitamos obtener nuestras credenciales de <em>AWS</em> (en nuestro caso de <em>AWS Academy</em>) y copiarlas en <code>~/.aws/credentials</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">[default]</span>
+<span class="linenos" data-linenos="2 "></span><span class="na">aws_access_key_id</span><span class="o">=</span><span class="s">ASI...</span>
+<span class="linenos" data-linenos="3 "></span><span class="na">aws_secret_access_key</span><span class="o">=</span><span class="s">otO8...</span>
+<span class="linenos" data-linenos="4 "></span><span class="na">aws_session_token</span><span class="o">=</span><span class="s">FwoGZ...</span>
+</code></pre></div>
+<p>Tras ello utilizamos un procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-aws-nar/latest/org.apache.nifi.processors.aws.s3.PutS3Object/index.html">PutS3Object</a> rellenando las siguientes propiedades:</p>
+<ul>
+<li><em>Object Key</em>: <code>${filename}</code></li>
+<li><em>Bucket</em>: <code>iabd-nifi/bronze</code></li>
+<li><em>Region</em>: US East (N. Virginia)</li>
+</ul>
+<p>Y finalmente conectamos los tres procesadores conforme a la imagen del lateral donde, para dotar de mayor información a los procesadores, les hemos puesto nombres descriptivos:</p>
+<ul>
+<li>La petición REST a modificar los atributos mediante la conexión <em>Response</em>.</li>
+<li>La modificación de atributos al almacenamiento en S3 mediante <em>success</em>.</li>
+</ul>
+<figure style="align: center;">
+    <img alt="Flujo de la petición REST hasta S3 en Nifi" src="images/05caso7rest-s3-bronze.png">
+    <figcaption>Flujo de la petición REST hasta S3</figcaption>
+</figure>
+
+<p>Tras ejecutarlos, podemos listar los archivos de nuestro bucket:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">[</span>cloudshell-user@ip-10-6-106-167<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://iabd-nifi/bronze/
+<span class="linenos" data-linenos="2 "></span><span class="m">2023</span>-03-13<span class="w"> </span><span class="m">09</span>:12:20<span class="w">      </span><span class="m">10146</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:11:44.json
+<span class="linenos" data-linenos="3 "></span><span class="m">2023</span>-03-13<span class="w"> </span><span class="m">09</span>:12:21<span class="w">      </span><span class="m">10146</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:12:45.json
+<span class="linenos" data-linenos="4 "></span><span class="m">2023</span>-03-13<span class="w"> </span><span class="m">09</span>:12:22<span class="w">      </span><span class="m">10146</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:13:46.json
+<span class="linenos" data-linenos="5 "></span><span class="m">2023</span>-03-13<span class="w"> </span><span class="m">09</span>:12:23<span class="w">      </span><span class="m">10146</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:14:47.json
+<span class="linenos" data-linenos="6 "></span><span class="m">2023</span>-03-13<span class="w"> </span><span class="m">09</span>:12:23<span class="w">      </span><span class="m">10146</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:15:47.json
+<span class="linenos" data-linenos="7 "></span>...
+</code></pre></div>
+<h3 id="silver-de-rest-a-json">Silver: De REST a JSON<a class="headerlink" href="#silver-de-rest-a-json" title="Permanent link">&para;</a></h3>
+<p>Una vez tenemos las peticiones REST recuperadas (y almacenadas en el <em>data lake</em>) vamos a seleccionar los datos que nos interesan y los guardaremos en la capa <em>silver</em> en formato JSON.</p>
+<p>Así pues, el primer paso es utilizar un procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.EvaluateJSONPath/index.html">EvaluateJSONPath</a> para recoger la ciudad, la temperatura y la humedad. Para ello, hemos de crear tres nuevas propiedades y referenciar a la raíz del documento mediante el <code>$</code>, de modo que para recuperar el atributo <code>temperatura</code> utilizaremos <code>$.temperatura</code>:</p>
+<figure style="align: center;">
+    <img alt="Parseando el JSON en Nifi" src="images/05caso7evaluate-json-path.png">
+    <figcaption>Parseando el JSON</figcaption>
+</figure>
+
+<p>Con este procesador hemos creado tres atributos que contienen el valor de cada propiedades. La conexión que nos permite conectar este procesador con el que contiene los valores es <code>matched</code>.</p>
+<h4 id="de-atributos-a-json">De atributos a JSON<a class="headerlink" href="#de-atributos-a-json" title="Permanent link">&para;</a></h4>
+<p>Y ahora vamos a pasar esos atributos al contenido del mensaje. Para ello, mediante el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.AttributesToJSON/index.html">AttributesToJSON</a> indicamos una lista de atributos separados por comas y configuramos que queremos que coloque el resultado en el contenido del mensaje:</p>
+<figure style="align: center;">
+    <img alt="De atributos a JSON Nifi" src="images/05caso7attributes-to-json.png">
+    <figcaption>De atributos a JSON</figcaption>
+</figure>
+
+<h4 id="persistencia-en-s3-y-mongodb">Persistencia en S3 y MongoDB<a class="headerlink" href="#persistencia-en-s3-y-mongodb" title="Permanent link">&para;</a></h4>
+<p>Y con este mensaje que únicamente contiene la información que nos interesa la volvemos a guardar en S3, en este caso en el <em>bucket</em> <code>iabd-nifi/silver</code>.</p>
+<p>Además, queremos almacenar los mismos datos en <em>MongoDB</em> para facilitar la analítica. Para ello, configuramos la base de datos <code>iabd</code> y la colección <code>caso7silver</code>.</p>
+<p>Recapitulando, en este momento nuestro flujo de datos sería similar a la siguiente imagen:</p>
+<figure style="align: center;">
+    <img alt="Caso 7 - Flujo hasta silver Nifi" src="images/05caso7flujo-silver.png">
+    <figcaption>Caso 7 - Flujo hasta silver</figcaption>
+</figure>
+
+<p>Si consultamos los datos almacenados en S3 obtendremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="o">[</span>cloudshell-user@ip-10-6-106-167<span class="w"> </span>~<span class="o">]</span>$<span class="w"> </span>aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://iabd-nifi/silver/
+<span class="linenos" data-linenos="2 "></span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">18</span>:07:44<span class="w">         </span><span class="m">79</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:07:41.json
+<span class="linenos" data-linenos="3 "></span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">18</span>:08:45<span class="w">         </span><span class="m">79</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:08:41.json
+<span class="linenos" data-linenos="4 "></span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">18</span>:09:46<span class="w">         </span><span class="m">79</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:09:43.json
+<span class="linenos" data-linenos="5 "></span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">18</span>:10:47<span class="w">         </span><span class="m">79</span><span class="w"> </span><span class="m">2023</span>-03-12<span class="w"> </span><span class="m">19</span>:10:43.json
+<span class="linenos" data-linenos="6 "></span>...
+</code></pre></div>
+<p>Además, si realizamos una consulta sobre los datos obtendremos:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="err">iabd&gt;</span><span class="w"> </span><span class="err">db.caso</span><span class="mi">7</span><span class="err">silver.</span><span class="kc">f</span><span class="err">i</span><span class="kc">n</span><span class="err">d()</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="p">[</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">    </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;640ef8b112ca74269a8cf805&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="kc">fe</span><span class="err">cha</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">2023-03-13</span><span class="w"> </span><span class="mi">11</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">14</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">22</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="err">ciudad</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Elche/Elx&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="err">humedad</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">42</span><span class="err">&#39;</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="p">},</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="p">{</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;640ef8b112ca74269a8cf806&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="kc">fe</span><span class="err">cha</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">2023-03-13</span><span class="w"> </span><span class="mi">11</span><span class="p">:</span><span class="mi">19</span><span class="p">:</span><span class="mi">15</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">22</span><span class="err">&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="err">ciudad</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Elche/Elx&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="err">humedad</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;</span><span class="mi">42</span><span class="err">&#39;</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">  </span><span class="p">},</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">  </span><span class="err">...</span>
+<span class="linenos" data-linenos="18 "></span><span class="p">]</span>
+</code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">Formato de la fecha</p>
+<p>¿Te has fijado que la fecha se ha almacenado como una cadena? ¿Cómo podríamos solucionarlo?<br />
+Como el procesador <em>PutMongo</em> espera el contenido en formato JSON, no podemos configura bien los tipos de datos. En el siguiente apartado usaremos <em>PutMongoRecord</em></p>
+</div>
+<h3 id="gold-agregando-datos">Gold: agregando datos<a class="headerlink" href="#gold-agregando-datos" title="Permanent link">&para;</a></h3>
+<p>En este paso, vamos a agrupar mensajes de 10 en 10 (lo que implicaría cada 10 minutos) y calcular las temperaturas y humedades medias, para posteriormente volver a almacenarlo tanto en S3 como en <em>MongoDB</em>.</p>
+<h4 id="agrupando-mensajes">Agrupando mensajes<a class="headerlink" href="#agrupando-mensajes" title="Permanent link">&para;</a></h4>
+<p>Así pues, el primer paso es agrupar los mensajes. Para ello, tal como hicimos en el <a href="04nifi1.html#caso-4-fusionar-datos">caso 4</a> utilizaremos el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeContent/index.html">MergeContent</a> donde le indicamos que siempre agrupe 10 mensajes y que utilice el salto de línea como delimitador de línea (esto último lo hicimos en la sesión anterior):</p>
+<figure style="align: center;">
+    <img alt="Caso 7 - Agrupando mensajes Nifi" src="images/05caso7merge-content.png">
+    <figcaption>Caso 7 - Agrupando mensajes</figcaption>
+</figure>
+
+<p>En este momento, cada FF contiene 10 líneas con mensajes JSON con los datos de los últimos diez minutos.</p>
+<p>Al agrupar los datos, como hemos seleccionado que solo mantenga los atributos que eran comunes, tendremos que volver a añadir otro atributo con el nombre del fichero. Así pues, añadimos un nuevo procesador <em>UpdateAttribute</em> donde volvemos a crear el atributo <code>filename</code>, pero en este caso utilizaremos la expresión <code>${now():format("yyyy-MM-dd HH:mm")}:00.parquet</code> para indicarle que los segundos siempre serán <code>00</code> (para dejar claro que lo importante son los minutos) y le añadimos la extensión <code>parquet</code>, ya que vamos a persistir los datos en ese formato</p>
+<figure style="align: center;">
+    <img alt="Caso 7 - Atributo filename en Nifi" src="images/05caso7update-attribute-parquet.png">
+    <figcaption>Caso 7 - Atributo filename</figcaption>
+</figure>
+
+<h4 id="calculando-valores-mediante-sql">Calculando valores mediante SQL<a class="headerlink" href="#calculando-valores-mediante-sql" title="Permanent link">&para;</a></h4>
+<p>Con esos datos que tenemos en un único FF podemos realizar una consulta SQL que agregue los datos. Para ello, volvemos a utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.QueryRecord/index.html"><em>QueryRecord</em></a> con la siguiente consulta (en mi flujo la he denominado <code>tempMedia</code>) que obtiene la temperatura y humedad media, agrupada por ciudad, mostrando también la fecha de la última lectura.</p>
+<div class="highlight"><span class="filename">tempMedia</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">select</span><span class="w"> </span><span class="n">ciudad</span><span class="p">,</span><span class="w"> </span><span class="k">max</span><span class="p">(</span><span class="n">fecha</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">fecha</span><span class="p">,</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">temp</span><span class="p">,</span><span class="w"> </span><span class="k">avg</span><span class="p">(</span><span class="n">humedad</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">humedad</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">Flowfile</span><span class="w"> </span><span class="k">group</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">ciudad</span>
+</code></pre></div>
+<figure style="align: center;">
+    <img alt="Caso 7 - Configuración del QueryRecord en Nifi" src="images/05caso7query-record.png">
+    <figcaption>Caso 7 - Configuración del QueryRecord</figcaption>
+</figure>
+
+<p>Para la lectura, como nuestros FF contienen JSON, crearemos y utilizaremos un <em>JsonTreeReader</em> donde en el formato del <em>timestamp</em> le pondremos el formato que hemos utilizado hasta ahora <code>yyyy-MM-dd HH:mm:ss</code>:</p>
+<figure style="align: center;">
+    <img alt="Caso 7 - Configuración del JsonTreeReader en Nifi" src="images/05caso7json-tree-reader.png">
+    <figcaption>Caso 7 - Configuración del JsonTreeReader</figcaption>
+</figure>
+
+<p>Y para guardar el resultado, como queremos persistirlo en formato <em>Parquet</em>, únicamente hemos de crear y seleccionar el <em>ParquetRecordSetWriter</em>, donde no hemos de configurar nada.</p>
+<h4 id="almacenando-en-s3">Almacenando en S3<a class="headerlink" href="#almacenando-en-s3" title="Permanent link">&para;</a></h4>
+<p>Del mismo modo que antes, volvemos a utilizar el procesador <em>PutS3Object</em> para almacenar los datos que provienen de la conexión <code>tempMedia</code>, en este caso, en el bucket <code>iabd-gold</code>.</p>
+<p>Al conectarnos a S3 podemos ver los datos que se van almacenando:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>[cloudshell-user@ip-10-6-106-167 ~]$ aws s3 ls s3://iabd-nifi/gold/
+<span class="linenos" data-linenos="2 "></span>2023-03-12 18:10:47       1376 2023-03-12 19:10:00.parquet
+<span class="linenos" data-linenos="3 "></span>2023-03-12 18:13:50       1376 2023-03-12 19:13:00.parquet
+<span class="linenos" data-linenos="4 "></span>2023-03-12 18:16:52       1376 2023-03-12 19:16:00.parquet
+<span class="linenos" data-linenos="5 "></span>2023-03-12 18:19:55       1376 2023-03-12 19:19:00.parquet
+<span class="linenos" data-linenos="6 "></span>2023-03-12 18:22:57       1376 2023-03-12 19:22:00.parquet
+</code></pre></div>
+<p>Si queremos comprobar los datos <em>Parquet</em> almacenados, podemos acceder a la consola de S3 y sobre uno de los archivos realizar una consulta <em>S3Select</em> seleccionando que los datos de entrada están en formato <em>Parquet</em> y los de salida, por ejemplo, en JSON:</p>
+<figure style="align: center;">
+    <img alt="Consulta con S3Select en Nifi" src="images/05caso7s3select1.png">
+    <figcaption>Consulta con S3Select</figcaption>
+</figure>
+
+<p>Y realizamos un consulta para mostrar todos los datos y ver el resultado:</p>
+<figure style="align: center;">
+    <img alt="Consulta con S3Select en Nifi" src="images/05caso7s3select2.png">
+    <figcaption>Consulta con S3Select</figcaption>
+</figure>
+
+<h4 id="datos-agregado-en-mongodb">Datos agregado en MongoDB<a class="headerlink" href="#datos-agregado-en-mongodb" title="Permanent link">&para;</a></h4>
+<p>Para almacenar el dato calculado en MongoDB en esta ocasión utilizaremos el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongoRecord/index.html">PutMongoRecord</a> indicando de nuevo la base de datos (<code>iabd</code>), la colección (<code>caso7gold</code>) y en este caso que el encargado de las lecturas será un <em>ParquetReader</em></p>
+<figure style="align: center;">
+    <img alt="Caso 7 - Persistiendo en MongoDB mediante PutMongoRecord en Nifi" src="images/05caso7put-mongo-record.png">
+    <figcaption>Caso 7 - Persistiendo en MongoDB mediante PutMongoRecord</figcaption>
+</figure>
+
+<p>De esta manera, ahora sí que se almacena la fecha correctamente y los datos numéricos también:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="err">iabd&gt;</span><span class="w"> </span><span class="err">db.caso</span><span class="mi">7</span><span class="err">gold.</span><span class="kc">f</span><span class="err">i</span><span class="kc">n</span><span class="err">d()</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="p">[</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="w">  </span><span class="p">{</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">    </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;640ef91d12ca74269a8cf80a&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">    </span><span class="err">ciudad</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Elche/Elx&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">    </span><span class="kc">fe</span><span class="err">cha</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2023-03-13T09:21:17.000Z&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">    </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">Decimal</span><span class="mi">128</span><span class="err">(</span><span class="s2">&quot;22.000000000&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">    </span><span class="err">humedad</span><span class="p">:</span><span class="w"> </span><span class="err">Decimal</span><span class="mi">128</span><span class="err">(</span><span class="s2">&quot;42.000000000&quot;</span><span class="err">)</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">  </span><span class="p">},</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">  </span><span class="p">{</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">    </span><span class="err">_id</span><span class="p">:</span><span class="w"> </span><span class="err">Objec</span><span class="kc">t</span><span class="err">Id(</span><span class="s2">&quot;640f050312ca74269a8cf83c&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">    </span><span class="err">ciudad</span><span class="p">:</span><span class="w"> </span><span class="err">&#39;Elche/Elx&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">    </span><span class="kc">fe</span><span class="err">cha</span><span class="p">:</span><span class="w"> </span><span class="err">ISODa</span><span class="kc">te</span><span class="err">(</span><span class="s2">&quot;2023-03-13T09:52:45.000Z&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="kc">te</span><span class="err">mp</span><span class="p">:</span><span class="w"> </span><span class="err">Decimal</span><span class="mi">128</span><span class="err">(</span><span class="s2">&quot;22.000000000&quot;</span><span class="err">)</span><span class="p">,</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="err">humedad</span><span class="p">:</span><span class="w"> </span><span class="err">Decimal</span><span class="mi">128</span><span class="err">(</span><span class="s2">&quot;42.000000000&quot;</span><span class="err">)</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">  </span><span class="p">},</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">  </span><span class="err">...</span>
+<span class="linenos" data-linenos="18 "></span><span class="p">]</span>
+</code></pre></div>
+<p>En resumen, el flujo completo del caso de uso sería:</p>
+<figure style="align: center;">
+    <img alt="Flujo completo del caso 7 en Nifi" src="images/05caso7flujo-completo.png">
+    <figcaption>Flujo completo del caso 7</figcaption>
+</figure>
+
 <h2 id="api-rest">API REST<a class="headerlink" href="#api-rest" title="Permanent link">&para;</a></h2>
 <p><em>Nifi</em> ofrece un API REST con el cual podemos interactuar de forma similar al interfaz gráfico.</p>
 <p>A partir del host donde tenemos <em>Nifi</em> instalado, las peticiones siguen al nomenclatura <code>/nifi-api/&lt;servicio&gt;</code>, de manera que con nuestra máquina virtual podríamos acceder a información sobre la instalación mediante <a href="https://localhost:8443/nifi-api/flow/about">https://localhost:8443/nifi-api/flow/about</a>.</p>
@@ -1922,10 +2136,10 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 <li>Código, nombre y apellidos del cliente.</li>
 </ul>
 <p>Dichos datos se tienen que persistir en dos colecciones las cuales se rellenen automáticamente utilizando tanto el uso de registros (en la colección <code>caso6-records</code>) como los <em>flowfile</em> separados de forma individual (<code>caso6-split</code>).</p>
-<p>Además, indica que cambios habría que realizar en Nifi para ingestar de forma continua los pedidos de la última hora.</p>
+<p>Además, indica que cambios habría que realizar en <em>Nifi</em> para ingestar de forma continua los pedidos de la última hora.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 7.</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 7 recogiendo los datos de <em>AEMET</em> y almacenando los datos en S3 a modo de <em>data lake</em> tanto los datos en crudo como los datos agregados y de forma simultánea en <em>MongoDB</em>, pero realizando peticiones cada 30 segundos y los datos agregados cada 3 minutos.</p>
 </li>
 </ol>
 
