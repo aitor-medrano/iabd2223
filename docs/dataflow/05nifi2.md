@@ -1,6 +1,6 @@
 ---
-title: Apache Nifi Avanzado. Grupos, funnels, plantillas. ETL entre Twitter, MongoDB y Elasticsearch.
-description: Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT, entre Twitter, MongoDB y Elasticsearch. Uso de grupos, funnels y plantillas con Nifi.
+title: Apache Nifi Avanzado. Grupos, funnels y plantillas.
+description: Casos de usos resueltos mediante Apache Nifi entre MySQL y MongoDB. Uso de grupos, funnels y plantillas con Nifi. Apuntes y ejercicios.
 ---
 
 # Nifi Avanzado
@@ -28,7 +28,7 @@ Para ello, vamos a conectar un procesador *GetFile* con un *SplitText* y finalme
 El procesador *SplitText* nos permite dividir cualquier flujo de texto en fragmentos a partir del número de líneas que queramos (pudiendo tener encabezados, ignorar las líneas en blanco, etc...)
 
 <figure style="align: center;">
-    <img src="images/05caso0.png">
+    <img alt="Dividimos un archivo en fragmentos en Nifi" src="images/05caso0.png">
     <figcaption>Dividimos un archivo en fragmentos</figcaption>
 </figure>
 
@@ -39,9 +39,23 @@ Una vez lo tenemos funcionando, vamos a colocar el procesador *SplitText* dentro
 Para ello, desde la barra superior arrastramos el icono de *Process Group* y lo nombramos como *grupo*.
 
 <figure style="align: center;">
-    <img src="images/05caso0group.gif">
+    <img alt="Creación de un grupo en Nifi" src="images/05caso0group.gif">
     <figcaption>Creación de un grupo</figcaption>
 </figure>
+
+### Importando un flujo
+
+Otra manera de crear un grupo es a partir de una definición de flujo, tal como hemos entregando los ejercicios de la sesión anterior.
+
+En cualquier momento, sobre el área de trabajo de un flujo, con el botón derecho, podemos seleccionar la opción *Download flow definition*, el cual nos descarga un archivo JSON con la definición del flujo.
+
+Cuando arrastramos un grupo de procesadores al área de trabajo, nos aparece la opción de ponerle un nombre o, si pulsamos sobre el icono, cargar uno ya existente:
+
+<figure style="align: center;">
+    <img alt="Importando un flujo en Nifi" src="images/05import-process-group.png">
+    <figcaption>Importando un flujo en Nifi</figcaption>
+</figure>
+
 
 ### Puertos
 
@@ -138,9 +152,9 @@ Tenemos tres componentes a destacar:
 * Procesador de registros:
     * `ConvertRecord`: convierte entre formatos y/o esquemas similares. Por ejemplo, la conversión de CSV a Avro se puede realizar configurando `ConvertRecord` con un `CsvReader` y un `AvroRecordSetWriter`. Además, la conversión de esquemas entre esquemas similares se puede realizar cuando el esquema de escritura es un subconjunto de los campos del esquema de lectura o si el esquema de escritura tiene campos adicionales con valores propuestos.
     * `LookupRecord`: extrae uno o más campos de un registro y busca un valor para esos campos en un `LookupService` (ya sea a un fichero CSV, XML, accediendo a una base de datos o un servicio REST, etc...). Estos servicios funcionan como un mapa, de manera que reciben la clave y el servicio devuelve el valor. Puedes consultar más información en la serie de artículos [Data flow enrichment with NiFi part: LookupRecord processor](https://community.cloudera.com/t5/Community-Articles/Data-flow-enrichment-with-NiFi-part-1-LookupRecord-processor/ta-p/246940) y un ejemplo completo en [Enriching Records with LookupRecord & REST APIs in NiFi](https://alasdairb.com/2021/05/16/enriching-records-with-lookuprecord-rest-apis-in-nifi/).
-    * `QueryRecord`: ejecuta una declaración SQL contra los registros y escribe los resultados en el contenido del archivo de flujo. Este es el procesador que usamos en el [caso 3 de la sesión anterior](04nifi1.md#caso-3---filtrado-de-datos).
+    * `QueryRecord`: ejecuta una declaración SQL contra los registros y escribe los resultados en el contenido del archivo de flujo. Este es el procesador que usamos en el [caso 3 de la sesión anterior](04nifi1.md#caso-3-filtrado-de-datos).
     * `ConsumeKafkaRecord_N_M`: utiliza el *Reader* de registros configurado para deserializar los datos sin procesar recuperados de Kafka, y luego utiliza el *Writer* de registros configurado para serializar los registros al contenido del archivo de flujo.
-    * `PublicarKafkaRecord_N_M`: utiliza el *Reader* de registros configurado para leer el archivo de flujo entrante como registros, y luego utiliza el *Writer* de registros configurado para serializar cada registro para publicarlo en Kafka.
+    * `PublishKafkaRecord_N_M`: utiliza el *Reader* de registros configurado para leer el archivo de flujo entrante como registros, y luego utiliza el *Writer* de registros configurado para serializar cada registro para publicarlo en Kafka.
 
 ### Convirtiendo formatos
 
@@ -158,7 +172,7 @@ El flujo de datos resultante será similar a:
 En concreto, en el caso del *ConvertRecord*, hemos utilizado los siguientes elementos:
 
 <figure style="align: center;">
-    <img src="images/05caso5configureRecord.png">
+    <img alt="Configuración de ConvertRecord en Nifi" src="images/05caso5configureRecord.png">
     <figcaption>Configuración de ConvertRecord</figcaption>
 </figure>
 
@@ -173,377 +187,639 @@ Tal como hemos comentado, necesitamos renombrar el fichero de salida. Para ello,
     <figcaption>Modificando la extensión de filename</figcaption>
 </figure>
 
-## Caso 6: Trabajando con Elasticsearch
+## Caso 6: Trabajando con MySQL
 
-En bloques anteriores ya hemos trabajado con *Elasticsearch*. En nuestro caso, tenemos la versión 7.16 descargada en la carpeta `/opt/elasticsearch-7.16.0` de nuestra máquina virtual.
+¿Y si queremos recuperar datos de una base de datos relacional y guardarla en MongoDB? Para ello, podemos utilizar el procesador ExecuteSQLRecord que nos permite realizar cualquier tipo de operación SQL sobre un base de datos relacional y tratar los datos devueltos como un conjunto de registros.
 
-!!! tip "Elasticsearch+Nifi via Docker"
-    Si queremos utilizarlo mediante *Docker*, necesitamos que *ElasticSearch* y *Nifi* estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo [docker-compose.yml](resources/nifi-elastic/docker-compose.yml):
+!!! tip "Nifi + MongoDB + MySQL via Docker"
 
-    ``` yaml title="docker-compose.yml"
-    services:
-        nifi:
-            ports:
-                - "8443:8443"
-            image: apache/nifi:latest
-            environment:
-                SINGLE_USER_CREDENTIALS_USERNAME: nifi
-                SINGLE_USER_CREDENTIALS_PASSWORD: nifinifinifi
-            links:
-                - elasticsearch
-        elasticsearch:
-            ports:
-                - "9200:9200"
-                - "9300:9300"
-            environment:
-                discovery.type: single-node
-            image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
-    ```
-
-    Una vez creado el archivo, construimos el contenedor mediante:
-
-    ``` bash
-    docker-compose -p nifielasticsearch up -d
-    ```
-
-Recordad que necesitamos arrancarla mediante el comando `./bin/elasticsearch`. Para comprobar que ha ido todo bien, podemos ejecutar la siguiente petición:
-
-``` bash
-curl -X GET 'localhost:9200/_cat/health?v=true&pretty'
-```
-
-El procesador con el que vamos a trabajar es del tipo *PutElasticSearchHttp*, en el cual vamos a configurar:
-
-* *Elasticsearch URL*: `http://localhost:9200` (en el caso de usar *Docker*, deberás cambiar `localhost` por el nombre del servicio: `http://elasticsearch:9200`)
-* *Index*: aquí vamos a poner como valor la palabra `peliculas`.
-* marcamos la opción de autoterminar para las conexiones *retry* y *failure*.
-
-Una vez creado el procesador, vamos a alimentarlo a partir de los datos de un fichero JSON, mediante el procesador que ya conocemos *GetFile*. Podéis descargar el fichero de pruebas [movies.json](resources/movies.json) y colocarlo en la carpeta donde hayamos configurado.
-
-<figure style="align: center;">
-    <img src="images/05caso6lectura.png">
-    <figcaption>Lectura de JSON e inserción en Elasticsearch</figcaption>
-</figure>
-
-Una vez ejecutado, para comprobar que se han introducido los datos podemos ejecutar la siguiente petición:
-
-``` bash
-curl -X  GET "localhost:9200/peliculas/_search?pretty"
-```
-
-Y veremos cómo se han introducido en *Elasticsearch*:
-
-``` json
-{
-"took": 46,
-"timed_out": false,
-"_shards": {
-    "total": 1,
-    "successful": 1,
-    "skipped": 0,
-    "failed": 0
-},
-"hits": {
-    "total": {
-        "value": 1,
-        "relation": "eq"
-    },
-    "max_score": 1,
-    "hits": [
-        {
-            "_index": "peliculas",
-            "_type": "_doc",
-            "_id": "FTUyU30BBEE3YF7Zlgn1",
-            "_score": 1,
-            "_source": {
-                "movies": [
-                    {
-                        "title": "The Shawshank Redemption",
-                        "rank": "1",
-                        "id": "tt0111161"
-                    },
-```
-
-Si nos fijamos bien, realmente solo ha insertado un documento que contiene un array de películas, lo cual no está bien.
-
-### Separando los datos
-
-Así pues, previamente debemos separar el array contenido dentro de `movies.json` en documentos individuales.
-
-!!! warning "Borrar el índice"
-    Recuerda que antes de meter nuevos datos, necesitamos eliminar el índice de ElasticSearch mediante `curl -X DELETE "localhost:9200/peliculas"`.
-
-Para dividir el documento de películas en documentos individuales, necesitamos utilizar el procesador *SplitJSON*. Lo conectamos entre los dos procesadores anteriores, y le indicamos en la propiedad *JSonPath Expression* la expresión donde se encuentran las películas: `$.movies.*`
-
-<figure style="align: center;">
-    <img src="images/05caso6split.png">
-    <figcaption>Separamos las películas</figcaption>
-</figure>
-
-Y ahora si volvemos a consultar el índice mediante `curl -X  GET "localhost:9200/peliculas/_search?pretty"`, sí que veremos que ha insertado las cien películas por separado:
-
-``` json
-{
-  "took" : 5,
-  "timed_out" : false,
-  "_shards" : {
-    "total" : 1,
-    "successful" : 1,
-    "skipped" : 0,
-    "failed" : 0
-  },
-  "hits" : {
-    "total" : {
-      "value" : 100,
-      "relation" : "eq"
-    },
-    "max_score" : 1.0,
-    "hits" : [
-      {
-        "_index" : "peliculas",
-        "_type" : "_doc",
-        "_id" : "X-uaWH0BesFhA-H6MMxA",
-        "_score" : 1.0,
-        "_source" : {
-          "title" : "The Shawshank Redemption",
-          "rank" : "1",
-          "id" : "tt0111161"
-        }
-      },
-      {
-        "_index" : "peliculas",
-        "_type" : "_doc",
-        "_id" : "YOuaWH0BesFhA-H6MMxC",
-        "_score" : 1.0,
-        "_source" : {
-          "title" : "The Godfather",
-          "rank" : "2",
-          "id" : "tt0068646"
-        }
-      },
-```
-
-## Caso 7: de Twitter a Elasticsearch/MongoDB
-
-Para este caso de uso, vamos a recoger datos de *Twitter* y los vamos a meter tanto en *MongoDB* como en *ElasticSearch* a la vez.
-
-El primer paso es obtener unas credenciales de desarrollador por parte de *Twitter* para poder acceder a su API.
-Para ello, en <https://developer.twitter.com/> creamos una cuenta de desarrollador y creamos un proyecto.
-
-<figure style="align: center;">
-    <img src="images/05twitterdev.png">
-    <figcaption>Claves necesarias para conectar con Twitter</figcaption>
-</figure>
-
-!!! tip "Nifi+Elasticsearch+MongDB via Docker"
-    Si queremos realizar este caso de uso mediante Docker, necesitamos que ElasticSearch, MongoDB y Nifi estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo [docker-compose.yml](resources/nifi-elastic-mongodb/docker-compose.yml):
+    Para poder acceder a MySQL y MongoDB desde la imagen de Nifi, necesitamos que formen parte de la misma red. Para ello, del mismo modo que hemos realizado en la sesión anterior, lo más cómodo es utilizar *Docker Compose* y definir las dependencias mediante el fichero de configuración de [docker-compose.yml](resources/nifi-mysql-mongodb/docker-compose.yml):
 
     ``` yaml title="docker-compose.yml"
     services:
         nifi:
             ports:
-                - "8443:8443"
+            - "8443:8443"
             image: apache/nifi:latest
             environment:
-                SINGLE_USER_CREDENTIALS_USERNAME: nifi
-                SINGLE_USER_CREDENTIALS_PASSWORD: nifinifinifi
-                NIFI_JVM_HEAP_MAX: 2g
+            SINGLE_USER_CREDENTIALS_USERNAME: nifi
+            SINGLE_USER_CREDENTIALS_PASSWORD: nifinifinifi
+            NIFI_JVM_HEAP_MAX: 2g
             links:
-                - elasticsearch
-                - mongodb
-        elasticsearch:
+            - elasticsearch
+            - mongodb
+            - mysql
+        mysql:
+            image: mysql:latest
+            container_name: iabd-mysql
+            restart: always
+            command: --default-authentication-plugin=mysql_native_password
             ports:
-                - "9200:9200"
-                - "9300:9300"
+            - "3306:3306"
             environment:
-                discovery.type: single-node
-                image: docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+            TZ: Europe/Madrid
+            MYSQL_ROOT_PASSWORD: iabd
+            MYSQL_DATABASE: retail_db
+            MYSQL_USER: iabd
+            MYSQL_PASSWORD: iabd
         mongodb:
             ports:
-                - "27017:27017"
+            - "27017:27017"
             image: mongo:latest
     ```
 
-    Una vez creado el archivo, construimos el contenedor mediante:
+    Una vez colocado el [driver de MySQL](resources/nifi-mysql-mongodb/mysql-connector-j-8.0.31.jar) en la misma carpeta, lanzamos *docker-compose*:
 
     ``` bash
-    docker-compose -p nifielasticsearchmongodb up -d
+    docker-compose -p iabd-nifi-mysql-mongodb up -d
     ```
 
-### Leyendo tweets
+    Tras arrancar los contenedores, la primera vez, deberemos cargar la [base de datos](resources/nifi-mysql-mongodb/create_db.sql):
 
-Vamos a recuperar cada 100 segundos los mensajes que contengan la palabra **bigdata**.
+    ``` bash
+    docker exec -i iabd-nifi-mysql-mongodb mysql -h 0.0.0.0 -P 3306 -uiabd -piabd retail_db < create_db.sql
+    ```
 
-!!! warning "Procesador GetTwitter - Twitter Elevated"
-    Para poder utilizar el procesador de Nifi *GetTwitter* es necesario acceder al *Twitter API v1.1*, la cual solo está disponible para las cuentas con un nivel *Elevated*. Por ello, en vez de utilizar las credenciales habituales (API Key, API Key Secret, Access Token y Access Token Secret), vamos a realizar el acceso mediante una petición HTTP utilizando un token de validación, conocido como *Bearer Token* (lo cual es una mejor práctica de seguridad).
+    A partir de aquí, es importante destacar que la *url* de conexión a la base de datos, en vez de acceder a `localhost`, lo hace al nombre del contenedor `iabd-mysql`:
 
-Para ello, usamos un procesador *InvokeHTTP* y configuramos los siguientes parámetros:
+    ``` python
+    url = "jdbc:mysql://iabd-mysql/retail_db"
+    ```
 
-* En la planificación, vamos a configurar que se realice una petición cada 100 segundos, configurando *Run Schedule* a `100s`.
-* *HTTP Method*: `GET`
-* *Remote UR*L: `https://api.twitter.com/2/tweets/search/recent?query=bigdata&tweet.fields=created_at,lang,public_metrics`
-    * Mediante el parámetro `query` indicamos el término a buscar. En nuestro caso, buscamos la palabra `bigdata`.
-    * Mediante el parámetro `tweet.field` indicamos los campos a recuperar (por defecto recupera el id y el texto de cada *tweet*)
-        * Puedes comprobar todos los campos que podemos obtener de los mensajes en <https://developer.twitter.com/en/docs/twitter-api/data-dictionary/object-model/tweet>
-* Añadimos una propiedad (mediante el icono del signo `+`) que nombramos como *Authorization* y le asignamos la palabra *Bearer* y el token que copiamos desde la administración de Twitter: `Bearer AAAAAAAAAAAAAAAAAAAAAIGNWAEAAAAA...`
+Para este caso de uso, vamos a conectar la ejecución de SQL del procesador *ExecuteSQLRecord*, con un procesador *SplitText* encargado de separar el resultado de la consulta en múltiples *flowfiles*, para posteriormente insertar estos mediante el procesador *PutMongo*:
 
 <figure style="align: center;">
-    <img src="images/05caso7twitter.gif">
-    <figcaption>Caso 7: Comprobando la lectura de mensajes de Twitter</figcaption>
+    <img alt="Flujo del caso 6 en Nifi" src="images/05caso6mariadb-mongodb.png">
+    <figcaption>Flujo del caso 6</figcaption>
 </figure>
 
-Tras realizar una petición, obtendremos un FF similar a la siguiente información (he dejado sólo dos mensajes para facilitar la visualización):
+Así pues, veamos paso a paso cómo configuramos cada procesador.
 
-``` json
+### Ejecutando la consulta
+
+Tal como hemos dicho, el primer paso es crear un procesador de tipo [*ExecuteSQLRecord*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ExecuteSQLRecord/index.html) que será el encargado de realizar la consulta a la base de datos.
+
+Los dos elementos principales que debemos configurar en el procesador son:
+
+* la entrada de los datos, mediante un *DBCPConnectionPool*
+* la consulta SQL donde recuperamos todos los datos de la tabla `customers`.
+* la salida de los datos, que en nuestro caso, hemos elegido *JSONRecordSetWriter* para facilitar su posterior inserción en MongoDB.
+
+<figure style="align: center;">
+    <img alt="Caso 6 - Procesador ExecuteSQLRecord en Nifi" src="images/05caso6execute-sql-record.png">
+    <figcaption>Caso 6 - Procesador ExecuteSQLRecord</figcaption>
+</figure>
+
+#### Configurando la conexión a la base de datos
+
+Al crear el servicio para la conexión a la base de datos, seleccionaremos un [DBCPConnectionPool](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-dbcp-service-nar/latest/org.apache.nifi.dbcp.DBCPConnectionPool/index.html) donde indicaremos:
+
+* la URL para conectarnos a la base de datos: `jdbc:mysql://localhost/retail_db`
+* el driver empleado: `com.mysql.cj.jdbc.Driver`
+* la ruta donde encontrar el driver: `/opt/mysql-connector-j-8.0.31.jar` (podéis [descargarlo desde aquí](resources/mysql-connector-j-8.0.31.jar) y colocarlo en la carpeta)
+* usuario y contraseña de la base de datos: `iabd` / `iabd`
+
+<figure style="align: center;">
+    <img alt="Configuración de DBCPConnectionPool en Nifi" src="images/05caso6dbcp.png">
+    <figcaption>Configuración de DBCPConnectionPool</figcaption>
+</figure>
+
+#### Salida en JSON
+
+Respecto al [JSONRecordSetWriter](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-record-serialization-services-nar/latest/org.apache.nifi.json.JsonRecordSetWriter/index.html), únicamente vamos a configurar la propiedad *Outgoing grouping* con el valor `One Line per Object`, para que cada documento JSON ocupe una única línea.
+
+### Dividiendo los datos
+
+Tras conectar el procesador *ExecuteSQLRecord* con *SplitText*, en éste último configuraremos:
+
+* *Line Split Count* a `1`, tal como acabamos de configurar, cada documento sólo ocupa una línea.
+* *Header Line Count* a `0`, ya que los datos no contiene encabezado.
+
+### Persistiendo en MongoDB
+
+<figure style="float: right;">
+    <img alt="Configuración de MongoDBControllerService en Nifi" src="images/05caso6mongodb-controller-service.png">
+    <figcaption>Configuración de MongoDBControllerService</figcaption>
+</figure>
+
+Para guardar los datos en *MongoDB*, volvemos a utilizar el procesador [PutMongo](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongo/index.html), pero a diferencia de la sesión anterior, en este caso vamos a utilizar un servicio de cliente donde previamente hemos configurado la conexión con MongoDB. De esta manera, ya no necesitamos configurar la URI ni la autenticación.
+
+!!! caution "Arrancar MongoDB"
+    Recuerda arrancar *MongoDB* mediante `sudo service mongod start`
+
+Para ello, si nos centramos en la instalación de nuestra máquina virtual donde no tenemos activado ningún tipo de autenticación, creamos un [MongoDBControllerService](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-services-nar/latest/org.apache.nifi.mongodb.MongoDBControllerService/index.html) y configuramos:
+
+* la URI: `mongodb://localhost`
+* el usuario y la contraseña: no los rellenamos
+* el tipo de autenticación: `NONE`
+
+Una vez activado el servicio, en nuestro procesador *PutMongo* ya no necesitamos configurar los datos anteriores, y por lo tanto, será similar a:
+
+<figure style="align: center;">
+    <img alt="Configuración de PutMongo en Nifi" src="images/05caso6putmongo.png">
+    <figcaption>Configuración de PutMongo</figcaption>
+</figure>
+
+### Trabajando sólo con registros
+
+¿Para qué transformamos los datos a JSON cuando podemos directamente persistir los datos en MongoDB como conjuntos de registros?
+
+Nifi ofrece el procesador [PutMongoRecord](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongoRecord/index.html) que espera como entrada un conjunto de registros y realiza la misma lógica que *PutMongo*. Así pues, vamos a conectar directamente la salida de la ejecución de SQL con un procesador de tipo *PutMongoRecord*:
+
+<figure style="align: center;">
+    <img alt="Uso de PutMongoRecord en Nifi" src="images/05caso6mariadb-mongodb-record.png" width="350px">
+    <figcaption>Uso de PutMongoRecord</figcaption>
+</figure>
+
+Y configuramos el procesador:
+
+<figure style="align: center;">
+    <img alt="Configuración de PutMongoRecord en Nifi" src="images/05caso6putmongorecord.png">
+    <figcaption>Configuración de PutMongoRecord</figcaption>
+</figure>
+
+## Caso 7: de AEMET a MongoDB y S3
+
+Para este caso de uso, vamos a recoger datos de un servicio REST, en concreto, datos climatológicos de la Agencia Estatal de METeorología (AEMET) y los vamos a persistir tanto en *MongoDB* como en un lago de datos almacenado en *S3*.
+
+Aunque [AEMET](https://www.aemet.es/) ofrece su [propia API](https://opendata.aemet.es/centrodedescargas/inicio) para obtener datos, vamos a utilizar el [API pública](https://www.el-tiempo.net/api) de <https://www.el-tiempo.net>, la cual simplifica su uso.
+
+En concreto, nos vamos a centrar en realizar llamadas a la  URL <https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065>, en la cual vamos a recuperar los datos del municipio de Elche (`03065`) que pertenece a la provincia de Alicante (`03`), obteniendo datos similares a:
+
+``` json hl_lines="15 26 31"
 {
-   "data":[
-      {
-         "id":"1468197767885561856",
-         "text":"RT @CatherineAdenle: Machine Learning Algorithms in Python You Must Learn \n#DataScience #MachineLearning\n#BigData #Analytics #AI #Tech #Alg…",
-         "created_at":"2021-12-07T12:36:40.000Z",
-         "public_metrics":{
-            "retweet_count":22,
-            "reply_count":0,
-            "like_count":0,
-            "quote_count":0
-         },
-         "lang":"en"
-      },
-      ...
-      {
-         "id":"1468197570925277190",
-         "text":"RT @gp_pulipaka: A Quick Intro to Deep Learning Course! #BigData #Analytics #DataScience #AI #MachineLearning #IoT #IIoT #Python #RStats #T…",
-         "created_at":"2021-12-07T12:35:53.000Z",
-         "public_metrics":{
-            "retweet_count":60,
-            "reply_count":0,
-            "like_count":0,
-            "quote_count":0
-         },
-         "lang":"en"
-      }
-   ],
-   "meta":{
-      "newest_id":"1468197767885561856",
-      "oldest_id":"1468197570925277190",
-      "result_count":10,
-      "next_token":"b26v89c19zqg8o3fpdy8xh0ikrj9fhq1nywqt95oqkxh9"
-   }
+  "origin": {
+    "productor": "Agencia Estatal de Meteorología - AEMET. Gobierno de España",
+    "web": "https://www.aemet.es",
+    ...
+  },
+  "title": "elTiempo.net | El tiempo en Elche/Elx (Alacant/Alicante)",
+  ...
+  "municipio": {
+    "CODIGOINE": "03065000000",
+    "ID_REL": "1030651",
+    "COD_GEO": "03320",
+    "CODPROV": "03",
+    "NOMBRE_PROVINCIA": "Alacant/Alicante",
+    "NOMBRE": "Elche/Elx",
+    "POBLACION_MUNI": 228647,
+    "SUPERFICIE": 32606.7487,
+    "PERIMETRO": 91751,
+    ...
+  },
+  "fecha": "2023-03-10",
+  "stateSky": {
+    "description": "Nubes altas",
+    "id": "17"
+  },
+  "temperatura_actual": "24",
+  "temperaturas": {
+    "max": "27",
+    "min": "15"
+  },
+  "humedad": "24",
+  "viento": "18",
+  "precipitacion": "0",
+  "lluvia": "",
+  ...
 }
 ```
 
-A continuación, vamos a separar los mensajes en diferentes FF del mismo modo que acabamos de hacer en el ejercicio anterior. Así pues, añadimos el procesador *SplitJson* y configuramos la división de los mensajes mediante expresión con `$.data.*`.
+De todos los datos recuperados, nos vamos a centrar en recuperar la ciudad, la temperatura y la humedad.
 
-### Evaluando el idioma
+### Bronze: Petición REST y S3
 
-Con esta información, hemos decidido enviar todos los mensajes que vengan en inglés (`"lang": "en"`) a *ElasticSearch*, y los que vengan en castellano a MongoDB.
+Para recuperar los datos a partir del servicio REST necesitamos utilizar el procesador [InvokeHTTP](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.InvokeHTTP/index.html), mediante el cual hacemos la petición GET a la URL <https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065>.
 
-Mediante el procesador *EvaluateJsonPath*, vamos a colocar en atributos la siguiente información que queremos almacenar, definiendo la propiedad *Destination* como `flow-attribute`:
+En este ejemplo, hemos definido que se ejecute cada 60 segundos (en la pestaña *Scheduling*, completamos la propiedad *Run Schedule* a `60 sec`).
 
-Para ello creamos los siguientes atributos con la expresión para acceder al campo JSON asociado:
+Para seguir el enfoque de *data lake*, vamos a almacenar en crudo el resultado de la petición en S3, utilizando el procesador *PutS3Object*, pero previamente necesitamos añadir el atributo `filename` para ponerle un nombre el archivo guardado.
 
-* twitter.id: `$.id`
-* twitter.text: `$.text`
-* twitter.lang: `$.lang`
-* twitter.created_at: `$.created_at`
-* twitter.rt: `$.public_metrics.retweet_count`
-* twitter.likes: `$.public_metrics.like_count`
+!!! info "Data Lake"
+    Respecto a la estructura del *data lake*, vamos a crear un *bucket* que llamaremos `iabd-nifi` donde añadiremos a su vez tres carpetas:
+
+    * `iabd-nifi/bronze`: donde colocaremos los documentos JSON tal cual los recibimos de la petición REST.
+    * `iabd-nifi/silver`: donde guardaremos cada minuto documentos JSON con la siguiente estructura:
+
+        ``` json
+        {
+            "fecha":"2023-03-13 10:17:20",
+            "ciudad":"Elche/Elx",
+            "temp":"20",
+            "humedad":"47"
+        }
+        ```
+
+    * `iabd-nifi/gold`: donde guardaremos cada diez minutos documentos *Parquet* con la misma estructura que antes, pero con las medias de las temperaturas y las humedades:
+
+        ``` json
+        {
+            "fecha": "2023-03-13T08:17:20.000Z",
+            "ciudad": "Elche/Elx",
+            "temp": 20,
+            "humedad": 47
+        }
+        ```
+
+#### Creando el bucket
+
+Tras entrar a la consola de AWS creamos el *bucket* y le damos acceso público y, en la pestaña *Permisos*, configuramos la política del *bucket* para permitir tanto el almacenamiento como la recuperación de datos:
+
+``` json hl_lines="13 20"
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "UploadNifi",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": [
+                "s3:ListMultipartUploadParts",
+                "s3:PutObject",
+                "s3:GetObject"
+            ],
+            "Resource": "arn:aws:s3:::iabd-nifi/*"
+        },
+        {
+            "Sid": "UploadNifiListBucket",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:ListBucketMultipartUploads",
+            "Resource": "arn:aws:s3:::iabd-nifi"
+        }
+    ]
+}
+```
+
+#### Nombrando el fichero
+
+Tras recibir la petición REST vamos a crear dos nuevos atributos mediante el procesador *UpdateAttribute* para darle un nombre a los ficheros que vamos a almacenar y crear un atributo con la fecha de la petición:
+
+* `fecha`: `${now():format("yyyy-MM-dd HH:mm:ss")}`
+* `filename`: `${now():format("yyyy-MM-dd HH:mm:ss")}.json`
+
+Podemos observar como ademas hemos creado un atributo `fecha` para poder almacenar el *timestamp* de cada mensaje (dicha información no viene en la respuesta de la petición REST, únicamente viene la fecha).
+
+#### Persistiendo en S3
+
+!!! tip inline end "Clave en AWS Academy"
+    Recuerda que puedes recuperar las claves desde *AWS CLI* en *AWS Details* al arrancar el laboratorio de *Learner Labs*.
+
+Para conectar *Nifi* con *S3* necesitamos obtener nuestras credenciales de *AWS* (en nuestro caso de *AWS Academy*) y copiarlas en `~/.aws/credentials`:
+
+``` properties
+[default]
+aws_access_key_id=ASI...
+aws_secret_access_key=otO8...
+aws_session_token=FwoGZ...
+```
+
+Tras ello utilizamos un procesador [PutS3Object](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-aws-nar/latest/org.apache.nifi.processors.aws.s3.PutS3Object/index.html) rellenando las siguientes propiedades:
+
+* *Object Key*: `${filename}`
+* *Bucket*: `iabd-nifi/bronze`
+* *Region*: US East (N. Virginia)
+
+Y finalmente conectamos los tres procesadores conforme a la imagen del lateral donde, para dotar de mayor información a los procesadores, les hemos puesto nombres descriptivos:
+
+* La petición REST a modificar los atributos mediante la conexión *Response*.
+* La modificación de atributos al almacenamiento en S3 mediante *success*.
 
 <figure style="align: center;">
-    <img src="images/05caso7evaluateJson.png">
-    <figcaption>Caso 7: Creamos atributos con información de los tweets</figcaption>
+    <img alt="Flujo de la petición REST hasta S3 en Nifi" src="images/05caso7rest-s3-bronze.png">
+    <figcaption>Flujo de la petición REST hasta S3</figcaption>
 </figure>
 
-A continuación, conectamos con el procesador *RouteOnAttribute*.
-
-<figure style="align: center;">
-    <img src="images/05caso71.png">
-    <figcaption>Caso 7: Conexiones para enrutar según el idioma</figcaption>
-</figure>
-
-Dentro del procesador *RouteOnAttribute*, creamos dos propiedas para enrutar los FF según el valor del atributo *twitter.lang*:
-
-* *lang-en*: `${twitter.lang:equals("en")}`
-* *lang-es*: `${twitter.lang:equals("es")}`
-
-<figure style="align: center;">
-    <img src="images/05caso7routeAttribute.png">
-    <figcaption>Caso 7: Enrutamos según el atributo twitter.lang</figcaption>
-</figure>
-
-### Guardando mensajes en inglés en ElasticSearch
-
-Tal como acabamos de hacer, sólo tenemos que añadir el procesador *PutElasticsearchHttp* y configurar las siguientes propiedades:
-
-* *Elasticsearch URL*: `http://localhost:9200` (en el caso de usar *Docker*, deberás cambiar `localhost` por el nombre del servicio: `http://elasticsearch:9200`)
-* *Index*: aquí vamos a poner como valor la palabra `tweets`.
-* marcamos la opción de autoterminar para las conexiones *retry* y *failure*.
-
-A continuación, lo conectamos mediante la conexión `lang-en` que sale del procesador anterior.
-
-Para comprobar que los datos se están insertando correctamente, podemos hacer una petición a:
+Tras ejecutarlos, podemos listar los archivos de nuestro bucket:
 
 ``` bash
-curl -X  GET "localhost:9200/tweets/_search?pretty"
+[cloudshell-user@ip-10-6-106-167 ~]$ aws s3 ls s3://iabd-nifi/bronze/
+2023-03-13 09:12:20      10146 2023-03-12 19:11:44.json
+2023-03-13 09:12:21      10146 2023-03-12 19:12:45.json
+2023-03-13 09:12:22      10146 2023-03-12 19:13:46.json
+2023-03-13 09:12:23      10146 2023-03-12 19:14:47.json
+2023-03-13 09:12:23      10146 2023-03-12 19:15:47.json
+...
 ```
 
-### Guardando mensajes en castellano en MongoDB
+### Silver: De REST a JSON
 
-De forma similar, agregamos el procesador *PutMongo* y configuramos las siguientes propiedades:
+Una vez tenemos las peticiones REST recuperadas (y almacenadas en el *data lake*) vamos a seleccionar los datos que nos interesan y los guardaremos en la capa *silver* en formato JSON.
 
-* Mongo URI: `mongodb://localhost` (en el caso de usar *Docker*, deberás cambiar `localhost` por el nombre del servicio: `mongodb://mongodb`)
-* Mongo Database Name: `iabd`
-* Mongo Collection Name: `tweets`
-
-Tras ello, lo conectamos mediante la conexión `lang-es` (y si queremos, también podemos añadir la conexión `unmatched` de manera que almacenerá los también los mensajes que no estén ni en inglés ni en español. Cuando Twitter no reconoce el lenguaje del mensaje, le asigna como lenguaje *undetermined* mediante el código `und`).
-
-Para comprobar que los datos se están insertando correctamente, una vez conectados a `mongo`, podemos realizar la siguiente consulta:
-
-``` javascript
-use iabd;
-db.tweets.find();
-```
-
-Así pues, el flujo de datos queda tal que así:
+Así pues, el primer paso es utilizar un procesador [EvaluateJSONPath](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.EvaluateJSONPath/index.html) para recoger la ciudad, la temperatura y la humedad. Para ello, hemos de crear tres nuevas propiedades y referenciar a la raíz del documento mediante el `$`, de modo que para recuperar el atributo `temperatura` utilizaremos `$.temperatura`:
 
 <figure style="align: center;">
-    <img src="images/05caso72.png">
-    <figcaption>Caso 7: Flujo de datos con ElasticSearch y MongoDB</figcaption>
+    <img alt="Parseando el JSON en Nifi" src="images/05caso7evaluate-json-path.png">
+    <figcaption>Parseando el JSON</figcaption>
 </figure>
 
-!!! question "Renombrando id"
-    Si queremos que *MongoDB* utilice el id del tweet como la clave de los documentos en *MongoDB* y así asegurar que no tenemos mensajes repetidos, debemos renombrar el campo a `_id`. Para ello, podemos utilizar el procesador *UpdateAttribute* para renombrar `twitter.id` a `_id` y luego el procesador *AttritubesToJSON* para generar la información a almacenar.
+Con este procesador hemos creado tres atributos que contienen el valor de cada propiedades. La conexión que nos permite conectar este procesador con el que contiene los valores es `matched`.
 
-!!! info "REST API"
-    Nifi ofrece un API REST con el cual podemos interactuar de forma similar al interfaz gráfico.
-    Teniendo Nifi arrancado, prueba con las siguientes URL: <https://localhost:8443/nifi-api/access> y <https://localhost:8443/nifi-api/flow/about>.  
-    Más información en <https://nifi.apache.org/docs/nifi-docs/rest-api/index.html>
+#### De atributos a JSON
 
-## Actividades
+Y ahora vamos a pasar esos atributos al contenido del mensaje. Para ello, mediante el procesador [AttributesToJSON](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.AttributesToJSON/index.html) indicamos una lista de atributos separados por comas y configuramos que queremos que coloque el resultado en el contenido del mensaje:
 
-1. Realiza los casos de uso del 5 al 7. En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la plantilla de cada flujo.
+<figure style="align: center;">
+    <img alt="De atributos a JSON Nifi" src="images/05caso7attributes-to-json.png">
+    <figcaption>De atributos a JSON</figcaption>
+</figure>
 
-2. (opcional) Modifica el caso 7 para que los tweets que no están ni en castellano ni en inglés se inserten en una base de datos *MySQL*/*MariaDB*.
+#### Persistencia en S3 y MongoDB
 
-    Para ello, debes recoger la información de los atributos que hemos separado y generar un nuevo JSON con los datos que quieres almacenar (*id*, *text*, *created_at*, *rt* y *likes*) mediante el procesador *AttributestoJSON*. Una vez tengas el JSON, utiliza los procesadores *ConvertJSONToSQL* y *ExecuteSQL* para insertar los datos. Antes deberás crear la tabla en la base de datos. Tienes un ejemplo parecido en el artículo [Using Apache Nifi to Load Tweets from Twitter API to MemSQL](https://medium.com/@moha.ajori/using-apache-nifi-to-load-tweets-from-twitter-api-to-memsql-19e19a3be20e).
+Y con este mensaje que únicamente contiene la información que nos interesa la volvemos a guardar en S3, en este caso en el *bucket* `iabd-nifi/silver`.
 
-    Adjunta capturas de pantalla de la configuración de los procesadores que has añadido, así como de una consulta sobre la base de datos donde aparezcan mensajes insertados y la plantilla del caso de uso completo.
+Además, queremos almacenar los mismos datos en *MongoDB* para facilitar la analítica. Para ello, configuramos la base de datos `iabd` y la colección `caso7silver`.
 
-<!--
-https://github.com/addmeaning/nifi-exercises
--->
+Recapitulando, en este momento nuestro flujo de datos sería similar a la siguiente imagen:
+
+<figure style="align: center;">
+    <img alt="Caso 7 - Flujo hasta silver Nifi" src="images/05caso7flujo-silver.png">
+    <figcaption>Caso 7 - Flujo hasta silver</figcaption>
+</figure>
+
+Si consultamos los datos almacenados en S3 obtendremos:
+
+``` bash
+[cloudshell-user@ip-10-6-106-167 ~]$ aws s3 ls s3://iabd-nifi/silver/
+2023-03-12 18:07:44         79 2023-03-12 19:07:41.json
+2023-03-12 18:08:45         79 2023-03-12 19:08:41.json
+2023-03-12 18:09:46         79 2023-03-12 19:09:43.json
+2023-03-12 18:10:47         79 2023-03-12 19:10:43.json
+...
+```
+
+Además, si realizamos una consulta sobre los datos obtendremos:
+
+``` json
+iabd> db.caso7silver.find()
+[
+  {
+    _id: ObjectId("640ef8b112ca74269a8cf805"),
+    fecha: '2023-03-13 11:18:14',
+    temp: '22',
+    ciudad: 'Elche/Elx',
+    humedad: '42'
+  },
+  {
+    _id: ObjectId("640ef8b112ca74269a8cf806"),
+    fecha: '2023-03-13 11:19:15',
+    temp: '22',
+    ciudad: 'Elche/Elx',
+    humedad: '42'
+  },
+  ...
+]
+```
+
+!!! danger "Formato de la fecha"
+    ¿Te has fijado que la fecha se ha almacenado como una cadena? ¿Cómo podríamos solucionarlo?  
+    Como el procesador *PutMongo* espera el contenido en formato JSON, no podemos configura bien los tipos de datos. En el siguiente apartado usaremos *PutMongoRecord*
+
+### Gold: agregando datos
+
+En este paso, vamos a agrupar mensajes de 10 en 10 (lo que implicaría cada 10 minutos) y calcular las temperaturas y humedades medias, para posteriormente volver a almacenarlo tanto en S3 como en *MongoDB*.
+
+#### Agrupando mensajes
+
+Así pues, el primer paso es agrupar los mensajes. Para ello, tal como hicimos en el [caso 4](04nifi1.md#caso-4-fusionar-datos) utilizaremos el procesador [MergeContent](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeContent/index.html) donde le indicamos que siempre agrupe 10 mensajes y que utilice el salto de línea como delimitador de línea (esto último lo hicimos en la sesión anterior):
+
+<figure style="align: center;">
+    <img alt="Caso 7 - Agrupando mensajes Nifi" src="images/05caso7merge-content.png">
+    <figcaption>Caso 7 - Agrupando mensajes</figcaption>
+</figure>
+
+En este momento, cada FF contiene 10 líneas con mensajes JSON con los datos de los últimos diez minutos.
+
+Al agrupar los datos, como hemos seleccionado que solo mantenga los atributos que eran comunes, tendremos que volver a añadir otro atributo con el nombre del fichero. Así pues, añadimos un nuevo procesador *UpdateAttribute* donde volvemos a crear el atributo `filename`, pero en este caso utilizaremos la expresión `${now():format("yyyy-MM-dd HH:mm")}:00.parquet` para indicarle que los segundos siempre serán `00` (para dejar claro que lo importante son los minutos) y le añadimos la extensión `parquet`, ya que vamos a persistir los datos en ese formato
+
+<figure style="align: center;">
+    <img alt="Caso 7 - Atributo filename en Nifi" src="images/05caso7update-attribute-parquet.png">
+    <figcaption>Caso 7 - Atributo filename</figcaption>
+</figure>
+
+#### Calculando valores mediante SQL
+
+Con esos datos que tenemos en un único FF podemos realizar una consulta SQL que agregue los datos. Para ello, volvemos a utilizar el procesador [*QueryRecord*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.QueryRecord/index.html) con la siguiente consulta (en mi flujo la he denominado `tempMedia`) que obtiene la temperatura y humedad media, agrupada por ciudad, mostrando también la fecha de la última lectura.
+
+``` sql title="tempMedia"
+select ciudad, max(fecha) as fecha, avg(temp) as temp, avg(humedad) as humedad from Flowfile group by ciudad
+```
+
+<figure style="align: center;">
+    <img alt="Caso 7 - Configuración del QueryRecord en Nifi" src="images/05caso7query-record.png">
+    <figcaption>Caso 7 - Configuración del QueryRecord</figcaption>
+</figure>
+
+Para la lectura, como nuestros FF contienen JSON, crearemos y utilizaremos un *JsonTreeReader* donde en el formato del *timestamp* le pondremos el formato que hemos utilizado hasta ahora `yyyy-MM-dd HH:mm:ss`:
+
+<figure style="align: center;">
+    <img alt="Caso 7 - Configuración del JsonTreeReader en Nifi" src="images/05caso7json-tree-reader.png">
+    <figcaption>Caso 7 - Configuración del JsonTreeReader</figcaption>
+</figure>
+
+Y para guardar el resultado, como queremos persistirlo en formato *Parquet*, únicamente hemos de crear y seleccionar el *ParquetRecordSetWriter*, donde no hemos de configurar nada.
+
+#### Almacenando en S3
+
+Del mismo modo que antes, volvemos a utilizar el procesador *PutS3Object* para almacenar los datos que provienen de la conexión `tempMedia`, en este caso, en el bucket `iabd-gold`.
+
+Al conectarnos a S3 podemos ver los datos que se van almacenando:
+
+``` bash1
+[cloudshell-user@ip-10-6-106-167 ~]$ aws s3 ls s3://iabd-nifi/gold/
+2023-03-12 18:10:47       1376 2023-03-12 19:10:00.parquet
+2023-03-12 18:13:50       1376 2023-03-12 19:13:00.parquet
+2023-03-12 18:16:52       1376 2023-03-12 19:16:00.parquet
+2023-03-12 18:19:55       1376 2023-03-12 19:19:00.parquet
+2023-03-12 18:22:57       1376 2023-03-12 19:22:00.parquet
+```
+
+Si queremos comprobar los datos *Parquet* almacenados, podemos acceder a la consola de S3 y sobre uno de los archivos realizar una consulta *S3Select* seleccionando que los datos de entrada están en formato *Parquet* y los de salida, por ejemplo, en JSON:
+
+<figure style="align: center;">
+    <img alt="Consulta con S3Select en Nifi" src="images/05caso7s3select1.png">
+    <figcaption>Consulta con S3Select</figcaption>
+</figure>
+
+Y realizamos un consulta para mostrar todos los datos y ver el resultado:
+
+<figure style="align: center;">
+    <img alt="Consulta con S3Select en Nifi" src="images/05caso7s3select2.png">
+    <figcaption>Consulta con S3Select</figcaption>
+</figure>
+
+#### Datos agregado en MongoDB
+
+Para almacenar el dato calculado en MongoDB en esta ocasión utilizaremos el procesador [PutMongoRecord](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongoRecord/index.html) indicando de nuevo la base de datos (`iabd`), la colección (`caso7gold`) y en este caso que el encargado de las lecturas será un *ParquetReader*
+
+<figure style="align: center;">
+    <img alt="Caso 7 - Persistiendo en MongoDB mediante PutMongoRecord en Nifi" src="images/05caso7put-mongo-record.png">
+    <figcaption>Caso 7 - Persistiendo en MongoDB mediante PutMongoRecord</figcaption>
+</figure>
+
+De esta manera, ahora sí que se almacena la fecha correctamente y los datos numéricos también:
+
+``` json
+iabd> db.caso7gold.find()
+[
+  {
+    _id: ObjectId("640ef91d12ca74269a8cf80a"),
+    ciudad: 'Elche/Elx',
+    fecha: ISODate("2023-03-13T09:21:17.000Z"),
+    temp: Decimal128("22.000000000"),
+    humedad: Decimal128("42.000000000")
+  },
+  {
+    _id: ObjectId("640f050312ca74269a8cf83c"),
+    ciudad: 'Elche/Elx',
+    fecha: ISODate("2023-03-13T09:52:45.000Z"),
+    temp: Decimal128("22.000000000"),
+    humedad: Decimal128("42.000000000")
+  },
+  ...
+]
+```
+
+En resumen, el flujo completo del caso de uso sería:
+
+<figure style="align: center;">
+    <img alt="Flujo completo del caso 7 en Nifi" src="images/05caso7flujo-completo.png">
+    <figcaption>Flujo completo del caso 7</figcaption>
+</figure>
+
+## API REST
+
+*Nifi* ofrece un API REST con el cual podemos interactuar de forma similar al interfaz gráfico.
+
+A partir del host donde tenemos *Nifi* instalado, las peticiones siguen al nomenclatura `/nifi-api/<servicio>`, de manera que con nuestra máquina virtual podríamos acceder a información sobre la instalación mediante <https://localhost:8443/nifi-api/flow/about>.
+
+``` json
+{
+  "about": {
+    "title": "NiFi",
+    "version": "1.19.1",
+    "uri": "https://localhost:8443/nifi-api/",
+    "contentViewerUrl": "../nifi-content-viewer/",
+    "timezone": "CET",
+    "buildTag": "nifi-1.19.1-RC2",
+    "buildRevision": "a7236ec",
+    "buildBranch": "UNKNOWN",
+    "buildTimestamp": "12/05/2022 09:57:12 CET"
+  }
+}
+```
+
+Podemos consultar todas los servicios disponibles en la [documentación oficial](https://nifi.apache.org/docs/nifi-docs/rest-api/index.html).
+
+!!! info inline end "Peticiones REST"
+    Para el posterior ejemplo, hemos realizado las peticiones REST mediante el comando `curl`, aunque para probar sería más ágil utilizar [Postman](https://www.postman.com/), o directamente mediante Python y la librería request.
+
+Los *endpoints* más destacados son:
+
+* `/access`: para autenticarnos y obtener el token de acceso a Nifi
+* `/controller`: permite obtener la configuración de los controladores, gestionar el cluster y crear tareas para informes.
+* `/controller-services`: permite gestionar los servicios de controlador y modificar sus referencias.
+* `/flow`: para obtener metadatos de los flujos de datos, estado de los componentes y el histórico de consultas.
+* `/process-groups`: Para cargar e iniciar plantillas y crear componentes.
+* `/processors`: Permite crear y planificar un procesador y definir sus propiedades.
+* `/connections`: Para crear conexiones, definir las prioridades de las colas y modificar el destino de las conexiones.
+* `/flowfile-queues`: Permite ver el contenido de loas colas, descargar sus *flowfiles* y vaciar las colas.
+* `/remote-process-groups`: Para crear un grupo remoto y habilitar la transmisión.
+* `/provenance`: Para consultar el linaje de los datos.
+
+Si por ejemplo, quisiéramos lanzar un grupo de procesadores mediante el interfaz REST necesitamos:
+
+1. Autenticarnos para obtener un token de sesión mediante `/access/token`.
+
+    ``` bash
+    curl --tlsv1.2 https://localhost:8443/nifi-api/access/token --data 'username=nifi&password=nifinifinifi' -k
+    ```
+
+    El cual nos devuelve el token:
+
+    ``` bash
+    eyJraWQiOiI3...
+    ```
+
+2. Recuperamos el *uuid* del grupo de procesadores que queremos lanzar (hemos elegido uno que previamente hemos comprobado que está detenido):
+
+    <figure style="align: center;">
+        <img alt="Identificador de un grupo de procesadores en Nifi" src="images/05RESTidGrupoProcesadores.png">
+        <figcaption>Identificador de un grupo de procesadores</figcaption>
+    </figure>
+
+    En este caso, el identificador del grupo de procesadores que queremos lanzar es `b1a0a805-0186-1000-8b83-2033ab7036c9`.
+
+3. Mediante `flow/process-groups/{id}` con una petición PUT modificamos el grupo de procesadores y ponemos su estado en ejecución (`RUNNING`):
+
+    ``` bash
+    curl --tlsv1.2 -ik -H 'Content-Type: application/json' -H 'Authorization:Bearer eyJraWQiOiI3...' \
+    -XPUT -d '{"id":"b1a0a805-0186-1000-8b83-2033ab7036c9","state":"RUNNING"}' \
+    https://localhost:8443/nifi-api/flow/process-groups/b1a0a805-0186-1000-8b83-2033ab7036c9
+    ```
+
+    Obteniendo como resultado el nuevo estado del grupo de procesadores:
+
+    ``` http hl_lines="16"
+    HTTP/1.1 200 OK
+    Date: Mon, 06 Mar 2023 11:28:49 GMT
+    Set-Cookie: __Secure-Request-Token=4e531dfb-45fb-4fd4-aed9-c2a4a6a00b04; Path=/; Secure
+    Expires: Thu, 01 Jan 1970 00:00:00 GMT
+    Cache-Control: private, no-cache, no-store, no-transform
+    Content-Type: application/json
+    Vary: Accept-Encoding
+    Content-Security-Policy: frame-ancestors 'self'
+    Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: SAMEORIGIN
+    X-XSS-Protection: 1; mode=block
+    Vary: User-Agent
+    Content-Length: 63
+
+    {"id":"b1a0a805-0186-1000-8b83-2033ab7036c9","state":"RUNNING"}
+    ```
+
+Si entramos al interfaz de *Nifi*, veremos como ese grupo de procesadores ahora aparece arrancado.
+
+!!! info "Elasticsearch y Twitter"
+    En la edición de 21/22, en estas sesiones, realizamos diferentes casos de uso con *Elasticsearch* y *Twitter*. 
+    
+    Este curso no hemos visto *Elasticsearch*, y además, el API de *Twitter* ha dejado de ser gratuita. Si tienes curiosidad, puedes consultar dichos casos de uso en los [apuntes del curso pasado](https://aitor-medrano.github.io/bigdata2122/apuntes/ingesta04nifi2.html).
+
+    Conviene destacar, que Desde la versión 1.17 de Nifi (disponible desde agosto del 2022), podemos emplear el procesador [*ConsumeTwitter*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-social-media-nar/latest/org.apache.nifi.processors.twitter.ConsumeTwitter/index.html) que ya emplea la versión 2 del API de Twitter, y sustituye al procesador anterior, de manera que no hace falta tener una cuenta de nivel *Elevated*.
 
 ## Referencias
 
-* [Apache Nifi User Guide](https://nifi.apache.org/docs/nifi-docs/html/user-guide.html)
-* [Apache Nifi in Depth](https://nifi.apache.org/docs/nifi-docs/html/nifi-in-depth.html)
+* Documentación oficial:
+    * [Getting started with Apache Nifi](https://nifi.apache.org/docs/nifi-docs/html/getting-started.html)
+    * [Apache Nifi User Guide](https://nifi.apache.org/docs/nifi-docs/html/user-guide.html)
+    * [Apache Nifi in Depth](https://nifi.apache.org/docs/nifi-docs/html/nifi-in-depth.html)
 * [Apache Nifi en TutorialsPoint](https://www.tutorialspoint.com/apache_nifi/index.htm)
-* Libro [Data Engineering with Python](https://www.packtpub.com/free-ebook/data-engineering-with-python/9781839214189)
-* Artículo de Futurespace: [Flujo de extracción, validación, transformación y carga de ficheros (Caso de uso real)](https://www.futurespace.es/apache-nifi-flujo-de-extraccion-validacion-transformacion-y-carga-de-ficheros-caso-de-uso-real/)
+* [Playlist de Youtube de InsightByte](https://www.youtube.com/playlist?list=PLkp40uss1kSI66DA_aDCfx02gXipoRQHc)
+* Libro [Data Engineering with Python](https://www.packtpub.com/product/data-engineering-with-python/9781839214189)
+* Artículo de *Futurespace*: [Flujo de extracción, validación, transformación y carga de ficheros (Caso de uso real)](https://www.futurespace.es/apache-nifi-flujo-de-extraccion-validacion-transformacion-y-carga-de-ficheros-caso-de-uso-real/)
 
-<!--
-https://courses.cs.ut.ee/2021/cloud/spring/Main/Practice10
-https://courses.cs.ut.ee/2021/cloud/spring/Main/Practice11
-https://www.theninjacto.xyz/tags/apache-nifi/
-https://github.com/tjaensch/nifi_docker_elasticsearch_demo
--->
+## Actividades
+
+En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la definición de cada flujo (sobre el área de trabajo, con el botón derecho, *Download flow definition*).
+
+1. (RA5075.1 / CE5.1c / 1.5p) Realiza el caso de uso 5, colocando los procesadores *ConvertRecord* y *UpdateAttribute* dentro de un grupo de procesadores, al que denominaras `caso5<nombre>` (con tu nombre).
+
+    A continuación, exporta todo el ejercicio como una plantilla, y adjúntala a la entrega.
+
+2. (RA5075.1 / CE5.1d / 1.5p) En la base de datos `retail_db`, además de `customers`, podemos utilizar las tablas `orders` y `order_items` para obtener la cantidad de productos que contiene un pedido. Se pide almacenar en *MongoDB* los pedidos:
+
+    * Código y fecha del pedido.
+    * Precio del pedido (sumando las líneas de pedido).
+    * Código, nombre y apellidos del cliente.
+
+    Dichos datos se tienen que persistir en dos colecciones las cuales se rellenen automáticamente utilizando tanto el uso de registros (en la colección `caso6-records`) como los *flowfile* separados de forma individual (`caso6-split`).
+
+    Además, indica que cambios habría que realizar en *Nifi* para ingestar de forma continua los pedidos de la última hora.
+
+3. (RA5075.1 / CE5.1d / 1p) Realiza el caso de uso 7 recogiendo los datos de *AEMET* y almacenando los datos en S3 a modo de *data lake* tanto los datos en crudo como los datos agregados y de forma simultánea en *MongoDB*, pero realizando peticiones cada 30 segundos y los datos agregados cada 3 minutos.
+
+*[RA5075.1]: Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.
+*[CE5.1b]: Se han determinado los procedimientos y mecanismos para la ingestión de datos.
+*[CE5.1c]: Se ha determinado el formato de datos adecuado para el almacenamiento.
+*[CE5.1d]: Se han procesado los datos almacenados.
