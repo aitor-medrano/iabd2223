@@ -1158,6 +1158,9 @@ https://github.com/yukia3e/learning-spark-3/tree/master/src/sql/02_basic
     Cada fila del fichero implica que el actor/actriz ha trabajado en dicha película en el año indicado.
 
     1. Una vez creado el esquema, carga los datos en un *DataFrame*.
+
+    A continuación, mediante el *DataFrame API*:
+    
     2. Muestra las películas en las que ha trabajado `Murphy, Eddie (I)`.
     3. Muestra los intérpretes que aparecen tanto en `Superman` como en `Superman II`.
 
