@@ -698,7 +698,7 @@ hdfs dfs -head /user/iabd/salidaPy/part-00000
 
 Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla donde se muestre el resultado de cada acción.
 
-1. (RA5075.2 / CE5.2b / 1p) Sobre Hadoop, ejecuta el siguiente comando y explica qué sucede:
+1. (RA5075.2 / CE5.2b / 1p) Sobre *Hadoop*, ejecuta el siguiente comando y explica qué sucede:
 
     ``` bash
     yarn jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.3.1.jar pi 16 32
@@ -707,19 +707,9 @@ Para los siguientes ejercicios, copia el comando y/o haz una captura de pantalla
 2. (RA5075.2 / CE5.2b / 2p) Vuelve a contar las palabras que tiene *El Quijote*, pero haciendo usos de los scripts *Python*, teniendo en cuenta que el proceso de mapeo va a limpiar las palabras de signos ortográficos (quitar puntos, comas, paréntesis) y en el *reducer* vamos a considerar que las palabras en mayúsculas y minúsculas son la misma palabra.
     * *Tip*: para la limpieza, puedes utilizar el método de `string` **`translate`** de manera que elimine las `string.punctuation`.
 
+    Debes ejecutar ambos *script* como procesos *MapReduce* mediante *Hadoop Streaming* y comprobar en HDFS el archivo que se ha creado.
+
 3. (RA5075.4 / CE5.4a / 1p) Entra en *Hadoop UI* y en *YARN*, y visualiza los procesos que se han ejecutado en las actividades 1 y 2.
-
-<!--
-http://www.tsc.uc3m.es/~miguel/MLG/adjuntos/Hadoop.pdf
--->
-
-<!--
-https://hjben.github.io/hadoop-cluster/
--->
-
-<!--
-Revisar gráficos de https://learning.oreilly.com/library/view/next-generation-databases/9781484213292/9781484213308_Ch02.xhtml#Sec11
--->
 
 *[RA5075.2]: Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.
 *[CE5.2b]: Se ha comprobado el poder de procesamiento de su modelo de computación distribuida.
