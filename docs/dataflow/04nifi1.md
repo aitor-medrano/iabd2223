@@ -1,50 +1,53 @@
 ---
-title: Apache Nifi. Flujo de datos y ETL/ELT en Streaming.
-description: Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT. Gestión de los atributos de un flowfile, uso de procesadores y conectores.   
+title: Apache Nifi. Flujos de datos y ETL/ELT en Streaming.
+description: Casos de usos resueltos mediante Apache Nifi, limpieza de datos y transformaciones para procesos ETL/ELT. Gestión de los atributos de un flowfile, uso de procesadores y conectores. Apuntes y ejercicios.  
 ---
 
 # Nifi
 
 <figure style="float: right;">
-    <img src="images/04nifiLogo.svg" width="200">
+    <img src="images/04nifiLogo.svg" alt="logo de Apache Nifi" width="200">
     <figcaption>Logo de Apache Nifi</figcaption>
 </figure>
 
-[*Nifi*](https://nifi.apache.org) es un proyecto de Apache (desarrollado en Java inicialmente por la NSA) que plantea un sistema distribuido dedicado a ingestar y transformar datos de nuestros sistemas mediante el paradigma *streaming*.
+[*Nifi*](https://nifi.apache.org) es un proyecto de Apache (desarrollado en Java inicialmente por la NSA, su nombre rinde tributo a los archivos Niagara - *NiagaraFiles*) que plantea un sistema distribuido dedicado a ingestar y transformar datos mediante un modelo en *streaming*.
+
+Para ello, define un modelo de programación basado en flujos de datos, donde podemos definir aplicaciones como un conjunto de procesos (cajas negras) que intercambian datos utilizando mensajes los cuales se envían entre conexiones predefinidas.
 
 Entre sus características principales destacamos:
 
-* proyecto *Open Source*
 * flujos de datos escalables.
 * más de 300 conectores.
 * procesadores personalizados.
-* ingesta de datos en streaming.
+* ingesta de datos en *streaming*.
 * usa el paradigma de programación basado en flujos.
 * define las aplicaciones como grafos de procesos dirigidos (DAG) a través de conexiones que envían mensajes.
 * entrega garantizada sin pérdida de datos.
 
 Las ventajas de utilizar Nifi son:
 
-* multiplataforma
-* licencia *Open Source*
-* facilidad de uso mediante un interfaz gráfica y web
+!!! info inline end "Linaje del dato"
+    En la sesión de [Arquitecturas de big data](../hadoop/01arq.md), ya vimos que el linaje de los nos permite conocer las transformaciones que ha sufrido un dato, desde el origen hasta el estado actual, incluyendo las combinaciones con otros datos o el cambio del dato en sí a lo largo de su ciclo de vida.
+
+* aplicación multiplataforma con licencia *Open Source*.
+* facilidad de uso mediante un interfaz gráfica y web.
 * escalabilidad horizontal mediante un cluster de máquinas.
-* evolución y comunidad
-* política de usuarios (LDAP)
-* validador de configuraciones
-* linaje y procedencia del dato
+* evolución y comunidad.
+* política de usuarios (LDAP).
+* validador de configuraciones.
+* linaje y procedencia del dato.
 
 Sus casos de uso son:
 
 * transferencias de datos entre sistemas, por ejemplo, de JSON a una base de datos, de un FTP a *Hadoop*, etc..
-* preparar y enriquecer los datos
-* enrutar datos en función de características, con diferentes prioridades
-* conversión de datos entre formatos
+* preparar y enriquecer los datos.
+* enrutar datos en función de características, con diferentes prioridades.
+* conversión de datos entre formatos.
 
 En cambio, no es apropiado para:
 
-* procesamiento y operaciones de cómputo distribuido
-* operaciones de streaming complejas con joins o agregaciones.
+* procesamiento y operaciones de cómputo distribuido.
+* operaciones de *streaming* complejas con *joins* o agregaciones.
 * procesamiento complejo de eventos.
 
 ## Puesta en marcha
@@ -70,25 +73,32 @@ Si queremos detenerlo ejecutaremos `./bin/nifi.sh stop`.
 Si quieres trabajar con una máquina en AWS has de seguir los siguientes pasos:
 
 1. Crear una instancia EC2 (se recomienda elegir el tipo `t3.large`  para tener 8GB RAM), con un grupo de seguridad que permita tanto las conexiones SSH como el puerto 8443.
+
 2. Conectarnos via SSH a la *ipPublicaAWS* y descargar Nifi:
-``` bash
-wget https://dlcdn.apache.org/nifi/1.19.1/nifi-1.19.1-bin.zip
-unzip nifi-1.19.1-bin.zip
-```
+
+    ``` bash
+    wget https://dlcdn.apache.org/nifi/1.19.1/nifi-1.19.1-bin.zip
+    unzip nifi-1.19.1-bin.zip
+    ```
+
 3. Tras meternos dentro de la carpeta recién creada, configurar el archivo `conf/nifi.properties` para permitir el acceso remoto. Para ello, modificaremos las siguientes propiedades:
-``` properties
-nifi.web.https.host = 0.0.0.0
-nifi.web.proxy.host = <ipPublicaAWS>:8443
-```
+
+    ``` properties
+    nifi.web.https.host = 0.0.0.0
+    nifi.web.proxy.host = <ipPublicaAWS>:8443
+    ```
+
 4. Configurar el usuario con las credenciales de acceso
-``` bash
-./bin/nifi.sh set-single-user-credentials nifi nifinifinifi
-```
+
+    ``` bash
+    ./bin/nifi.sh set-single-user-credentials nifi nifinifinifi
+    ```
+
 5. Acceder desde un navegador a la dirección <https://ipPublicaAWS:8443/nifi>
 
 ### Instalación con Docker
 
-Si no queremos instalarlo y hacer uso de un contenedor mediante Docker, ejecutaremos el siguiente comando:
+Si no queremos instalarlo y hacer uso de un contenedor mediante *Docker*, ejecutaremos el siguiente comando:
 
 ``` bash
 docker run --name nifi -p 8443:8443 -d -e SINGLE_USER_CREDENTIALS_USERNAME=nifi -e  SINGLE_USER_CREDENTIALS_PASSWORD=nifinifinifi -e NIFI_JVM_HEAP_MAX=2g apache/nifi:latest
@@ -102,7 +112,7 @@ docker run --name nifi -p 8443:8443 -d -e SINGLE_USER_CREDENTIALS_USERNAME=nifi 
 Esperaremos un par de minutos tras arrancar Nifi para acceder al entorno de trabajo. Para ello, introduciremos en el navegador la URL <https://localhost:8443/nifi> y tras aceptar la alerta de seguridad respecto al certificado veremos un interfaz similar a la siguiente imagen:
 
 <figure style="align: center;">
-    <img src="images/04nifiStart.png">
+    <img alt="Página de inicio en Nifi" src="images/04nifiStart.png">
     <figcaption>Página de inicio en Nifi</figcaption>
 </figure>
 
@@ -134,7 +144,7 @@ Si bien es posible diseñar a mano un procesador, por defecto, NiFi ofrece un am
 !!! info "Tipos de procesadores"
     Además de en la documentación oficial (<https://nifi.apache.org/docs.html>), puedes consultar información extra en <https://www.nifi.rocks/apache-nifi-processors/>. A *grosso modo*, los más utilizados son:
 
-    * Tranformación de datos: `ReplaceText`, `JoltTransformJSON`, `CompressContent`.
+    * Transformación de datos: `ReplaceText`, `JoltTransformJSON`, `CompressContent`.
     * Enrutado y mediación: `RouteOnAttribute`, `RouteOnContent`
     * Acceso a base de datos: `ExecuteSQL`, `ConvertJSONToSQL`, `PutSQL`
     * Extracción de atributos: `EvaluateJsonPath`, `ExtractText`, `UpdateAttribute`
@@ -154,14 +164,9 @@ Así pues, los conectores van a unir la salida de un procesador con la entrada d
 Las conexiones se caracterizan y nombran por el tipo de puerto de salida del procesador del que nacen. En la mayoría de los casos nos enfrentaremos a conexiones de tipo ***success***, que recogen el FF que devuelve un procesador cuando ha terminado satisfactoriamente su tarea, o de tipo ***failure***, que conducen el FF en los casos en los que la tarea ha fallado. También podemos crear nuestros propios conectores.
 Además, existe la posibilidad de configurar algunos aspectos de la conexión, como el número de FF que pueden viajar de forma simultánea por ella, la prioridad de salida de los FF que hay en la conexión, o el tiempo que los FF deben permanecer a la espera para ser recogidos por el procesador de destino.
 
-<figure style="align: center;">
-    <img src="images/04nifiComponents.png">
-    <figcaption>Componentes de Nifi</figcaption>
-</figure>
-
 ## Caso 1 - Moviendo datos
 
-Vamos a hacer un pequeño ejercicio con Nifi para familiarizarnos con el entorno desarrollando un flujo de datos sencillo que mueva un fichero de un directorio a otro.
+Vamos a hacer un pequeño ejercicio con *Nifi* para familiarizarnos con el entorno desarrollando un flujo de datos sencillo que mueva un fichero de un directorio a otro.
 
 A continuación detallamos los pasos a realizar:
 
@@ -169,46 +174,49 @@ A continuación detallamos los pasos a realizar:
 2. Nos aparece un dialogo con tres partes diferenciadas:
 
     <figure style="align: center;">
-        <img src="images/04caso1Dialog.png">
+        <img alt="Diálogo de elección de procesador en Nifi" src="images/04caso1Dialog.png">
         <figcaption>Diálogo de elección de procesador</figcaption>
     </figure>
 
-    * A la izquierda una nube de etiquetas para poder filtrar los procesador.
+    * A la izquierda una nube de etiquetas para poder filtrar los procesadores.
     * Arriba a la derecha tenemos un buscador para buscar procesadores por su nombre
     * La parte central con el listado de procesadores, desde donde lo podemos seleccionar.
 
-    Así pues, buscamos el procesador *GetFile* y lo añadimos al flujo.
+    Así pues, buscamos el procesador [*GetFile*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.GetFile/index.html) y lo añadimos al flujo, el cual permite recuperar un fichero desde una carpeta.
 
 3. Damos doble click sobre el elemento gráfico que representa nuestro procesador, y en la pestaña *properties* indicamos el directorio de entrada de donde tendrá que recoger el fichero mediante la propiedad *Input Directory*. En nuestro caso le pondremos el valor `/home/iabd/Documentos/in`:
 
-<figure style="align: center;">
-    <img src="images/04caso1GetFileProperties.png">
-    <figcaption>Propiedades de GetFile</figcaption>
-</figure>
+    <figure style="align: center;">
+        <img alt="Propiedades de GetFile en Nifi" src="images/04caso1GetFileProperties.png">
+        <figcaption>Propiedades de GetFile</figcaption>
+    </figure>
 
-4. Ahora añadimos un nuevo procesador de tipo *PutFile*, y en las propiedades indicamos el directorio de salida con la propiedad *directory* a `/home/iabd/Documentos/out`.
-5. Si visualizamos la pestaña *Settings*, y nos centramos en el lado derecho, podemos configurar el comportamiento a seguir si el procesador se ejecuta correctamente (*success*) o falla (*failure*). Como vamos a hacer que este procesador sea el paso final, vamos a configurar que *autoterminen* marcando ambos casos:
+    Antes de cambiar de procesador, en la pestaña *Settings*, en la caja *Name* la rellenamos con `ObtenerFichero`.
 
-<figure style="align: center;">
-    <img src="images/04caso1AutoTerminate.png">
-    <figcaption>Finalización de PutFile</figcaption>
-</figure>
+4. Ahora añadimos un nuevo procesador de tipo [*PutFile*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.PutFile/index.html), y en las propiedades indicamos el directorio de salida con la propiedad *directory* a `/home/iabd/Documentos/out`.
 
-!!! danger "Terminar las relaciones"
-    Si nos olvidamos de autoterminar las relaciones, o tenemos conexiones sin conectar, no podremos iniciar los procesadores implicados. Esto lo tenemos que realizar para todos los procesadores que tengamos en nuestro flujo de datos.
+5. Si visualizamos la pestaña *Settings*, una buena práctica es ponerle nombre a los procesadores. Así pues, la caja *Name* la rellenamos con `PonerFichero`. Si nos centramos en el lado derecho, podemos configurar el comportamiento a seguir si el procesador se ejecuta correctamente (*success*) o falla (*failure*). Como vamos a hacer que este procesador sea el paso final, vamos a configurar que *autoterminen* marcando ambos casos:
+
+    <figure style="align: center;">
+        <img alt="Finalización de PutFile en Nifi" src="images/04caso1AutoTerminate.png">
+        <figcaption>Finalización de PutFile</figcaption>
+    </figure>
+
+    !!! danger "Terminar las relaciones"
+        Si nos olvidamos de autoterminar las relaciones, o tenemos conexiones sin conectar, no podremos iniciar los procesadores implicados. Esto lo tenemos que realizar para todos los procesadores que tengamos en nuestro flujo de datos.
 
 6. Unimos ambos procesadores creando una conexión. Para ello, tras pulsar sobre el icono de la flecha que aparece al dejar el ratón sobre el primer procesador y lo arrastramos hasta el segundo.
 
-<figure style="align: center;">
-    <img src="images/04caso1.png">
-    <figcaption>Conexión mediante un conector entre procesadores</figcaption>
-</figure>
+    <figure style="align: center;">
+        <img alt="Conexión mediante un conector entre procesadores en Nifi" src="images/04caso1.png">
+        <figcaption>Conexión mediante un conector entre procesadores</figcaption>
+    </figure>
 
 7. Antes de arrancar el primer procesador, creamos un pequeño fichero en el directorio que hemos puesto como entrada:
 
-``` bash
-echo "Hola Severo!" > hola.txt
-```
+    ``` bash
+    echo "Hola IABD!" > hola-iabd.txt
+    ```
 
 8. Arrancamos el procesador mediante el botón derecho y la opción *Start*, y comprobamos que el fichero ya no está en la carpeta `in`, y que sí aparece en la cola (*Queued 1*). También podemos comprobar como tampoco está en la carpeta `out`.
 
@@ -223,37 +231,37 @@ echo "Hola Severo!" > hola.txt
 Si vamos a la pestaña *Properties* del procesador *PonerFichero*, podemos cambiar este comportamiento en la propiedad *Conflict Resolution Strategy* a *replace*, de esta manera, se guardará el último archivo.
 
 <figure style="align: center;">
-    <img src="images/04caso1PutFileProperties.png">
+    <img alt="Propiedades de PutFile - gestión de conflictos en Nifi" src="images/04caso1PutFileProperties.png">
     <figcaption>Propiedades de PutFile - gestión de conflictos</figcaption>
 </figure>
 
-Realmente, en vez de decidir si lo ignora o lo sobreescribe, lo ideal es definir un nuevo flujo que dependa del estado de finalización del procesador. De esta manera, podremos almacenar todos los archivos que han llegado con el mismo nombre para su posterior estudio.
+Realmente, en vez de decidir si lo ignora o lo sobrescribe, lo ideal es definir un nuevo flujo que dependa del estado de finalización del procesador. De esta manera, podremos almacenar todos los archivos que han llegado con el mismo nombre para su posterior estudio.
 
 Así pues, vamos a quitar la *autoterminación* que antes habíamos puesto al procesador de *PonerFichero*, para que cuando falle, redirija el flujo a un nuevo procesador *PutFile* que coloque el archivo en una nueva carpeta (en nuestro caso en `/home/iabd/Documentos/conflictos`):
 
 <figure style="align: center;">
-    <img src="images/04caso1PutFileConflicto.png">
+    <img alt="Flujo failure para los ficheros repetidos en Nifi" src="images/04caso1PutFileConflicto.png">
     <figcaption>Flujo failure para los ficheros repetidos</figcaption>
 </figure>
 
 Aunque ahora tenemos un mecanismo para almacenar los ficheros que coinciden en nombre, sólo nos guardará uno (nos sucede lo mismo que antes, pero ahora sólo con los repetidos).
 
-Asi pues, necesitamos renombrar los ficheros que vayamos a colocar en la carpeta `conflictos` para guardar el histórico. Para ello, necesitamos introducir un procesador previo que le cambie el nombre al archivo.
+Así pues, necesitamos renombrar los ficheros que vayamos a colocar en la carpeta `conflictos` para guardar el histórico. Para ello, necesitamos introducir un procesador previo que le cambie el nombre al archivo.
 
 Nifi añade la propiedad `filename` a todos los FF. Esta propiedad la podemos consultar mediante el [*Nifi Expression Language* (Nifi EL)](https://nifi.apache.org/docs/nifi-docs/html/expression-language-guide.html) y haciendo uso del procesador *UpdateAttribute* modificar su valor.
 
-Así pues, vamos a colocar el procesador *UpdateAttribute* antes de colocar los archivos en la carpeta de `conflictos`:
+Así pues, vamos a colocar el procesador [*UpdateAttribute*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-update-attribute-nar/latest/org.apache.nifi.processors.attributes.UpdateAttribute/index.html) antes de colocar los archivos en la carpeta de `conflictos`:
 
 <figure style="align: center;">
-    <img src="images/04caso1UpdateAttribute.png">
+    <img alt="Añadimos el procesador UpdateAttribute en Nifi" src="images/04caso1UpdateAttribute.png">
     <figcaption>Añadimos el procesador UpdateAttribute</figcaption>
 </figure>
 
 Hemos decidido añadir como prefijo al nombre del archivo la fecha del sistema en formato de milisegundos, de manera que obtendremos archivos similares a `1637151536113-fichero.txt`. Para ello, añadimos un nuevo atributo que llamaremos `filename` haciendo clic sobre el icono de `+` que aparece arriba a la derecha y en su valor utilizaremos la expresión `${now():toNumber()}-${filename}`:
 
 <figure style="align: center;">
-    <img src="images/04caso1UpdateAttributeProperties.png">
-    <figcaption>Añadimos el procesador UpdateAttribute</figcaption>
+    <img alt="Añadimos el atributo filename en Nifi" src="images/04caso1UpdateAttributeProperties.png">
+    <figcaption>Añadimos el atributo filename</figcaption>
 </figure>
 
 ## Caso 2 - Trabajando con atributos
@@ -264,7 +272,7 @@ Cada vez que se generan FF (representa un registro de datos que viaja por el flu
 
 Vamos a ver cómo hacerlo realizando los siguientes pasos:
 
-1. Vamos a añadir un procesador del tipo `GenerateFlowFile` (este procesador crea FF con datos aleatorios o contenidos personalizados, lo cual es muy útil para testear y depurar nuestros flujos de datos).
+1. Vamos a añadir un procesador del tipo [*GenerateFlowFile*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.GenerateFlowFile/index.html) (este procesador crea FF con datos aleatorios o contenidos personalizados, lo cual es muy útil para testear y depurar nuestros flujos de datos).
 
     En las opciones del procesador vamos a la pestaña de propiedades y completamos los campos:
 
@@ -274,46 +282,46 @@ Vamos a ver cómo hacerlo realizando los siguientes pasos:
     * `Unique Flowfiles: true` e indicamos que los FF van a ser únicos.
 
     <figure style="align: center;">
-        <img src="images/04caso2GenerateFlowFile.png">
+        <img alt="Configuración del procesador GenerateFlowFile en Nifi" src="images/04caso2GenerateFlowFile.png">
         <figcaption>Configuración del procesador GenerateFlowFile</figcaption>
     </figure>
 
     A continuación, en la configuración de planificación (*Scheduling*) de este procesador vamos a indicar que se ejecute cada 3 segundos (en el campo *Run Schedule* le ponemos como valor `3s`).
 
-2. Una vez tenemos listo el generador, vamos a añadir el procesador *ReplaceText* con el que cambiaremos el texto. Tras ello, conectamos ambos procesadores.
+2. Una vez tenemos listo el generador, vamos a añadir el procesador [*ReplaceText*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ReplaceText/index.html) con el que cambiaremos el texto. Tras ello, conectamos ambos procesadores.
 
     <figure style="align: center;">
-        <img src="images/04caso2ReplaceText.png">
+        <img alt="Conexión con ReplaceText en Nifi" src="images/04caso2ReplaceText.png">
         <figcaption>Conexión con ReplaceText</figcaption>
     </figure>
 
 3. Si nos fijamos, a la izquierda del nombre del procesador, aparece un icono de aviso, el cual nos indica que necesitamos configurar el nuevo procesador, además de indicarnos que ambas relaciones no están conectadas o que faltan por autocompletar.
 
     <figure style="align: center;">
-        <img src="images/04caso2ReplaceTextWarning.png">
-        <figcaption>Avisos que aparecen</figcaption>
+        <img alt="Avisos de un procesador en Nifi" src="images/04caso2ReplaceTextWarning.png">
+        <figcaption>Avisos que aparecen en un Procesador</figcaption>
     </figure>
 
     Para ello, configuramos la estrategia de reemplazo para que lo haga siempre (en el campo *Replacement Value* seleccionamos *Always Replace*), y al hacer esto el campo  Search Value se invalida. Además, en el *Replacement Value* vamos a indicar simplemente `prueba`. Finalmente, marcamos para que autotermine la conexión `failure`.
 
-4. Añadimos un procesador de tipo *LogAttribute* para mostrar en el log los atributos del FF, y conectamos el procesador anterior (*ReplaceText*) a éste mediante la relación `success`.
+4. Añadimos un procesador de tipo [*LogAttribute*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.LogAttribute/index.html) para mostrar en el log los atributos del FF, y conectamos el procesador anterior (*ReplaceText*) a éste mediante la relación `success`.
 
     <figure style="align: center;">
-        <img src="images/04caso2LogAttribute.png">
+        <img alt="Log con los atributos en Nifi" src="images/04caso2LogAttribute.png">
         <figcaption>Log con los atributos</figcaption>
     </figure>
 
 5. Arrancamos el primer procesador y visualizamos la cola para comprobar qué ha generado. Para ello, sobre la cola elegimos la opción *list queue* para ver su contenido, y tras elegir uno, sobre el icono del ojo, visualizamos su contenido y comprobado que ha generado datos aleatorios:
 
     <figure style="align: center;">
-        <img src="images/04caso2ListQueue.gif">
+        <img alt="Acceso y visualización de la cola en Nifi" src="images/04caso2ListQueue.gif">
         <figcaption>Acceso y visualización de la cola</figcaption>
     </figure>
 
 6. Si ejecutamos el siguiente procesador, vemos que saca el FF de la cola anterior y aparecerá en la siguiente. Si comprobamos su valor, veremos que ha cambiado el valor original por `prueba`.
 
     <figure style="align: center;">
-        <img src="images/04caso2ReplaceQueue.png">
+        <img alt="Resultado de visualizar la cola tras ReplaceText en Nifi" src="images/04caso2ReplaceQueue.png">
         <figcaption>Resultado de visualizar la cola tras ReplaceText</figcaption>
     </figure>
 
@@ -349,26 +357,26 @@ Value: 'f4181825-f996-40c0-9e3c-a78326837d60'
 
 ### Añadiendo un atributo
 
-Ahora vamos a extraer el contenido del FF a un atributo mediante el procesador *ExtractText*.
+Ahora vamos a extraer el contenido del FF a un atributo mediante el procesador [*ExtractText*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ExtractText/index.html).
 
 7. En las propiedades, creamos una nueva propiedad (botón `+` de la esquina superior derecha) que llamaremos `contenido`, y en cuyo valor vamos a poner la expresión `.*` que indica que queremos que coincida con todo.
 
     <figure style="align: center;">
-        <img src="images/04caso2ExtractText.gif">
+        <img alt="Añadimos la propiedad contenido a ExtractText en Nifi" src="images/04caso2ExtractText.gif">
         <figcaption>Añadimos la propiedad contenido a ExtractText</figcaption>
     </figure>
 
 8. Una vez creado, vamos a colocar este procesador entre los dos anteriores (para el segundo con el caso `matched`, que es cuando ha coincidido con la expresión regular). En la conexión `unmatched` la marcamos para que autotermine, y comprobamos que no tenemos ningún advertencia en ningún procesador.
 
     <figure style="align: center;">
-        <img src="images/04caso2Completo.png">
+        <img alt="Flujo completo del caso 2 en Nifi" src="images/04caso2Completo.png">
         <figcaption>Flujo completo del caso 2</figcaption>
     </figure>
 
-9. Finalmente, ejecutamos todos los procesadores y comprobamos como en el log aparece el nuevo atributo creado. También podemos acceder a la cola, y en la parte izquierda de cada flujo, en el icono de la `i`, pulsar y comprobar la pestaña *Atributes*.
+9. Finalmente, ejecutamos todos los procesadores y comprobamos como en el log aparece el nuevo atributo creado. También podemos acceder a la cola, y en la parte izquierda de cada flujo, en el icono de la `i`, pulsar y comprobar la pestaña *Attributes*.
 
     <figure style="align: center;">
-        <img src="images/04caso2QueueFFAttribute.png">
+        <img alt="Comprobación de los atributos de un FF en Nifi" src="images/04caso2QueueFFAttribute.png">
         <figcaption>Comprobación de los atributos de un FF</figcaption>
     </figure>
 
@@ -382,13 +390,30 @@ Para comprobar el dato final, es muy útil utilizar la opción de *Data provenan
 Para ello, sobre el procesador final, con el botón derecho, elegimos la opción *View data provenance*. Si elegimos uno de los flujos, a la derecha de cada flujo, podemos pulsar sobre el primer icono podremos ver un grafo y un *slider* que modifica el grafo respecto al instante temporal (en cada uno de los pasos, podemos hacer doble clik y ver la información y el contenido del FF en dicho momento exacto):
 
 <figure style="align: center;">
-    <img src="images/04caso2DataProvenance.gif">
+    <img alt="Linaje de los datos en Nifi" src="images/04caso2DataProvenance.gif">
     <figcaption>Linaje de los datos</figcaption>
+</figure>
+
+### Guardando los datos en HDFS
+
+!!! tip inline end "Nifi y Hadoop en máquinas separadas"
+    Si trabajásemos en una máquina externa a la instalación de *Hadoop*, deberemos copiar ambos archivos (`core-site.xml` y `hdfs-site.xml`) desde uno de nuestros nodos *Hadoop* a la máquina donde ejecutamos Nifi.
+
+Para colocar los datos en HDFS, necesitamos utilizar el procesador [*PutHDFS*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-hadoop-nar/latest/org.apache.nifi.processors.hadoop.PutHDFS/index.html) y configurar las propiedades:
+
+* *Hadoop configuration resources*: con la ruta de los archivos de configuración de Hadoop, en nuestro caso: `/opt/hadoop-3.3.1/etc/hadoop/hdfs-site.xml, /opt/hadoop-3.3.1/etc/hadoop/core-site.xml`
+* *Directory*: con la carpeta de HDFS donde queremos almacenar los datos, por ejemplo, `/user/iabd/nifi`
+
+Así pues, vamos a añadir este procesador unido de nuevo con la relación `matched` tras la extracción del texto, para que además de escribir en el log, persista todo el contenido en HDFS.
+
+<figure style="align: center;">
+    <img alt="Persistiendo FF en HDFS en Nifi" src="images/04caso2PutHdfs.png">
+    <figcaption>Persistiendo FF en HDFS</figcaption>
 </figure>
 
 ## Caso 3 - Filtrado de datos
 
-En este caso, vamos a coger los datos de [ventas](resources/pdi_sales_small.csv) que ya utilizamos en la sesión de *Pentaho*, el cual tiene la siguiente estructura:
+En este caso, vamos a coger los datos de [ventas](resources/pdi_sales_small.csv) que ya utilizamos en la sesión de *Spark*, el cual tiene la siguiente estructura:
 
 ``` csv  title="pdi_sales_small.csv"
 ProductID;Date;Zip;Units;Revenue;Country
@@ -397,22 +422,26 @@ ProductID;Date;Zip;Units;Revenue;Country
 788;6/6/2002;41540          ;1;314.9;Germany
 ```
 
-Utilizando Nifi, vamos a crear un nuevo fichero CSV que contenga únicamente los datos de Francia que han realizado más de una venta.
+Utilizando *Nifi*, vamos a crear un nuevo fichero CSV que contenga únicamente los datos de Francia que han realizado más de una venta.
 
 Para ello, tendremos que leer el fichero haciendo uso del procesador *GetFile*, separar cada fila en un FF mediante *SplitRecord*, filtrar los datos usando el procesador *QueryRecord* y finalmente los almacenaremos en disco gracias al procesador *PutFile*.
 
 ### Lectura y división
 
 1. Así pues, comenzamos leyendo el fichero con el procesador *GetFile*. En este caso vamos a dejar la opción *keep source file* a *true* para que no lo elimine.
-2. Mediante el procesador *SplitRecord*, vamos a separar cada fila del CSV a un FF. Para ello, primero hemos de crear un *RecordReader* y un *RecordWriter* para que sepa interactuar con el CSV (*Nifi* ya tiene varios implementados que podemos utilizar). Así pues:
+
+    !!! inline end info "Trabajando con registros"
+        En la [siguiente sesión](05nifi2.md#caso-5-trabajando-con-conjuntos-de-registros), trabajaremos con mayor profundidad con conjuntos de registros.
+
+2. Mediante el procesador [*SplitRecord*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.SplitRecord/index.html), vamos a separar cada fila del CSV a un FF. Para ello, primero hemos de crear un *RecordReader* y un *RecordWriter* para que sepa interactuar con el CSV (*Nifi* ya tiene varios implementados que podemos utilizar). Así pues:
 
     * En el *Record Reader*, seleccionamos *Create new service*, y elegimos *CVSReader*.
     * A su vez, en el *Record Writer* elegimos *CVSRecordSetWriter*.
 
-    Para configurar estos servicios, pulsaremos sobre la flecha, y veremos la pantalla de configuración. Para cada uno de ellos, tendremos otros tres iconos: la rueda para configurar, el rayo para activar/desactivar el servicio y la papelera para eliminarlo. Así, pues, tras comprobar los valores de *CVSReader* y *CSVSWriter* (indicamos el `;` como separador de campos tanto para la lectura como la escritura de CSV en el campo *value separator y marcamos como *true* que el archivo contiene la primera fila con encabezados (*treat first line as header*)), pulsamos sobre el rayo para activar ambos servicios.
+    Para configurar estos servicios, pulsaremos sobre la flecha, y veremos la pantalla de configuración. Para cada uno de ellos, tendremos otros tres iconos: la rueda para configurar, el rayo para activar/desactivar el servicio y la papelera para eliminarlo. Así, pues, tras comprobar los valores de *CVSReader* y *CSVSWriter* (indicamos el `;` como separador de campos tanto para la lectura como la escritura de CSV en el campo *value separator* y marcamos como *true* que el archivo contiene la primera fila con encabezados (*treat first line as header*)), pulsamos sobre el rayo para activar ambos servicios.
 
     <figure style="align: center;">
-        <img src="images/04caso3SplitRecord.gif">
+        <img alt="Configuración y activación de Split Record en Nifi" src="images/04caso3SplitRecord.gif">
         <figcaption>Configuración y activación de Split Record</figcaption>
     </figure>
 
@@ -420,7 +449,7 @@ Para ello, tendremos que leer el fichero haciendo uso del procesador *GetFile*, 
 
 ### Filtrado de FF
 
-3. En este paso, mediante el procesador *QueryRecord* vamos a ejecutar una consulta SQL contra el FF. El resultado del nuevo FF será el resultado de la consulta. En nuestro caso, como hemos comentado antes, vamos a quedarnos con las ventas de más de una unidad realizadas en Francia.
+3. En este paso, mediante el procesador [*QueryRecord*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.QueryRecord/index.html) vamos a ejecutar una consulta SQL contra el FF. El resultado del nuevo FF será el resultado de la consulta. En nuestro caso, como hemos comentado antes, vamos a quedarnos con las ventas de más de una unidad realizadas en Francia.
 
     Igual que antes, configuramos los mismos *Record Reader* y *Record Writer*. Además, hemos de poner la propiedad *Include Zero Record FlowFiles* a *false* para que no vuelva a enrutar los FF que no cumplan la consulta.
     Finalmente, añadimos una nueva propiedad para indicar la consulta. En nuestro caso la hemos denominado `FranciaMayor1` y en el contenido ponemos la consulta:
@@ -437,18 +466,14 @@ Para ello, tendremos que leer el fichero haciendo uso del procesador *GetFile*, 
 El resultado del flujo de datos será similar a:
 
 <figure style="align: center;">
-    <img src="images/04caso3Completo.png">
+    <img alt="Flujo completo del caso 3 en Nifi" src="images/04caso3Completo.png">
     <figcaption>Flujo completo del caso 3</figcaption>
 </figure>
 
-<!--
-Si quisiéramos volver a unir los FF en un CSV, realizaríamos un MergeContent poniendo:
+!!! question "¿Realmente no podemos hacerlo mejor?"
+    ¿Hace falta generar tantos FF con los registros que cumplen la consulta? ¿No sería mejor fusionarlos en ficheros más grandes? Por ejemplo, después de hacer la consulta, podemos utilizar un procesador [*MergeRecord*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeRecord/index.html) para unir los registros, por ejemplo, cada 10KB de datos (aunque si fuera un ejemplo real, estaríamos hablando de cientos de megas) y acumulando los FF entrantes, por ejemplo, durante un minuto.
 
-* header: los campos del CSV
-* demarcator: el salto de línea
-
-Modificaríamos el QueryRecord para que utilizará un CSVWriter que no incluyese el header del CSV, si no, el resultado tendría N encabezados y N datos
--->
+    ¿Para qué hemos utilizado el *SplitRecord* si el procesador *QueryRecord* puede trabajar con un FF que contiene más de una fila? Así pues, podemos conectar el procesador *GetFile* directamente a *QueryRecord* y obtendríamos menos FF de resultado, concretamente como mucho uno por cada fichero que leyésemos (siempre que tuviera datos que cumplen la condición de la consulta).
 
 ## Caso 4 - Fusionar datos
 
@@ -461,20 +486,20 @@ En esta caso vamos a realizar los siguientes pasos:
 
 ### Recibiendo datos via HTTP
 
-1. Vamos a utilizar el procesador *ListenHTTP* para escuchar peticiones HTTP. Para ello, lo añadimos a nuestro flujo de trabajo y configuramos:
+1. Vamos a utilizar el procesador [*ListenHTTP*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.ListenHTTP/index.html) para escuchar peticiones HTTP. Para ello, lo añadimos a nuestro flujo de trabajo y configuramos:
 
-* *Listening port* (puerto de escucha): `8081`
-* *Base Path* (*endpoint* de la petición): `iabd`
+    * *Listening port* (puerto de escucha): `8081`
+    * *Base Path* (*endpoint* de la petición): `iabd`
 
-2. A continuación, para distinguir entre los diferentes datos de entrada, utilizaremos el procesador *RouteOnContent*, con el objetivo de separar en dos flujos de datos, los que contienen la cadena `error` y los que no. Para ello, tras añadir el procesador, le conectamos al flujo `success` que viene de *ListenHTTP*, y configuramos:
+2. A continuación, para distinguir entre los diferentes datos de entrada, utilizaremos el procesador [*RouteOnContent*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.RouteOnContent/index.html), con el objetivo de separar en dos flujos de datos, los que contienen la cadena `error` y los que no. Para ello, tras añadir el procesador, le conectamos al flujo `success` que viene de *ListenHTTP*, y configuramos:
 
-* Cambiamos el *Match Requirement* (requisito de coincidencia) a: `content must contain match` (no tienen que coincidir exactamente, sino contener el valor).
-* Y añadimos la propiedad `textoError` con el valor `ERROR`.
+    * Cambiamos el *Match Requirement* (requisito de coincidencia) a: `content must contain match` (no tienen que coincidir exactamente, sino contener el valor).
+    * Y añadimos la propiedad `textoError` con el valor `ERROR`.
 
-<figure style="align: center;">
-    <img src="images/04caso4RouteContent.png">
-    <figcaption>Propiedades de RouteOnContent</figcaption>
-</figure>
+    <figure style="align: center;">
+        <img alt="Propiedades de RouteOnContent en Nifi" src="images/04caso4RouteContent.png">
+        <figcaption>Propiedades de RouteOnContent</figcaption>
+    </figure>
 
 Para poder probarlo, arrancamos el primer procesador, y desde un terminal, hacemos una petición a:
 
@@ -488,28 +513,29 @@ Si comprobamos la cola, podremos ver como se ha creado un FF cuyo contenido es `
 
 Si nos fijamos en las propiedades del procesador *RouteOnContent*, tenemos dos flujos de salida `textoError` (para los mensajes que contienen el texto `ERROR`) y `unmatched` (para los que no).
 
-3. Vamos a añadir el procesador *MergeContent*, el cual recibe un conjunto de FF y los fusiona en uno a partir de la estrategia de fusión que defina el usuario. Las diferentes opciones incluye agrupando ciertos atributos de forma similar a como se realiza la fase *reduce* de un algoritmo *MapReduce*.
+3. Vamos a añadir el procesador [MergeContent](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.MergeContent/index.html), el cual recibe un conjunto de FF y los fusiona en uno a partir de la estrategia de fusión que defina el usuario. Las diferentes opciones incluye agrupando ciertos atributos de forma similar a como se realiza la fase *reduce* de un algoritmo *MapReduce*.
 
-Así pues, vamos a conectar las relaciones `textoError` y `unmatched` con *MergeContent*:
+    Así pues, vamos a conectar las relaciones `textoError` y `unmatched` con *MergeContent*:
 
-<figure style="align: center;">
-    <img src="images/04caso4MergeContent.png">
-    <figcaption>Conexión con MergeContent</figcaption>
-</figure>
+    <figure style="align: center;">
+        <img alt="Conexión con MergeContent en Nifi" src="images/04caso4MergeContent.png">
+        <figcaption>Conexión con MergeContent</figcaption>
+    </figure>
 
-Tras conectar los procesadores, vamos a configurar el procesador *MergeContent*:
+    Tras conectar los procesadores, vamos a configurar el procesador *MergeContent*:
 
-* En la pestaña de planificación, vamos a poner que el procesador se ejecuta cada 30 segundos para poder agrupar varios FF.
-* En las propiedades:
+    * En la pestaña de planificación, vamos a poner que el procesador se ejecuta cada 30 segundos para poder agrupar varios FF.
+    * En las propiedades:
 
-    * *Merge Strategy*: `Bin-Packing Algorithm` (se fusionan en grupos).
-    * *Correlation Attribute Name*: `RouteOnContent.Route` (crea diferentes grupos para `textoError` y `unmatched`)
-    * *Merge Format*: `Binary Concatenation` (concatena los contenidos de los FF en un único FF, otra opción sería comprimirlos en un zip)
-    * *Maximum Number of Entries*: `1000` (cantidad máxima de elementos por grupo, por si tuviéramos muchas peticiones HTTP)
-    * *Maximum Bin Age*: `300s` (fuerza que el fichero fusionado salga como muy tarde a los 300s)
-    * *Delimiter Strategy*: `Text` (para concatenar los fichero utilizando una nueva línea como carácter delimitador) y *Demarcator*: al abrir el campo, pulsar Shift/Mayús + Intro para poner el carácter del salto de línea.
+        * *Merge Strategy*: `Bin-Packing Algorithm` (se fusionan en grupos).
+        * *Merge Format*: `Binary Concatenation` (concatena los contenidos de los FF en un único FF, otra opción sería comprimirlos en un zip)
+        * *Correlation Attribute Name*: `RouteOnContent.Route` (crea diferentes grupos para `textoError` y `unmatched`)
+        * *Maximum Number of Entries*: `1000` (cantidad máxima de elementos por grupo, por si tuviéramos muchas peticiones HTTP)
+        * *Maximum Bin Age*: `300s` (fuerza que el fichero fusionado salga como muy tarde a los 300s)
+        * *Delimiter Strategy*: `Text` (para concatenar los fichero utilizando una nueva línea como carácter delimitador)
+            * *Demarcator*: al abrir el campo, pulsar Shift/Mayús + Intro para poner el carácter del salto de línea.
 
-Para poder probar como se van creando y agrupando los mensajes, podemos ejecutar los siguientes comandos:
+Para poder probar cómo se van creando y agrupando los mensajes, ejecutaremos los siguientes comandos:
 
 ``` bash
 curl --data "texto de prueba" http://localhost:8081/iabd
@@ -521,24 +547,25 @@ curl --data "nifi mola mucho" http://localhost:8081/iabd
 Por ejemplo, si abrimos uno de los flujos podemos ver cómo se han agrupado varias peticiones en un único FF:
 
 <figure style="align: center;">
-    <img src="images/04caso4MergeContentQueue.png">
+    <img alt="Resultado de MergeContent en Nifi" src="images/04caso4MergeContentQueue.png">
     <figcaption>Resultado de MergeContent</figcaption>
 </figure>
 
 ### Guardando el resultado a MongoDB
 
-Para almacenar el resultado de las fusiones anteriores, vamos a guardar los resultados en una colección de MongoDB.
+Para almacenar el resultado de las fusiones anteriores, vamos a guardar los resultados en una colección de *MongoDB*.
 
-Suponemos que ya tenemos instalado *MongoDB* en nuestro sistema. Si no, podemos lanzarlo mediante *Docker*:
+Suponemos que ya tenemos instalado *MongoDB* en nuestro sistema, como es el caso de nuestra máquina virtual (recuerda arrancarlo mediante `sudo service mongod start`). Si no, podemos lanzarlo mediante *Docker*:
 
-!!! tip "MongoDB + Nifi via Docker"
-    Si queremos utilizarlo mediante Docker, necesitamos que MongoDB y Nifi estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo [docker-compose.yml](resources/nifi-mongodb/docker-compose.yml) (si tuvieras alguna problema con la imagen de MongoDB y tu procesador, prueba a cambiar la línea 15 `mongo:latest` por `mongo:4.4`):
+!!! tip "Nifi + MongoDB via Docker"
+    Si queremos utilizarlo mediante *Docker*, necesitamos que *MongoDB* y *Nifi* estén dentro del mismo contenedor. Para ello, podemos configurarlo mediante el siguiente archivo [docker-compose.yml](resources/nifi-mongodb/docker-compose.yml) (si tuvieras alguna problema con la imagen de *MongoDB* y tu procesador, prueba a cambiar la línea 15 `mongo:latest` por `mongo:4.4`):
 
     ``` yaml title="docker-compose.yml"
     services:
         nifi:
             ports:
                 - "8443:8443"
+                - "8081:8081"
             image: apache/nifi:latest
             environment:
                 SINGLE_USER_CREDENTIALS_USERNAME: nifi
@@ -560,12 +587,12 @@ Suponemos que ya tenemos instalado *MongoDB* en nuestro sistema. Si no, podemos 
 
 Para poder meter los mensajes en *MongoDB*, vamos a preparar el contenido para que esté en formato JSON. Además del contenido, vamos a crear un atributo con el nombre del enrutador utilizado para posteriormente poder filtrar los mensajes de error.
 
-Para poder crear el formato JSON, utilizaremos el procesador *AttributesToJSON*. Así pues, previamente necesitamos pasar los mensajes desde el contenido de los FF a los atributos (para ello, igual que en el caso anterior, utilizaremos el procesador *ExtracText*). A su vez, también crearemos un nuevo atributo con el nombre del enrutador mediante el procesador *UpdateAttribute*.
+Para poder crear el formato JSON, utilizaremos el procesador [*AttributesToJSON*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.AttributesToJSON/index.html). Así pues, previamente necesitamos pasar los mensajes desde el contenido de los FF a los atributos (para ello, igual que en el caso anterior, utilizaremos el procesador *ExtracText*). A su vez, también crearemos un nuevo atributo con el nombre del enrutador mediante el procesador *UpdateAttribute*.
 
 El resultado final será similar al siguiente flujo:
 
 <figure style="align: center;">
-    <img src="images/04caso4Completo.png">
+    <img alt="Resultado completo del caso 4 en Nifi" src="images/04caso4Completo.png">
     <figcaption>Resultado completo del caso 4</figcaption>
 </figure>
 
@@ -576,10 +603,10 @@ El resultado final será similar al siguiente flujo:
 
     Una vez creado, conectamos *MergeContent* con *ExtractText* mediante la conexión *merged*, y el resto de conexiones las marcamos para que autoterminen.
 
-6. Añadimos el procesador *UpdateAttribute*, y dentro de las propiedades, añadirmos una nueva propiedad que vamos a llamar `estado` cuyo valor será `${RouteOnContent.Route}`, es decir, le ponemos el mismo que contenga el atributo *RouteOnContent.Route*.
+6. Añadimos el procesador *UpdateAttribute*, y dentro de las propiedades, añadiremos una nueva propiedad que vamos a llamar `estado` cuyo valor será `${RouteOnContent.Route}`, es decir, le ponemos el mismo que contenga el atributo *RouteOnContent.Route*.
 
     <figure style="align: center;">
-        <img src="images/04caso4UpdateAttribute.png">
+        <img alt="Creando el atributo estado en Nifi" src="images/04caso4UpdateAttribute.png">
         <figcaption>Creando el atributo estado</figcaption>
     </figure>
 
@@ -593,7 +620,7 @@ El resultado final será similar al siguiente flujo:
     * *Destination*: `flowfile-content`
 
     <figure style="align: center;">
-        <img src="images/04caso4AttributeToJSON.png">
+        <img alt="Creando el atributo estado en Nifi" src="images/04caso4AttributeToJSON.png">
         <figcaption>Creando el atributo estado</figcaption>
     </figure>
 
@@ -602,12 +629,11 @@ El resultado final será similar al siguiente flujo:
     Si ejecutamos los procesadores anteriores y comprobamos la salida, veremos como se están creando FF cuyo contenido es la petición introducida más el estado:
 
     <figure style="align: center;">
-        <img src="images/04caso4QueueJSON.png">
+        <img alt="Mensaje JSON creado en Nifi" src="images/04caso4QueueJSON.png">
         <figcaption>Mensaje JSON creado</figcaption>
     </figure>
 
-8. Finalmente, añadimos el procesador *PutMongo* para introducir el contenido JSON. Las propiedades que hay que configurar son:
-
+8. Finalmente, añadimos el procesador [*PutMongo*](https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-mongodb-nar/latest/org.apache.nifi.processors.mongodb.PutMongo/index.html) para introducir el contenido JSON. Las propiedades que hay que configurar son:
     * Mongo URI: `mongodb://localhost`
     * Mongo Database Name: `iabd`
     * Mongo Collection Name: `caso4`
@@ -623,9 +649,16 @@ curl --data "vaya ERROR más tonto" http://localhost:8081/iabd
 curl --data "nifi mola mucho" http://localhost:8081/iabd
 ```
 
-Sólo nos queda entrar a *MongoDB* y comprobar que nos aparecen los datos:
+!!! caution "Mongosh"
+    Si no tenemos instalado mongosh en nuestro sistema, podemos [instalarlo](https://www.mongodb.com/docs/mongodb-shell/install/) mediante:
 
-``` json
+    ``` bash
+    sudo apt-get install -y mongodb-mongosh
+    ```
+
+Sólo nos queda entrar a *MongoDB* mediante `mongosh` y comprobar que nos aparecen los datos:
+
+``` js
 > use iabd
 switched to db iabd
 > db.caso4.find()
@@ -633,15 +666,25 @@ switched to db iabd
 { "_id" : ObjectId("6197cca29c63ec4e825b8233"), "contenido" : "texto de prueba\nnifi mola mucho", "estado" : "unmatched" }
 ```
 
-## Actividades
-
-1. Realiza los casos de uso del 1 al 3. En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la definición de cada flujo (sobre el área de trabajo, con el botón derecho, *Download flow definition*).
-
-2. (opcional) Realiza el caso de uso 4.
-
 ## Referencias
 
-* [Getting started with Apache Nifi](https://nifi.apache.org/docs/nifi-docs/html/getting-started.html)
-* [Apache Nifi User Guide](https://nifi.apache.org/docs/nifi-docs/html/user-guide.html)
-* [Apache Nifi in Depth](https://nifi.apache.org/docs/nifi-docs/html/nifi-in-depth.html)
+* Documentación oficial:
+    * [Getting started with Apache Nifi](https://nifi.apache.org/docs/nifi-docs/html/getting-started.html)
+    * [Apache Nifi User Guide](https://nifi.apache.org/docs/nifi-docs/html/user-guide.html)
+    * [Apache Nifi in Depth](https://nifi.apache.org/docs/nifi-docs/html/nifi-in-depth.html)
 * [Apache Nifi en TutorialsPoint](https://www.tutorialspoint.com/apache_nifi/index.htm)
+* [Playlist de Youtube de InsightByte](https://www.youtube.com/playlist?list=PLkp40uss1kSI66DA_aDCfx02gXipoRQHc)
+
+## Actividades
+
+En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la definición de cada flujo (sobre el área de trabajo, con el botón derecho, *Download flow definition*).
+
+1. (RA5075.1 / CE5.1b / 1p) Realiza el caso de uso 1, utilizando un fichero cuyo nombre sea el tuyo y adjunta capturas de la cola y su contenido al leer el fichero y antes de moverlo a la carpeta destino.
+2. (RA5075.1 / CE5.1b / 1p) Realiza el caso de uso 2, pero en vez de llamar al atributo contenido denomínalo `datos` y almacena el resultado en HDFS en la ruta `/user/iabd/nifi/caso2`.
+3. (RA5075.1 / CE5.1b y CE5.1d / 1p) Realiza el caso de uso 3, y compara el resultado de ejecutarlo al hacer que el *SplitRecord* contenga 10 filas para cada FF.
+4. (RA5075.1 / CE5.1b y CE5.1d / 1p) Realiza el caso de uso 4. Una vez realizado nos hemos dado cuenta que no tenemos la fecha en la que se genera el mensaje. Así pues, añade un nuevo atributo `fecha` con el valor `${now()}` y persiste dicho atributo en *MongoDB*.
+
+*[RA5075.1]: Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.
+*[CE5.1b]: Se han determinado los procedimientos y mecanismos para la ingestión de datos.
+*[CE5.1c]: Se ha determinado el formato de datos adecuado para el almacenamiento.
+*[CE5.1d]: Se han procesado los datos almacenados.
