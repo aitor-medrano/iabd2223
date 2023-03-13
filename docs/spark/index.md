@@ -8,7 +8,7 @@
 * RA5075.2 Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.  
 * RA5075.3 Genera mecanismos de integridad de los datos, comprobando su mantenimiento en los sistemas de ficheros distribuidos y valorando la sobrecarga que conlleva en el tratamiento de los datos.
 
-## Planificación (24h)
+## Planificación (28h)
 
 | Sesión                    | Fecha             | Duración (h) |
 | ---------                 | -----             | --------- |
@@ -17,7 +17,8 @@
 | 64.- [Spark DataFrames API](02dataframeAPI.md)   | Lunes 23 Ene  | 2p + 2o   |
 | 66.- [Agregaciones con DataFrames](02agregaciones.md)  | Miércoles 25 Ene      | 2p + 2o   |
 | 69.- [Spark Catalog. Delta Lake](02catalog.md)            | Lunes 30 Ene  | 2p + 2o   |
-| 105.- [Spark Streaming](03streaming.md)      | Lunes 27 Mar      | 4p + 4o   |
+| 105.- [Spark Streaming I](03streaming.md)      | Lunes 27 Mar      | 2p + 2o   |
+| 106.- [Spark Streaming II](03join-window.md)      | Lunes 27 Mar      | 2p + 2o   |
 
 <!--
 
