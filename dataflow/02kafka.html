@@ -19,7 +19,7 @@
         <link rel="next" href="03kafka.html">
       
       <link rel="icon" href="../images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.14">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.113286f1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.c4a75a56.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -127,7 +127,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Cabecera">
     <a href="../index.html" title="IABD" class="md-header__button md-logo" aria-label="IABD" data-md-component="logo">
       
@@ -1423,7 +1425,7 @@
 <h1 id="apache-kafka">Apache Kafka<a class="headerlink" href="#apache-kafka" title="Permanent link">&para;</a></h1>
 <h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
 <p><a href="https://kafka.apache.org/">Apache Kafka</a> es, en pocas palabras, un <em>middleware</em> de mensajería entre sistemas heterogéneos, el cual, mediante un sistema de colas (<em>topics</em>, para ser concreto) facilita la comunicación asíncrona, desacoplando los flujos de datos de los sistemas que los producen o consumen. Funciona como un <em>broker</em> de mensajes, encargado de enrutar los mensajes entre los clientes de un modo muy rápido.</p>
-<p>Supongamos que tenemos multiples generadores de datos, ya sean servidores web, de bases de datos, un servidor de chat y que todos ellos tienen que almacenar sus datos en múltiples destinos, como pueden ser logs, métricas de rendimiento y monitorización, el carrito de la compra o los fallos ocurridos, lo que puede provocar una serie de dependencias de unos con otros. Para evitarlo, <em>Kafka</em> viene al rescate conectando todos los generadores de datos (productores) a Kafka y a su vez, a todos los consumidores de estos datos.</p>
+<p>Supongamos que tenemos múltiples generadores de datos, ya sean servidores web, de bases de datos, un servidor de chat y que todos ellos tienen que almacenar sus datos en múltiples destinos, como pueden ser logs, métricas de rendimiento y monitorización, el carrito de la compra o los fallos ocurridos, lo que puede provocar una serie de dependencias de unos con otros. Para evitarlo, <em>Kafka</em> viene al rescate conectando todos los generadores de datos (productores) a Kafka y a su vez, a todos los consumidores de estos datos.</p>
 <figure style="align: center;">
     <img src="images/02kafka-middleware.png">
     <figcaption>Kafka como middleware/broker de mensajes</figcaption>
@@ -1444,10 +1446,10 @@
 <div class="admonition info">
 <p class="admonition-title">Amazon Kinesis</p>
 <p><a href="https://aws.amazon.com/es/kinesis/">Amazon Kinesis</a> es un producto similar a <em>Apache Kafka</em> pero dentro de la plataforma AWS, por lo que no es un producto <em>open source</em> como tal. Su principal ventaja es la facilidad de escalabilidad a golpe de click e integración con el resto de servicios que ofrece AWS.
-Se trata de una herramienta muy utilizada que permite incorporar datos en tiempo real, como vídeos, audios, registros de aplicaciones, secuencias de clicks de sitios web y datos de sensores IoT para machine learning, analítica de datos en streaming, etc...</p>
+Se trata de una herramienta muy utilizada que permite incorporar datos en tiempo real, como vídeos, audios, registros de aplicaciones, secuencias de clicks de sitios web y datos de sensores IoT para <em>machine learning</em>, analítica de datos en streaming, etc...</p>
 </div>
 <h3 id="publicador-suscriptor">Publicador / Suscriptor<a class="headerlink" href="#publicador-suscriptor" title="Permanent link">&para;</a></h3>
-<p>Antes de entrar en detalle sobre Kafka, hay que conocer el modelo publicador/suscriptor. Este patrón también se conoce como <em>publish / subscribe</em> o <em>productor / consumidor</em>.</p>
+<p>Antes de entrar en detalle sobre <em>Kafka</em>, hay que conocer el modelo publicador/suscriptor. Este patrón también se conoce como <em>publish / subscribe</em> o <em>productor / consumidor</em>.</p>
 <p>Hay tres elementos que hay que tener realmente claros:</p>
 <ul>
 <li>Publicador (<em>publisher</em> / productor / emisor): genera un dato y lo coloca en un <em>topic</em> como un mensaje.</li>
@@ -1461,8 +1463,6 @@ Se trata de una herramienta muy utilizada que permite incorporar datos en tiempo
 </figure>
 
 <!--
-A partir de estos, existen otros elementos más complejos que ofrecen diferentes configuraciones:
-
 tradicional: Cada suscriptor está asociado a uno o varios topic en concreto. Existen muchas variaciones:
 Cada suscriptor está escuchando 1 topic propio.
 Cada suscriptor está escuchando X topics independientes.
@@ -1478,7 +1478,7 @@ https://kafka.apache.org/quickstart
 -->
 
 <h2 id="caso-0-hola-kafka">Caso 0: Hola Kafka<a class="headerlink" href="#caso-0-hola-kafka" title="Permanent link">&para;</a></h2>
-<p>Para arrancar Kafka, vamos a utilizar la instalación que tenemos creada en nuestra máquina virtual.</p>
+<p>Para arrancar <em>Kafka</em>, vamos a utilizar la instalación que tenemos creada en nuestra máquina virtual.</p>
 <div class="admonition tip">
 <p class="admonition-title">Kafka mediante Docker</p>
 <p><em>Bitnami</em> tiene una imagen para trabajar con <em>Docker</em> la cual permite probar todos los ejemplos de esta sesión. Para ello, se recomienda seguir los pasos de la página oficial: <a href="https://hub.docker.com/r/bitnami/kafka/">https://hub.docker.com/r/bitnami/kafka/</a></p>
@@ -1549,7 +1549,7 @@ https://kafka.apache.org/quickstart
 
 <p>Como podemos observar en la imagen, cada partición tiene sus propios <em>offset</em> (el <em>offset</em> 3 de la partición 0 no representa el mismo dato que el <em>offset</em> 3 de la partición 1).</p>
 <p>Habíamos comentado que las particiones están ordenadas, pero el orden sólo se garantiza dentro de una partición (no entre particiones), es decir, el mensaje 7 de la partición 0 puede haber llegado antes, a la vez, o después que el mensaje 5 de la partición 1.</p>
-<p>Los datos de una partición tiene un tiempo de vida limitado (<em>retention period</em>) que indica el tiempo que se mantendrán los mensajes antes de eliminarlos. Por defecto es de una semana. Además, una vez que los datos se escriben en una partición, no se pueden modificar (las mensajes son immutables).</p>
+<p>Los datos de una partición tiene un tiempo de vida limitado (<em>retention period</em>) que indica el tiempo que se mantendrán los mensajes antes de eliminarlos. Por defecto es de una semana. Además, una vez que los datos se escriben en una partición, no se pueden modificar (las mensajes son inmutables).</p>
 <p>Finalmente, por defecto, los datos se asignan de manera aleatoria a una partición. Sin embargo, existe la posibilidad de indicar una clave de particionado.</p>
 <div class="admonition info">
 <p class="admonition-title">Borrando un topic</p>
@@ -1571,7 +1571,7 @@ https://kafka.apache.org/quickstart
 <p>En el caso de haber introducido un nuevo <em>topic</em> con 4 particiones, uno de los brokers contendría dos particiones.</p>
 <h3 id="factor-de-replicacion">Factor de replicación<a class="headerlink" href="#factor-de-replicacion" title="Permanent link">&para;</a></h3>
 <p>Para soportar la tolerancia a fallos, los <em>topics</em> deben tener un factor de replicación mayor que uno (normalmente se configura entre 2 y 3).</p>
-<p>En la siguiente imagen podemos ver como tenemos 3 brokers, y un <em>topic A</em> con dos particiones y un factor de replicación de 2, de manera que cada partición crea un replica de si misma:</p>
+<p>En la siguiente imagen podemos ver como tenemos 3 brokers, y un <em>topic A</em> con dos particiones y un factor de replicación de 2, de manera que cada partición crea una réplica de sí misma:</p>
 <figure style="align: center;">
     <img src="images/02kafka-replication-factor.png">
     <figcaption>Divisiones de un broker en particiones</figcaption>
@@ -1582,7 +1582,7 @@ https://kafka.apache.org/quickstart
 </code></pre></div>
 <p>Si se cayera el <em>broker 102</em>, <em>Kafka</em> podría devolver los datos al estar disponibles en los nodos 101 y 103.</p>
 <h4 id="replica-lider">Réplica líder<a class="headerlink" href="#replica-lider" title="Permanent link">&para;</a></h4>
-<p>Acabamos de ver que cada broker tiene múltiples particiones, y cada partición tiene múltiples réplicas, de manera que si se cae un nodo/broker, <em>Kafka</em> puede utilizar otro <em>broker</em> para servir los datos.</p>
+<p>Acabamos de ver que cada broker tiene múltiples particiones, y cada partición tiene múltiples réplicas, de manera que, si se cae un nodo/broker, <em>Kafka</em> puede utilizar otro <em>broker</em> para servir los datos.</p>
 <p>En cualquier instante, una determinada partición tendrá una única réplica que será la líder, y esta réplica líder será la única que pueda recibir y servir los datos de una partición. La réplica líder es importante porque todas las lecturas y escrituras siempre van a esta réplica. El resto de brokers sincronizarán sus datos. En resumen, cada partición tendrá un líder y múltiples ISR (<em>in-sync replica</em>).</p>
 <figure style="align: center;">
     <img src="images/02kafka-replicas.png">
@@ -1603,7 +1603,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <ul>
 <li><code>ack=0</code>: El productor no espera la confirmación (posible pérdida de datos), lo que se traduce en un envío asíncrono.</li>
 <li><code>ack=1</code>: El productor espera la confirmación del líder (limitación de la pérdida de datos), de manera que los envíos son síncronos.</li>
-<li><code>ack=all</code>: El productores espera la confirmación del líder y de todas las réplicas (sin pérdida de datos).</li>
+<li><code>ack=all</code>: El productor espera la confirmación del líder y de todas las réplicas (sin pérdida de datos).</li>
 </ul>
 <h4 id="clave-de-mensaje">Clave de mensaje<a class="headerlink" href="#clave-de-mensaje" title="Permanent link">&para;</a></h4>
 <p>Los productores pueden enviar una clave con el mensaje (de tipo cadena, numérico, etc...). Cuando la clave no se envía, ya hemos comentado que los datos se envían mediante <em>Round Robin</em> (primero <em>Broker 101</em>, luego el 102, el 103, etc... y vuelta al 101).</p>
@@ -1641,7 +1641,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 
 <div class="admonition info">
 <p class="admonition-title">Coordinando los consumidores</p>
-<p>Los consumidores, por sí solos, no saben con que partición se deben comunicar. Para ello, se utiliza un <em>GroupCoordinator</em> y un <em>Consumer Coordinator</em> para asignar los consumidores a cada partición. Esta gestión la realiza Kafka.</p>
+<p>Los consumidores, por sí solos, no saben con qué partición se deben comunicar. Para ello, se utiliza un <em>GroupCoordinator</em> y un <em>Consumer Coordinator</em> para asignar los consumidores a cada partición. Esta gestión la realiza <em>Kafka</em>.</p>
 </div>
 <p>Cabe destacar que los diferentes grupos de consumidores reciben el mismo dato de cada partición, es decir, el consumidor 1 del grupo 1 y el consumidor 1 del grupo 2 reciben la información que había en la partición 0. Este caso de uso es muy útil cuando tenemos dos aplicaciones que queremos que reciban los mismos datos (por ejemplo, uno encargado de realizar <em>machine learning</em> y otro analítica de datos).</p>
 <p>En el caso de tener más consumidores que particiones, algunos consumidores no realizarán nada. Este caso de uso es atípico, ya que lo recomendable es tener tantos consumidores como el mayor número de particiones existentes.</p>
@@ -1678,7 +1678,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <div class="admonition question">
 <p class="admonition-title">Autoevaluación</p>
 <ul>
-<li>¿Que sucederá se creamos un nuevo consumidor que lo haga del mismo <em>topic</em> pero con un grupo de consumidores diferente (por ejemplo, <code>iabd-app2</code>) y le pedimos que lea los mensajes desde el principio (mediante <code>--from-beginning</code>) ?<br />
+<li>¿Qué sucederá se creamos un nuevo consumidor que lo haga del mismo <em>topic</em> pero con un grupo de consumidores diferente (por ejemplo, <code>iabd-app2</code>) y le pedimos que lea los mensajes desde el principio (mediante <code>--from-beginning</code>) ?<br />
     Que aparecerán todos los mensajes desde el principio.</li>
 <li>¿Y si lo detenemos y volvemos a crear el mismo consumidor (también con el grupo de consumidores <code>iabd-app2</code> y los vuelva a leer desde el principio también)?<br />
     En esta ocasión, ya no recibirá ningún mensaje, ya que el primer consumidor hace <em>commit</em> de la lectura y el segundo al hacerlo desde el mismo grupo de consumidores ya tiene los mensajes previos marcados como leídos.</li>
@@ -1749,7 +1749,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <li>envía notificaciones a <em>Kafka</em> cuando hay algún cambio (por ejemplo, se crea un <em>topic</em>, se cae un broker, se recupera un <em>broker</em>, al eliminar un <em>topic</em>, etc...).</li>
 </ul>
 <p>Por todo ello, <em>Kafka</em> no puede funcionar sin <em>Zookeeper</em>.</p>
-<p>En un entorno real, se instalan un número impar de servidores <em>Zookeeper</em> (3, 5, 7). Para su gestión, <em>Zookeeper</em> define un líder (gestiona las escrituras) y el resto de servidores funcionan como réplicas de lectura.</p>
+<p>En un entorno real, se instalan un número impar de servidores <em>Zookeeper</em> (3, 5, 7). Para su gestión, <em>Zookeeper</em> define un líder (gestiona las escrituras) y el resto de los servidores funcionan como réplicas de lectura.</p>
 <figure style="align: center;">
     <img src="images/02kafka-zookeeper.png">
     <figcaption>Kafka y Zookeeper</figcaption>
@@ -1795,7 +1795,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <ul>
 <li>en el primer parámetro indicamos el topic desde el que vamos a consumir los mensajes</li>
 <li><code>bootstrap_servers</code>: listado de brokers de Kafka</li>
-<li><code>auto_offset_reset</code>: le indica al consumidor desde donde empezar a leer los mensaje si se cae: <code>earliest</code> se moverá hasta el mensaje más antiguo y <code>latest</code> al más reciente.</li>
+<li><code>auto_offset_reset</code>: le indica al consumidor desde donde empezar a leer los mensajes si se cae: <code>earliest</code> se moverá hasta el mensaje más antiguo y <code>latest</code> al más reciente.</li>
 <li><code>enable_auto_commit</code>: si <code>True</code>, el <em>offset</em> del consumidor realizará periódicamente <em>commit</em> en segundo plano.</li>
 <li><code>value_deserializer</code>: método utilizado para deserializar los datos. En este caso, transforma los datos recibidos en JSON.</li>
 </ul>
@@ -1831,18 +1831,14 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <ul>
 <li><a href="https://www.packtpub.com/product/apache-kafka-series-learn-apache-kafka-for-beginners-video/9781789342604">Apache Kafka Series - Learn Apache Kafka for Beginners</a></li>
 <li>Serie de artículos de Víctor Madrid sobre <a href="https://enmilocalfunciona.io/tag/kafka/">Kafka</a> en <a href="https://enmilocalfunciona.io">enmilocalfunciona.io</a>.</li>
-<li><a href="https://mikeldeltio.com/2020/05/20/distributed-databases-kafka/">Distributed Databases: Kafka</a> por Miguel del Tio</li>
+<li><a href="https://mikeldeltio.com/2020/05/20/distributed-databases-kafka/">Distributed Databases: Kafka</a> por <em>Mikel del Tio</em>.</li>
 <li><a href="https://github.com/lensesio/kafka-cheat-sheet">Kafka Cheatsheet</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Realiza los casos de uso 0 y 1.</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 2p) Realiza el caso de uso 0.</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 2p) Realiza el caso de uso 1.</li>
 </ol>
-<!--
-https://www.theninjacto.xyz/tags/apache-kafka/
-
-https://youtu.be/yfi-M0vC8SY?t=1098
--->
 
 
   
@@ -1897,10 +1893,10 @@ https://youtu.be/yfi-M0vC8SY?t=1098
           
         </div>
         
-          <a href="#" class="md-top md-icon" data-md-component="top" hidden>
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
             Volver al principio
-          </a>
+          </button>
         
       </main>
       
@@ -2052,7 +2048,7 @@ https://youtu.be/yfi-M0vC8SY?t=1098
     <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "navigation.top", "navigation.tracking", "navigation.footer", "navigation.indexes", "content.code.annotate", "announce.dismiss", "toc.follow", "content.code.copy"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      <script src="../assets/javascripts/bundle.efa0ade1.min.js"></script>
       
     
   </body>
