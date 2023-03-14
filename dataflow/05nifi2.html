@@ -115,7 +115,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#nifi-avanzado" class="md-skip">
+        <a href="#apache-nifi-avanzado" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -1474,7 +1474,7 @@
                   
 
 
-<h1 id="nifi-avanzado">Nifi Avanzado<a class="headerlink" href="#nifi-avanzado" title="Permanent link">&para;</a></h1>
+<h1 id="apache-nifi-avanzado">Apache Nifi Avanzado<a class="headerlink" href="#apache-nifi-avanzado" title="Permanent link">&para;</a></h1>
 <h2 id="grupos">Grupos<a class="headerlink" href="#grupos" title="Permanent link">&para;</a></h2>
 <p>En <em>Nifi</em> sólo hay un canvas de nivel superior, pero podemos construir tantos flujos lógicos como deseemos. Normalmente, para organizar las flujos, se utilizan <strong>grupos de procesos</strong>, por lo que el canvas de nivel superior puede tener varios grupos de procesos, cada uno de los cuales representa un flujo lógico, pero no necesariamente conectados entre sí.</p>
 <figure style="float: right;">
@@ -2106,7 +2106,7 @@ Como el procesador <em>PutMongo</em> espera el contenido en formato JSON, no pod
 <p class="admonition-title">Elasticsearch y Twitter</p>
 <p>En la edición de 21/22, en estas sesiones, realizamos diferentes casos de uso con <em>Elasticsearch</em> y <em>Twitter</em>. </p>
 <p>Este curso no hemos visto <em>Elasticsearch</em>, y además, el API de <em>Twitter</em> ha dejado de ser gratuita. Si tienes curiosidad, puedes consultar dichos casos de uso en los <a href="https://aitor-medrano.github.io/bigdata2122/apuntes/ingesta04nifi2.html">apuntes del curso pasado</a>.</p>
-<p>Conviene destacar, que Desde la versión 1.17 de Nifi (disponible desde agosto del 2022), podemos emplear el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-social-media-nar/latest/org.apache.nifi.processors.twitter.ConsumeTwitter/index.html"><em>ConsumeTwitter</em></a> que ya emplea la versión 2 del API de Twitter, y sustituye al procesador anterior, de manera que no hace falta tener una cuenta de nivel <em>Elevated</em>.</p>
+<p>Conviene destacar que, desde la versión 1.17 de Nifi (disponible desde agosto del 2022), podemos emplear el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-social-media-nar/latest/org.apache.nifi.processors.twitter.ConsumeTwitter/index.html"><em>ConsumeTwitter</em></a> que ya emplea la versión 2 del API de Twitter, y sustituye al procesador anterior, de manera que no hace falta tener una cuenta de nivel <em>Elevated</em>.</p>
 </div>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
@@ -2125,11 +2125,11 @@ Como el procesador <em>PutMongo</em> espera el contenido en formato JSON, no pod
 <p>En la entrega debes adjuntar una captura de pantalla donde se vea el flujo de datos completo con una nota con tu nombre, y adjuntar la definición de cada flujo (sobre el área de trabajo, con el botón derecho, <em>Download flow definition</em>).</p>
 <ol>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha determinado el formato de datos adecuado para el almacenamiento.">CE5.1c</abbr> / 1.5p) Realiza el caso de uso 5, colocando los procesadores <em>ConvertRecord</em> y <em>UpdateAttribute</em> dentro de un grupo de procesadores, al que denominaras <code>caso5&lt;nombre&gt;</code> (con tu nombre).</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha determinado el formato de datos adecuado para el almacenamiento.">CE5.1c</abbr> / 1p) Realiza el caso de uso 5, colocando los procesadores <em>ConvertRecord</em> y <em>UpdateAttribute</em> dentro de un grupo de procesadores, al que denominaras <code>caso5&lt;nombre&gt;</code> (con tu nombre).</p>
 <p>A continuación, exporta todo el ejercicio como una plantilla, y adjúntala a la entrega.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1.5p) En la base de datos <code>retail_db</code>, además de <code>customers</code>, podemos utilizar las tablas <code>orders</code> y <code>order_items</code> para obtener la cantidad de productos que contiene un pedido. Se pide almacenar en <em>MongoDB</em> los pedidos:</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1.5p) En la base de datos <code>retail_db</code>, además de <code>customers</code>, podemos utilizar las tablas <code>orders</code> y <code>order_items</code> para obtener la cantidad de productos que contiene un pedido. Se pide almacenar en <em>MongoDB</em> la siguiente información de los pedidos:</p>
 <ul>
 <li>Código y fecha del pedido.</li>
 <li>Precio del pedido (sumando las líneas de pedido).</li>
@@ -2139,7 +2139,7 @@ Como el procesador <em>PutMongo</em> espera el contenido en formato JSON, no pod
 <p>Además, indica que cambios habría que realizar en <em>Nifi</em> para ingestar de forma continua los pedidos de la última hora.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 7 recogiendo los datos de <em>AEMET</em> y almacenando los datos en S3 a modo de <em>data lake</em> tanto los datos en crudo como los datos agregados y de forma simultánea en <em>MongoDB</em>, pero realizando peticiones cada 30 segundos y los datos agregados cada 3 minutos.</p>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1.5p) Realiza el caso de uso 7 recogiendo los datos de <em>AEMET</em> y almacenando los datos en S3 a modo de <em>data lake</em> tanto los datos en crudo como los datos agregados y de forma simultánea en <em>MongoDB</em>, pero realizando peticiones cada 30 segundos y los datos agregados cada 3 minutos.</p>
 </li>
 </ol>
 

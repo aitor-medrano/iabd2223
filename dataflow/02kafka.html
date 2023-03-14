@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Uso de Apache Kafka, creación de un clúster, ejemplos de consumidores y productores mediante Python, y desarrollo de un ejemplo completo desde Twitter a Elasticsearch">
+        <meta name="description" content="Uso de Apache Kafka, creación de un clúster, ejemplos de consumidores y productores mediante Python.">
       
       
       
@@ -71,7 +71,7 @@
       
         <meta  property="og:title"  content="Apache Kafka. Elementos y ejemplos con Python, creación de un clúster. - IABD" >
       
-        <meta  property="og:description"  content="Uso de Apache Kafka, creación de un clúster, ejemplos de consumidores y productores mediante Python, y desarrollo de un ejemplo completo desde Twitter a Elasticsearch" >
+        <meta  property="og:description"  content="Uso de Apache Kafka, creación de un clúster, ejemplos de consumidores y productores mediante Python." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/02kafka.png" >
       
@@ -87,7 +87,7 @@
       
         <meta  name="twitter:title"  content="Apache Kafka. Elementos y ejemplos con Python, creación de un clúster. - IABD" >
       
-        <meta  name="twitter:description"  content="Uso de Apache Kafka, creación de un clúster, ejemplos de consumidores y productores mediante Python, y desarrollo de un ejemplo completo desde Twitter a Elasticsearch" >
+        <meta  name="twitter:description"  content="Uso de Apache Kafka, creación de un clúster, ejemplos de consumidores y productores mediante Python." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/02kafka.png" >
       
@@ -115,7 +115,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#kafka" class="md-skip">
+        <a href="#apache-kafka" class="md-skip">
           Saltar a contenido
         </a>
       
@@ -1420,15 +1420,7 @@
                   
 
 
-<h1 id="kafka">Kafka<a class="headerlink" href="#kafka" title="Permanent link">&para;</a></h1>
-<!--
-https://enmilocalfunciona.io/aprendiendo-apache-kafka-parte-3-conceptos-basicos-extra/
-
-https://www.theninjacto.xyz/Instalacion-Configuracion-Kafka-Manager/
-
-https://medium.com/big-data-engineering/hello-kafka-world-the-complete-guide-to-kafka-with-docker-and-python-f788e2588cfc
--->
-
+<h1 id="apache-kafka">Apache Kafka<a class="headerlink" href="#apache-kafka" title="Permanent link">&para;</a></h1>
 <h2 id="introduccion">Introducción<a class="headerlink" href="#introduccion" title="Permanent link">&para;</a></h2>
 <p><a href="https://kafka.apache.org/">Apache Kafka</a> es, en pocas palabras, un <em>middleware</em> de mensajería entre sistemas heterogéneos, el cual, mediante un sistema de colas (<em>topics</em>, para ser concreto) facilita la comunicación asíncrona, desacoplando los flujos de datos de los sistemas que los producen o consumen. Funciona como un <em>broker</em> de mensajes, encargado de enrutar los mensajes entre los clientes de un modo muy rápido.</p>
 <p>Supongamos que tenemos multiples generadores de datos, ya sean servidores web, de bases de datos, un servidor de chat y que todos ellos tienen que almacenar sus datos en múltiples destinos, como pueden ser logs, métricas de rendimiento y monitorización, el carrito de la compra o los fallos ocurridos, lo que puede provocar una serie de dependencias de unos con otros. Para evitarlo, <em>Kafka</em> viene al rescate conectando todos los generadores de datos (productores) a Kafka y a su vez, a todos los consumidores de estos datos.</p>
