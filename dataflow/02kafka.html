@@ -1533,7 +1533,7 @@ https://kafka.apache.org/quickstart
 <p>Al ejecutarlo veremos los mensajes que habíamos introducido antes (ya que hemos indicado la opción <code>--from-beginning</code>). Si ahora volvemos a escribir en el productor, casi instantáneamente, aparecerá en el consumidor el mismo mensaje.</p>
 <p>Tras esto, paramos todos los procesos que se están ejecutando mediante CTRL+C y hemos finalizado nuestro primer contacto con Kafka.</p>
 <h2 id="elementos">Elementos<a class="headerlink" href="#elementos" title="Permanent link">&para;</a></h2>
-<p>Dentro de una arquitectura con Kafka, existen múltiples elementos que interactúan entre sí.</p>
+<p>Dentro de una arquitectura con <em>Kafka</em>, existen múltiples elementos que interactúan entre sí.</p>
 <h3 id="topic-y-particiones">Topic y Particiones<a class="headerlink" href="#topic-y-particiones" title="Permanent link">&para;</a></h3>
 <p>Un <em>topic</em> (¿tema?) es un flujo particular de datos que funciona como una cola almacenando de forma temporal o duradera los datos que se colocan en él.</p>
 <p>Podemos crear tantos <em>topics</em> como queramos y cada uno de ellos tendrá un nombre unívoco.</p>
@@ -1688,7 +1688,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
     Que consumirá los mensajes que acabamos de crear.</li>
 </ul>
 </div>
-<p>Mediante el comando <code>kafka-consumer-groups.sh</code> podemos obtener sobre los diferentes grupos de consumidores que tenemos creado, así como eliminarlos o resetear sus offsets.</p>
+<p>Mediante el comando <code>kafka-consumer-groups.sh</code> podemos obtener información sobre los diferentes grupos de consumidores que tenemos creados, así como eliminarlos o resetear sus <em>offsets</em>.</p>
 <p>Por ejemplo, si queremos listar los grupos de consumidores existentes ejecutaremos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-consumer-groups.sh<span class="w"> </span>--list<span class="w"> </span><span class="se">\</span>
 <span class="linenos" data-linenos="2 "></span><span class="w">    </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
@@ -1776,7 +1776,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip<span class="w"> </span>install<span class="w"> </span>kafka-python
 </code></pre></div>
 <h3 id="kafkaconsumer">KafkaConsumer<a class="headerlink" href="#kafkaconsumer" title="Permanent link">&para;</a></h3>
-<p>Vamos a crear un consumidor, mediante un <a href="https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html">KafkaConsumer</a>, que escuche de nuestro servidor de <em>Kafka</em>:</p>
+<p>Vamos a crear un consumidor, mediante un <a href="https://kafka-python.readthedocs.io/en/master/apidoc/KafkaConsumer.html"><code>KafkaConsumer</code></a>, que escuche de nuestro servidor de <em>Kafka</em>:</p>
 <div class="highlight"><span class="filename">consumer.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span>
 <span class="linenos" data-linenos=" 3 "></span>
@@ -1800,18 +1800,18 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <li><code>value_deserializer</code>: método utilizado para deserializar los datos. En este caso, transforma los datos recibidos en JSON.</li>
 </ul>
 <h3 id="kafkaproducer">KafkaProducer<a class="headerlink" href="#kafkaproducer" title="Permanent link">&para;</a></h3>
-<p>Y para el productor, mediante un <a href="https://kafka-python.readthedocs.io/en/master/apidoc/KafkaProducer.html">KafkaProducer</a>, vamos a enviar 10 mensajes en formato JSON:</p>
+<p>Y para el productor, mediante un <a href="https://kafka-python.readthedocs.io/en/master/apidoc/KafkaProducer.html"><code>KafkaProducer</code></a>, vamos a enviar 10 mensajes en formato JSON mediante el método <a href="https://kafka-python.readthedocs.io/en/master/apidoc/KafkaProducer.html#kafka.KafkaProducer.send"><code>send</code></a>, pasándole como primer parámetro el <em>topic</em> y luego el mensaje en sí:</p>
 <div class="highlight"><span class="filename">producer.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaProducer</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="linenos" data-linenos=" 4 "></span>
-<span class="linenos" data-linenos=" 5 "></span><span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
-<span class="linenos" data-linenos=" 6 "></span>    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">dumps</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+<span class="hll"><span class="linenos" data-linenos=" 5 "></span><span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
+</span><span class="linenos" data-linenos=" 6 "></span>    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">dumps</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
 <span class="linenos" data-linenos=" 7 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
 <span class="linenos" data-linenos=" 8 "></span>
 <span class="linenos" data-linenos=" 9 "></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-<span class="linenos" data-linenos="10 "></span>    <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-topic&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;producer &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)})</span>
-<span class="linenos" data-linenos="11 "></span><span class="c1"># Como el envío es asíncrono, para que no se salga del programa antes de enviar el mensaje, esperamos 1 seg</span>
+<span class="hll"><span class="linenos" data-linenos="10 "></span>    <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-topic&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span> <span class="s2">&quot;producer &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)})</span>
+</span><span class="linenos" data-linenos="11 "></span><span class="c1"># Como el envío es asíncrono, para que no se salga del programa antes de enviar el mensaje, esperamos 1 seg</span>
 <span class="linenos" data-linenos="12 "></span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="linenos" data-linenos="13 "></span><span class="c1"># producer.flush()</span>
 </code></pre></div>
@@ -1836,8 +1836,71 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 2p) Realiza el caso de uso 0.</li>
-<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 2p) Realiza el caso de uso 1.</li>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 0, adjuntando capturas de los comandos utilizados y, en alguno de los mensajes, envía tu nombre.</p>
+</li>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1.5p) Se pide:</p>
+<ol>
+<li>Crea un topic llamado <code>iabd-topic-&lt;nombre&gt;</code> con 4 particiones y un factor de replicación 2 y que permita el envío de claves de mensaje utilizando <code>:</code> como separador.</li>
+<li>A continuación, lanza dos consumidores que pertenezcan al grupo de consumidores <code>consumer-group-iabd</code>.</li>
+<li>Lanza un productor y envía varios mensajes compuestos de <code>clave:valor</code> y comprueba cómo aparecen en los consumidores.</li>
+<li>Detén ambos consumidores.</li>
+<li>Envía un nuevo mensaje.</li>
+<li>Obtén información sobre el estado del grupo de consumidores <code>consumer-group-iabd</code> y explica sus valores.</li>
+</ol>
+</li>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1.5p) A partir de un <em>topic</em> denominado <code>iabd-python-topic</code> y utilizando <em>Python</em> crea:</p>
+<ol>
+<li>
+<p>un productor que envíe datos de personas cada 10 segundos al <em>topic</em>.</p>
+<p>Para ello, podéis basaros en el siguiente <a href="resources/personas.py"><em>script</em></a> para la creación de las personas, el cual utiliza la librería <a href="https://faker.readthedocs.io">Faker</a> y que, cada 10 segundos, crea ficheros con una cantidad aleatoria de datos de personas:</p>
+<div class="highlight"><span class="filename">personas.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">json</span><span class="o">,</span> <span class="nn">time</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="linenos" data-linenos=" 5 "></span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">(</span><span class="s1">&#39;es_ES&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="n">today</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;datosClientes&#39;</span> <span class="o">+</span> <span class="n">today</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span>
+<span class="linenos" data-linenos="12 "></span>    <span class="n">output</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span>    <span class="n">datos</span><span class="o">=</span><span class="p">{}</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">datos</span><span class="p">[</span><span class="s1">&#39;records&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
+<span class="linenos" data-linenos="16 "></span>    <span class="n">cant_personas</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cant_personas</span><span class="p">):</span>
+<span class="linenos" data-linenos="19 "></span>        <span class="c1"># datos de un persona</span>
+<span class="linenos" data-linenos="20 "></span>        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nombre&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span>
+<span class="linenos" data-linenos="21 "></span>        <span class="s2">&quot;edad&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="linenos" data-linenos="22 "></span>        <span class="s2">&quot;calle&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">street_address</span><span class="p">(),</span>
+<span class="linenos" data-linenos="23 "></span>        <span class="s2">&quot;ciudad&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">city</span><span class="p">(),</span>
+<span class="linenos" data-linenos="24 "></span>        <span class="s2">&quot;provincia&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">state</span><span class="p">(),</span>
+<span class="linenos" data-linenos="25 "></span>        <span class="s2">&quot;cp&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">postcode</span><span class="p">(),</span>
+<span class="linenos" data-linenos="26 "></span>        <span class="s2">&quot;longitud&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">(</span><span class="n">fake</span><span class="o">.</span><span class="n">longitude</span><span class="p">()),</span>
+<span class="linenos" data-linenos="27 "></span>        <span class="s2">&quot;latitud&quot;</span><span class="p">:</span><span class="nb">float</span><span class="p">(</span><span class="n">fake</span><span class="o">.</span><span class="n">latitude</span><span class="p">())}</span>
+<span class="linenos" data-linenos="28 "></span>
+<span class="linenos" data-linenos="29 "></span>        <span class="n">datos</span><span class="p">[</span><span class="s1">&#39;records&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="linenos" data-linenos="30 "></span>
+<span class="linenos" data-linenos="31 "></span>    <span class="c1"># Persistimos los datos en el fichero              </span>
+<span class="linenos" data-linenos="32 "></span>    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">datos</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">indent</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+<span class="linenos" data-linenos="33 "></span>
+<span class="linenos" data-linenos="34 "></span>    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos" data-linenos="35 "></span>
+<span class="linenos" data-linenos="36 "></span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># 10 segundos   </span>
+</code></pre></div>
+</li>
+<li>
+<p>un consumidor que reciba las personas y, mediante <em>PyMongo</em>, las inserte en <em>MongoDB</em> en una colección llamada <code>kafka_personas</code>.</p>
+<p>Para este apartado se recomienda revisar la sesión de <a href="../sa/07pymongo.html">MongoDB y Python</a></p>
+</li>
+</ol>
+<p>Adjunta el código fuente de ambos <em>scripts</em>, así como capturas de pantalla de la colección en MongoDB con datos rellenados.</p>
+</li>
 </ol>
 
 

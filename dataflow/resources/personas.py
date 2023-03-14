@@ -13,7 +13,7 @@ while True:
 
        datos={}
        datos['records']=[]
-       cant_personas = randint(100,500)
+       cant_personas = randint(5,20)
 
        for x in range(cant_personas):
               data={"nombre":fake.name(),
