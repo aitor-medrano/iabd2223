@@ -2,13 +2,14 @@ services:
   nifi:
     ports:
       - "8443:8443"
+    volumes:
+      - ./mysql-connector-j-8.0.31.jar:/opt/mysql-connector-j-8.0.31.jar
     image: apache/nifi:latest
     environment:
       SINGLE_USER_CREDENTIALS_USERNAME: nifi
       SINGLE_USER_CREDENTIALS_PASSWORD: nifinifinifi
       NIFI_JVM_HEAP_MAX: 2g
     links:
-      - elasticsearch
       - mongodb
       - mysql
   mysql:

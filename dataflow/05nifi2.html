@@ -1621,33 +1621,34 @@ El procesador <em>SplitText</em> nos permite dividir cualquier flujo de texto en
 <div class="highlight"><span class="filename">docker-compose.yml</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="nt">services</span><span class="p">:</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="w">    </span><span class="nt">nifi</span><span class="p">:</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="linenos" data-linenos=" 4 "></span><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8443:8443&quot;</span>
-<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache/nifi:latest</span>
-<span class="linenos" data-linenos=" 6 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
-<span class="linenos" data-linenos=" 7 "></span><span class="w">        </span><span class="nt">SINGLE_USER_CREDENTIALS_USERNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifi</span>
-<span class="linenos" data-linenos=" 8 "></span><span class="w">        </span><span class="nt">SINGLE_USER_CREDENTIALS_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifinifinifi</span>
-<span class="linenos" data-linenos=" 9 "></span><span class="w">        </span><span class="nt">NIFI_JVM_HEAP_MAX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2g</span>
-<span class="linenos" data-linenos="10 "></span><span class="w">        </span><span class="nt">links</span><span class="p">:</span>
-<span class="linenos" data-linenos="11 "></span><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">elasticsearch</span>
-<span class="linenos" data-linenos="12 "></span><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb</span>
-<span class="linenos" data-linenos="13 "></span><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql</span>
-<span class="linenos" data-linenos="14 "></span><span class="w">    </span><span class="nt">mysql</span><span class="p">:</span>
-<span class="linenos" data-linenos="15 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql:latest</span>
-<span class="linenos" data-linenos="16 "></span><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd-mysql</span>
-<span class="linenos" data-linenos="17 "></span><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
-<span class="linenos" data-linenos="18 "></span><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--default-authentication-plugin=mysql_native_password</span>
-<span class="linenos" data-linenos="19 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="linenos" data-linenos="20 "></span><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3306:3306&quot;</span>
-<span class="linenos" data-linenos="21 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
-<span class="linenos" data-linenos="22 "></span><span class="w">        </span><span class="nt">TZ</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Europe/Madrid</span>
-<span class="linenos" data-linenos="23 "></span><span class="w">        </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd</span>
-<span class="linenos" data-linenos="24 "></span><span class="w">        </span><span class="nt">MYSQL_DATABASE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retail_db</span>
-<span class="linenos" data-linenos="25 "></span><span class="w">        </span><span class="nt">MYSQL_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd</span>
-<span class="linenos" data-linenos="26 "></span><span class="w">        </span><span class="nt">MYSQL_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd</span>
-<span class="linenos" data-linenos="27 "></span><span class="w">    </span><span class="nt">mongodb</span><span class="p">:</span>
-<span class="linenos" data-linenos="28 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<span class="linenos" data-linenos="29 "></span><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;27017:27017&quot;</span>
-<span class="linenos" data-linenos="30 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongo:latest</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8443:8443&quot;</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./mysql-connector-j-8.0.31.jar:/opt/mysql-connector-j-8.0.31.jar</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache/nifi:latest</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_USERNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifi</span>
+<span class="linenos" data-linenos="10 "></span><span class="w">            </span><span class="nt">SINGLE_USER_CREDENTIALS_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nifinifinifi</span>
+<span class="linenos" data-linenos="11 "></span><span class="w">            </span><span class="nt">NIFI_JVM_HEAP_MAX</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2g</span>
+<span class="linenos" data-linenos="12 "></span><span class="w">        </span><span class="nt">links</span><span class="p">:</span>
+<span class="linenos" data-linenos="13 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongodb</span>
+<span class="linenos" data-linenos="14 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql</span>
+<span class="linenos" data-linenos="15 "></span><span class="w">    </span><span class="nt">mysql</span><span class="p">:</span>
+<span class="linenos" data-linenos="16 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mysql:latest</span>
+<span class="linenos" data-linenos="17 "></span><span class="w">        </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd-mysql</span>
+<span class="linenos" data-linenos="18 "></span><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="linenos" data-linenos="19 "></span><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--default-authentication-plugin=mysql_native_password</span>
+<span class="linenos" data-linenos="20 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos="21 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;3306:3306&quot;</span>
+<span class="linenos" data-linenos="22 "></span><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
+<span class="linenos" data-linenos="23 "></span><span class="w">            </span><span class="nt">TZ</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Europe/Madrid</span>
+<span class="linenos" data-linenos="24 "></span><span class="w">            </span><span class="nt">MYSQL_ROOT_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd</span>
+<span class="linenos" data-linenos="25 "></span><span class="w">            </span><span class="nt">MYSQL_DATABASE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">retail_db</span>
+<span class="linenos" data-linenos="26 "></span><span class="w">            </span><span class="nt">MYSQL_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd</span>
+<span class="linenos" data-linenos="27 "></span><span class="w">            </span><span class="nt">MYSQL_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iabd</span>
+<span class="linenos" data-linenos="28 "></span><span class="w">    </span><span class="nt">mongodb</span><span class="p">:</span>
+<span class="linenos" data-linenos="29 "></span><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
+<span class="linenos" data-linenos="30 "></span><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;27017:27017&quot;</span>
+<span class="linenos" data-linenos="31 "></span><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mongo:latest</span>
 </code></pre></div>
 <p>Una vez colocado el <a href="resources/nifi-mysql-mongodb/mysql-connector-j-8.0.31.jar">driver de MySQL</a> en la misma carpeta, lanzamos <em>docker-compose</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>docker-compose<span class="w"> </span>-p<span class="w"> </span>iabd-nifi-mysql-mongodb<span class="w"> </span>up<span class="w"> </span>-d
