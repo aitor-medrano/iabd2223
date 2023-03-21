@@ -1063,44 +1063,57 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-3-de-twitter-a-elasticsearch-con-python" class="md-nav__link">
-    Caso 3: De Twitter a Elasticsearch con Python
+  <a href="#caso-3-de-aemet-a-s3-y-mongodb" class="md-nav__link">
+    Caso 3: De AEMET a S3 y MongoDB
   </a>
   
-    <nav class="md-nav" aria-label="Caso 3: De Twitter a Elasticsearch con Python">
+    <nav class="md-nav" aria-label="Caso 3: De AEMET a S3 y MongoDB">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tweepy" class="md-nav__link">
-    Tweepy
+  <a href="#productor-de-aemet" class="md-nav__link">
+    Productor de AEMET
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#productor-de-tweets" class="md-nav__link">
-    Productor de Tweets
+  <a href="#consumidor-bronze" class="md-nav__link">
+    Consumidor Bronze
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#elasticsearch-desde-python" class="md-nav__link">
-    Elasticsearch desde Python
+  <a href="#consumidor-silver-y-productor-gold" class="md-nav__link">
+    Consumidor Silver y Productor Gold
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-4-ahora-con-nifi" class="md-nav__link">
+    Caso 4: Ahora con Nifi
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 4: Ahora con Nifi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#de-rest-a-kafka" class="md-nav__link">
+    De REST a Kafka
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#consumidor-en-elasticsearch" class="md-nav__link">
-    Consumidor en Elasticsearch
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#todo-en-uno-con-nifi" class="md-nav__link">
-    Todo en uno con Nifi
+  <a href="#de-kafka-a-s3" class="md-nav__link">
+    De Kafka a S3
   </a>
   
 </li>
@@ -1256,44 +1269,57 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#caso-3-de-twitter-a-elasticsearch-con-python" class="md-nav__link">
-    Caso 3: De Twitter a Elasticsearch con Python
+  <a href="#caso-3-de-aemet-a-s3-y-mongodb" class="md-nav__link">
+    Caso 3: De AEMET a S3 y MongoDB
   </a>
   
-    <nav class="md-nav" aria-label="Caso 3: De Twitter a Elasticsearch con Python">
+    <nav class="md-nav" aria-label="Caso 3: De AEMET a S3 y MongoDB">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tweepy" class="md-nav__link">
-    Tweepy
+  <a href="#productor-de-aemet" class="md-nav__link">
+    Productor de AEMET
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#productor-de-tweets" class="md-nav__link">
-    Productor de Tweets
+  <a href="#consumidor-bronze" class="md-nav__link">
+    Consumidor Bronze
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#elasticsearch-desde-python" class="md-nav__link">
-    Elasticsearch desde Python
+  <a href="#consumidor-silver-y-productor-gold" class="md-nav__link">
+    Consumidor Silver y Productor Gold
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#caso-4-ahora-con-nifi" class="md-nav__link">
+    Caso 4: Ahora con Nifi
+  </a>
+  
+    <nav class="md-nav" aria-label="Caso 4: Ahora con Nifi">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#de-rest-a-kafka" class="md-nav__link">
+    De REST a Kafka
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#consumidor-en-elasticsearch" class="md-nav__link">
-    Consumidor en Elasticsearch
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#todo-en-uno-con-nifi" class="md-nav__link">
-    Todo en uno con Nifi
+  <a href="#de-kafka-a-s3" class="md-nav__link">
+    De Kafka a S3
   </a>
   
 </li>
@@ -1575,216 +1601,230 @@ Kafka is the most widely used stream-processing framework and given the flexible
 <li>Y también ocupará más espacio en disco (50% más si RF es 3 en vez de 2).</li>
 </ul>
 <p>Respecto al clúster, se recomienda que un <em>broker</em> no contenga más de 2000-4000 particiones (entre todos los <em>topics</em> de ese broker). Además, un clúster de <em>Kafka</em> debería tener un máximo de 20.000 particiones entre todos los brokers, ya que si se cayese algún nodo, <em>Zookeeper</em> necesitaría realizar muchas elecciones de líder.</p>
-<!--
-Kafka con Docker:
-https://www.theninjacto.xyz/Instalacion-Configuracion-Kafka-Manager/
-
-https://learning.oreilly.com/videos/apache-kafka-a-z/9781801077569/
-Apache Kafka A-Z with Hands-On Learning
--->
-
-<h2 id="caso-3-de-twitter-a-elasticsearch-con-python">Caso 3: De Twitter a Elasticsearch con Python<a class="headerlink" href="#caso-3-de-twitter-a-elasticsearch-con-python" title="Permanent link">&para;</a></h2>
-<p>A continuación vamos a crear un ejemplo completo de flujo de datos mediante <em>Python</em> que nos permita recoger <em>tweets</em> y meterlos dentro de <em>ElasticSearch</em>.</p>
-<p>Vamos a suponer que ya disponemos de una cuenta de <em>Twitter</em> y que tenemos las credenciales de acceso, las cuales vamos a almacenar en un fichero denominado <code>credential.py</code>:</p>
-<div class="highlight"><span class="filename">credentials.py</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">API_KEY</span> <span class="o">=</span> <span class="s1">&#39;YOUR_API_KEY&#39;</span>
-<span class="linenos" data-linenos="2 "></span><span class="n">API_SECRET_KEY</span> <span class="o">=</span> <span class="s1">&#39;YOUR_API_SECRET_KEY&#39;</span>
-<span class="linenos" data-linenos="3 "></span><span class="n">ACCESS_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;YOUR_ACCESS_TOKEN&#39;</span>
-<span class="linenos" data-linenos="4 "></span><span class="n">ACCESS_TOKEN_SECRET</span> <span class="o">=</span> <span class="s1">&#39;YOUR_ACCESS_TOKEN_SECRET&#39;</span>
+<h2 id="caso-3-de-aemet-a-s3-y-mongodb">Caso 3: De AEMET a S3 y MongoDB<a class="headerlink" href="#caso-3-de-aemet-a-s3-y-mongodb" title="Permanent link">&para;</a></h2>
+<p>En este caso de uso vamos a repetir el que hicimos en la <a href="05nifi2.html#caso-7-de-aemet-a-mongodb-y-s3">sesión de Nifi</a> pero utilizando <em>Kafka</em> como elemento de integración, desacoplando los productores de los consumidores.</p>
+<h3 id="productor-de-aemet">Productor de AEMET<a class="headerlink" href="#productor-de-aemet" title="Permanent link">&para;</a></h3>
+<p>Tras recuperar la petición REST que realizamos a AEMET vamos a:</p>
+<ul>
+<li>enviar su resultado a un <em>topic</em> que llamaremos <code>iabd-aemet-bronze</code>.</li>
+<li>generar un nuevo mensaje JSON más pequeño con la información que nos interesa, y enviar este nuevo mensaje a un topic que llamaremos <code>iabd-aemet-silver</code>.</li>
+</ul>
+<p>Así pues, primero creamos los <em>topics</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-aemet-bronze<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+<span class="linenos" data-linenos="2 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-aemet-silver<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
 </code></pre></div>
-<h3 id="tweepy">Tweepy<a class="headerlink" href="#tweepy" title="Permanent link">&para;</a></h3>
-<p>Para acceder a Twitter desde Python, la librería por excelencia es <a href="https://www.tweepy.org">Tweepy</a>, la cual instalaremos mediante:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip<span class="w"> </span>install<span class="w"> </span>tweepy
-</code></pre></div>
-<p>A continuación, vamos a realizar el proceso de autenticación en <em>Tweepy</em> y recoger el timeline de mi usuario:</p>
-<div class="highlight"><span class="filename">timeline.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">credentials</span>
-<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">tweepy</span>
-<span class="linenos" data-linenos=" 3 "></span>
-<span class="linenos" data-linenos=" 4 "></span><span class="c1"># Nos autenticamos mediante OAuth</span>
-<span class="linenos" data-linenos=" 5 "></span><span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">API_SECRET_KEY</span><span class="p">)</span>
-<span class="linenos" data-linenos=" 6 "></span><span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN_SECRET</span><span class="p">)</span>
-<span class="linenos" data-linenos=" 7 "></span><span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
-<span class="linenos" data-linenos=" 8 "></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="n">miTimeline</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">home_timeline</span><span class="p">()</span>
-<span class="linenos" data-linenos="10 "></span><span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">miTimeline</span><span class="p">:</span>
-<span class="linenos" data-linenos="11 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">tweet</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">screen_name</span><span class="si">}</span><span class="s1">:</span><span class="se">\n</span><span class="si">{</span><span class="n">tweet</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="s2">&quot;*&quot;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-</code></pre></div>
-<h3 id="productor-de-tweets">Productor de Tweets<a class="headerlink" href="#productor-de-tweets" title="Permanent link">&para;</a></h3>
-<p>En este caso de uso vamos a buscar los <em>tweets</em> que contengan la palabra <em>bigdata</em> y meterlos en un topic de <em>Kafka</em>. Así pues, en vez de obtener el timeline de un usuario, realizaremos una búsqueda mediante la función <a href="https://docs.tweepy.org/en/v4.6.0/api.html#search-tweets"><code>search</code></a> y para cada elemento recuperado, lo enviaremos al productor con toda la información (seguimos un planteamiento ELT).</p>
-<p>Primero creamos el topic:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-twitter<span class="w">  </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
-</code></pre></div>
-<p>Y a continuación desarrollamos el productor:</p>
-<div class="highlight"><span class="filename">producerTwitter.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">import</span> <span class="nn">credentials</span>
-<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">tweepy</span>
-<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaProducer</span>
-<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
-<span class="linenos" data-linenos=" 5 "></span><span class="kn">import</span> <span class="nn">time</span>
+<p>Y a continuación desarrollamos el productor, que hará uso de la librería <a href="https://requests.readthedocs.io/en/latest/">request</a>:</p>
+<div class="highlight"><span class="filename">productorBronze.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaProducer</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">import</span> <span class="nn">requests</span>
 <span class="linenos" data-linenos=" 6 "></span>
 <span class="linenos" data-linenos=" 7 "></span><span class="c1"># Creamos el productor de Kafka</span>
 <span class="linenos" data-linenos=" 8 "></span><span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
-<span class="linenos" data-linenos=" 9 "></span>    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">dumps</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="10 "></span>
+<span class="linenos" data-linenos="11 "></span><span class="c1"># Realizamos la petición REST</span>
+<span class="linenos" data-linenos="12 "></span><span class="n">url_aemet</span> <span class="o">=</span> <span class="s2">&quot;https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065&quot;</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url_aemet</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>    <span class="n">resp_json</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="linenos" data-linenos="17 "></span>    <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-aemet-bronze&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">dumps</span><span class="p">(</span><span class="n">resp_json</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="linenos" data-linenos="18 "></span>
+<span class="linenos" data-linenos="19 "></span>    <span class="c1"># Creamos el nuevo mensaje JSON con los datos</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="n">temp</span> <span class="o">=</span> <span class="n">resp_json</span><span class="p">[</span><span class="s2">&quot;temperatura_actual&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="21 "></span>    <span class="n">humedad</span> <span class="o">=</span> <span class="n">resp_json</span><span class="p">[</span><span class="s2">&quot;humedad&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="22 "></span>    <span class="n">ciudad</span> <span class="o">=</span> <span class="n">resp_json</span><span class="p">[</span><span class="s2">&quot;municipio&quot;</span><span class="p">][</span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="23 "></span>    <span class="n">fecha</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="linenos" data-linenos="24 "></span>    <span class="n">fecha_str</span> <span class="o">=</span> <span class="n">dumps</span><span class="p">(</span><span class="n">fecha</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+<span class="linenos" data-linenos="25 "></span>
+<span class="linenos" data-linenos="26 "></span>    <span class="n">datos_json</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="27 "></span>        <span class="s2">&quot;fecha&quot;</span><span class="p">:</span> <span class="n">fecha</span><span class="p">,</span>
+<span class="linenos" data-linenos="28 "></span>        <span class="s2">&quot;ciudad&quot;</span><span class="p">:</span> <span class="n">ciudad</span><span class="p">,</span>
+<span class="linenos" data-linenos="29 "></span>        <span class="s2">&quot;temp&quot;</span><span class="p">:</span> <span class="n">temp</span><span class="p">,</span>
+<span class="linenos" data-linenos="30 "></span>        <span class="s2">&quot;humedad&quot;</span><span class="p">:</span> <span class="n">humedad</span>
+<span class="linenos" data-linenos="31 "></span>    <span class="p">}</span>
+<span class="linenos" data-linenos="32 "></span>    <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-aemet-silver&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">dumps</span><span class="p">(</span><span class="n">datos_json</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="linenos" data-linenos="33 "></span>
+<span class="linenos" data-linenos="34 "></span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="consumidor-bronze">Consumidor Bronze<a class="headerlink" href="#consumidor-bronze" title="Permanent link">&para;</a></h3>
+<p>En el consumidor del <em>topic</em> <code>iabd-aemet-bronze</code> vamos a recuperar las peticiones REST almacenadas en JSON y las persistiremos en S3, en el mismo <em>bucket</em> que <a href="05nifi2.html#creando-el-bucket">creamos en la sesión de Nifi</a>.</p>
+<p>En este caso, como el mensaje ya está en formato JSON y no queremos tratarlo, no hace falta deserializarlo ni volverlo a serializar.</p>
+<p>El código <em>Python</em> será similar a:</p>
+<div class="highlight"><span class="filename">consumidorBronze.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">import</span> <span class="nn">boto3</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="c1"># Consumidor Kafka</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="n">consumer</span> <span class="o">=</span> <span class="n">KafkaConsumer</span><span class="p">(</span>
+<span class="linenos" data-linenos=" 7 "></span>    <span class="s1">&#39;iabd-aemet-bronze&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 8 "></span>    <span class="n">enable_auto_commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="n">group_id</span><span class="o">=</span><span class="s1">&#39;iabd-caso3&#39;</span><span class="p">,</span>
 <span class="linenos" data-linenos="10 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
 <span class="linenos" data-linenos="11 "></span>
-<span class="linenos" data-linenos="12 "></span><span class="c1"># Nos autenticamos mediante OAuth en Twitter</span>
-<span class="linenos" data-linenos="13 "></span><span class="n">auth</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">OAuthHandler</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">API_SECRET_KEY</span><span class="p">)</span>
-<span class="linenos" data-linenos="14 "></span><span class="n">auth</span><span class="o">.</span><span class="n">set_access_token</span><span class="p">(</span><span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN</span><span class="p">,</span> <span class="n">credentials</span><span class="o">.</span><span class="n">ACCESS_TOKEN_SECRET</span><span class="p">)</span>
-<span class="linenos" data-linenos="15 "></span><span class="n">api</span> <span class="o">=</span> <span class="n">tweepy</span><span class="o">.</span><span class="n">API</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span>
-<span class="linenos" data-linenos="16 "></span>
-<span class="linenos" data-linenos="17 "></span><span class="c1"># Cargamos 500 tweets</span>
-<span class="linenos" data-linenos="18 "></span><span class="nb">id</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="linenos" data-linenos="19 "></span><span class="n">cantidad</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="linenos" data-linenos="20 "></span><span class="k">while</span> <span class="n">cantidad</span> <span class="o">&lt;=</span> <span class="mi">500</span><span class="p">:</span>
-<span class="linenos" data-linenos="21 "></span>    <span class="n">tweets</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">search_tweets</span><span class="p">(</span><span class="n">q</span><span class="o">=</span><span class="s1">&#39;bigdata&#39;</span><span class="p">,</span> <span class="n">tweet_mode</span><span class="o">=</span><span class="s1">&#39;extended&#39;</span><span class="p">,</span> <span class="n">max_id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
-<span class="linenos" data-linenos="22 "></span>    <span class="k">for</span> <span class="n">tweet</span> <span class="ow">in</span> <span class="n">tweets</span><span class="p">:</span>
-<span class="linenos" data-linenos="23 "></span>        <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-twitter&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">tweet</span><span class="o">.</span><span class="n">_json</span><span class="p">)</span>
-<span class="linenos" data-linenos="24 "></span>        <span class="n">cantidad</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="linenos" data-linenos="25 "></span>    <span class="c1">#  Al final del ciclo le asignamos el id del último tweet</span>
-<span class="linenos" data-linenos="26 "></span>    <span class="c1">#  para que en cada ciclo se consulten solo los tweets hasta el más antiguos del ciclo anterior</span>
-<span class="linenos" data-linenos="27 "></span>    <span class="nb">id</span> <span class="o">=</span> <span class="n">tweet</span><span class="o">.</span><span class="n">id</span>
-<span class="linenos" data-linenos="28 "></span>
-<span class="linenos" data-linenos="29 "></span><span class="c1"># Como el envío es asíncrono, para que no se salga del programa antes de enviar el último mensaje, esperamos 1 seg</span>
-<span class="linenos" data-linenos="30 "></span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1"># Conexión con S3</span>
+<span class="linenos" data-linenos="13 "></span><span class="n">s3r</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span><span class="n">bucket</span> <span class="o">=</span> <span class="n">s3r</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="s1">&#39;iabd-nifi&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">consumer</span><span class="p">:</span>
+<span class="linenos" data-linenos="17 "></span>    <span class="n">resp_json</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">value</span>
+<span class="linenos" data-linenos="18 "></span>    <span class="c1"># Creamos el nombre del fichero con la fecha y lo metemos en la carpeta bronze</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="n">nom_fichero</span> <span class="o">=</span> <span class="s2">&quot;bronze/&quot;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="n">bucket</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Key</span><span class="o">=</span><span class="n">nom_fichero</span><span class="p">,</span> <span class="n">Body</span><span class="o">=</span><span class="n">resp_json</span><span class="p">)</span>
 </code></pre></div>
-<h3 id="elasticsearch-desde-python">Elasticsearch desde Python<a class="headerlink" href="#elasticsearch-desde-python" title="Permanent link">&para;</a></h3>
-<p>Para poder acceder a <a href="https://elasticsearch-py.readthedocs.io/en/latest/">Elasticsearch desde Python</a> necesitamos descargar la librería:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pip<span class="w"> </span>install<span class="w"> </span>elasticsearch
+<h3 id="consumidor-silver-y-productor-gold">Consumidor Silver y Productor Gold<a class="headerlink" href="#consumidor-silver-y-productor-gold" title="Permanent link">&para;</a></h3>
+<p>El siguiente paso es bastante más complejo. Ahora realizaremos los siguientes pasos:</p>
+<ol>
+<li>crearemos un consumidor con los mensajes de la cola <em>silver</em></li>
+<li>y almacenamos los mensajes en S3</li>
+<li>además, el mismo mensaje lo insertaremos en MongoDB en la colección <code>caso3</code></li>
+<li>y cuando tengamos 10 mensajes crearemos uno nuevo con el cálculo de la temperaturas y humedades medias</li>
+<li>para finalmente producir dicho mensaje al topic <code>iabd-aemet-gold</code>.</li>
+</ol>
+<p>Así pues, primero creamos el <em>topic</em> <em>gold</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>iabd-aemet-gold<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
 </code></pre></div>
-<p>El siguiente fragmento muestra varias operaciones básicas y como las operaciones REST de <em>Elasticsearch</em> se traducen en métodos:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Código Python</label><label for="__tabbed_3_2">Resultado</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><span class="filename">prueba-elasticsearch.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
-<span class="linenos" data-linenos=" 3 "></span>
-<span class="linenos" data-linenos=" 4 "></span><span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">(</span><span class="s2">&quot;http://localhost:9200&quot;</span><span class="p">)</span>
-<span class="linenos" data-linenos=" 5 "></span>
-<span class="linenos" data-linenos=" 6 "></span><span class="n">doc1</span> <span class="o">=</span> <span class="p">{</span>
-<span class="linenos" data-linenos=" 7 "></span>    <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Aitor Medrano&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos=" 8 "></span>    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Prueba de texto desde Python&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos=" 9 "></span>    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
-<span class="linenos" data-linenos="10 "></span><span class="p">}</span>
-<span class="linenos" data-linenos="11 "></span><span class="n">doc2</span> <span class="o">=</span> <span class="p">{</span>
-<span class="linenos" data-linenos="12 "></span>    <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="s1">&#39;Aitor Medrano&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos="13 "></span>    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s1">&#39;Y otra #prueba desde @Python&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos="14 "></span>    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
-<span class="linenos" data-linenos="15 "></span><span class="p">}</span>
-<span class="linenos" data-linenos="16 "></span><span class="c1"># Inserción</span>
-<span class="linenos" data-linenos="17 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">doc1</span><span class="p">)</span>
-<span class="linenos" data-linenos="18 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">doc2</span><span class="p">)</span>
-<span class="linenos" data-linenos="19 "></span><span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">])</span>
-<span class="linenos" data-linenos="20 "></span>
-<span class="linenos" data-linenos="21 "></span><span class="c1"># Recuperación</span>
-<span class="linenos" data-linenos="22 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="linenos" data-linenos="23 "></span><span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s1">&#39;_source&#39;</span><span class="p">])</span>
-<span class="linenos" data-linenos="24 "></span>
-<span class="linenos" data-linenos="25 "></span><span class="n">es</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">)</span>
-<span class="linenos" data-linenos="26 "></span>
-<span class="linenos" data-linenos="27 "></span><span class="c1"># Búsqueda</span>
-<span class="linenos" data-linenos="28 "></span><span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;prueba&quot;</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;match_all&quot;</span><span class="p">:</span> <span class="p">{}})</span>
-<span class="linenos" data-linenos="29 "></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Encontrados </span><span class="si">%d</span><span class="s2"> Hits:&quot;</span> <span class="o">%</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;total&#39;</span><span class="p">][</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
-<span class="linenos" data-linenos="30 "></span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s1">&#39;hits&#39;</span><span class="p">][</span><span class="s1">&#39;hits&#39;</span><span class="p">]:</span>
-<span class="linenos" data-linenos="31 "></span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(timestamp)s</span><span class="s2"> </span><span class="si">%(author)s</span><span class="s2">: </span><span class="si">%(text)s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">hit</span><span class="p">[</span><span class="s2">&quot;_source&quot;</span><span class="p">])</span>
-</code></pre></div>
-</div>
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span>    resp = es.index(index=&quot;prueba&quot;, id=1, document=doc1)
-<span class="linenos" data-linenos=" 2 "></span>    resp = es.index(index=&quot;prueba&quot;, id=2, document=doc2)
-<span class="linenos" data-linenos=" 3 "></span>updated
-<span class="linenos" data-linenos=" 4 "></span>    resp = es.get(index=&quot;prueba&quot;, id=1)
-<span class="linenos" data-linenos=" 5 "></span>{&#39;author&#39;: &#39;Aitor Medrano&#39;, &#39;text&#39;: &#39;Prueba de texto desde Python&#39;, &#39;timestamp&#39;: &#39;2022-02-25T15:11:43.720820&#39;}
-<span class="linenos" data-linenos=" 6 "></span>    es.indices.refresh(index=&quot;prueba&quot;)
-<span class="linenos" data-linenos=" 7 "></span>    resp = es.search(index=&quot;prueba&quot;, query={&quot;match_all&quot;: {}})
-<span class="linenos" data-linenos=" 8 "></span>Encontrados 2 Hits:
-<span class="linenos" data-linenos=" 9 "></span>2022-02-25T15:11:43.720820 Aitor Medrano: Prueba de texto desde Python
-<span class="linenos" data-linenos="10 "></span>2022-02-25T15:11:43.720826 Aitor Medrano: Y otra #prueba desde @Python
-</code></pre></div>
-</div>
-</div>
-</div>
-<h3 id="consumidor-en-elasticsearch">Consumidor en Elasticsearch<a class="headerlink" href="#consumidor-en-elasticsearch" title="Permanent link">&para;</a></h3>
-<p>Finalmente, vamos a crear un consumidor que se conecte a <em>Kafka</em> para consumir los mensajes, e introduzca cada uno de los <em>tuits</em> en <em>Elasticsearch</em>:</p>
-<div class="highlight"><span class="filename">consumerTwitter.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
-<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span>
-<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span>
-<span class="linenos" data-linenos=" 5 "></span><span class="kn">import</span> <span class="nn">ast</span>
+<p>Así pues, antes de empezar, colocamos las dependencias y la función para transformar un diccionario JSON con todo el contenido en <em>String</em> a diferentes tipos (<em>float</em>, <em>ISODate</em>, ...):</p>
+<div class="highlight"><span class="filename">consumidorSilverProductorGold.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span><span class="p">,</span> <span class="n">KafkaProducer</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span><span class="p">,</span> <span class="n">dumps</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">import</span> <span class="nn">boto3</span>
 <span class="linenos" data-linenos=" 6 "></span>
-<span class="linenos" data-linenos=" 7 "></span><span class="n">es</span> <span class="o">=</span> <span class="n">Elasticsearch</span><span class="p">(</span><span class="s2">&quot;http://localhost:9200&quot;</span><span class="p">)</span>
-<span class="linenos" data-linenos=" 8 "></span>
-<span class="linenos" data-linenos=" 9 "></span><span class="n">consumer</span> <span class="o">=</span> <span class="n">KafkaConsumer</span><span class="p">(</span>
-<span class="linenos" data-linenos="10 "></span>    <span class="s1">&#39;iabd-twitter&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos="11 "></span>    <span class="n">auto_offset_reset</span><span class="o">=</span><span class="s1">&#39;earliest&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos="12 "></span>    <span class="n">enable_auto_commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="linenos" data-linenos="13 "></span>    <span class="n">group_id</span><span class="o">=</span><span class="s1">&#39;iabd-caso3&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos="14 "></span>    <span class="n">value_deserializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">loads</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)),</span>
-<span class="linenos" data-linenos="15 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
-<span class="linenos" data-linenos="16 "></span>
-<span class="linenos" data-linenos="17 "></span><span class="n">cantidad</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="linenos" data-linenos="18 "></span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">consumer</span><span class="p">:</span>
-<span class="linenos" data-linenos="19 "></span>    <span class="n">tweet</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">value</span>
-<span class="linenos" data-linenos="20 "></span>    <span class="c1"># print(type(tweet))</span>
-<span class="linenos" data-linenos="21 "></span>    <span class="c1"># tweet = ast.literal_eval(m.value)</span>
-<span class="linenos" data-linenos="22 "></span>    <span class="c1"># print(tweet[&#39;user&#39;])</span>
-<span class="linenos" data-linenos="23 "></span>    <span class="c1"># doc = {</span>
-<span class="linenos" data-linenos="24 "></span>    <span class="c1">#     &#39;user&#39;: m.value.user.screen_name,</span>
-<span class="linenos" data-linenos="25 "></span>    <span class="c1">#     &#39;text&#39;: m.value.full_text,</span>
-<span class="linenos" data-linenos="26 "></span>    <span class="c1">#     &#39;created_at&#39;: m.value.created_at,</span>
-<span class="linenos" data-linenos="27 "></span>    <span class="c1">#     &#39;likes&#39;: m.value.favourite_count</span>
-<span class="linenos" data-linenos="28 "></span>    <span class="c1"># }</span>
-<span class="linenos" data-linenos="29 "></span>    <span class="n">resp</span> <span class="o">=</span> <span class="n">es</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;iabd-twitter-es&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">cantidad</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">tweet</span><span class="p">)</span>
-<span class="linenos" data-linenos="30 "></span>    <span class="n">cantidad</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="linenos" data-linenos="31 "></span>
-<span class="linenos" data-linenos="32 "></span><span class="c1"># Forzamos que se persistan los cambios</span>
-<span class="linenos" data-linenos="33 "></span><span class="n">es</span><span class="o">.</span><span class="n">indices</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s2">&quot;iabd-twitter-es&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 7 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="linenos" data-linenos=" 8 "></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos" data-linenos=" 9 "></span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># Convierte un diccionario JSON con todo el contenido en String a diferentes tipos (float, ISODate, ...)</span>
+<span class="linenos" data-linenos="11 "></span><span class="k">def</span> <span class="nf">esquema_json</span><span class="p">(</span><span class="n">dct</span><span class="p">):</span>
+<span class="linenos" data-linenos="12 "></span>    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos" data-linenos="13 "></span>
+<span class="linenos" data-linenos="14 "></span>    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;fecha&#39;</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">):</span>
+<span class="linenos" data-linenos="15 "></span>        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;fecha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">dct</span><span class="p">[</span><span class="s2">&quot;fecha&quot;</span><span class="p">])</span>
+<span class="linenos" data-linenos="16 "></span>    <span class="k">if</span> <span class="s1">&#39;temp&#39;</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+<span class="linenos" data-linenos="17 "></span>        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;temp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dct</span><span class="p">[</span><span class="s2">&quot;temp&quot;</span><span class="p">])</span>
+<span class="linenos" data-linenos="18 "></span>    <span class="k">if</span> <span class="s1">&#39;humedad&#39;</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+<span class="linenos" data-linenos="19 "></span>        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;humedad&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dct</span><span class="p">[</span><span class="s2">&quot;humedad&quot;</span><span class="p">])</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="k">if</span> <span class="s1">&#39;ciudad&#39;</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+<span class="linenos" data-linenos="21 "></span>        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ciudad&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;ciudad&quot;</span><span class="p">]</span>
+<span class="linenos" data-linenos="22 "></span>
+<span class="linenos" data-linenos="23 "></span>    <span class="k">return</span> <span class="n">result</span>
 </code></pre></div>
-<p>Si accedemos a <code>http://localhost:9200/iabd-twitter-es/_search?pretty</code> podremos ver como <em>Elasticsearch</em> contiene los <em>tuits</em> que habíamos producido previamente:</p>
+<p>A continuación definimos las conexiones necesarios para los pasos 1 (consumir <em>Kafka</em> en el topic <em>silver</em>), 2 (enviar a <em>S3</em>), 3 (persistir en <em>MongoDB</em>) y 5 (producir <em>Kafka</em> en el topic <em>gold</em>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="24 "></span><span class="c1"># Paso 1 - Consumir Silver</span>
+<span class="linenos" data-linenos="25 "></span><span class="n">consumer</span> <span class="o">=</span> <span class="n">KafkaConsumer</span><span class="p">(</span>
+<span class="linenos" data-linenos="26 "></span>    <span class="s1">&#39;iabd-aemet-silver&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="n">enable_auto_commit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="linenos" data-linenos="28 "></span>    <span class="n">group_id</span><span class="o">=</span><span class="s1">&#39;iabd-caso3&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="29 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="30 "></span>
+<span class="linenos" data-linenos="31 "></span><span class="c1"># Paso 2 - Conexión con S3</span>
+<span class="linenos" data-linenos="32 "></span><span class="n">s3r</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">resource</span><span class="p">(</span><span class="s1">&#39;s3&#39;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="s1">&#39;us-east-1&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="33 "></span><span class="n">bucket</span> <span class="o">=</span> <span class="n">s3r</span><span class="o">.</span><span class="n">Bucket</span><span class="p">(</span><span class="s1">&#39;iabd-nifi&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="34 "></span>
+<span class="linenos" data-linenos="35 "></span><span class="c1"># Paso 3 - Conexión con MongoDB</span>
+<span class="linenos" data-linenos="36 "></span><span class="n">clienteMongo</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">(</span><span class="s1">&#39;mongodb://localhost:27017&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="37 "></span>
+<span class="linenos" data-linenos="38 "></span><span class="c1"># Paso 5 - Producir Gold</span>
+<span class="linenos" data-linenos="39 "></span><span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
+<span class="linenos" data-linenos="40 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
+</code></pre></div>
+<p>Y para cada mensaje que consumimos, realizamos los pasos 2 (enviar a <em>S3</em>), 3 (persistir en <em>MongoDB</em>), 4 (calcular los datos agregados) y 5 (producir en <em>Kafka</em> en <em>gold</em>):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="40 "></span><span class="n">cantidad</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="linenos" data-linenos="41 "></span><span class="n">mensajes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos" data-linenos="42 "></span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">consumer</span><span class="p">:</span>
+<span class="linenos" data-linenos="43 "></span>    <span class="n">resp_json</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">value</span>
+<span class="linenos" data-linenos="44 "></span>    <span class="n">doc_json</span> <span class="o">=</span> <span class="n">loads</span><span class="p">(</span><span class="n">resp_json</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="n">esquema_json</span><span class="p">)</span>
+<span class="linenos" data-linenos="45 "></span>    <span class="n">mensajes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc_json</span><span class="p">)</span>
+<span class="linenos" data-linenos="46 "></span>
+<span class="linenos" data-linenos="47 "></span>    <span class="c1"># Paso 2 - Metemos en S3 cada mensaje</span>
+<span class="linenos" data-linenos="48 "></span>    <span class="n">nom_fichero</span> <span class="o">=</span> <span class="s2">&quot;silver/&quot;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;.json&quot;</span>
+<span class="linenos" data-linenos="49 "></span>    <span class="n">bucket</span><span class="o">.</span><span class="n">put_object</span><span class="p">(</span><span class="n">Key</span><span class="o">=</span><span class="n">nom_fichero</span><span class="p">,</span> <span class="n">Body</span><span class="o">=</span><span class="n">resp_json</span><span class="p">)</span>
+<span class="linenos" data-linenos="50 "></span>
+<span class="linenos" data-linenos="51 "></span>    <span class="c1"># Paso 3 - Lo insertamos en MongoDB</span>
+<span class="linenos" data-linenos="52 "></span>    <span class="n">colcaso3</span> <span class="o">=</span> <span class="n">clienteMongo</span><span class="o">.</span><span class="n">iabd</span><span class="o">.</span><span class="n">caso3</span>
+<span class="linenos" data-linenos="53 "></span>    <span class="n">resultado</span> <span class="o">=</span> <span class="n">colcaso3</span><span class="o">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">doc_json</span><span class="p">)</span>
+<span class="linenos" data-linenos="54 "></span>
+<span class="linenos" data-linenos="55 "></span>    <span class="c1"># Guardamos 10 mensajes</span>
+<span class="linenos" data-linenos="56 "></span>    <span class="n">cantidad</span> <span class="o">=</span> <span class="n">cantidad</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos" data-linenos="57 "></span>
+<span class="linenos" data-linenos="58 "></span>    <span class="k">if</span> <span class="n">cantidad</span> <span class="o">==</span> <span class="mi">11</span><span class="p">:</span>
+<span class="linenos" data-linenos="59 "></span>        <span class="nb">print</span><span class="p">(</span><span class="n">mensajes</span><span class="p">)</span>
+<span class="linenos" data-linenos="60 "></span>        <span class="c1"># Paso 4 - realizamos el cálculo</span>
+<span class="linenos" data-linenos="61 "></span>        <span class="c1"># Usamos pandas</span>
+<span class="linenos" data-linenos="62 "></span>        <span class="n">pd_mensajes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mensajes</span><span class="p">)</span>
+<span class="linenos" data-linenos="63 "></span>        <span class="n">pd_mensajes</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="n">pd_mensajes</span><span class="p">[</span><span class="s1">&#39;temp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="64 "></span>        <span class="n">pd_mensajes</span><span class="o">.</span><span class="n">humedad</span> <span class="o">=</span> <span class="n">pd_mensajes</span><span class="p">[</span><span class="s1">&#39;humedad&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="65 "></span>        <span class="n">pd_agg</span> <span class="o">=</span> <span class="n">pd_mensajes</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;ciudad&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;fecha&quot;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="s2">&quot;temp&quot;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="s2">&quot;humedad&quot;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">})</span>
+<span class="linenos" data-linenos="66 "></span>        <span class="n">pd_agg</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos" data-linenos="67 "></span>        <span class="n">json_gold</span> <span class="o">=</span> <span class="n">pd_agg</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="68 "></span>
+<span class="linenos" data-linenos="69 "></span>        <span class="nb">print</span><span class="p">(</span><span class="n">json_gold</span><span class="p">)</span>
+<span class="linenos" data-linenos="70 "></span>
+<span class="linenos" data-linenos="71 "></span>        <span class="c1"># Paso 5 - producimos el mensaje a Kafka</span>
+<span class="linenos" data-linenos="72 "></span>        <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-aemet-gold&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">dumps</span><span class="p">(</span><span class="n">json_gold</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+<span class="linenos" data-linenos="73 "></span>
+<span class="linenos" data-linenos="74 "></span>        <span class="c1"># vaciamos la lista e inicializamos el contador</span>
+<span class="linenos" data-linenos="75 "></span>        <span class="n">mensajes</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos" data-linenos="76 "></span>        <span class="n">cantidad</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div>
+<p>Si en un terminal creamos un consumidor del topic <code>iabd-aemet-gold</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-console-consumer.sh<span class="w"> </span>--topic<span class="w"> </span>iabd-aemet-gold<span class="w"> </span>--from-beginning<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
+</code></pre></div>
+<p>Veremos que los mensajes que llegan son similares a:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="nt">&quot;ciudad&quot;</span><span class="p">:</span><span class="s2">&quot;Elche\/Elx&quot;</span><span class="p">,</span><span class="nt">&quot;fecha&quot;</span><span class="p">:</span><span class="mi">1679416092670</span><span class="p">,</span><span class="nt">&quot;temp&quot;</span><span class="p">:</span><span class="mf">20.8</span><span class="p">,</span><span class="nt">&quot;humedad&quot;</span><span class="p">:</span><span class="mf">50.0</span><span class="p">}</span>
+</code></pre></div>
+<h2 id="caso-4-ahora-con-nifi">Caso 4: Ahora con Nifi<a class="headerlink" href="#caso-4-ahora-con-nifi" title="Permanent link">&para;</a></h2>
+<p>Vamos a repetir el flujo de datos que acabamos de crear en el caso anterior, pero implementandolos mediante <em>Nifi</em> de forma similar al <a href="05nifi2.html#caso-7-de-aemet-a-mongodb-y-s3">caso 7 de la segunda sesión de Nifi</a>.</p>
+<div class="admonition info">
+<p class="admonition-title">Configuración de procesadores de Nifi</p>
+<p>En este apartado hemos obviado la configuración de todos los procesadores vistos en el <a href="05nifi2.html#caso-7-de-aemet-a-mongodb-y-s3">caso 7 de Nifi</a>, ya que podemos copiar y pegarlos dentro de nuevos grupos de procesadores y evitarnos tener que volver a configurarlos.</p>
+</div>
+<h3 id="de-rest-a-kafka">De REST a Kafka<a class="headerlink" href="#de-rest-a-kafka" title="Permanent link">&para;</a></h3>
+<p>Sobre un grupo de procesadores que hemos llamado <code>caso4kafka_producer_bronze_silver</code>, vamos a utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.InvokeHTTP/index.html">InvokeHTTP</a>, mediante el cual hacemos la petición GET a la URL <a href="https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065">https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065</a>.</p>
+<p>De este procesador, por un lado vamos a conectar directamente con <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-kafka-2-6-nar/latest/org.apache.nifi.processors.kafka.pubsub.PublishKafka_2_6/index.html">PublishKafka_2_6</a> para enviar directamente los datos a Kafka al <em>topic</em>, donde además del topic <code>iabd-aemet-bronce</code>, indicaremos que no utilizaremos transacciones (Use Transactions: <code>false</code>), así como que intente garantizar la entrega (<em>Delivery Guarantee: Best Effort</em>):</p>
 <figure style="align: center;">
-    <img src="images/02kafka-elasticsearch-result.png">
-    <figcaption>Resultado de consumir tuits desde Kafka y cargar en Elasticsearch</figcaption>
+    <img alt="Publicando en el topic iabd-aemet-bronze en Nifi" src="images/03caso4publishBronze.png">
+    <figcaption>Publicando en el topic iabd-aemet-bronze</figcaption>
 </figure>
 
-<h3 id="todo-en-uno-con-nifi">Todo en uno con Nifi<a class="headerlink" href="#todo-en-uno-con-nifi" title="Permanent link">&para;</a></h3>
-<p>Vamos a realizar un flujo de datos en <em>Nifi</em> para el mismo caso de uso que acabamos de desarrollar. Para ello, vamos a crear dos grupos de procesos para tener los flujos ordenados:</p>
+<p>Para el resto de lógica, igual que en la sesión de <em>Nifi</em>, utilizamos <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.EvaluateJSONPath/index.html">EvaluateJSONPath</a> para recoger la ciudad, la temperatura y la humedad, y por último conectamos con <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.AttributesToJSON/index.html">AttributesToJSON</a> para generar el JSON que finalmente enviaremos a Kafka.</p>
+<p>Ahora, como sí que tenemos un formato más concreto, vamos a utilizar <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-kafka-2-6-nar/latest/org.apache.nifi.processors.kafka.pubsub.PublishKafkaRecord_2_6/index.html">PublishKafkaRecord_2_6</a> para utilizar un conjunto de registros.</p>
+<p>Primero, conectamos todos los procesadores:</p>
 <figure style="align: center;">
-    <img src="images/02kafka-nifi-process-groups.png">
-    <figcaption>Grupos de procesos para E y L</figcaption>
+    <img alt="Flujo de la capa bronce/silver en Nifi" src="images/03caso4flujoBronzeSilver.png">
+    <figcaption>Flujo de la capa bronce/silver</figcaption>
 </figure>
 
-<p>En el primer grupo, que hemos denominado <em>Extract Twitter</em>, vamos a realizar la carga desde Twitter (filtrando los mensajes que contengan la palabra <em>bigdata</em>) y los vamos a meter en el topic <code>iabd-twitter</code>.</p>
-<p>Para ello, conectaremos los siguientes procesadores:</p>
-<ul>
-<li><em>GetTwitter</em>: tras introducir los valores para autenticarnos en Twitter, configuraremos como <em>endpoint</em> que sea de tipo <em>Filter Endpoint</em> y como término a filtrar <em>bigdata</em> (no olvides poner las claves de autenticación).</li>
-<li><em>PublishKafka_2_6</em>: en este procesador, además del <em>topic</em> <code>iabd-twitter</code>, indicaremos que no utilizaremos transacciones (<em>Use Transactions: false</em>), así como que intente garantizar la entrega (<em>Delivery Guarantee: Best Effort</em>):</li>
-</ul>
+<p>Y configuramos el último procesador con el topic <code>iabd-aemet-silver</code>, pero indicando que vamos a leer tanto como escribir en formato JSON:</p>
 <figure style="align: center;">
-    <img src="images/02kafka-nifi-gettwitter.png">
-    <figcaption>De Twitter a Kafka</figcaption>
+    <img alt="Publicando en el topic iabd-aemet-silver en Nifi" src="images/03caso4publishSilver.png">
+    <figcaption>Publicando en el topic iabd-aemet-silver</figcaption>
 </figure>
 
-<p>Del mismo modo, dentro del segundo grupo (<em>Load Elasticsearch</em>), conectaremos los siguientes procesadores:</p>
-<ul>
-<li><em>ConsumerKafka_2_6</em>: donde consumiremos los mensajes del topic <code>iabd-twitter</code> de <em>Kafka</em>, y por ejemplo, como grupo de consumidores le indicaremos que usamos nifi (<em>group id: nifi</em>)</li>
-<li><em>PutElasticsearchHttp</em>: como ya hicimos en la sesión de <em>Nifi</em>, indicaremos la URL de Elasticsearch (<code>http://localhost:9200</code>) y que lo almacene en un indice que hemos denominado <code>iabd-twitter-es</code>:</li>
-</ul>
+<h3 id="de-kafka-a-s3">De Kafka a S3<a class="headerlink" href="#de-kafka-a-s3" title="Permanent link">&para;</a></h3>
+<p>Nos vamos a centrar en recuperar los mensajes del <em>topic</em> <code>iabd-aemet-silver</code> y colocarlos en S3, mediante un grupo de procesadores que llamaremos <code>caso4kafka_consumer_bronze</code> que contendrá un flujo similar a:</p>
 <figure style="align: center;">
-    <img src="images/02kafka-nifi-putelasticsearch.png">
-    <figcaption>De Kafka a Elasticsearch</figcaption>
+    <img alt="Flujo de la capa bronce en Nifi" src="images/03caso4flujoBronze.png">
+    <figcaption>Flujo de la capa bronce</figcaption>
+</figure>
+
+<p>Y en concreto en el consumidor, hemos de indicar tanto el <em>topic</em> como el grupo de consumidores (<em>Group ID</em>) a <code>iabd-caso4</code>:</p>
+<figure style="align: center;">
+    <img alt="Consumidor del del topic iabd-aemet-bronce en Nifi" src="images/03caso4consumeBronze.png">
+    <figcaption>Consumiendo del topic iabd-aemet-bronce</figcaption>
 </figure>
 
 <!--
-Ejemplo con Kafka
-Split Text + ExtractText + PutKafka
-https://www.youtube.com/watch?v=2w14d16wR8Y
-
-Nifi + Kafka
-https://www.youtube.com/watch?time_continue=1588&v=nWEna1mE4KY&feature=emb_logo
+### De Kafka a S3 y MongoDB
 -->
 
 <h2 id="kafka-connect">Kafka Connect<a class="headerlink" href="#kafka-connect" title="Permanent link">&para;</a></h2>
 <p>Si hacerlo con <em>Nifi</em> ya es un avance respecto a tener que codificarlo con <em>Python</em>, ¿qué dirías si <em>Kafka</em> ofreciera una serie de conectores para las operaciones más comunes?</p>
 <p>Así pues, <em>Kafka Connect</em> permite importar/exportar datos desde/hacia <em>Kafka</em>, facilitando la integración en sistemas existentes mediante alguno del <a href="https://www.confluent.io/hub/">centenar de conectores disponibles</a>.</p>
 <figure style="align: center;">
-    <img src="images/02kafka-connect.png">
+    <img src="images/03kafka-connect.png">
     <figcaption>Arquitectura Kafka Connect</figcaption>
 </figure>
 
@@ -1884,33 +1924,31 @@ Una vez que los datos se almacenan en <em>Kafka</em> como eventos, podemos proce
 <h3 id="kafka-y-el-big-data">Kafka y el Big Data<a class="headerlink" href="#kafka-y-el-big-data" title="Permanent link">&para;</a></h3>
 <p>El siguiente gráfico muestra cómo <em>Kafka</em> está enfocado principalmente para el tratamiento en <em>streaming</em>, aunque con los conectores de <em>Kafka Connect</em> da soporte para el procesamiento <em>batch</em>:</p>
 <figure style="align: center;">
-    <img src="images/02kafka-bigdata.png">
+    <img src="images/03kafka-bigdata.png">
     <figcaption>Kafka y Big Data</figcaption>
 </figure>
 
+<div class="admonition info">
+<p class="admonition-title">Elasticsearch y Twitter</p>
+<p>En la edición de 21/22, en estas sesiones, realizamos diferentes casos de uso con <em>Elasticsearch</em> y <em>Twitter</em>. </p>
+<p>Este curso no hemos visto <em>Elasticsearch</em>, y además, el API de <em>Twitter</em> ha dejado de ser gratuita. Si tienes curiosidad, puedes consultar dichos casos de uso en los <a href="https://aitor-medrano.github.io/bigdata2122/apuntes/bdaplicado05kafka.html#caso-3-de-twitter-a-elasticsearch-con-python">apuntes del curso pasado</a>.</p>
+</div>
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://www.packtpub.com/product/apache-kafka-series-learn-apache-kafka-for-beginners-video/9781789342604">Apache Kafka Series - Learn Apache Kafka for Beginners</a></li>
-<li>Serie de artículos de Víctor Madrid sobre <a href="https://enmilocalfunciona.io/tag/kafka/">Kafka</a> en <a href="https://enmilocalfunciona.io">enmilocalfunciona.io</a>.</li>
-<li><a href="https://mikeldeltio.com/2020/05/20/distributed-databases-kafka/">Distributed Databases: Kafka</a> por Miguel del Tio</li>
+<li>Serie de artículos de <em>Víctor Madrid</em> sobre <a href="https://enmilocalfunciona.io/tag/kafka/">Kafka</a> en <a href="https://enmilocalfunciona.io">enmilocalfunciona.io</a>.</li>
+<li><a href="https://mikeldeltio.com/2020/05/20/distributed-databases-kafka/">Distributed Databases: Kafka</a> por <em>Mikel del Tio</em>.</li>
 <li><a href="https://www.baeldung.com/kafka-connectors-guide">Introduction to Kafka Connectors</a></li>
 <li><a href="https://github.com/lensesio/kafka-cheat-sheet">Kafka Cheatsheet</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>(opcional) A partir del caso 2, crea un clúster de Kafka con 4 particiones y 3 nodos. A continuación, en el productor utiliza <em>Faker</em> para crear 10 personas (almacénalas como un diccionario). En el consumidor, muestra los datos de las personas (no es necesario recibirlos ordenados, sólo necesitamos que se aproveche al máximo la infraestructura de Kafka).</li>
-<li>Realiza el caso de uso 3 (De <em>Twitter</em> a <em>ElasticSearch</em>) tanto con <em>Python</em> como con <em>Nifi</em>.</li>
-<li>(opcional) Repite el caso de uso 2 únicamente mediante <em>Kafka Connect</em>.  </li>
-<li>(opcional) Investiga en qué consiste el patrón CDC (<em>Change Data Capture</em>) y cómo se realiza CDC con <em>Kafka</em>/<em>Kafka Connect</em> y <a href="https://debezium.io/">Debezium</a>. ¿Qué ventajas aportan las soluciones CDC?</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 0.5p) A partir del caso 2, crea un clúster de Kafka con 4 particiones y 3 nodos. A continuación, en el productor utiliza <em>Faker</em> para crear 10 personas (almacénalas como un diccionario). En el consumidor, muestra los datos de las personas (no es necesario recibirlos ordenados, sólo necesitamos que se aproveche al máximo la infraestructura de <em>Kafka</em>).</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 3 mediante <em>Python</em>, pero separando el <code>consumidorSilverProductorGold</code> en tres consumidores diferentes, uno que consuma y guarde en S3 (<code>consumidorSilverS3.py</code>), otro que consuma y guarde en <em>MongoDB</em> (<code>consumidorSilverMongoDB.py</code>) y el tercero que consuma, agrupe mensajes y produzca el mensaje al topic <em>gold</em> (<code>consumidorSilverGroupProducerGold.py</code>).</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 4 mediante <em>Nifi</em>, pero modificando el primer flujo para que un grupo de procesadores únicamente realice la petición REST y coloque el contenido en <em>topic</em> <code>iabd-aemet-bronze</code> y en un segundo grupo, se consuman los mensajes de ese <em>topic</em> y se realice la transformación de la petición REST y su posterior producción al <em>topic</em> <code>iabd-aemet-silver</code>.</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Repite el caso de uso 2 únicamente mediante <em>Kafka Connect</em>.  </li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos">CE5.1a</abbr> / 0.5p) Investiga en qué consiste el patrón CDC (<em>Change Data Capture</em>) y cómo se realiza CDC con <em>Kafka</em>/<em>Kafka Connect</em>, el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-cdc-mysql-nar/latest/org.apache.nifi.cdc.mysql.processors.CaptureChangeMySQL/index.html">CaptureChangeMySQL</a> de <em>Nifi</em> y el producto <a href="https://debezium.io/">Debezium</a>. ¿Qué ventajas aportan las soluciones CDC?</li>
 </ol>
-<!--
-Confluent.io - instalación, uso básico del platform en un nodo
-Kafka UI
-    https://towardsdatascience.com/overview-of-ui-tools-for-monitoring-and-management-of-apache-kafka-clusters-8c383f897e80
-Ejemplo AEMET  productor/consumidor
-    Replicar en Nifi con REST
-Cluster, si se cae una réplica, se propagan los datos ¿?
--->
 
 
   

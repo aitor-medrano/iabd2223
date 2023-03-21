@@ -1448,6 +1448,10 @@
 <p><a href="https://aws.amazon.com/es/kinesis/">Amazon Kinesis</a> es un producto similar a <em>Apache Kafka</em> pero dentro de la plataforma AWS, por lo que no es un producto <em>open source</em> como tal. Su principal ventaja es la facilidad de escalabilidad a golpe de click e integración con el resto de servicios que ofrece AWS.
 Se trata de una herramienta muy utilizada que permite incorporar datos en tiempo real, como vídeos, audios, registros de aplicaciones, secuencias de clicks de sitios web y datos de sensores IoT para <em>machine learning</em>, analítica de datos en streaming, etc...</p>
 </div>
+<div class="admonition info">
+<p class="admonition-title">Confluent</p>
+<p><a href="https://www.confluent.io/es-es/">Confluent</a> es una solución PaaS que ofrece el despliegue y la monitorización de Kafka en un producto. Pese a existir una versión <em>Community</em> que podemos probar en local (incluso mediante <em>Docker</em>), los requisitos a nivel de RAM son bastante altos, ya que requiere un mínimo de 8GB de RAM sólo para <em>Kafka</em>, con lo que el ordenador <em>host</em> debe tener mínimo 12GB de RAM.</p>
+</div>
 <h3 id="publicador-suscriptor">Publicador / Suscriptor<a class="headerlink" href="#publicador-suscriptor" title="Permanent link">&para;</a></h3>
 <p>Antes de entrar en detalle sobre <em>Kafka</em>, hay que conocer el modelo publicador/suscriptor. Este patrón también se conoce como <em>publish / subscribe</em> o <em>productor / consumidor</em>.</p>
 <p>Hay tres elementos que hay que tener realmente claros:</p>
@@ -1830,7 +1834,7 @@ En el caso de un fallo de un <em>broker</em>, los productores automáticamente s
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="https://www.packtpub.com/product/apache-kafka-series-learn-apache-kafka-for-beginners-video/9781789342604">Apache Kafka Series - Learn Apache Kafka for Beginners</a></li>
-<li>Serie de artículos de Víctor Madrid sobre <a href="https://enmilocalfunciona.io/tag/kafka/">Kafka</a> en <a href="https://enmilocalfunciona.io">enmilocalfunciona.io</a>.</li>
+<li>Serie de artículos de <em>Víctor Madrid</em> sobre <a href="https://enmilocalfunciona.io/tag/kafka/">Kafka</a> en <a href="https://enmilocalfunciona.io">enmilocalfunciona.io</a>.</li>
 <li><a href="https://mikeldeltio.com/2020/05/20/distributed-databases-kafka/">Distributed Databases: Kafka</a> por <em>Mikel del Tio</em>.</li>
 <li><a href="https://github.com/lensesio/kafka-cheat-sheet">Kafka Cheatsheet</a></li>
 </ul>
