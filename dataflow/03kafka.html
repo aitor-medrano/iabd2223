@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Uso de Apache Kafka y desarrollo de un ejemplo completo desde Twitter a Elasticsearch">
+        <meta name="description" content="Creación de clúster de Kafka, integración de Kafka desde un servicios REST a MongoDB y S3, y uso de Kafka Connect.">
       
       
       
@@ -69,7 +69,7 @@
       
         <meta  property="og:title"  content="Apache Kafka Avanzado. - IABD" >
       
-        <meta  property="og:description"  content="Uso de Apache Kafka y desarrollo de un ejemplo completo desde Twitter a Elasticsearch" >
+        <meta  property="og:description"  content="Creación de clúster de Kafka, integración de Kafka desde un servicios REST a MongoDB y S3, y uso de Kafka Connect." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/03kafka.png" >
       
@@ -85,7 +85,7 @@
       
         <meta  name="twitter:title"  content="Apache Kafka Avanzado. - IABD" >
       
-        <meta  name="twitter:description"  content="Uso de Apache Kafka y desarrollo de un ejemplo completo desde Twitter a Elasticsearch" >
+        <meta  name="twitter:description"  content="Creación de clúster de Kafka, integración de Kafka desde un servicios REST a MongoDB y S3, y uso de Kafka Connect." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/dataflow/03kafka.png" >
       
@@ -1393,55 +1393,7 @@
 
 
 <h1 id="apache-kafka-avanzado">Apache Kafka Avanzado<a class="headerlink" href="#apache-kafka-avanzado" title="Permanent link">&para;</a></h1>
-<!--
-https://learning.oreilly.com/library/view/modern-data-engineering/9781484274521/html/505711_1_En_11_Chapter.xhtml
-Stream Processing
-Stream processing evolved from the simple mechanism of messages passing between operating system (OS) processes across buses. They were more popularly known simply as pub/sub systems, as system processes would publish or subscribe to messages in a form of cross-application communication within a single machine.
-
-Interprocess Communication
-This simple, albeit useful, construct allowed for magnitude gains in parallel processing by allowing processes (applications and kernel tasks) within a single computer OS to take part in a conversation. The beauty of this was that processes could participate in conversations in either synchronous or asynchronous fashion and distribute work among many applications without the necessary overhead of locking and synchronization.
-
-Network Queues
-This approach to parallel processing via pub/sub message buses on a single system allowed engineers to expand and evolve these systems in a distributed-first approach. This led to the advent of the network message queue.
-
-The basic message queue allowed for one or many channels, or named queues, to be created in a distributed first-in, first-out (FIFO) style queue that ran as a service on top of a network addressable location (e.g., ip-address:port). This enabled network-based applications and services to communicate asynchronously, which meant that the producers of the messages didn’t need to know about the subscribers (consumers) directly. Instead this was offloaded to the network queue, which simplified distributed systems greatly.
-
-From Distributed Queues to Repayable Message Queues
-Apache Kafka is a household name within the tech community and is as common a component in the data platform as boutique seltzer and ping pong are to any startup. Kafka started at LinkedIn, and was later gifted to the Apache Foundation, with the goal was to create a distributed, fault-tolerant platform for handling low-latency data feeds, or streams of data.
-
-Kafka was built with a fresh approach to the distributed network queue. However, it had a different approach to handling partial failures from consumers. As you may imagine, if we have a distributed queue and we take a message from that queue, then we could assume that the queue would purge that message and life would go on.
-
-However, in the face of failure, no matter where you point the blame, there would be data loss associated with a message that has been purged from the queue if the process that took the message was lost due to a fault in the application code. It is common for systems reading messages to come across bad data, and without the appropriate defense mechanisms in place to handle corrupt data, the process could terminate unexpectedly. Without a means of recovering. Now as you can imagine, this was not good for business.
-
-Fault-Tolerance and Reliability
-To protect consumers from the inevitable, Kafka was architected to ensure that downstream failures would not immediately lead to data loss. The solution was to treat the messages in a similar fashion to how databases handle reliability. That is, through durable writes. Like magic, the distributed write-ahead log (WAL) emerged. We go over the key terminology, architectural components, and Kafka nomenclature now. If you have experience with Kafka, you can skip ahead to how Spark comes into play as the final piece of the modern data puzzle.
-
-Kafka’s Distributed Architecture
-Kafka stores data emitted by producers in what are called topics. A Kafka topic is further broken down into one or more logical partitions, which enable each topic to be scaled to handle variable read and write throughputs. Each partition is guaranteed to store the data it receives (known as a Kafka record) in time based sequential order. See Figure 1-5.
-
-Given that each partition maintains this synchronous stream of records, Kafka is commonly used to store event streams from contiguous timeseries events (such as users placing items into their shopping carts or transactions being made across a credit card). These timeseries event streams enables the system to analyze data that would otherwise be hard to group efficiently.
-
-Since you can guarantee the ordering of the events within each partition, and events being written into each partition are distributed based on each record’s key, this kind of distribution helps to solve common problems associated with timeseries analysis. The problem of out-of-order data, stored across many locations and across different data stores, feels like the data silo conversation from earlier in the chapter.
-
-Instead of first running a job to collect all the data by key, across all partitions or across different data stores, an application can work across individual partitions, or slices, of the Kafka topic without having to shuffle data around first.
-
-This can greatly reduce the stress on a system processing credit card fraud or handling recommendations based on a user’s real-time activity. With the right selection of keys for each record, you can guarantee how the data lands within each topic.
-
-Kafka Records
-Records are simple rows of data, written out to disk in a durable fashion, like with the write-ahead log (WAL). Each record is identified by a key, which helps Kafka pass the data to the correct partition for the topic being written to. The record carries a main message, or payload, which is called the message value. In addition to the key/value pair, there is an internal timestamp (UNIX epoch milliseconds) stamped when the message is received and written into the topics log. This ensures that the insert order is maintained without issues with time (clock drift, time zone differences, etc.). Lastly, in more recent versions of Kafka, each record has an optional map of headers that can be used to annotate the data further. It can apply metadata about the producer, the payload schema, and just about anything you can dream up.
-
-Brokers
-Kafka manages producers and consumers of data in a similar fashion to that of a common pub/sub system. Data stored in each partition of a topic is managed by an active broker within the Kafka cluster.
-
-These brokers manage the replicas of each record written into the topic and are kept in sync so that if a broker is lost due to the server going offline, or from network partitioning, that there is zero data loss. The next available in-sync replica quickly takes over the serving of the data, and Kafka will find another available broker to assign as the next backup to prevent a data loss scenario.
-
-Why Stream Processing Matters
-Kafka is the most widely used stream-processing framework and given the flexible, low-latency, highly available nature of the framework it isn’t difficult to see why. Kafka however isn’t the only player in the field. Apache Pulsar, which evolved from an internal project at Yahoo!, is another open-source alternative to Kafka. While we won’t be using Apache Pulsar in this book, it is always good to know there are alternatives out there. Chapter 11 introduces using Apache Kafka with Spark.
-
-* Integración de Apache Flume y Apache Kafka
-
--->
-
+<p>En esta sesión estudiaremos cómo crear un <em>cluster</em> de Kafka, realizamos una integración desde un servicio REST hasta su persistencia en S3 y MongoDB haciendo uso de Kafka como <em>middleware</em> de integración, y finalmente veremos como utilizar <em>Kafka Connect</em> para integrar sistemas.</p>
 <h2 id="caso-2-cluster-de-kafka">Caso 2: Clúster de Kafka<a class="headerlink" href="#caso-2-cluster-de-kafka" title="Permanent link">&para;</a></h2>
 <p>En <em>Kafka</em> hay tres tipos de clústers:</p>
 <ul>
@@ -1449,30 +1401,30 @@ Kafka is the most widely used stream-processing framework and given the flexible
 <li>Un nodo con muchos <em>brokers</em></li>
 <li>Muchos nodos con múltiples <em>brokers</em></li>
 </ul>
-<p>Para nuestro ejemplo, como sólo disponemos de una máquina, vamos a crear 3 <em>brokers</em> en un nodo.</p>
+<p>Para nuestro ejemplo, como sólo disponemos de una máquina, crearemos 3 <em>brokers</em> en un nodo.</p>
 <h3 id="creando-brokers">Creando brokers<a class="headerlink" href="#creando-brokers" title="Permanent link">&para;</a></h3>
-<p>Para ello, vamos a crear diferentes archivos de configuración a partir del archivo <code>config/server.properties</code> que utilizábamos para arrancar el servidor.</p>
+<p>Para ello, vamos a crear diferentes archivos de configuración a partir del fichero <code>config/server.properties</code> que utilizábamos para arrancar el servidor.</p>
 <p>Así pues, crearemos 3 copias del archivo modificando las propiedades <code>broker.id</code> (identificador del broker), <code>listeners</code> (URL y puerto de escucha del broker) y <code>log.dirs</code> (carpeta donde se guardaran los logs del broker):</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Broker 101</label><label for="__tabbed_1_2">Broker 102</label><label for="__tabbed_1_3">Broker 103</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">server101.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">broker.id</span><span class="o">=</span><span class="s">101</span>
 <span class="linenos" data-linenos="2 "></span><span class="na">listeners</span><span class="o">=</span><span class="s">PLAINTEXT://:9092  </span>
-<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/logs/broker_101</span>
+<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-3.3.1/logs/broker_101</span>
 <span class="linenos" data-linenos="4 "></span><span class="na">zookeeper.connect</span><span class="o">=</span><span class="s">localhost:2181</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">server102.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">broker.id</span><span class="o">=</span><span class="s">102</span>
 <span class="linenos" data-linenos="2 "></span><span class="na">listeners</span><span class="o">=</span><span class="s">PLAINTEXT://:9093  </span>
-<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/logs/broker_102</span>
+<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-3.3.1/logs/broker_102</span>
 <span class="linenos" data-linenos="4 "></span><span class="na">zookeeper.connect</span><span class="o">=</span><span class="s">localhost:2181</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <div class="highlight"><span class="filename">server103.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">broker.id</span><span class="o">=</span><span class="s">103</span>
 <span class="linenos" data-linenos="2 "></span><span class="na">listeners</span><span class="o">=</span><span class="s">PLAINTEXT://:9094</span>
-<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/logs/broker_103 </span>
+<span class="linenos" data-linenos="3 "></span><span class="na">log.dirs</span><span class="o">=</span><span class="s">/opt/kafka_2.13-3.3.1/logs/broker_103 </span>
 <span class="linenos" data-linenos="4 "></span><span class="na">zookeeper.connect</span><span class="o">=</span><span class="s">localhost:2181</span>
 </code></pre></div>
 </div>
@@ -1847,7 +1799,7 @@ Kafka is the most widely used stream-processing framework and given the flexible
 <span class="linenos" data-linenos="8 "></span><span class="o">+------------------------+-------------+------+-----+---------+----------------</span>
 </code></pre></div>
 <h4 id="configuracion">Configuración<a class="headerlink" href="#configuracion" title="Permanent link">&para;</a></h4>
-<p>Cuando ejecutemos <em>Kafka Connect</em>, le debemos pasar un archivo de configuración. Para empezar, tenemos <code>config/connect-standalone.properties</code> el cual ya viene rellenado e indica los formatos que utilizarán los conversores y otros aspectos:</p>
+<p>Cuando ejecutemos <em>Kafka Connect</em>, le debemos pasar un archivo de configuración. Para empezar, tenemos <code>config/connect-standalone.properties</code> el cual ya viene rellenado e indica los formatos que utilizarán los conversores (en nuestro caso ya están configurados para utiliza JSON) y otros aspectos:</p>
 <div class="highlight"><span class="filename">config/connect-standalone.properties</span><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">bootstrap.servers</span><span class="o">=</span><span class="s">localhost:9092</span>
 <span class="linenos" data-linenos="2 "></span>
 <span class="linenos" data-linenos="3 "></span><span class="na">key.converter</span><span class="o">=</span><span class="s">org.apache.kafka.connect.json.JsonConverter</span>
@@ -1857,12 +1809,12 @@ Kafka is the most widely used stream-processing framework and given the flexible
 <span class="linenos" data-linenos="7 "></span>
 <span class="linenos" data-linenos="8 "></span><span class="na">offset.storage.file.filename</span><span class="o">=</span><span class="s">/tmp/connect.offsets</span>
 </code></pre></div>
-<p>Los conectores se incluyen en <em>Kafka</em> como plugins. Para ello, primero hemos de indicarle a <em>Kafka</em> donde se encuentran. Para ello, en el archivo de configuración le indicaremos la siguiente ruta:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">plugin.path</span><span class="o">=</span><span class="s">/opt/kafka_2.13-2.8.1/plugins</span>
+<p>Los conectores se incluyen en <em>Kafka</em> como <em>plugins</em>. Para ello, primero hemos de indicarle a <em>Kafka</em> donde se encuentran, indicando en el archivo de configuración la ruta donde los almacenaremos (este cambio debemos realizarlo sobre la instalación de nuestra máquina virtual):</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="na">plugin.path</span><span class="o">=</span><span class="s">/opt/kafka_2.13-3.3.1/plugins</span>
 </code></pre></div>
 <h4 id="extrayendo-datos-mediante-kafka-connect">Extrayendo datos mediante Kafka Connect<a class="headerlink" href="#extrayendo-datos-mediante-kafka-connect" title="Permanent link">&para;</a></h4>
 <p>Así pues, el primer paso es crear el archivo de configuración de <em>Kafka Connect</em> con los datos (en nuestro caso lo colocamos en la carpeta <code>config</code>  de la instalación de <em>Kafka</em>) utilizando un <a href="https://docs.confluent.io/kafka-connect-jdbc/current/source-connector/source_config_options.html#jdbc-source-configs">conector fuente de JDBC</a>:</p>
-<div class="highlight"><span class="filename">retaildb-mariadb-source-connector.properties</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="na">name</span><span class="o">=</span><span class="s">retaildb-mariabd-source-jdbc-autoincrement</span>
+<div class="highlight"><span class="filename">config/mysql-source-connector.properties</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="na">name</span><span class="o">=</span><span class="s">mysql-source</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="na">connector.class</span><span class="o">=</span><span class="s">io.confluent.connect.jdbc.JdbcSourceConnector</span>
 <span class="linenos" data-linenos=" 3 "></span><span class="na">tasks.max</span><span class="o">=</span><span class="s">1</span>
 <span class="linenos" data-linenos=" 4 "></span><span class="na">connection.url</span><span class="o">=</span><span class="s">jdbc:mysql://localhost/retail_db</span>
@@ -1873,13 +1825,13 @@ Kafka is the most widely used stream-processing framework and given the flexible
 <span class="linenos" data-linenos=" 9 "></span><span class="na">incrementing.column.name</span><span class="o">=</span><span class="s">category_id</span>
 <span class="linenos" data-linenos="10 "></span><span class="na">topic.prefix</span><span class="o">=</span><span class="s">iabd-retail_db-</span>
 </code></pre></div>
-<p>Antes de ponerlo en marcha, debemos <a href="https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc">descargar el conector</a> y colocar la carpeta descomprimida dentro de nuestra carpeta de plugins <code>/opt/kafka_2.13-2.8.1/plugins</code> y descargar el <a href="resources/mysql-connector-j-8.0.31.jar">driver de MySQL</a> y colocarlos en la carpeta <code>/opt/kafka_2.13-2.8.1/lib</code>.</p>
+<p>Antes de ponerlo en marcha, debemos <a href="https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc">descargar el conector</a> y colocar la carpeta descomprimida dentro de nuestra carpeta de plugins <code>/opt/kafka_2.13-3.3.1/plugins</code> y descargar el <a href="resources/mysql-connector-j-8.0.31.jar">driver de MySQL</a> y colocarlo en la carpeta <code>/opt/kafka_2.13-3.3.1/lib</code>.</p>
 <p>Y a continuación ya podemos ejecutar <em>Kafka Connect</em>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>connect-standalone.sh<span class="w"> </span>config/connect-standalone.properties<span class="w"> </span>config/retaildb-mariadb-source-connector.properties
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>connect-standalone.sh<span class="w"> </span>config/connect-standalone.properties<span class="w"> </span>config/mysql-source-connector.properties
 </code></pre></div>
 <div class="admonition caution">
 <p class="admonition-title">Guava</p>
-<p>Es posible que salte un error de ejecución indicando que falta la librería <a href="https://github.com/google/guava">Guava</a> la cual podéis descargar <a href="https://repo1.maven.org/maven2/com/google/guava/guava/31.0.1-jre/guava-31.0.1-jre.jar">desde aquí</a> y colocar en la carpeta <code>/opt/kafka_2.13-2.8.1/lib</code></p>
+<p>Es posible que salte un error de ejecución indicando que falta la librería <a href="https://github.com/google/guava">Guava</a> la cual podéis descargar <a href="https://repo1.maven.org/maven2/com/google/guava/guava/31.0.1-jre/guava-31.0.1-jre.jar">desde aquí</a> y colocar en la carpeta <code>/opt/kafka_2.13-3.3.1/lib</code></p>
 </div>
 <p>Si ahora arrancamos un consumidor sobre el topic <code>iabd-retail_db-categories</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>kafka-console-consumer.sh<span class="w"> </span>--topic<span class="w"> </span>iabd-retail_db-categories<span class="w"> </span>--from-beginning<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
@@ -1909,10 +1861,10 @@ Que automáticamente aparecerá en nuestro consumidor.</p>
 </div>
 <h3 id="rest-api">REST API<a class="headerlink" href="#rest-api" title="Permanent link">&para;</a></h3>
 <p>Como <em>Kafka Connect</em> está diseñado como un servicio que debería correr continuamente, ofrece un API REST para gestionar los conectores. Por defecto está a la escucha el puerto 8083, de manera que si accedemos a <a href="http://iabd-virtualbox:8083/">http://iabd-virtualbox:8083/</a> obtendremos información sobre la versión que se está ejecutando:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="s2">&quot;2.8.1&quot;</span><span class="p">,</span><span class="nt">&quot;commit&quot;</span><span class="p">:</span><span class="s2">&quot;839b886f9b732b15&quot;</span><span class="p">,</span><span class="nt">&quot;kafka_cluster_id&quot;</span><span class="p">:</span><span class="s2">&quot;iHa0JUnTSfm85fvFadsylA&quot;</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="s2">&quot;3.3.1&quot;</span><span class="p">,</span><span class="nt">&quot;commit&quot;</span><span class="p">:</span><span class="s2">&quot;839b886f9b732b15&quot;</span><span class="p">,</span><span class="nt">&quot;kafka_cluster_id&quot;</span><span class="p">:</span><span class="s2">&quot;iHa0JUnTSfm85fvFadsylA&quot;</span><span class="p">}</span>
 </code></pre></div>
 <p>Por ejemplo, si queremos obtener un listado de los conectores realizaremos una petición GET a <code>/connectors</code> mediante <code>http://iabd-virtualbox:8083/connectors</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">[</span><span class="s2">&quot;retaildb-mariabd-source-jdbc-autoincrement&quot;</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">[</span><span class="s2">&quot;mysql-source-connector&quot;</span><span class="p">]</span>
 </code></pre></div>
 <p>Más información en <a href="https://kafka.apache.org/documentation/#connect_rest">https://kafka.apache.org/documentation/#connect_rest</a></p>
 <div class="admonition tip">
@@ -1943,11 +1895,18 @@ Una vez que los datos se almacenan en <em>Kafka</em> como eventos, podemos proce
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
-<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 0.5p) A partir del caso 2, crea un clúster de Kafka con 4 particiones y 3 nodos. A continuación, en el productor utiliza <em>Faker</em> para crear 10 personas (almacénalas como un diccionario). En el consumidor, muestra los datos de las personas (no es necesario recibirlos ordenados, sólo necesitamos que se aproveche al máximo la infraestructura de <em>Kafka</em>).</li>
-<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 3 mediante <em>Python</em>, pero separando el <code>consumidorSilverProductorGold</code> en tres consumidores diferentes, uno que consuma y guarde en S3 (<code>consumidorSilverS3.py</code>), otro que consuma y guarde en <em>MongoDB</em> (<code>consumidorSilverMongoDB.py</code>) y el tercero que consuma, agrupe mensajes y produzca el mensaje al topic <em>gold</em> (<code>consumidorSilverGroupProducerGold.py</code>).</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) A partir del caso 2, crea un clúster de Kafka con 4 particiones y 3 nodos. A continuación, en el productor utiliza <em>Faker</em> para crear 10 personas (almacénalas como un diccionario). En el consumidor, muestra los datos de las personas (no es necesario recibirlos ordenados, sólo necesitamos que se aproveche al máximo la infraestructura de <em>Kafka</em>).</li>
+<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han determinado los procedimientos y mecanismos para la ingestión de datos.">CE5.1b</abbr> y <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1.5p) Realiza el caso de uso 3 mediante <em>Python</em>, pero separando el <code>consumidorSilverProductorGold</code> en tres consumidores diferentes, uno que consuma y guarde en S3 (<code>consumidorSilverS3.py</code>), otro que consuma y guarde en <em>MongoDB</em> (<code>consumidorSilverMongoDB.py</code>) y el tercero que consuma, agrupe mensajes y produzca el mensaje al topic <em>gold</em> (<code>consumidorSilverGroupProducerGold.py</code>).</li>
 <li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 4 mediante <em>Nifi</em>, pero modificando el primer flujo para que un grupo de procesadores únicamente realice la petición REST y coloque el contenido en <em>topic</em> <code>iabd-aemet-bronze</code> y en un segundo grupo, se consuman los mensajes de ese <em>topic</em> y se realice la transformación de la petición REST y su posterior producción al <em>topic</em> <code>iabd-aemet-silver</code>.</li>
-<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Repite el caso de uso 2 únicamente mediante <em>Kafka Connect</em>.  </li>
-<li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos">CE5.1a</abbr> / 0.5p) Investiga en qué consiste el patrón CDC (<em>Change Data Capture</em>) y cómo se realiza CDC con <em>Kafka</em>/<em>Kafka Connect</em>, el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-cdc-mysql-nar/latest/org.apache.nifi.cdc.mysql.processors.CaptureChangeMySQL/index.html">CaptureChangeMySQL</a> de <em>Nifi</em> y el producto <a href="https://debezium.io/">Debezium</a>. ¿Qué ventajas aportan las soluciones CDC?</li>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) A partir del ejemplo realizado en el apartado de <em>Kafka Connect</em>, añade otro conector para que consuma los mensajes de la cola y los inserte en <em>MongoDB</em> de forma automática. Para ello, puedes utilizar el <a href="https://www.confluent.io/hub/mongodb/kafka-connect-mongodb">MongoDB Connector (Source and Sink)</a> y consultar su <a href="https://www.mongodb.com/docs/kafka-connector/current/">documentación</a> y un ejemplo de <a href="https://github.com/mongodb/mongo-kafka/blob/master/config/MongoSinkConnector.properties">fichero de configuración</a>.</p>
+<p>Ten en cuenta que para lanzar los dos conectores a la ver deberás lanzar Kafka Connect y pasarle todos los conectores como parámetros:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>connect-standalone.sh<span class="w"> </span>config/connect-standalone.properties<span class="w"> </span>config/mysql-source-connector.properties<span class="w"> </span>config/mongodb-sink-connector.properties
+</code></pre></div>
+</li>
+<li>
+<p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se ha caracterizado el proceso de diseño y construcción de soluciones en sistemas de almacenamiento de datos">CE5.1a</abbr> / 0.5p) Investiga en qué consiste el patrón CDC (<em>Change Data Capture</em>) y cómo se realiza CDC con <em>Kafka</em>/<em>Kafka Connect</em>, el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-cdc-mysql-nar/latest/org.apache.nifi.cdc.mysql.processors.CaptureChangeMySQL/index.html">CaptureChangeMySQL</a> de <em>Nifi</em> y el producto <a href="https://debezium.io/">Debezium</a>. ¿Qué ventajas aportan las soluciones CDC?</p>
+</li>
 </ol>
 
 
