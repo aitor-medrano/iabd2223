@@ -1145,15 +1145,15 @@
   
 </li>
         
-          <li class="md-nav__item">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kafka-y-el-big-data" class="md-nav__link">
     Kafka y el Big Data
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1351,15 +1351,15 @@
   
 </li>
         
-          <li class="md-nav__item">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#kafka-y-el-big-data" class="md-nav__link">
     Kafka y el Big Data
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1393,7 +1393,7 @@
 
 
 <h1 id="apache-kafka-avanzado">Apache Kafka Avanzado<a class="headerlink" href="#apache-kafka-avanzado" title="Permanent link">&para;</a></h1>
-<p>En esta sesión estudiaremos cómo crear un <em>cluster</em> de Kafka, realizamos una integración desde un servicio REST hasta su persistencia en S3 y MongoDB haciendo uso de Kafka como <em>middleware</em> de integración, y finalmente veremos como utilizar <em>Kafka Connect</em> para integrar sistemas.</p>
+<p>En esta sesión estudiaremos cómo crear un <em>cluster</em> de Kafka, realizamos una integración desde un servicio REST hasta su persistencia en S3 y <em>MongoDB</em> haciendo uso de <em>Kafka</em> como <em>middleware</em> de integración, y finalmente veremos como utilizar <em>Kafka Connect</em> para integrar sistemas.</p>
 <h2 id="caso-2-cluster-de-kafka">Caso 2: Clúster de Kafka<a class="headerlink" href="#caso-2-cluster-de-kafka" title="Permanent link">&para;</a></h2>
 <p>En <em>Kafka</em> hay tres tipos de clústers:</p>
 <ul>
@@ -1462,7 +1462,7 @@
 <p>Respecto al código Python, va a ser el mismo que hemos visto antes pero modificando:</p>
 <ul>
 <li>el nombre del <em>topic</em></li>
-<li>la lista de <em>boostrap_servers</em> (aunque podríamos haber dejado únicamente el nodo principal, ya que Kafka le comunica al cliente el resto de nodos del clúster, es una buena práctica por si el nodo al que nos conectamos de manera explícita está caído).</li>
+<li>la lista de <em>boostrap_servers</em> (aunque podríamos haber dejado únicamente el nodo principal, ya que <em>Kafka</em> le comunica al cliente el resto de nodos del clúster, es una buena práctica por si el nodo al que nos conectamos de manera explícita está caído).</li>
 </ul>
 <div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Productor</label><label for="__tabbed_2_2">Consumidor</label></div>
 <div class="tabbed-content">
@@ -1535,7 +1535,7 @@
 <li>si el número de particiones crece con el clúster ya creado, el orden de las claves no está garantizado.</li>
 <li>si se incrementa el factor de replicación durante el ciclo de vida de un <em>topic</em>, estaremos metiendo presión al clúster, que provocará un decremento inesperado del rendimiento.</li>
 </ul>
-<p>Cada partición puede manejar un rendimiento de unos pocos MB/s. Al añadir más particiones, obtendremos mejor paralelización y por tanto, mejor rendimiento. Además, podremos ejecutar más consumidores en un grupo. Pero el hecho de añadir más brokers al clúster para que las particiones los aprovechen, provocará que <em>Zookeeper</em> tenga que realizar más elecciones y que Kafka tenga más ficheros abiertos.</p>
+<p>Cada partición puede manejar un rendimiento de unos pocos MB/s. Al añadir más particiones, obtendremos mejor paralelización y por tanto, mejor rendimiento. Además, podremos ejecutar más consumidores en un grupo. Pero el hecho de añadir más brokers al clúster para que las particiones los aprovechen, provocará que <em>Zookeeper</em> tenga que realizar más elecciones y que <em>Kafka</em> tenga más ficheros abiertos.</p>
 <div class="admonition tip">
 <p class="admonition-title">Guía de rendimiento</p>
 <p>Una propuesta es:</p>
@@ -1735,7 +1735,7 @@
 </div>
 <h3 id="de-rest-a-kafka">De REST a Kafka<a class="headerlink" href="#de-rest-a-kafka" title="Permanent link">&para;</a></h3>
 <p>Sobre un grupo de procesadores que hemos llamado <code>caso4kafka_producer_bronze_silver</code>, vamos a utilizar el procesador <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-standard-nar/latest/org.apache.nifi.processors.standard.InvokeHTTP/index.html">InvokeHTTP</a>, mediante el cual hacemos la petición GET a la URL <a href="https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065">https://www.el-tiempo.net/api/json/v2/provincias/03/municipios/03065</a>.</p>
-<p>De este procesador, por un lado vamos a conectar directamente con <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-kafka-2-6-nar/latest/org.apache.nifi.processors.kafka.pubsub.PublishKafka_2_6/index.html">PublishKafka_2_6</a> para enviar directamente los datos a Kafka al <em>topic</em>, donde además del topic <code>iabd-aemet-bronce</code>, indicaremos que no utilizaremos transacciones (Use Transactions: <code>false</code>), así como que intente garantizar la entrega (<em>Delivery Guarantee: Best Effort</em>):</p>
+<p>De este procesador, por un lado vamos a conectar directamente con <a href="https://nifi.apache.org/docs/nifi-docs/components/org.apache.nifi/nifi-kafka-2-6-nar/latest/org.apache.nifi.processors.kafka.pubsub.PublishKafka_2_6/index.html">PublishKafka_2_6</a> para enviar directamente los datos a <em>Kafka</em> al <em>topic</em>, donde además del topic <code>iabd-aemet-bronce</code>, indicaremos que no utilizaremos transacciones (Use Transactions: <code>false</code>), así como que intente garantizar la entrega (<em>Delivery Guarantee: Best Effort</em>):</p>
 <figure style="align: center;">
     <img alt="Publicando en el topic iabd-aemet-bronze en Nifi" src="images/03caso4publishBronze.png">
     <figcaption>Publicando en el topic iabd-aemet-bronze</figcaption>
@@ -1826,8 +1826,11 @@
 <span class="linenos" data-linenos="10 "></span><span class="na">topic.prefix</span><span class="o">=</span><span class="s">iabd-retail_db-</span>
 </code></pre></div>
 <p>Antes de ponerlo en marcha, debemos <a href="https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc">descargar el conector</a> y colocar la carpeta descomprimida dentro de nuestra carpeta de plugins <code>/opt/kafka_2.13-3.3.1/plugins</code> y descargar el <a href="resources/mysql-connector-j-8.0.31.jar">driver de MySQL</a> y colocarlo en la carpeta <code>/opt/kafka_2.13-3.3.1/lib</code>.</p>
-<p>Y a continuación ya podemos ejecutar <em>Kafka Connect</em>:</p>
+<p>Y a continuación ya podemos ejecutar <em>Kafka Connect</em> mediante el comando <a href="https://kafka.apache.org/documentation/#connect_running"><code>connect-standalone.sh</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>connect-standalone.sh<span class="w"> </span>config/connect-standalone.properties<span class="w"> </span>config/mysql-source-connector.properties
+</code></pre></div>
+<p>Si tuviéramos más conectores los añadiríamos como parámetros extra:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>connect-standalone.sh<span class="w"> </span>config/connect-standalone.properties<span class="w"> </span>config/conector1.properties<span class="w"> </span><span class="o">[</span>config/conector2.properties<span class="w"> </span>config/conector3.properties<span class="w"> </span>...<span class="o">]</span>
 </code></pre></div>
 <div class="admonition caution">
 <p class="admonition-title">Guava</p>
@@ -1867,13 +1870,17 @@ Que automáticamente aparecerá en nuestro consumidor.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">[</span><span class="s2">&quot;mysql-source-connector&quot;</span><span class="p">]</span>
 </code></pre></div>
 <p>Más información en <a href="https://kafka.apache.org/documentation/#connect_rest">https://kafka.apache.org/documentation/#connect_rest</a></p>
+<div class="admonition info">
+<p class="admonition-title">Más Kafka Connect</p>
+<p>En este apartado sólo hemos visto una pequeña introducción a Kafka Connect, dejando de lado aspectos como la ejecución en modo distribuido (por supuesto, podemos montar un clúster de <em>Kafka Connect</em>), la realización de pequeñas transformaciones sobre los datos o practicar con otro tipo de conectores.</p>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Kafka Streams</p>
-<p><a href="https://kafka.apache.org/documentation/streams/">Kafka Streams</a> es la tercera pata del ecosistema de Kafka, y permite procesar y transformar datos dentro de Kafka.
+<p><a href="https://kafka.apache.org/documentation/streams/">Kafka Streams</a> es la tercera pata del ecosistema de <em>Kafka</em>, y permite procesar y transformar datos dentro de Kafka.
 Una vez que los datos se almacenan en <em>Kafka</em> como eventos, podemos procesar los datos en nuestras aplicaciones cliente mediante <em>Kafka Streams</em> y sus librerías desarrolladas en Java y/o Scala, ya que requiere una JVM.</p>
 <p>En nuestro caso, realizaremos en posteriores sesiones un procesamiento similar de los datos mediante <em>Spark Streaming</em>, permitiendo operaciones con estado y agregaciones, funciones ventana, <em>joins</em>, procesamiento de eventos basados en el tiempo, etc...</p>
 </div>
-<h3 id="kafka-y-el-big-data">Kafka y el Big Data<a class="headerlink" href="#kafka-y-el-big-data" title="Permanent link">&para;</a></h3>
+<h2 id="kafka-y-el-big-data">Kafka y el Big Data<a class="headerlink" href="#kafka-y-el-big-data" title="Permanent link">&para;</a></h2>
 <p>El siguiente gráfico muestra cómo <em>Kafka</em> está enfocado principalmente para el tratamiento en <em>streaming</em>, aunque con los conectores de <em>Kafka Connect</em> da soporte para el procesamiento <em>batch</em>:</p>
 <figure style="align: center;">
     <img src="images/03kafka-bigdata.png">
