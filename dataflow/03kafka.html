@@ -1887,6 +1887,7 @@ Una vez que los datos se almacenan en <em>Kafka</em> como eventos, podemos proce
     <figcaption>Kafka y Big Data</figcaption>
 </figure>
 
+<p>Si echamos la vista atrás y repasamos la <a href="../hadoop/01arq.html#arquitectura-kappa">arquitectura <em>Kappa</em> de Big Data</a> podemos identificar que las diferentes fuentes de los datos se sustituyen por colas de <em>Kafka</em> permitiendo unir tanto la ingesta <em>batch</em> como en <em>streaming</em>, lo que facilita añadir tanto nuevas fuentes de datos como destinos, pudiendo realizar transformaciones en tiempo real o lanzar procesos más pesados para almacenar el histórico de los datos.</p>
 <div class="admonition info">
 <p class="admonition-title">Elasticsearch y Twitter</p>
 <p>En la edición de 21/22, en estas sesiones, realizamos diferentes casos de uso con <em>Elasticsearch</em> y <em>Twitter</em>. </p>
@@ -1907,7 +1908,7 @@ Una vez que los datos se almacenan en <em>Kafka</em> como eventos, podemos proce
 <li>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) Realiza el caso de uso 4 mediante <em>Nifi</em>, pero modificando el primer flujo para que un grupo de procesadores únicamente realice la petición REST y coloque el contenido en <em>topic</em> <code>iabd-aemet-bronze</code> y en un segundo grupo, se consuman los mensajes de ese <em>topic</em> y se realice la transformación de la petición REST y su posterior producción al <em>topic</em> <code>iabd-aemet-silver</code>.</li>
 <li>
 <p>(<abbr title="Gestiona soluciones a problemas propuestos, utilizando sistemas de almacenamiento y herramientas asociadas al centro de datos.">RA5075.1</abbr> / <abbr title="Se han procesado los datos almacenados.">CE5.1d</abbr> / 1p) A partir del ejemplo realizado en el apartado de <em>Kafka Connect</em>, añade otro conector para que consuma los mensajes de la cola y los inserte en <em>MongoDB</em> de forma automática. Para ello, puedes utilizar el <a href="https://www.confluent.io/hub/mongodb/kafka-connect-mongodb">MongoDB Connector (Source and Sink)</a> y consultar su <a href="https://www.mongodb.com/docs/kafka-connector/current/">documentación</a> y un ejemplo de <a href="https://github.com/mongodb/mongo-kafka/blob/master/config/MongoSinkConnector.properties">fichero de configuración</a>.</p>
-<p>Ten en cuenta que para lanzar los dos conectores a la ver deberás lanzar Kafka Connect y pasarle todos los conectores como parámetros:</p>
+<p>Ten en cuenta que para lanzar los dos conectores a la ver deberás lanzar <em>Kafka Connect</em> y pasarle todos los conectores como parámetros:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>connect-standalone.sh<span class="w"> </span>config/connect-standalone.properties<span class="w"> </span>config/mysql-source-connector.properties<span class="w"> </span>config/mongodb-sink-connector.properties
 </code></pre></div>
 </li>
