@@ -23,7 +23,7 @@
     
     
       
-        <title>Spark Catalog. Delta Lake. - IABD</title>
+        <title>Spark JDBC, Spark Catalog y Delta Lake. - IABD</title>
       
     
     
@@ -69,7 +69,7 @@
       
         <meta  property="og:type"  content="website" >
       
-        <meta  property="og:title"  content="Spark Catalog. Delta Lake. - IABD" >
+        <meta  property="og:title"  content="Spark JDBC, Spark Catalog y Delta Lake. - IABD" >
       
         <meta  property="og:description"  content="Apuntes y ejercicios sobre el acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore. Uso de Delta Lake, creación de tablas y operaciones DML sobre los datos." >
       
@@ -85,7 +85,7 @@
       
         <meta  name="twitter:card"  content="summary_large_image" >
       
-        <meta  name="twitter:title"  content="Spark Catalog. Delta Lake. - IABD" >
+        <meta  name="twitter:title"  content="Spark JDBC, Spark Catalog y Delta Lake. - IABD" >
       
         <meta  name="twitter:description"  content="Apuntes y ejercicios sobre el acceso a bases de datos relacionales mediante JDBC en Spark. Uso del catálogo de Spark SQL, creación de tablas a partir de un dataframe, consulta del catálogo almacenado en el Hive Metastore. Uso de Delta Lake, creación de tablas y operaciones DML sobre los datos." >
       
@@ -149,7 +149,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Spark Catalog. Delta Lake.
+              Spark JDBC, Spark Catalog y Delta Lake.
             
           </span>
         </div>
@@ -859,12 +859,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Spark Catalog
+          Spark JDBC
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="02catalog.html" class="md-nav__link md-nav__link--active">
-        Spark Catalog
+        Spark JDBC
       </a>
       
         
@@ -883,11 +883,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#conectando-con-bases-de-datos" class="md-nav__link">
-    Conectando con bases de datos
+  <a href="#spark-jdbc" class="md-nav__link">
+    Spark JDBC
   </a>
   
-    <nav class="md-nav" aria-label="Conectando con bases de datos">
+    <nav class="md-nav" aria-label="Spark JDBC">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -907,6 +907,26 @@
           <li class="md-nav__item">
   <a href="#utilizando-databricks" class="md-nav__link">
     Utilizando Databricks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spark-mongodb" class="md-nav__link">
+    Spark MongoDB
+  </a>
+  
+    <nav class="md-nav" aria-label="Spark MongoDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mongo-spark-connector" class="md-nav__link">
+    Mongo Spark Connector
   </a>
   
 </li>
@@ -1238,11 +1258,11 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#conectando-con-bases-de-datos" class="md-nav__link">
-    Conectando con bases de datos
+  <a href="#spark-jdbc" class="md-nav__link">
+    Spark JDBC
   </a>
   
-    <nav class="md-nav" aria-label="Conectando con bases de datos">
+    <nav class="md-nav" aria-label="Spark JDBC">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1262,6 +1282,26 @@
           <li class="md-nav__item">
   <a href="#utilizando-databricks" class="md-nav__link">
     Utilizando Databricks
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spark-mongodb" class="md-nav__link">
+    Spark MongoDB
+  </a>
+  
+    <nav class="md-nav" aria-label="Spark MongoDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mongo-spark-connector" class="md-nav__link">
+    Mongo Spark Connector
   </a>
   
 </li>
@@ -1411,7 +1451,7 @@
 
 
 <h1 id="spark-jdbc-y-uso-del-catalogo-delta-lake">Spark JDBC y uso del catálogo. Delta Lake<a class="headerlink" href="#spark-jdbc-y-uso-del-catalogo-delta-lake" title="Permanent link">&para;</a></h1>
-<h2 id="conectando-con-bases-de-datos">Conectando con bases de datos<a class="headerlink" href="#conectando-con-bases-de-datos" title="Permanent link">&para;</a></h2>
+<h2 id="spark-jdbc">Spark JDBC<a class="headerlink" href="#spark-jdbc" title="Permanent link">&para;</a></h2>
 <p>Para conectar desde <a href="https://spark.apache.org/docs/latest/sql-data-sources-jdbc.html">Spark con una base de datos relacional</a> (<em>RDBMS</em>) necesitamos:</p>
 <ul>
 <li>un driver JDBC compatible</li>
@@ -1627,6 +1667,60 @@ Si queremos que se vuelvan a cargar los datos pero no se cree de nuevo la tabla 
 <span class="linenos" data-linenos="8 "></span>  <span class="o">.</span><span class="n">load</span><span class="p">()</span>
 <span class="linenos" data-linenos="9 "></span><span class="p">)</span>
 </code></pre></div>
+<h2 id="spark-mongodb">Spark MongoDB<a class="headerlink" href="#spark-mongodb" title="Permanent link">&para;</a></h2>
+<p>Para conectar desde <em>Spark</em> con <em>MongoDB</em> debemos utilizar el <a href="https://www.mongodb.com/docs/spark-connector/current/">conector oficial</a> y a la hora de leer o escribir datos indicar que el formato es <code>mongodb</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;mongodb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="linenos" data-linenos="2 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;mongodb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="mongo-spark-connector">Mongo Spark Connector<a class="headerlink" href="#mongo-spark-connector" title="Permanent link">&para;</a></h3>
+<p>Si nos centramos en nuestra instalación de la máquina virtual, cuando lanzamos <code>pyspark</code> tenemos que indicarle que vamos a conectarnos a <em>MongoDB</em> mediante la opción <code>packages</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pyspark<span class="w"> </span>--packages<span class="w"> </span>org.mongodb.spark:mongo-spark-connector_2.12:10.1.1
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Instalación driver Java</p>
+<p>Para que funcione correctamente, en nuestro caso, tenemos que descargar el <a href="resources/mongo-java-driver-3.12.12.jar">driver <em>Java</em> de <em>MongoDB</em></a> y colocarlo en la carpeta <code>/opt/spark-3.3.1/jars</code></p>
+</div>
+<p>Una vez recuperada la sesión de <em>Spark</em>, a la hora de leer datos le debemos indicar que el formato es <code>mongodb</code> y a continuación configurar tanto la <code>connection.uri</code>, como los parámetros <code>database</code>y <code>collection</code> con la URL, base de datos y colección a la que queremos acceder:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="n">mongo_spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 3 "></span>
+<span class="hll"><span class="linenos" data-linenos=" 4 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">mongo_spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;mongodb&quot;</span><span class="p">)</span> \
+</span><span class="linenos" data-linenos=" 5 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;connection.uri&quot;</span><span class="p">,</span><span class="s2">&quot;mongodb+srv://&lt;usuario&gt;:&lt;contraseña&gt;@cluster0.dfaz5er.mongodb.net&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">,</span><span class="s2">&quot;iabd&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 7 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;collection&quot;</span><span class="p">,</span><span class="s2">&quot;espias&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="linenos" data-linenos=" 8 "></span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+<span class="linenos" data-linenos="10 "></span><span class="c1"># root</span>
+<span class="linenos" data-linenos="11 "></span><span class="c1">#  |-- _id: string (nullable = true)</span>
+<span class="linenos" data-linenos="12 "></span><span class="c1">#  |-- edad: integer (nullable = true)</span>
+<span class="linenos" data-linenos="13 "></span><span class="c1">#  |-- nombre: string (nullable = true)</span>
+<span class="linenos" data-linenos="14 "></span>
+<span class="linenos" data-linenos="15 "></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos" data-linenos="16 "></span><span class="c1"># +--------------------+----+---------------+</span>
+<span class="linenos" data-linenos="17 "></span><span class="c1"># |                 _id|edad|         nombre|</span>
+<span class="linenos" data-linenos="18 "></span><span class="c1"># +--------------------+----+---------------+</span>
+<span class="linenos" data-linenos="19 "></span><span class="c1"># |63629b950e8c3f48d...|   0| James Bond 000|</span>
+<span class="linenos" data-linenos="20 "></span><span class="c1"># |63629b950e8c3f48d...|   1| James Bond 001|</span>
+<span class="linenos" data-linenos="21 "></span><span class="c1"># |63629b950e8c3f48d...|   2| James Bond 002|</span>
+<span class="linenos" data-linenos="22 "></span><span class="c1"># |63629b950e8c3f48d...|   3| James Bond 003|</span>
+<span class="linenos" data-linenos="23 "></span><span class="c1"># ...</span>
+</code></pre></div>
+<p>Del mismo modo, para escribir utilizamos el método <code>write</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="c1"># Añadimos un atributo nuevo</span>
+<span class="linenos" data-linenos="2 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+<span class="linenos" data-linenos="3 "></span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">&quot;edad_doble&quot;</span><span class="p">,</span> <span class="n">col</span><span class="p">(</span><span class="s2">&quot;edad&quot;</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span>
+<span class="hll"><span class="linenos" data-linenos="5 "></span><span class="n">df</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;mongodb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
+</span><span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;connection.uri&quot;</span><span class="p">,</span><span class="s2">&quot;mongodb+srv://&lt;usuario&gt;:&lt;contraseña&gt;@cluster0.dfaz5er.mongodb.net&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="7 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;database&quot;</span><span class="p">,</span><span class="s2">&quot;iabd&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="8 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;collection&quot;</span><span class="p">,</span><span class="s2">&quot;espias_nuevo&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="9 "></span>    <span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">MongoDB y Databricks</p>
+<p>Para conectar con <em>MongoDB</em> desde <em>Databricks</em> se recomienda leer el siguiente artículo: <a href="https://docs.databricks.com/external-data/mongodb.html">Interact with MongoDB on Databricks</a></p>
+</div>
+<p>Más información en la documentación oficial en <a href="https://www.mongodb.com/docs/spark-connector/current/">https://www.mongodb.com/docs/spark-connector/current/</a></p>
 <h2 id="spark-sql-catalog">Spark SQL Catalog<a class="headerlink" href="#spark-sql-catalog" title="Permanent link">&para;</a></h2>
 <p>Los catálogos de datos son un elemento esencial dentro de una organización, al ofrecer una vista de los datos disponibles, los cuales se pueden extender para describir su creación (persona, equipo u organización). Este catálogo lo gestionan los <strong><em>data stewards</em></strong>, un rol muy específico de los equipos <em>big data</em> que no solo se encargan de administrar el uso y los enfoques de los datos en la empresa, sino que tratan de asegurar la calidad de la información, el cumplimiento de las políticas de privacidad, la correcta comunicación entre los diferentes departamentos y la educación informática y tecnológica de los empleados relacionada con el mundo del dato.</p>
 <p>Volviendo al catálogo de datos, el cual al final es un conjunto de metadatos, actúa como un contrato público que se establece durante la vida del dato, definiendo el cómo, cuándo y el porqué se consume un determinado dato, por ejemplo, indicando la disponibilidad de cada campo (por ejemplo, si tendrá un valor por defecto o nulo), así como reglas sobre la gobernanza y acceso de cada campo, etc...</p>
@@ -2062,7 +2156,7 @@ FIXME: https://learn.microsoft.com/es-es/azure/databricks/lakehouse/medallion
 </code></pre></div>
 <h3 id="por-dentro">Por dentro<a class="headerlink" href="#por-dentro" title="Permanent link">&para;</a></h3>
 <p>Si accedemos al sistema de archivos local, HDFS o Databricks DBFS, podemos analizar la estructura de archivos que ha utilizado para almacenar la información.</p>
-<p><em>Delta Lake</em> almacena los datos en formato <em>Parquet</em> en la ruta indicada (y si hubiéramos indicando particiones, en sus subcarpetas), y luego crea una carpeta denominada <code>_delta_log</code> donde almacena el <em>DeltaLog</em> o log transaccional en formato JSON, en el cual va registrando los cambios <em>delta</em> que se realizan sobre los datos. </p>
+<p><em>Delta Lake</em> almacena los datos en formato <em>Parquet</em> en la ruta indicada (y si hubiéramos indicando particiones, en sus subcarpetas), y luego crea una carpeta denominada <code>_delta_log</code> donde almacena el <em>DeltaLog</em> o log transaccional en formato JSON, en el cual va registrando los cambios <em>delta</em> que se realizan sobre los datos.</p>
 <p>Vamos a comprobar qué datos se han almacenado en HDFS:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>iabd@iabd-virtualbox:~/datos$<span class="w"> </span>hdfs<span class="w"> </span>dfs<span class="w"> </span>-ls<span class="w"> </span>-R<span class="w"> </span>/user/iabd/delta/raw/clientes
 <span class="linenos" data-linenos="2 "></span>drwxr-xr-x<span class="w">   </span>-<span class="w"> </span>iabd<span class="w"> </span>supergroup<span class="w">          </span><span class="m">0</span><span class="w"> </span><span class="m">2023</span>-01-29<span class="w"> </span><span class="m">12</span>:23<span class="w"> </span>/user/iabd/delta/raw/clientes/_delta_log

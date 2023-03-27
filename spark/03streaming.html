@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka con Spark Streaming.">
+        <meta name="description" content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming.">
       
       
       
@@ -71,7 +71,7 @@
       
         <meta  property="og:title"  content="Analítica de datos con Spark Streaming - IABD" >
       
-        <meta  property="og:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka con Spark Streaming." >
+        <meta  property="og:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/03streaming.png" >
       
@@ -87,7 +87,7 @@
       
         <meta  name="twitter:title"  content="Analítica de datos con Spark Streaming - IABD" >
       
-        <meta  name="twitter:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka con Spark Streaming." >
+        <meta  name="twitter:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/03streaming.png" >
       
@@ -850,7 +850,7 @@
   
     <li class="md-nav__item">
       <a href="02catalog.html" class="md-nav__link">
-        Spark Catalog
+        Spark JDBC
       </a>
     </li>
   
@@ -1510,7 +1510,7 @@
 </figure>
 
 <p>De hecho, podemos utilizar tanto <em>Spark MLlib</em> y sus algoritmos de <em>machine learning</em> como el procesamiento de grafos en los flujos de datos.</p>
-<p>Spark dispone dos soluciones para trabajar con datos en <em>streaming</em>:</p>
+<p><em>Spark</em> dispone dos soluciones para trabajar con datos en <em>streaming</em>:</p>
 <ul>
 <li><a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html"><em>Spark DStream</em></a>: más antigua, conocida como la primera generación,  basada en RDDs</li>
 <li><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html"><em>Spark Structured Streaming</em></a> basada en el uso de <em>DataFrames</em> y diseñada para construir aplicaciones que puedan reaccionar a los datos en tiempo real.</li>
@@ -1541,9 +1541,9 @@
     <figcaption>Elementos para procesar datos en Streaming</figcaption>
 </figure>
 
-<p>Debido a que tanto el modo de salida como el <em>trigger</em> tienen valores por defecto, es posible que no tengamos que indicarlos ni configurarlos, lo que reduce el desarrollo de procesos a un bucle infinito de leer, transformar y enviar al destino (<em>read + transform + sink</em>). Cada una de las iteraciones de ese bucle infinito se conoce como un <strong><em>micro-batch</em></strong>, las cuales tienen unas latencias situadas alrededor de los 100 ms. Desde Spark 2.3 existe un nuevo modo de procesamiento de baja latencia conocido como <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#continuous-processing">Procesamiento Continuo</a>, que puede obtener latencias de 1ms. Al tratarse todavía de un tecnología en fase de experimentación, queda fuera de la presente sesión.</p>
+<p>Debido a que tanto el modo de salida como el <em>trigger</em> tienen valores por defecto, es posible que no tengamos que indicarlos ni configurarlos, lo que reduce el desarrollo de procesos a un bucle infinito de leer, transformar y enviar al destino (<em>read + transform + sink</em>). Cada una de las iteraciones de ese bucle infinito se conoce como un <strong><em>micro-batch</em></strong>, las cuales tienen unas latencias situadas alrededor de los 100 ms. Desde <em>Spark</em> 2.3 existe un nuevo modo de procesamiento de baja latencia conocido como <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#continuous-processing">Procesamiento Continuo</a>, que puede obtener latencias de 1ms. Al tratarse todavía de un tecnología en fase de experimentación, queda fuera de la presente sesión.</p>
 <h2 id="caso-1-hola-spark-streaming">Caso 1: Hola Spark Streaming<a class="headerlink" href="#caso-1-hola-spark-streaming" title="Permanent link">&para;</a></h2>
-<p>Para ver nuestro primer caso de uso, vamos a realizar un proceso de contar palabras sobre un flujo continuo de datos que proviene de un socket.</p>
+<p>Para ver nuestro primer caso de uso, vamos a realizar un proceso de contar palabras sobre un flujo continuo de datos que proviene de un <em>socket</em>.</p>
 <p>Para ello, en un terminal, abrimos un <em>listener</em> de <em>Netcat</em> en el puerto 9999:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>nc<span class="w"> </span>-lk<span class="w"> </span><span class="m">9999</span>
 </code></pre></div>
@@ -1592,17 +1592,17 @@
     <figcaption>Ejecución de Streaming WordCount</figcaption>
 </figure>
 
-<p>Al ejecutar la consulta, <em>Spark</em> crea un proceso a la escucha de manera ininterrumpida de nuevos datos. Mientras no lleguen datos, Spark queda a la espera, de manera que cuando llegue algún dato al flujo de entrada, se creará un nuevo <em>micro-batch</em>, lo que lanzará un nuevo <em>job</em> de Spark.</p>
+<p>Al ejecutar la consulta, <em>Spark</em> crea un proceso a la escucha de manera ininterrumpida de nuevos datos. Mientras no lleguen datos, <em>Spark</em> queda a la espera, de manera que cuando llegue algún dato al flujo de entrada, se creará un nuevo <em>micro-batch</em>, lo que lanzará un nuevo <em>job</em> de Spark.</p>
 <p>Si queremos detenerlo, podemos hacerlo de forma explícita:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">wordCountQuery</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </code></pre></div>
-<p>Una buena práctica al trabajar es configurar la <em>SparkSession</em> mediante la propiedad <code>spark.streaming.stopGracefullyOnShutdown</code> para que detenga el <em>streaming</em> al finalizar el proceso:</p>
+<p>Una buena práctica  es configurar la <em>SparkSession</em> mediante la propiedad <code>spark.streaming.stopGracefullyOnShutdown</code> para que detenga el <em>streaming</em> al finalizar el proceso:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
 <span class="linenos" data-linenos="2 "></span>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Streaming WordCount&quot;</span><span class="p">)</span> \
 <span class="hll"><span class="linenos" data-linenos="3 "></span>        <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.streaming.stopGracefullyOnShutdown&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span> \
 </span><span class="linenos" data-linenos="4 "></span>        <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
 </code></pre></div>
-<p>Por defecto, Spark utiliza 200 particiones para barajar los datos. Como no tenemos muchos datos, para obtener un mejor rendimiento, podemos reducir su cantidad mediante la propiedad <code>spark.sql.shuffle.partitions</code>:</p>
+<p>Por defecto, <em>Spark</em> utiliza 200 particiones para barajar los datos. Como no tenemos muchos datos, para obtener un mejor rendimiento, podemos reducir su cantidad mediante la propiedad <code>spark.sql.shuffle.partitions</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
 <span class="linenos" data-linenos="2 "></span>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Streaming WordCount&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="3 "></span>        <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.streaming.stopGracefullyOnShutdown&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span> \
@@ -1611,7 +1611,7 @@
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Nombre de la consulta</p>
-<p>Una buena práctica es indicar el nombre de la consulta mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.DataStreamWriter.queryName.html">queryName</a>, el cual nos sirve luego para monitorizar la ejecución del flujo:</p>
+<p>Es recomendable indicar el nombre de la consulta mediante el método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.DataStreamWriter.queryName.html">queryName</a>, el cual nos sirve luego para monitorizar la ejecución del flujo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">wordCountQuery</span> <span class="o">=</span> <span class="n">cantidadDF</span><span class="o">.</span><span class="n">writeStream</span> \
 <span class="hll"><span class="linenos" data-linenos="2 "></span>    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;Caso1WordCount&quot;</span><span class="p">)</span> \
 </span><span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">)</span> \
@@ -1622,11 +1622,11 @@
 <h2 id="elementos">Elementos<a class="headerlink" href="#elementos" title="Permanent link">&para;</a></h2>
 <p>La idea básica al trabajar los datos en <em>streaming</em> es similar a tener una tabla de entrada de tamaño ilimitado, y conforme llegan nuevos datos, tratarlos como un nuevo conjunto de filas que se adjuntan a la tabla.</p>
 <figure style="align: center;">
-    <img src="images/03streaming-datatable.png">
+    <img alt="Datos como registros en Spark Streaming" src="images/03streaming-datatable.png" width="800px">
     <figcaption>Datos como registros</figcaption>
 </figure>
 
-<p>A continuación vamos a repasar los elementos principales de un flujo en streaming, los cuales son la fuente de datos, las operaciones en <em>streaming</em> mediante las transformaciones, los modos de salida, <em>trigger</em> y los <em>sink</em> de datos.</p>
+<p>A continuación vamos a repasar los elementos principales de un flujo en <em>streaming</em>, los cuales son la fuente de datos, las operaciones en <em>streaming</em> mediante las transformaciones, los modos de salida, <em>trigger</em> y los <em>sink</em> de datos.</p>
 <div class="admonition info">
 <p class="admonition-title">Hablemos del tiempo</p>
 <p><figure style="float: right;">
@@ -1639,7 +1639,7 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 <p>Para manejar los flujos de entrada ajenos a un flujo constante, una práctica muy común es dividir los datos en trozos utilizando el tiempo inicial y final como límites de una ventana temporal.</p>
 </div>
 <h3 id="fuentes-de-datos">Fuentes de Datos<a class="headerlink" href="#fuentes-de-datos" title="Permanent link">&para;</a></h3>
-<p>Mientras que en el procesamiento <em>batch</em> las fuentes de datos son <em>dataset</em> estáticos que residen en un almacenamiento como pueda ser un sistema local, HDFS o S3, al hablar de procesamiento en <em>streaming</em> las fuentes de datos generan los datos de forma continuada, por lo que necesitamos otro tipo de fuentes.</p>
+<p>Mientras que en el procesamiento <em>batch</em> las fuentes de datos son <em>datasets</em> estáticos que residen en un almacenamiento como pueda ser un sistema local, HDFS o S3, al hablar de procesamiento en <em>streaming</em> las fuentes de datos generan los datos de forma continuada, por lo que necesitamos otro tipo de fuentes.</p>
 <p><em>Structured Streaming</em> ofrece un conjunto predefinido de <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#input-sources">fuentes de datos</a> que se leen a partir de un <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.ss/api/pyspark.sql.streaming.DataStreamReader.html">DataStreamReader</a>. Los tipos existentes son:</p>
 <ul>
 <li>
@@ -1788,7 +1788,7 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 </code></pre></div>
 <p>Si permitiera el modo <code>append</code>, sólo deberían aparecer las palabra <code>El</code>, <code>está</code> y <code>Elche</code>, ya que son los elementos que no existían previamente.</p>
 <p>En resumen, el modo <code>append</code> es sólo para inserciones, <code>update</code> para modificaciones e inserciones y finalmente <code>complete</code> sobrescribe los resultados previos.</p>
-<p>Además, no todos los tipos de salida se pueden aplicar siempre, va a depender del tipo de operaciones que realicemos. Volveremos a tratarlos cuando veamos las marcas de agua en el apartado <a href="#watermarking">Watermarking</a>.</p>
+<p>Además, no todos los tipos de salida se pueden aplicar siempre, va a depender del tipo de operaciones que realicemos. Volveremos a tratarlos en la siguiente sesión cuando veamos las marcas de agua en el apartado <a href="03join-window.html#watermarking">Watermarking</a>.</p>
 <h3 id="transformaciones">Transformaciones<a class="headerlink" href="#transformaciones" title="Permanent link">&para;</a></h3>
 <p>Dentro de <em>Spark Structured Streaming</em> tenemos dos tipos de transformaciones:</p>
 <ul>
@@ -1804,11 +1804,11 @@ Por ejemplo, si nos centramos en un escenario IoT, el tiempo del evento es cuand
 <p>Además, hay que tener en cuenta que no todas las operaciones que realizamos con <em>DataFrames</em> están soportadas al trabajar en <em>streaming</em>, como pueden ser <code>show</code>, <code>describe</code>, <code>count</code> (aunque sí que podemos contar sobre agregaciones/funciones ventana), <code>limit</code>, <code>distinct</code>, <code>cube</code> o <code>sort</code> (podemos ordenar en algunos casos después de haber realizado una agregación), ya que los datos no están acotados y provocará una excepción del tipo <code>AnalysisException</code>.</p>
 <h3 id="triggers">Triggers<a class="headerlink" href="#triggers" title="Permanent link">&para;</a></h3>
 <p>Un <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#triggers">trigger</a> define el intervalo (<em>timing</em>) temporal de procesamiento de los datos en <em>streaming</em>, indicando si la consulta se ejecutará como un <em>micro-batch</em> mediante un intervalo fijo o con una consulta con procesamiento continuo.</p>
-<p>Así pues, un trigger es un mecanismo para que el motor de Spark SQL determine cuando ejecutar la computación en <em>streaming</em>.</p>
+<p>Así pues, un trigger es un mecanismo para que el motor de <em>Spark SQL</em> determine cuando ejecutar la computación en <em>streaming</em>.</p>
 <p>Los posibles tipos son:</p>
 <ul>
 <li><em>Sin especificar</em>, de manera que cada micro-batch se va a ejecutar tan pronto como lleguen datos.</li>
-<li><em>Por intervalo de tiempo</em>, mediante la propiedad <code>processingTime</code>. Si indicamos un intervalo de un minuto, una vez finalizado un job, si no ha pasado un minuto, se esperará a ejecutarse. Si el micro-batch tardase más de un minuto, el siguiente se ejecutaría inmediatamente. Así pues, de esta manera, Spark permite colectar datos de entrada y procesarlos de manera conjunta (en vez de procesar individualmente cada registro de entrada).</li>
+<li><em>Por intervalo de tiempo</em>, mediante la propiedad <code>processingTime</code>. Si indicamos un intervalo de un minuto, una vez finalizado un job, si no ha pasado un minuto, se esperará a ejecutarse. Si el micro-batch tardase más de un minuto, el siguiente se ejecutaría inmediatamente. Así pues, de esta manera, <em>Spark</em> permite colectar datos de entrada y procesarlos de manera conjunta (en vez de procesar individualmente cada registro de entrada).</li>
 <li><em>Un intervalo</em>, mediante la propiedad <code>once</code>, de manera que funciona como un proceso <em>batch</em> estándar, creando un único proceso <em>micro-batch</em>, o con la propiedad <code>availableNow</code> para leer todos los datos disponibles hasta el momento mediante múltiples <em>batches</em>.</li>
 <li><em>Continuo</em>, mediante la propiedad <code>continuous</code>, para permitir latencias del orden de milisegundos mediante <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#continuous-processing">Continuous Processing</a>. Se trata de una opción experimental desde la versión 2.3 de Spark.</li>
 </ul>
@@ -1978,7 +1978,7 @@ FIXME: start() materializes the complete job description into a streaming comput
 <span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;Facturas Writer&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="4 "></span>    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="5 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;salida&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir-caso2&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="7 "></span>    <span class="o">.</span><span class="n">trigger</span><span class="p">(</span><span class="n">processingTime</span><span class="o">=</span><span class="s2">&quot;1 minute&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="8 "></span>    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div>
@@ -2061,17 +2061,17 @@ FIXME: start() materializes the complete job description into a streaming comput
 <span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;Facturas Writer&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="4 "></span>    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="5 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;salida&quot;</span><span class="p">)</span> \
-<span class="hll"><span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir&quot;</span><span class="p">)</span> \
+<span class="hll"><span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir-caso2&quot;</span><span class="p">)</span> \
 </span><span class="linenos" data-linenos="7 "></span>    <span class="o">.</span><span class="n">trigger</span><span class="p">(</span><span class="n">processingTime</span><span class="o">=</span><span class="s2">&quot;1 minute&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="8 "></span>    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div>
 <p>La localización de esta carpeta debería ser un sistema de archivo confiable y tolerante a fallos, como HDFS o Amazon S3.</p>
 <p>Esta carpeta contiene dos elementos:</p>
 <ul>
-<li>Posición de lectura, que realiza la misma función que los <em>offset</em> en Kafka, y representa el inicio y el final del rango de datos procesados por el actual <em>micro-batch</em>, de manera que Spark conoce el progreso exacto del procesamiento. Una vez ha finalizado el <em>micro-batch</em>, Spark realiza un <em>commit</em> para indicar que se han procesado los datos de forma exitosa.</li>
+<li>Posición de lectura, que realiza la misma función que los <em>offset</em> en Kafka, y representa el inicio y el final del rango de datos procesados por el actual <em>micro-batch</em>, de manera que <em>Spark</em> conoce el progreso exacto del procesamiento. Una vez ha finalizado el <em>micro-batch</em>, <em>Spark</em> realiza un <em>commit</em> para indicar que se han procesado los datos de forma exitosa.</li>
 <li>Información del estado, que contiene los datos intermedios del <em>micro-batch</em>, como la cantidad total de palabras contadas.</li>
 </ul>
-<p>De esta manera, Spark mantiene toda la información necesaria para reiniciar un micro-batch que no ha finalizado. Sin embargo, la capacidad de reiniciarse no tiene por qué garantizar la política <em>exactly-once</em>. Para ello, es necesario cumplir los siguientes requisitos:</p>
+<p>De esta manera, <em>Spark</em> mantiene toda la información necesaria para reiniciar un micro-batch que no ha finalizado. Sin embargo, la capacidad de reiniciarse no tiene por qué garantizar la política <em>exactly-once</em>. Para ello, es necesario cumplir los siguientes requisitos:</p>
 <ol>
 <li>Reiniciar la aplicación con el mismo <code>checkpointLocation</code>. Si se elimina la carpeta o se ejecuta la misma consulta sobre otro directorio de <em>checkpoint</em> es como si realizásemos una consulta desde 0.</li>
 <li>Utilizar una fuente de datos que permita volver a leer los datos incompletos del <em>micro-batch</em>, por ejemplo, tanto los ficheros de texto como <em>Kafka</em> permiten volver a leer los datos desde un punto determinado. Sin embargo, los datos que provienen de un socket no permite volver a leerlos.</li>
@@ -2220,7 +2220,7 @@ FIXME: start() materializes the complete job description into a streaming comput
 <span class="linenos" data-linenos=" 3 "></span>    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;Facturas Kafka Writer&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 4 "></span>    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 5 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;salida&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos=" 6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir-caso3&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 7 "></span>    <span class="o">.</span><span class="n">trigger</span><span class="p">(</span><span class="n">processingTime</span><span class="o">=</span><span class="s2">&quot;1 minute&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 8 "></span>    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <span class="linenos" data-linenos=" 9 "></span>
@@ -2241,7 +2241,7 @@ FIXME: start() materializes the complete job description into a streaming comput
 <p>Si nos dedicamos a pegar diferentes facturas (tienes más en <a href="resources/facturasKafka.json"><code>facturasKafka.json</code></a>), cada minuto se generará un nuevo archivo.</p>
 <div class="admonition caution">
 <p class="admonition-title">Limpieza</p>
-<p>Recuerda que si quieres volver a ejecutar el código, debes eliminar la carpeta <code>chk-point-dir</code> así como la carpeta de <code>salida</code>.</p>
+<p>Recuerda que si quieres volver a ejecutar el código, debes eliminar la carpeta <code>chk-point-dir-caso3</code> así como la carpeta de <code>salida</code>.</p>
 </div>
 <h2 id="caso-4-produciendo-a-kafka">Caso 4: Produciendo a <em>Kafka</em><a class="headerlink" href="#caso-4-produciendo-a-kafka" title="Permanent link">&para;</a></h2>
 <p>Vamos a plantear que en vez de los ficheros de datos que generábamos con las líneas de las facturas, queremos crear un documento que contenga:</p>
@@ -2338,7 +2338,7 @@ FIXME: start() materializes the complete job description into a streaming comput
 </span><span class="hll"><span class="linenos" data-linenos=" 5 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;kafka.bootstrap.servers&quot;</span><span class="p">,</span> <span class="s2">&quot;iabd-virtualbox:9092&quot;</span><span class="p">)</span> \
 </span><span class="hll"><span class="linenos" data-linenos=" 6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;topic&quot;</span><span class="p">,</span> <span class="s2">&quot;notificaciones&quot;</span><span class="p">)</span> \
 </span><span class="linenos" data-linenos=" 7 "></span>    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos=" 8 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 8 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir-caso4&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 9 "></span>    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <span class="linenos" data-linenos="10 "></span>
 <span class="linenos" data-linenos="11 "></span><span class="n">notificacionWriterQuery</span><span class="o">.</span><span class="n">awaitTermination</span><span class="p">()</span>
@@ -2369,13 +2369,13 @@ FIXME: start() materializes the complete job description into a streaming comput
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>
-<p>Realiza el caso de uso 1 e introduce datos para generar 5 <em>micro-batchs</em>. Accede al Spark UI y comprueba los <em>jobs</em> y <em>stages</em> creados, y justifica su cantidad.</p>
+<p>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen.">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr>, <abbr title="Se han recogido métricas, procesamiento y visualización de los datos.">CE5.4b</abbr>  / 1p) Realiza el caso de uso 1 e introduce datos para generar 5 <em>micro-batchs</em>. Accede al <em>Spark UI</em> y comprueba los <em>jobs</em> y <em>stages</em> creados, y justifica su cantidad.</p>
 </li>
 <li>
-<p>Realiza el caso de uso 2, adjuntado capturas de la carpeta <code>salida</code> tras la colocación de los datos de cada archivo de facturas en la carpeta de <code>entrada</code>. Finalmente muestra un resumen de las estadísticas tanto del plan de ejecución como de los últimos progresos.</p>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Realiza el caso de uso 2, adjuntado capturas de la carpeta <code>salida</code> tras la colocación de los datos de cada archivo de facturas en la carpeta de <code>entrada</code>. Finalmente muestra un resumen de las estadísticas tanto del plan de ejecución como de los últimos progresos.</p>
 </li>
 <li>
-<p>Realiza los casos de uso 3 y 4 en un único cuaderno <em>Jupyter</em>, de manera que sólo haya un <em>reader</em>, pero creando dos <em>WriterQuery</em>. Hay dos aspectos que debes tener en cuenta:</p>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Realiza los casos de uso 3 y 4 en un único cuaderno <em>Jupyter</em>, de manera que sólo haya un <em>reader</em>, pero creando dos <em>WriterQuery</em>. Hay dos aspectos que debes tener en cuenta:</p>
 <ol>
 <li>
 <p>En vez de indicar en cada escritor que espere a que finalice:</p>
@@ -2392,7 +2392,7 @@ FIXME: start() materializes the complete job description into a streaming comput
 </ol>
 </li>
 <li>
-<p>El archivo <a href="resources/bizums.zip">bizums.zip</a> contiene una simulación de datos de <em>bizum</em> que llegan a nuestra cuenta. Crea una aplicación de <em>Spark Streaming</em> que muestre para cada persona, cual es <em>bizum</em> más alto.</p>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) El archivo <a href="resources/bizums.zip">bizums.zip</a> contiene una simulación de datos de <em>bizum</em> que llegan a nuestra cuenta. Crea una aplicación de <em>Spark Streaming</em> que muestre para cada persona, cual es <em>bizum</em> más alto.</p>
 <p>Para ello, disponemos de un <em>script</em> <em>Python</em> que, al ejecutarlo, se encarga de simular el envío de <em>bizums</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>python3<span class="w"> </span>Bizums.py
 </code></pre></div>
@@ -2481,7 +2481,7 @@ Coger el ejercicio de Bizum, y generar los datos mediante Faker, poniendo la fec
       <nav class="md-footer__inner md-grid" aria-label="Pie" >
         
           
-          <a href="02catalog.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Spark Catalog" rel="prev">
+          <a href="02catalog.html" class="md-footer__link md-footer__link--prev" aria-label="Anterior: Spark JDBC" rel="prev">
             <div class="md-footer__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
             </div>
@@ -2490,7 +2490,7 @@ Coger el ejercicio de Bizum, y generar los datos mediante Faker, poniendo la fec
                 <span class="md-footer__direction">
                   Anterior
                 </span>
-                Spark Catalog
+                Spark JDBC
               </div>
             </div>
           </a>
