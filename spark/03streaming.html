@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming.">
+        <meta name="description" content="Apuntes y ejercicios sobre analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming.">
       
       
       
@@ -71,7 +71,7 @@
       
         <meta  property="og:title"  content="Analítica de datos con Spark Streaming - IABD" >
       
-        <meta  property="og:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming." >
+        <meta  property="og:description"  content="Apuntes y ejercicios sobre analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming." >
       
         <meta  property="og:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/03streaming.png" >
       
@@ -87,7 +87,7 @@
       
         <meta  name="twitter:title"  content="Analítica de datos con Spark Streaming - IABD" >
       
-        <meta  name="twitter:description"  content="Analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming." >
+        <meta  name="twitter:description"  content="Apuntes y ejercicios sobre analítica de datos con Spark Streaming. Uso de fuentes de datos y sinks. Ingesta en streaming desde/hacia Kafka mediante Spark Streaming." >
       
         <meta  name="twitter:image"  content="https://aitor-medrano.github.io/iabd2223/assets/images/social/spark/03streaming.png" >
       
@@ -2105,7 +2105,7 @@ FIXME: start() materializes the complete job description into a streaming comput
 </span><span class="linenos" data-linenos="13 "></span>    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </code></pre></div>
 <p>De esta manera nos subscribimos al topic <code>facturas</code> y realizamos la lectura desde el inicio.</p>
-<p>Antes de poder ejecutar el <em>reader</em>, hemos de arrancar Kafka y crear el topic <code>facturas</code>. Para ello, una vez estamos en la carpeta de instalación de Kafka (en nuestro caso <code>/opt/kafka_2.13-2.8.1</code>), ejecutaremos los siguientes comandos:</p>
+<p>Antes de poder ejecutar el <em>reader</em>, hemos de arrancar Kafka y crear el topic <code>facturas</code>. Para ello, una vez estamos en la carpeta de instalación de Kafka (en nuestro caso <code>/opt/kafka_2.13-3.3.1</code>), ejecutaremos los siguientes comandos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>zookeeper-server-start.sh<span class="w"> </span>./config/zookeeper.properties
 <span class="linenos" data-linenos="2 "></span>kafka-server-start.sh<span class="w"> </span>./config/server.properties
 <span class="linenos" data-linenos="3 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>facturas<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
@@ -2255,8 +2255,8 @@ FIXME: start() materializes the complete job description into a streaming comput
     <figcaption>Arquitectura caso 4</figcaption>
 </figure>
 
-<p>Además, este documento que generamos lo queremos enviar a un nuevo <em>topic</em> de Kafka (<code>notificaciones</code>) para que lo consuma otra aplicación, indicando como clave el número de factura (<code>InvoiceNumber</code>) y como valor el documento creado.</p>
-<p>Comenzamos de la misma forma que el caso anterior, creando los recursos de Kafka en diferentes terminales:</p>
+<p>Además, este documento que generamos lo queremos enviar a un nuevo <em>topic</em> de <em>Kafka</em> (<code>notificaciones</code>) para que lo consuma otra aplicación, indicando como clave el número de factura (<code>InvoiceNumber</code>) y como valor el documento creado.</p>
+<p>Comenzamos de la misma forma que el caso anterior, creando los recursos de <em>Kafka</em> en diferentes terminales:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>zookeeper-server-start.sh<span class="w"> </span>./config/zookeeper.properties
 <span class="linenos" data-linenos="2 "></span>kafka-server-start.sh<span class="w"> </span>./config/server.properties
 <span class="linenos" data-linenos="3 "></span>kafka-topics.sh<span class="w"> </span>--create<span class="w"> </span>--topic<span class="w"> </span>facturas<span class="w"> </span>--bootstrap-server<span class="w"> </span>iabd-virtualbox:9092
@@ -2402,17 +2402,6 @@ FIXME: start() materializes the complete job description into a streaming comput
 <p>Muestra el resultado completo por consola.</p>
 </li>
 </ol>
-<!--
-
-(opcional) coger el dataset de iot de ventanas deslizantes de 15 minutos, y utilizar Kafka para leer los datos, mostrar temperatura máxima de los últimos 5 minutos
-
-https://blog.coeo.com/databricks-structured-streaming-part2
-
-https://www.mongodb.com/docs/spark-connector/master/python/write-to-mongodb/
-
-Coger el ejercicio de Bizum, y generar los datos mediante Faker, poniendo la fecha del envío
-
--->
 
 
   
