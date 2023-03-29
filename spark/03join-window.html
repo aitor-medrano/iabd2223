@@ -1375,7 +1375,7 @@
 <p>Existen diferentes tipos de ventanas temporales:</p>
 <ul>
 <li>de tamaño fijo (<em>fixed/tumbling window</em>): divide los flujos de datos en segmentos fijos, con un tamaño de ventana, un tiempo de inicio y uno de finalización. En este tipo, cada dato se asigna a una única ventana, de manera que es fácil realizar agregaciones como la suma, el máximo o la media.</li>
-<li>deslizantes (<em>sliding</em>): cada ventana tiene una longitud y un intervalo de deslizamiento. Si el intervalo tiene el mismo tamaño que la ventana, actúa igual que una ventana de tamaño fijo. En la imagen podemos ver un intervalo de deslizamiento más pequeño que el tamaño de la ventana, lo que implica que un dato puede llegar a más de una ventana. Como las ventana deslizantes se solapan, la agregaciones de datos producen resultados más precisos que con ventanas de tamaño fijo.</li>
+<li>deslizantes (<em>sliding</em>): cada ventana tiene una longitud y un intervalo de deslizamiento. Si el intervalo tiene el mismo tamaño que la ventana, actúa igual que una ventana de tamaño fijo. En la imagen podemos ver un intervalo de deslizamiento más pequeño que el tamaño de la ventana, lo que implica que un dato puede llegar a más de una ventana. Como las ventanas deslizantes se solapan, las agregaciones de datos producen resultados más precisos que con ventanas de tamaño fijo.</li>
 <li>de sesión (<em>session</em>): se utiliza para analizar el comportamiento de usuario de un sitio web. No tienen un tamaño definido, sino que se define por la duración de la navegación del usuario.</li>
 </ul>
 <figure style="align: center;">
@@ -1383,15 +1383,16 @@
     <figcaption>Tipos de ventanas temporales</figcaption>
 </figure>
 
+<p>En esta sesión nos vamos a centrar en las ventajas de tamaño fijo y las deslizantes.</p>
 <h2 id="caso-5-trabajando-con-ventanas">Caso 5: Trabajando con ventanas<a class="headerlink" href="#caso-5-trabajando-con-ventanas" title="Permanent link">&para;</a></h2>
-<p>Vamos a basarnos en el caso 1, donde leíamos datos desde un <em>socket</em> y contábamos las apariciones de las palabras.</p>
+<p>Para entender cómo funcionan las ventanas vamos a basarnos en el caso 1, donde leíamos datos desde un <em>socket</em> y contábamos las apariciones de las palabras.</p>
 <p>Antes de nada, en un terminal, vamos a lanzar el servidor de <em>sockets</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>nc<span class="w"> </span>-lk<span class="w"> </span><span class="m">9999</span>
 </code></pre></div>
-<p>Volvemos a nuestro cuaderno de Jupyter, y del código del caso 1 vamos a modificar algunos aspectos para agrupar los datos recibidos en una ventana fija de dos minutos. Al leer los datos, indicaremos que queremos obtener el <em>timestamp</em> de cada dato:</p>
+<p>Volvemos a nuestro cuaderno de <em>Jupyter</em>, y del código del caso 1 vamos a modificar algunos aspectos para agrupar los datos recibidos en una ventana fija de dos minutos. Al leer los datos, indicaremos que queremos obtener el <em>timestamp</em> de cada dato:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">SparkSession</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span> \
-<span class="linenos" data-linenos=" 3 "></span>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Streaming Window IABD WordCount&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 3 "></span>        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;Ventana fija IABD WordCount&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 4 "></span>        <span class="o">.</span><span class="n">master</span><span class="p">(</span><span class="s2">&quot;local[2]&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 5 "></span>        <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.streaming.stopGracefullyOnShutdown&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 6 "></span>        <span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s2">&quot;spark.sql.shuffle.partitions&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> \
@@ -1399,12 +1400,12 @@
 <span class="linenos" data-linenos=" 8 "></span>
 <span class="linenos" data-linenos=" 9 "></span><span class="n">dfLineas</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span> \
 <span class="linenos" data-linenos="10 "></span>    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;socket&quot;</span><span class="p">)</span> \
-<span class="hll"><span class="linenos" data-linenos="11 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">)</span> \
-</span><span class="linenos" data-linenos="12 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="s2">&quot;9999&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="13 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;includeTimestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>\
-<span class="linenos" data-linenos="14 "></span>    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
+<span class="linenos" data-linenos="11 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="12 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;port&quot;</span><span class="p">,</span> <span class="s2">&quot;9999&quot;</span><span class="p">)</span> \
+<span class="hll"><span class="linenos" data-linenos="13 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;includeTimestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span>\
+</span><span class="linenos" data-linenos="14 "></span>    <span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </code></pre></div>
-<p>Si obtenemos el esquema de los datos que leemos, ahora tendremos el campo <code>value</code> con el texto leído, y el campo <code>timestamp</code> con la marca de tiempo:</p>
+<p>Si obtenemos el esquema de los datos que leemos ahora tendremos el campo <code>value</code> con el texto leído, y el campo <code>timestamp</code> con la marca de tiempo:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">dfLineas</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
 <span class="linenos" data-linenos="2 "></span><span class="c1"># root</span>
 <span class="linenos" data-linenos="3 "></span><span class="c1">#  |-- value: string (nullable = true)</span>
@@ -1746,7 +1747,7 @@
 <span class="linenos" data-linenos="8 "></span><span class="o">+-------------------+-------------------+-------+------+</span>
 </code></pre></div>
 <p>Estos datos se parecen a la información que queríamos, pero únicamente esta sumando los datos de cada ventana, sin acumularlos con todos los datos anteriores. A día de hoy, la única forma de sumar todos los datos agregados es utilizar las <a href="../hadoop/06hive.html#consultas-de-agregación">funciones ventana</a> (similares a las que vimos al trabajar con <em>Hive</em>) dentro de un proceso <em>batch</em>.</p>
-<p>Así pues, vamos a almacenar los datos en un fichero en formato Parquet, para que luego desde un proceso Batch realizar los cálculos que nos faltan. Pero antes necesitamos introducir el concepto de marca de agua.</p>
+<p>Así pues, vamos a almacenar los datos en un fichero en formato <em>Parquet</em>, para que luego desde un proceso Batch realizar los cálculos que nos faltan. Pero antes necesitamos introducir el concepto de marca de agua.</p>
 <h2 id="watermarking">Watermarking<a class="headerlink" href="#watermarking" title="Permanent link">&para;</a></h2>
 <p>Cuando los datos llegan tarde a nuestro sistema (se generan en la ventana N, pero llegan a <em>Spark</em> en la ventana N+M), <em>Spark</em> gestiona todas las ventanas y actualiza los cálculos. Estos cálculos, como hemos comentado, son el estado de las transformaciones y se almacenan en los diferentes ejecutores del clúster de <em>Spark</em>.</p>
 <p>¿Qué sucede con un dato que se genera a las 12:04 pero llega a <em>Spark</em> a las 12:11, si nuestras ventanas tienen un tamaño de 10 minutos con un deslizamiento de 5 minutos? Al mantener el estado, <em>Spark</em> puede modificar la ventana de las 12:00 a las 12:10 y actualizar los cálculos:</p>
@@ -1770,9 +1771,12 @@
 <span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s1">&#39;window&#39;</span><span class="p">)</span>
 </code></pre></div>
 <p>De esta manera, si llega una palabra con un retraso de más de 30 minutos, se desechará. Además, el estado de la ventana se limpiará cuando pasen esos 30 minutos, de manera que su tamaño siempre estará limitado por el <em>timestamp</em> de los datos recibidos en los última media hora.</p>
+<div class="admonition caution">
+<p class="admonition-title">Marcas de agua y modo de salida completo</p>
 <p>Si utilizamos marcas de agua para limitar el estado de la ventana, es importante tener en cuenta que si el modo de salida es completo, no se limpiará el estado, es decir, es como si no utilizásemos marcas de agua.</p>
+</div>
 <h3 id="modo-update">Modo <em>update</em><a class="headerlink" href="#modo-update" title="Permanent link">&para;</a></h3>
-<p>En cambio, mediante el modo <em>update</em> sí que se limpia la ventana de estado, realizando operaciones de tipo <em>upsert</em>, por ejemplo con un <em>sink</em> que sí soporte las modificaciones, como cualquiera base de datos. Aunque hay que tener cuidado si nuestro <em>sink</em> es de tipo fichero, ya que no puede modificar los ficheros JSON/Parquet y creará archivos duplicados.</p>
+<p>En cambio, mediante el modo <em>update</em> sí que se limpia la ventana de estado, realizando operaciones de tipo <em>upsert</em>, por ejemplo con un <em>sink</em> que sí soporte las modificaciones, como cualquiera base de datos. Aunque hay que tener cuidado si nuestro <em>sink</em> es de tipo fichero, ya que no puede modificar los ficheros JSON/<em>Parquet</em> y creará archivos duplicados.</p>
 <p>Veamos un ejemplo donde definimos una marca de agua de 10 minutos sobre una ventana también de 10 minutos sobre la columna <em>timestamp</em> con <em>triggers</em> cada 5 minutos:</p>
 <figure style="align: center;">
     <img src="images/03streaming-watermark-update-mode.png">
@@ -1799,7 +1803,7 @@
 -->
 
 <h2 id="caso-7-bolsa-ii">Caso 7: Bolsa II<a class="headerlink" href="#caso-7-bolsa-ii" title="Permanent link">&para;</a></h2>
-<p>Ahora que ya hemos visto el concepto de marca de agua, podemos crear un marco para que los valores que lleguen tarde se descarten y poder almacenar la información en fichero en formato Parquet con el modo de salida <em>append</em>.</p>
+<p>Ahora que ya hemos visto el concepto de marca de agua, podemos crear un marco para que los valores que lleguen tarde se descarten y poder almacenar la información en fichero en formato <em>Parquet</em> con el modo de salida <em>append</em>.</p>
 <p>Así pues, cuando agrupamos los datos, vamos a definir una marca de agua de 30 minutos:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">window</span><span class="p">,</span> <span class="nb">sum</span>
 <span class="linenos" data-linenos="2 "></span><span class="n">windowDF</span> <span class="o">=</span> <span class="n">accionesDF</span> \
@@ -1815,7 +1819,7 @@
 <span class="linenos" data-linenos="3 "></span>    <span class="o">.</span><span class="n">queryName</span><span class="p">(</span><span class="s2">&quot;BolsaWQuery&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="4 "></span>    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;append&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="5 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="s2">&quot;salida&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos="6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir-caso7&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="7 "></span>    <span class="o">.</span><span class="n">trigger</span><span class="p">(</span><span class="n">processingTime</span><span class="o">=</span><span class="s2">&quot;1 minute&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos="8 "></span>    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </code></pre></div>
@@ -1837,7 +1841,7 @@
 <span class="linenos" data-linenos="12 "></span><span class="c1"># |2022-05-09 10:30:00|2022-05-09 10:45:00|    900|     0|</span>
 <span class="linenos" data-linenos="13 "></span><span class="c1"># +-------------------+-------------------+-------+------+</span>
 </code></pre></div>
-<p>Ahora ya podemos hacer uso de las funciones ventanas, y calcular el total acumulado:</p>
+<p>Ahora ya podemos hacer uso de las <a href="https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html">funciones ventana</a>, y calcular el total acumulado:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">Window</span>
 <span class="linenos" data-linenos=" 2 "></span><span class="n">ventanaTotal</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 3 "></span>    <span class="o">.</span><span class="n">rowsBetween</span><span class="p">(</span><span class="n">Window</span><span class="o">.</span><span class="n">unboundedPreceding</span><span class="p">,</span> <span class="n">Window</span><span class="o">.</span><span class="n">currentRow</span><span class="p">)</span>
@@ -1859,7 +1863,7 @@
 </code></pre></div>
 <h2 id="datos-duplicados">Datos duplicados<a class="headerlink" href="#datos-duplicados" title="Permanent link">&para;</a></h2>
 <p>Aunque <em>Spark Streaming</em> asegura la fiabilidad de los datos mediante la entrega de mensajes <em>exactly-one</em>, es posible que desde nuestras fuentes de datos nos envíen un dato más de una vez (por problemas con la red o fallos de transmisión).</p>
-<p>Dentro de <em>Structured Streaming</em> podemos gestionar los datos duplicados tanto con marcas de agua como sin ellas. Debes tener en cuenta que si no utilizamos <em>watermarking</em>, el estado de <em>Spark</em> necesite almacenar de manera ilimitada todos los datos, lo que puede llevar a un problema de falta de memoria.</p>
+<p>Dentro de <em>Structured Streaming</em> podemos gestionar los datos duplicados tanto con marcas de agua como sin ellas. Debes tener en cuenta que si no utilizamos <em>watermarking</em>, el estado de <em>Spark</em> necesita almacenar de manera ilimitada todos los datos, lo que puede llevar a un problema de falta de memoria.</p>
 <p>Para evitar los registros duplicados, los diferentes eventos deberían tener un identificador único y pasárselo como parámetro al método <a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.dropDuplicates.html"><code>dropDuplicates</code></a>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">streamingDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span><span class="o">.</span> <span class="o">...</span>
 <span class="linenos" data-linenos="2 "></span>
@@ -1878,14 +1882,14 @@
 <h2 id="joins-en-streaming">Joins en streaming<a class="headerlink" href="#joins-en-streaming" title="Permanent link">&para;</a></h2>
 <p>Una de las cosas más <em>curiosas</em> que podemos hacer con un <em>DataFrame</em> en <em>streaming</em> es realizar un <a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#join-operations"><em>join</em></a> con otro <em>DataFrame</em> estático u otro en <em>streaming</em>, es decir, con datos que todavía no existen.</p>
 <p>Realizar un <em>join</em> es una operación compleja y la parte divertida es que no todos los datos están disponibles en el momento de realizar el <em>join</em>, por lo tanto su resultado se genera de forma incremental tras cada <em>trigger</em>, de forma similar a como se generan las agregaciones.</p>
-<p>Unir un stream con un DataFrame estático es una operación sin estado, ya que Spark no necesita mantener el estado y sólo está uniendo los datos de un único micro-batch.</p>
+<p>Unir un <em>stream</em> con un <em>DataFrame</em> estático es una operación sin estado, ya que <em>Spark</em> no necesita mantener el estado y sólo está uniendo los datos de un único <em>micro-batch</em>.</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">estaticoDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span> <span class="o">...</span>
 <span class="linenos" data-linenos="2 "></span><span class="n">streamingDF</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span><span class="o">.</span> <span class="o">...</span>
 <span class="linenos" data-linenos="3 "></span><span class="n">streamingDF</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">estaticoDF</span><span class="p">,</span> <span class="s2">&quot;claveAjena&quot;</span><span class="p">)</span>  <span class="c1"># inner join entre streaming y estático</span>
 <span class="linenos" data-linenos="4 "></span><span class="n">streamingDF</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">estaticoDF</span><span class="p">,</span> <span class="s2">&quot;claveAjena&quot;</span><span class="p">,</span> <span class="s2">&quot;left_outer&quot;</span><span class="p">)</span>  <span class="c1"># left outer join con estático</span>
 </code></pre></div>
-<p>En cambio, unir dos <em>DataFrames</em> en streaming sí que es una operación con estado, ya que Spark necesita almacenar los datos de ambos en el almacenamiento del estado y comprobar continuamente si hay relación entre los nuevos datos que llegan en cada micro-batch. Dado que los <em>DataFrames</em> en stream no tienen un final definido, <em>Spark Structured Streaming</em> debe mantener todos los datos recogidos de ambos <em>DataFrames</em> de un <em>join</em>, ya que pueden llegar futuros datos que sí cumplan la relación. Para evitar que el estado se quede sin memoria disponible, podemos utilizar marcas de agua en ambos <em>DataFrames</em> e incluir una restricción basada en el tiempo de evento definido en la condición de <em>join</em>.</p>
-<p>Supongamos que queremos unir un flujo de impresiones de anuncios (cuando se muestra un anuncio) con otro flujo de los clicks que los usuarios realizan sobre los anuncios para correlacionarlos y monetizar los clicks:</p>
+<p>En cambio, unir dos <em>DataFrames</em> en <em>streaming</em> sí que es una operación con estado, ya que <em>Spark</em> necesita almacenar los datos de ambos en el almacenamiento del estado y comprobar continuamente si hay relación entre los nuevos datos que llegan en cada <em>micro-batch</em>. Dado que los <em>DataFrames</em> en <em>stream</em> no tienen un final definido, <em>Spark Structured Streaming</em> debe mantener todos los datos recogidos de ambos <em>DataFrames</em> de un <em>join</em>, ya que pueden llegar futuros datos que sí cumplan la relación. Para evitar que el estado se quede sin memoria disponible, podemos utilizar marcas de agua en ambos <em>DataFrames</em> e incluir una restricción basada en el tiempo de evento definido en la condición de <em>join</em>.</p>
+<p>Supongamos que queremos unir un flujo de impresiones de anuncios (cuando se muestra un anuncio) con otro flujo de los <em>clicks</em> que los usuarios realizan sobre los anuncios para correlacionarlos y monetizar los <em>clicks</em>:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">expr</span>
 <span class="linenos" data-linenos=" 2 "></span>
 <span class="linenos" data-linenos=" 3 "></span><span class="n">impresiones</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">readStream</span><span class="o">.</span> <span class="o">...</span>
@@ -2040,7 +2044,7 @@
 <span class="linenos" data-linenos=" 3 "></span><span class="n">queryWriter</span> <span class="o">=</span> <span class="n">resultadoDF</span><span class="o">.</span><span class="n">writeStream</span> \
 <span class="linenos" data-linenos=" 4 "></span>    <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;console&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 5 "></span>    <span class="o">.</span><span class="n">outputMode</span><span class="p">(</span><span class="s2">&quot;update&quot;</span><span class="p">)</span> \
-<span class="linenos" data-linenos=" 6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir&quot;</span><span class="p">)</span> \
+<span class="linenos" data-linenos=" 6 "></span>    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">&quot;checkpointLocation&quot;</span><span class="p">,</span> <span class="s2">&quot;chk-point-dir-caso8&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 7 "></span>    <span class="o">.</span><span class="n">trigger</span><span class="p">(</span><span class="n">processingTime</span><span class="o">=</span><span class="s2">&quot;1 minute&quot;</span><span class="p">)</span> \
 <span class="linenos" data-linenos=" 8 "></span>    <span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <span class="linenos" data-linenos=" 9 "></span>
@@ -2101,17 +2105,68 @@
 <li><a href="https://www.packtpub.com/product/real-time-stream-processing-using-apache-spark-3-for-python-developers-video/9781803246543">Real-Time Stream Processing Using Apache Spark 3 for Python Developers</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>En las siguientes actividades, además de los cuadernos de <em>Jupyter</em> con la solución a cada ejercicio, adjunta capturas de pantalla de las salida generadas.</p>
 <ol>
-<li>Realiza el caso de uso 5, tanto con ventanas fijas como deslizantes.</li>
-<li>Realiza los casos de uso que trabajan los conceptos de ventanas y <em>watermarking</em>, es decir, los casos de uso 6 y 7.</li>
-<li>Realiza el caso de uso 8. Además, modifícalo para crear una ventana temporal de 15 minutos y envía nuevos datos de usuarios que entran al sistema que provoquen la limpieza del estado.</li>
+<li>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Realiza el caso de uso 5, tanto con ventanas fijas como mediante ventanas deslizantes, pero con un tamaño de ventana fijo de tres minutos y con un deslizamiento de dos minutos. Justifica la cantidad de ventanas que aparecen.</li>
+<li>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 2p) A partir del <em>script</em> <code>bizum-kafka.py</code> el cual envía datos de <em>Bizums</em> a <em>Kafka</em> al topic <code>iabd-bizum</code> con una periodicidad aleatoria, calcula la cantidad media recibida, la mayor y la menor, así como la cantidad de eventos recibidos con una ventana temporal de 3 minutos con una marca de agua de 30 segundos.</p>
+<p>En un principio muestra el resultado por consola y a continuación, almacena el resultado en <em>MongoDB</em> en modo <em>update</em> (puedes consultar los apuntes de la sesión de <a href="02catalog.html#mongo-spark-connector">Spark y bases de datos</a> para ver cómo almacenar un <em>DataFrame</em> en <em>MongoDB</em>). Adjunta capturas de los mensajes que llegan al <em>topic</em> (puedes utilizar un consumidor de <em>Kafka</em> mediante el terminal), así como el resultado de una consulta sobre la colección en <em>MongoDB</em> donde se almacenan los datos.</p>
+<p>Se adjunta el código del script:</p>
+<div class="highlight"><span class="filename">bizum-kafka.py</span><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">faker</span> <span class="kn">import</span> <span class="n">Faker</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="linenos" data-linenos=" 4 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaProducer</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">fake</span> <span class="o">=</span> <span class="n">Faker</span><span class="p">(</span><span class="s1">&#39;es_ES&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos=" 9 "></span><span class="n">today</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+<span class="linenos" data-linenos="10 "></span><span class="n">i</span><span class="o">=</span><span class="mi">0</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="n">producer</span> <span class="o">=</span> <span class="n">KafkaProducer</span><span class="p">(</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">value_serializer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">dumps</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="n">bootstrap_servers</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;iabd-virtualbox:9092&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="15 "></span>
+<span class="linenos" data-linenos="16 "></span><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+<span class="linenos" data-linenos="17 "></span>
+<span class="linenos" data-linenos="18 "></span>    <span class="n">datos</span><span class="o">=</span><span class="p">{}</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="n">datos</span><span class="p">[</span><span class="s1">&#39;records&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="n">cant_bizums</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cant_bizums</span><span class="p">):</span>
+<span class="linenos" data-linenos="23 "></span>        <span class="c1"># datos de un bizum</span>
+<span class="linenos" data-linenos="24 "></span>        <span class="n">seg_random</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">59</span><span class="p">)</span>
+<span class="linenos" data-linenos="25 "></span>
+<span class="linenos" data-linenos="26 "></span>        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="27 "></span>            <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">seg_random</span><span class="p">),</span>
+<span class="linenos" data-linenos="28 "></span>            <span class="s2">&quot;nombre&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">name</span><span class="p">(),</span>
+<span class="linenos" data-linenos="29 "></span>            <span class="s2">&quot;cantidad&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">random_int</span><span class="p">(</span><span class="nb">min</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+<span class="linenos" data-linenos="30 "></span>            <span class="s2">&quot;concepto&quot;</span><span class="p">:</span><span class="n">fake</span><span class="o">.</span><span class="n">sentence</span><span class="p">(</span><span class="n">nb_words</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="linenos" data-linenos="31 "></span>        <span class="p">}</span>
+<span class="linenos" data-linenos="32 "></span>
+<span class="linenos" data-linenos="33 "></span>        <span class="n">producer</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&quot;iabd-bizum&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="linenos" data-linenos="34 "></span>
+<span class="linenos" data-linenos="35 "></span>
+<span class="linenos" data-linenos="36 "></span>    <span class="n">producer</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+<span class="linenos" data-linenos="37 "></span>    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos" data-linenos="38 "></span>    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># 10 segundos   </span>
+</code></pre></div>
+<p>Y un ejemplo de los mensajes recibidos en <em>Kafka</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="p">{</span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-29 09:45:28.714978&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sandalio Casas Mendez&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cantidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">43</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;concepto&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Tempora quae suscipit.&quot;</span><span class="p">}</span>
+<span class="linenos" data-linenos="2 "></span><span class="p">{</span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-29 09:46:15.715211&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Eva Lucena Arribas&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cantidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">567</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;concepto&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Dicta.&quot;</span><span class="p">}</span>
+<span class="linenos" data-linenos="3 "></span><span class="p">{</span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-29 09:45:35.738855&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Seve de Aranda&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cantidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">353</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;concepto&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aperiam amet deserunt.&quot;</span><span class="p">}</span>
+<span class="linenos" data-linenos="4 "></span><span class="p">{</span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-29 09:45:56.739494&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Alex del Acevedo&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cantidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">304</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;concepto&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Itaque ipsa.&quot;</span><span class="p">}</span>
+<span class="linenos" data-linenos="5 "></span><span class="p">{</span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-29 09:46:17.758687&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Nuria Bermudez Casas&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cantidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">119</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;concepto&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aspernatur.&quot;</span><span class="p">}</span>
+<span class="linenos" data-linenos="6 "></span><span class="p">{</span><span class="nt">&quot;timestamp&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-03-29 09:45:44.759399&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;nombre&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Leonel Bou Sanz&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;cantidad&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">355</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;concepto&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Eligendi voluptas a.&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Recuerda que debes arrancar <em>Spark</em> con los paquetes de <em>Kafka</em> y <em>MongoDB</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>pyspark<span class="w"> </span>--packages<span class="w"> </span>org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1,org.mongodb.spark:mongo-spark-connector_2.12:10.1.1<span class="w"> </span>
+</code></pre></div>
+</li>
+<li>
+<p>(<abbr title="Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.">RA5074.1</abbr> / <abbr title="Se ha construido un conjunto de datos complejos y se han relacionado entre sí.">CE4.1d</abbr> / 1p) Realiza el caso de uso 8. Además, modifícalo para crear una ventana temporal de 15 minutos y envía nuevos datos de usuarios que entren al sistema que provoquen la limpieza del estado.</p>
+</li>
 </ol>
-<!--
-
-Darle la vuelta a algún ejercicio más parecido a un caso real
-Podemos coger el de Bizum, y envíar datos tardíos.
--->
-
 <div class="footnote">
 <hr />
 <ol>

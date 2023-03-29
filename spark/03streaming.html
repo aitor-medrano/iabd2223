@@ -2367,12 +2367,13 @@ FIXME: start() materializes the complete job description into a streaming comput
 <li><a href="https://www.packtpub.com/product/real-time-stream-processing-using-apache-spark-3-for-python-developers-video/9781803246543">Real-Time Stream Processing Using Apache Spark 3 for Python Developers</a></li>
 </ul>
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
+<p>En las siguientes actividades, además de los cuadernos de <em>Jupyter</em> con la solución a cada ejercicio, adjunta capturas de pantalla de las salida generadas.</p>
 <ol>
 <li>
 <p>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen.">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr>, <abbr title="Se han recogido métricas, procesamiento y visualización de los datos.">CE5.4b</abbr>  / 1p) Realiza el caso de uso 1 e introduce datos para generar 5 <em>micro-batchs</em> (escribe tu nombre en alguno de ellos). Accede al <em>Spark UI</em> y comprueba los <em>jobs</em> y <em>stages</em> creados, y justifica su cantidad.</p>
 </li>
 <li>
-<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 1p) Realiza el caso de uso 2, adjuntado capturas de la carpeta <code>salida</code> tras la colocación de los datos de cada archivo de facturas en la carpeta de <code>entrada</code>. 
+<p>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 1p) Realiza el caso de uso 2, adjuntado capturas de la carpeta <code>salida</code> tras la colocación de los datos de cada archivo de facturas en la carpeta de <code>entrada</code>.
 Comprueba que al definir un <em>checkpoint</em>, si colocamos nuevos datos en la carpeta de entrada pero todavía no se ha lanzado el <em>trigger</em>, si detenemos <em>Spark</em>, al volver a arrancarlo seguirá con los datos que tenía pendiente y mostrará los datos en la carpeta de salida. Finalmente muestra un resumen de las estadísticas tanto del plan de ejecución como de los últimos progresos.</p>
 </li>
 <li>
