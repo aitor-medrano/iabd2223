@@ -5,8 +5,7 @@ description: Apuntes sobre Spark Streaming, estudiando el join entre DataFrames 
 
 # Spark Streaming II
 
-
-## Windowing
+## *Windowing*
 
 Al realizar agregaciones basadas en el tiempo, es importante aclarar el concepto de ventana temporal (*windowing*). Una ventana temporal puede durar una semana, una hora, un minuto o incluso un segundo.
 
@@ -15,7 +14,7 @@ Estas ventanas permiten acotar los datos sobre un flujo que en principio no tien
 Existen diferentes tipos de ventanas temporales:
 
 * de tamaño fijo (*fixed/tumbling window*): divide los flujos de datos en segmentos fijos, con un tamaño de ventana, un tiempo de inicio y uno de finalización. En este tipo, cada dato se asigna a una única ventana, de manera que es fácil realizar agregaciones como la suma, el máximo o la media.
-* deslizantes (*sliding*): cada ventana tiene una longitud y un intervalo de deslizamiento. Si el intervalo tiene el mismo tamaño que la ventana, actúa igual que una ventana de tamaño fijo. En la imagen podemos ver un intervalo de deslizamiento más pequeño que el tamaño de la ventana, lo que implica que un dato puede llegar a más de una ventana. Como las ventana deslizantes se solapan, la agregaciones de datos producen resultados más precisos que con ventanas de tamaño fijo.
+* deslizantes (*sliding*): cada ventana tiene una longitud y un intervalo de deslizamiento. Si el intervalo tiene el mismo tamaño que la ventana, actúa igual que una ventana de tamaño fijo. En la imagen podemos ver un intervalo de deslizamiento más pequeño que el tamaño de la ventana, lo que implica que un dato puede llegar a más de una ventana. Como las ventanas deslizantes se solapan, las agregaciones de datos producen resultados más precisos que con ventanas de tamaño fijo.
 * de sesión (*session*): se utiliza para analizar el comportamiento de usuario de un sitio web. No tienen un tamaño definido, sino que se define por la duración de la navegación del usuario.
 
 <figure style="align: center;">
@@ -23,9 +22,11 @@ Existen diferentes tipos de ventanas temporales:
     <figcaption>Tipos de ventanas temporales</figcaption>
 </figure>
 
+En esta sesión nos vamos a centrar en las ventajas de tamaño fijo y las deslizantes.
+
 ## Caso 5: Trabajando con ventanas
 
-Vamos a basarnos en el caso 1, donde leíamos datos desde un *socket* y contábamos las apariciones de las palabras.
+Para entender cómo funcionan las ventanas vamos a basarnos en el caso 1, donde leíamos datos desde un *socket* y contábamos las apariciones de las palabras.
 
 Antes de nada, en un terminal, vamos a lanzar el servidor de *sockets*:
 
@@ -33,12 +34,12 @@ Antes de nada, en un terminal, vamos a lanzar el servidor de *sockets*:
 nc -lk 9999
 ```
 
-Volvemos a nuestro cuaderno de Jupyter, y del código del caso 1 vamos a modificar algunos aspectos para agrupar los datos recibidos en una ventana fija de dos minutos. Al leer los datos, indicaremos que queremos obtener el *timestamp* de cada dato:
+Volvemos a nuestro cuaderno de *Jupyter*, y del código del caso 1 vamos a modificar algunos aspectos para agrupar los datos recibidos en una ventana fija de dos minutos. Al leer los datos, indicaremos que queremos obtener el *timestamp* de cada dato:
 
-``` python hl_lines="11"
+``` python hl_lines="13"
 from pyspark.sql import SparkSession
 spark = SparkSession.builder \
-        .appName("Streaming Window IABD WordCount") \
+        .appName("Ventana fija IABD WordCount") \
         .master("local[2]") \
         .config("spark.streaming.stopGracefullyOnShutdown", "true") \
         .config("spark.sql.shuffle.partitions", 3) \
@@ -52,7 +53,7 @@ dfLineas = spark.readStream \
     .load()
 ```
 
-Si obtenemos el esquema de los datos que leemos, ahora tendremos el campo `value` con el texto leído, y el campo `timestamp` con la marca de tiempo:
+Si obtenemos el esquema de los datos que leemos ahora tendremos el campo `value` con el texto leído, y el campo `timestamp` con la marca de tiempo:
 
 ``` python
 dfLineas.printSchema()
@@ -427,7 +428,7 @@ Y tras volver a poner `readStream` y arrancarlo, obtenemos:
 
 Estos datos se parecen a la información que queríamos, pero únicamente esta sumando los datos de cada ventana, sin acumularlos con todos los datos anteriores. A día de hoy, la única forma de sumar todos los datos agregados es utilizar las [funciones ventana](../hadoop/06hive.md#consultas-de-agregación) (similares a las que vimos al trabajar con *Hive*) dentro de un proceso *batch*.
 
-Así pues, vamos a almacenar los datos en un fichero en formato Parquet, para que luego desde un proceso Batch realizar los cálculos que nos faltan. Pero antes necesitamos introducir el concepto de marca de agua.
+Así pues, vamos a almacenar los datos en un fichero en formato *Parquet*, para que luego desde un proceso Batch realizar los cálculos que nos faltan. Pero antes necesitamos introducir el concepto de marca de agua.
 
 ## Watermarking
 
@@ -460,11 +461,12 @@ windowedCounts = dfPalabras \
 
 De esta manera, si llega una palabra con un retraso de más de 30 minutos, se desechará. Además, el estado de la ventana se limpiará cuando pasen esos 30 minutos, de manera que su tamaño siempre estará limitado por el *timestamp* de los datos recibidos en los última media hora.
 
-Si utilizamos marcas de agua para limitar el estado de la ventana, es importante tener en cuenta que si el modo de salida es completo, no se limpiará el estado, es decir, es como si no utilizásemos marcas de agua.
+!!! caution "Marcas de agua y modo de salida completo"
+    Si utilizamos marcas de agua para limitar el estado de la ventana, es importante tener en cuenta que si el modo de salida es completo, no se limpiará el estado, es decir, es como si no utilizásemos marcas de agua.
 
 ### Modo *update*
 
-En cambio, mediante el modo *update* sí que se limpia la ventana de estado, realizando operaciones de tipo *upsert*, por ejemplo con un *sink* que sí soporte las modificaciones, como cualquiera base de datos. Aunque hay que tener cuidado si nuestro *sink* es de tipo fichero, ya que no puede modificar los ficheros JSON/Parquet y creará archivos duplicados.
+En cambio, mediante el modo *update* sí que se limpia la ventana de estado, realizando operaciones de tipo *upsert*, por ejemplo con un *sink* que sí soporte las modificaciones, como cualquiera base de datos. Aunque hay que tener cuidado si nuestro *sink* es de tipo fichero, ya que no puede modificar los ficheros JSON/*Parquet* y creará archivos duplicados.
 
 Veamos un ejemplo donde definimos una marca de agua de 10 minutos sobre una ventana también de 10 minutos sobre la columna *timestamp* con *triggers* cada 5 minutos:
 
@@ -503,7 +505,7 @@ Si retomamos el mismo ejemplo de antes, pero ahora con el modo *append*, y nos f
 
 ## Caso 7: Bolsa II
 
-Ahora que ya hemos visto el concepto de marca de agua, podemos crear un marco para que los valores que lleguen tarde se descarten y poder almacenar la información en fichero en formato Parquet con el modo de salida *append*.
+Ahora que ya hemos visto el concepto de marca de agua, podemos crear un marco para que los valores que lleguen tarde se descarten y poder almacenar la información en fichero en formato *Parquet* con el modo de salida *append*.
 
 Así pues, cuando agrupamos los datos, vamos a definir una marca de agua de 30 minutos:
 
@@ -525,7 +527,7 @@ bolsaWriterQuery = salidaDF.writeStream \
     .queryName("BolsaWQuery") \
     .outputMode("append") \
     .option("path", "salida") \
-    .option("checkpointLocation", "chk-point-dir") \
+    .option("checkpointLocation", "chk-point-dir-caso7") \
     .trigger(processingTime="1 minute") \
     .start()
 ```
@@ -554,7 +556,7 @@ rawBolsaDF.show()
 # +-------------------+-------------------+-------+------+
 ```
 
-Ahora ya podemos hacer uso de las funciones ventanas, y calcular el total acumulado:
+Ahora ya podemos hacer uso de las [funciones ventana](https://spark.apache.org/docs/latest/sql-ref-syntax-qry-select-window.html), y calcular el total acumulado:
 
 ``` python
 from pyspark.sql import Window
@@ -581,7 +583,7 @@ salidaDF.show(truncate=False)
 
 Aunque *Spark Streaming* asegura la fiabilidad de los datos mediante la entrega de mensajes *exactly-one*, es posible que desde nuestras fuentes de datos nos envíen un dato más de una vez (por problemas con la red o fallos de transmisión).
 
-Dentro de *Structured Streaming* podemos gestionar los datos duplicados tanto con marcas de agua como sin ellas. Debes tener en cuenta que si no utilizamos *watermarking*, el estado de *Spark* necesite almacenar de manera ilimitada todos los datos, lo que puede llevar a un problema de falta de memoria.
+Dentro de *Structured Streaming* podemos gestionar los datos duplicados tanto con marcas de agua como sin ellas. Debes tener en cuenta que si no utilizamos *watermarking*, el estado de *Spark* necesita almacenar de manera ilimitada todos los datos, lo que puede llevar a un problema de falta de memoria.
 
 Para evitar los registros duplicados, los diferentes eventos deberían tener un identificador único y pasárselo como parámetro al método [`dropDuplicates`](https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/api/pyspark.sql.DataFrame.dropDuplicates.html):
 
@@ -600,14 +602,13 @@ streamingDF \
 !!! info "Procesamiento con estado ([*Stateful operations*](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#arbitrary-stateful-operations))"
     Si necesitamos realizar operaciones avanzadas que requieren realizar un seguimiento sobre diferentes eventos dentro de una misma sesión (por ejemplo, ver si ha llegado más de 3 veces una temperatura superior a X grados), podemos utilizar las funciones `mapGroupWithState` y `flatMapGroupsWithState` (solo disponibles a día de hoy mediante *Java* y *Scala*), que permiten definir una función de usuario a aplicar sobre el estado.
 
-
 ## Joins en streaming
 
 Una de las cosas más *curiosas* que podemos hacer con un *DataFrame* en *streaming* es realizar un [*join*](https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html#join-operations) con otro *DataFrame* estático u otro en *streaming*, es decir, con datos que todavía no existen.
 
 Realizar un *join* es una operación compleja y la parte divertida es que no todos los datos están disponibles en el momento de realizar el *join*, por lo tanto su resultado se genera de forma incremental tras cada *trigger*, de forma similar a como se generan las agregaciones.
 
-Unir un stream con un DataFrame estático es una operación sin estado, ya que Spark no necesita mantener el estado y sólo está uniendo los datos de un único micro-batch.
+Unir un *stream* con un *DataFrame* estático es una operación sin estado, ya que *Spark* no necesita mantener el estado y sólo está uniendo los datos de un único *micro-batch*.
 
 ``` python
 estaticoDF = spark.read. ...
@@ -616,9 +617,9 @@ streamingDF.join(estaticoDF, "claveAjena")  # inner join entre streaming y está
 streamingDF.join(estaticoDF, "claveAjena", "left_outer")  # left outer join con estático
 ```
 
-En cambio, unir dos *DataFrames* en streaming sí que es una operación con estado, ya que Spark necesita almacenar los datos de ambos en el almacenamiento del estado y comprobar continuamente si hay relación entre los nuevos datos que llegan en cada micro-batch. Dado que los *DataFrames* en stream no tienen un final definido, *Spark Structured Streaming* debe mantener todos los datos recogidos de ambos *DataFrames* de un *join*, ya que pueden llegar futuros datos que sí cumplan la relación. Para evitar que el estado se quede sin memoria disponible, podemos utilizar marcas de agua en ambos *DataFrames* e incluir una restricción basada en el tiempo de evento definido en la condición de *join*.
+En cambio, unir dos *DataFrames* en *streaming* sí que es una operación con estado, ya que *Spark* necesita almacenar los datos de ambos en el almacenamiento del estado y comprobar continuamente si hay relación entre los nuevos datos que llegan en cada *micro-batch*. Dado que los *DataFrames* en *stream* no tienen un final definido, *Spark Structured Streaming* debe mantener todos los datos recogidos de ambos *DataFrames* de un *join*, ya que pueden llegar futuros datos que sí cumplan la relación. Para evitar que el estado se quede sin memoria disponible, podemos utilizar marcas de agua en ambos *DataFrames* e incluir una restricción basada en el tiempo de evento definido en la condición de *join*.
 
-Supongamos que queremos unir un flujo de impresiones de anuncios (cuando se muestra un anuncio) con otro flujo de los clicks que los usuarios realizan sobre los anuncios para correlacionarlos y monetizar los clicks:
+Supongamos que queremos unir un flujo de impresiones de anuncios (cuando se muestra un anuncio) con otro flujo de los *clicks* que los usuarios realizan sobre los anuncios para correlacionarlos y monetizar los *clicks*:
 
 ``` python
 from pyspark.sql.functions import expr
@@ -787,7 +788,7 @@ resultadoDF = joinDF.select(col("id"), col("nombre"), col("login_time"), col("ul
 queryWriter = resultadoDF.writeStream \
     .format("console") \
     .outputMode("update") \
-    .option("checkpointLocation", "chk-point-dir") \
+    .option("checkpointLocation", "chk-point-dir-caso8") \
     .trigger(processingTime="1 minute") \
     .start()
 
@@ -867,12 +868,75 @@ queryWriter.awaitTermination()
 
 ## Actividades
 
-1. Realiza el caso de uso 5, tanto con ventanas fijas como deslizantes.
-2. Realiza los casos de uso que trabajan los conceptos de ventanas y *watermarking*, es decir, los casos de uso 6 y 7.
-3. Realiza el caso de uso 8. Además, modifícalo para crear una ventana temporal de 15 minutos y envía nuevos datos de usuarios que entran al sistema que provoquen la limpieza del estado.
+En las siguientes actividades, además de los cuadernos de *Jupyter* con la solución a cada ejercicio, adjunta capturas de pantalla de las salida generadas.
 
-<!--
+1. (RA5074.1 / CE4.1d / 1p) Realiza el caso de uso 5, tanto con ventanas fijas como mediante ventanas deslizantes, pero con un tamaño de ventana fijo de tres minutos y con un deslizamiento de dos minutos. Justifica la cantidad de ventanas que aparecen.
+2. (RA5074.1 / CE4.1d / 2p) A partir del *script* `bizum-kafka.py` el cual envía datos de *Bizums* a *Kafka* al topic `iabd-bizum` con una periodicidad aleatoria, calcula la cantidad media recibida, la mayor y la menor, así como la cantidad de eventos recibidos con una ventana temporal de 3 minutos con una marca de agua de 30 segundos.
 
-Darle la vuelta a algún ejercicio más parecido a un caso real
-Podemos coger el de Bizum, y envíar datos tardíos.
--->
+    En un principio muestra el resultado por consola y a continuación, almacena el resultado en *MongoDB* en modo *update* (puedes consultar los apuntes de la sesión de [Spark y bases de datos](02catalog.md#mongo-spark-connector) para ver cómo almacenar un *DataFrame* en *MongoDB*). Adjunta capturas de los mensajes que llegan al *topic* (puedes utilizar un consumidor de *Kafka* mediante el terminal), así como el resultado de una consulta sobre la colección en *MongoDB* donde se almacenan los datos.
+
+    Se adjunta el código del script:
+
+    ``` python title="bizum-kafka.py"
+    from faker import Faker
+    import time
+    from random import randint
+    from datetime import date, datetime, timedelta
+    from kafka import KafkaProducer
+    from json import dumps
+
+    fake = Faker('es_ES')
+    today = str(date.today())
+    i=0
+
+    producer = KafkaProducer(
+        value_serializer=lambda m: dumps(m, default=str).encode('utf-8'),
+        bootstrap_servers=['iabd-virtualbox:9092'])
+
+    while True:
+
+        datos={}
+        datos['records']=[]
+        cant_bizums = randint(1,5)
+
+        for x in range(cant_bizums):
+            # datos de un bizum
+            seg_random = randint(1,59)
+
+            data = {
+                "timestamp": datetime.now() + timedelta(seconds=seg_random),
+                "nombre":fake.name(),
+                "cantidad":fake.random_int(min=15, max=600, step=1),
+                "concepto":fake.sentence(nb_words=3)
+            }
+
+            producer.send("iabd-bizum", value=data)
+
+
+        producer.flush()
+        i = i + 1
+        time.sleep(10) # 10 segundos   
+    ```
+
+    Y un ejemplo de los mensajes recibidos en *Kafka*:
+
+    ``` json
+    {"timestamp": "2023-03-29 09:45:28.714978", "nombre": "Sandalio Casas Mendez", "cantidad": 43, "concepto": "Tempora quae suscipit."}
+    {"timestamp": "2023-03-29 09:46:15.715211", "nombre": "Eva Lucena Arribas", "cantidad": 567, "concepto": "Dicta."}
+    {"timestamp": "2023-03-29 09:45:35.738855", "nombre": "Pedro de Aranda", "cantidad": 353, "concepto": "Aperiam amet deserunt."}
+    {"timestamp": "2023-03-29 09:45:56.739494", "nombre": "Alex del Acevedo", "cantidad": 304, "concepto": "Itaque ipsa."}
+    {"timestamp": "2023-03-29 09:46:17.758687", "nombre": "Nuria Alonso Vidal", "cantidad": 119, "concepto": "Aspernatur."}
+    {"timestamp": "2023-03-29 09:45:44.759399", "nombre": "Leonel Bou Sanz", "cantidad": 355, "concepto": "Eligendi voluptas a."}
+    ```
+
+    Recuerda que debes arrancar *Spark* con los paquetes de *Kafka* y *MongoDB*:
+
+    ``` bash
+    pyspark --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1,org.mongodb.spark:mongo-spark-connector_2.12:10.1.1 
+    ```
+
+3. (RA5074.1 / CE4.1d / 1p) Realiza el caso de uso 8. Además, modifícalo para crear una ventana temporal de 15 minutos y envía nuevos datos de usuarios que entren al sistema que provoquen la limpieza del estado.
+
+*[RA5074.1]: Aplica técnicas de análisis de datos que integran, procesan y analizan la información, adaptando e implementando sistemas que las utilicen.
+*[CE4.1b]: Se ha extraído de forma automática información y conocimiento a partir de grandes volúmenes de datos.
+*[CE4.1d]: Se ha construido un conjunto de datos complejos y se han relacionado entre sí.
