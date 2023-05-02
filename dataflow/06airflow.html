@@ -2224,6 +2224,30 @@ Es decir, si planificar un DAG con hoy como valor de <code>start_date</code> y e
 </code></pre></div>
 <h3 id="uso-de-xcom">Uso de XCOM<a class="headerlink" href="#uso-de-xcom" title="Permanent link">&para;</a></h3>
 <p>Vamos a suponer que la primera tarea define el nombre con el que almacenar el archivo en S3. Para ello, necesitamos que se pasen datos de una tarea a otra. Como ya habíamos comentado, hemos de emplear XCOM.</p>
+<p>Para ello, necesitamos pasar una instancia de tareas (<em>task instance</em>) como parámetro a la función llamándola <code>ti</code> y luego utilizar <code>xcom_push</code> para guardar una clave/valor:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">def</span> <span class="nf">consultaMariaDBHookXCom</span><span class="p">(</span><span class="n">ti</span><span class="p">):</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="n">mysql_hook</span> <span class="o">=</span> <span class="n">MySqlHook</span><span class="p">(</span><span class="n">mysql_conn_id</span><span class="o">=</span><span class="s1">&#39;MySQLid&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="n">conn</span> <span class="o">=</span> <span class="n">mysql_hook</span><span class="o">.</span><span class="n">get_conn</span><span class="p">()</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select customer_fname, customer_lname, customer_zipcode from customers&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;/tmp/customers.parquet&#39;</span>
+<span class="hll"><span class="linenos" data-linenos="6 "></span>    <span class="n">ti</span><span class="o">.</span><span class="n">xcom_push</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+</span><span class="linenos" data-linenos="7 "></span>    <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="linenos" data-linenos="8 "></span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------Datos creados------&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Del mismo modo, en el segundo operador, volvemos a definir <code>ti</code> como parámetro de la función y recuperamos el valor mediante <code>xcom_pull</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">def</span> <span class="nf">envioS3HookXCom</span><span class="p">(</span><span class="n">ti</span><span class="p">):</span>
+<span class="linenos" data-linenos="2 "></span>    <span class="n">s3_hook</span> <span class="o">=</span> <span class="n">S3Hook</span><span class="p">(</span><span class="n">aws_conn_id</span><span class="o">=</span><span class="s1">&#39;AWSid&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="3 "></span>    <span class="n">s3_hook</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span>
+<span class="hll"><span class="linenos" data-linenos="4 "></span>        <span class="n">filename</span><span class="o">=</span><span class="n">ti</span><span class="o">.</span><span class="n">xcom_pull</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="n">task_ids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;QueryMariaDB&#39;</span><span class="p">]),</span>
+</span><span class="linenos" data-linenos="5 "></span>        <span class="n">key</span><span class="o">=</span><span class="s1">&#39;customers.parquet&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="6 "></span>        <span class="n">bucket_name</span><span class="o">=</span><span class="s1">&#39;iabd-s8a&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="7 "></span>        <span class="n">replace</span><span class="o">=</span><span class="kc">True</span>
+<span class="linenos" data-linenos="8 "></span>    <span class="p">)</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Devolviendo valores</p>
+<p>Si nuestras funciones de <em>Python</em> hacen un <code>return</code> de un valor, realmente está almacenándolo en un <em>XCom</em> cuya clave es <code>return_value</code>.</p>
+</div>
 <!--
 ### Limpiando los datos
 
@@ -2258,12 +2282,59 @@ limpiarDatos >> S3limpio
 <h2 id="actividades">Actividades<a class="headerlink" href="#actividades" title="Permanent link">&para;</a></h2>
 <ol>
 <li>(<abbr title="Gestiona sistemas de almacenamiento y el amplio ecosistema alrededor de ellos facilitando el procesamiento de grandes cantidades de datos sin fallos y de forma rápida.">RA5075.2</abbr> / <abbr title="Se ha probado la tolerancia a fallos de los sistemas.">CE5.2c</abbr> / 1p) Realiza el caso de uso 1 y prueba el DAG tanto a nivel de interfaz web como mediante el CLI.</li>
-<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr> y <abbr title="Se ha comprobado que las herramientas usadas ofrecen un rendimiento elevado con rapidez.">CE5.4d</abbr> / 1p) Realiza el caso de uso 2.</li>
-<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr> y <abbr title="Se ha comprobado la fiabilidad de los datos según respuestas.">CE5.4e</abbr> / 2p) Realiza el caso de uso 3.</li>
 </ol>
-<p>Si quieres probar, en vez de realizar los ejecicios guiados 2 y 3, puedes realizar la siguiente actividad que conlleva más investigación:</p>
-<ol start="4">
-<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr>, <abbr title="Se ha comprobado que las herramientas usadas ofrecen un rendimiento elevado con rapidez.">CE5.4d</abbr> y <abbr title="Se ha comprobado la fiabilidad de los datos según respuestas.">CE5.4e</abbr> / 3p) Realiza el <a href="05nifi2.html#caso-7-de-aemet-a-mongodb-y-s3">caso de uso 7 de la sesión de <em>Nifi</em></a> donde leemos datos de AEMET y terminamos guardando los datos en S3.</li>
+<p>Si quieres probar, en vez de realizar los ejecicios guiados 2 y 3, puedes realizar la actividad 4 que conlleva más investigación:</p>
+<ol start="2">
+<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr> y <abbr title="Se ha comprobado que las herramientas usadas ofrecen un rendimiento elevado con rapidez.">CE5.4d</abbr> / 1p) Realiza el caso de uso 2.</li>
+<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr> y <abbr title="Se ha comprobado la fiabilidad de los datos según respuestas.">CE5.4e</abbr> / 1p) Realiza el caso de uso 3.</li>
+<li>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr>, <abbr title="Se ha comprobado que las herramientas usadas ofrecen un rendimiento elevado con rapidez.">CE5.4d</abbr> y <abbr title="Se ha comprobado la fiabilidad de los datos según respuestas.">CE5.4e</abbr> / 2p) Realiza el <a href="05nifi2.html#caso-7-de-aemet-a-mongodb-y-s3">caso de uso 7 de la sesión de <em>Nifi</em></a> donde leemos datos de AEMET y terminamos guardando los datos en S3.</li>
+</ol>
+<p>Para la siguiente actividad, copia el código y añade comentarios explicando qué hace cada fragmento.</p>
+<ol start="5">
+<li>
+<p>(<abbr title="Realiza el seguimiento de la monitorización de un sistema, asegurando la fiabilidad y estabilidad de los servicios que se proveen">RA5075.4</abbr> / <abbr title="Se han aplicado herramientas de monitorización eficiente de los recursos.">CE5.4a</abbr> y <abbr title="Se ha comprobado la fiabilidad de los datos según respuestas.">CE5.4e</abbr> / 1p) Explica que realiza el siguiente DAG:</p>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos=" 1 "></span><span class="kn">from</span> <span class="nn">airflow</span> <span class="kn">import</span> <span class="n">DAG</span>
+<span class="linenos" data-linenos=" 2 "></span><span class="kn">from</span> <span class="nn">airflow.operators.bash</span> <span class="kn">import</span> <span class="n">BashOperator</span>
+<span class="linenos" data-linenos=" 3 "></span><span class="kn">from</span> <span class="nn">airflow.operators.python</span> <span class="kn">import</span> <span class="n">PythonOperator</span>
+<span class="linenos" data-linenos=" 4 "></span>
+<span class="linenos" data-linenos=" 5 "></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">uniform</span>
+<span class="linenos" data-linenos=" 6 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="linenos" data-linenos=" 7 "></span>
+<span class="linenos" data-linenos=" 8 "></span><span class="n">default_args</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos=" 9 "></span>    <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos" data-linenos="10 "></span><span class="p">}</span>
+<span class="linenos" data-linenos="11 "></span>
+<span class="linenos" data-linenos="12 "></span><span class="k">def</span> <span class="nf">_training_model</span><span class="p">(</span><span class="n">ti</span><span class="p">):</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+<span class="linenos" data-linenos="14 "></span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;model</span><span class="se">\&#39;</span><span class="s1">s accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="15 "></span>    <span class="n">ti</span><span class="o">.</span><span class="n">xcom_push</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;model_accuracy&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
+<span class="linenos" data-linenos="16 "></span>
+<span class="linenos" data-linenos="17 "></span><span class="k">def</span> <span class="nf">_choose_best_model</span><span class="p">(</span><span class="n">ti</span><span class="p">):</span>
+<span class="linenos" data-linenos="18 "></span>    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;choose best model&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="19 "></span>    <span class="n">accuracies</span> <span class="o">=</span> <span class="n">ti</span><span class="o">.</span><span class="n">xcom_pull</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="s1">&#39;model_accuracy&#39;</span><span class="p">,</span> <span class="n">task_ids</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;training_model_A&#39;</span><span class="p">,</span> <span class="s1">&#39;training_model_B&#39;</span><span class="p">,</span> <span class="s1">&#39;training_model_C&#39;</span><span class="p">])</span>
+<span class="linenos" data-linenos="20 "></span>    <span class="nb">print</span><span class="p">(</span><span class="n">accuracies</span><span class="p">)</span>
+<span class="linenos" data-linenos="21 "></span>
+<span class="linenos" data-linenos="22 "></span><span class="k">with</span> <span class="n">DAG</span><span class="p">(</span><span class="s1">&#39;xcom_dag&#39;</span><span class="p">,</span> <span class="n">schedule_interval</span><span class="o">=</span><span class="s1">&#39;@daily&#39;</span><span class="p">,</span> <span class="n">default_args</span><span class="o">=</span><span class="n">default_args</span><span class="p">,</span> <span class="n">catchup</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">dag</span><span class="p">:</span>
+<span class="linenos" data-linenos="23 "></span>    <span class="n">downloading_data</span> <span class="o">=</span> <span class="n">BashOperator</span><span class="p">(</span>
+<span class="linenos" data-linenos="24 "></span>        <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;downloading_data&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="25 "></span>        <span class="n">bash_command</span><span class="o">=</span><span class="s1">&#39;sleep 3&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="26 "></span>        <span class="n">do_xcom_push</span><span class="o">=</span><span class="kc">False</span>
+<span class="linenos" data-linenos="27 "></span>    <span class="p">)</span>
+<span class="linenos" data-linenos="28 "></span>
+<span class="linenos" data-linenos="29 "></span>    <span class="n">training_model_task</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos" data-linenos="30 "></span>        <span class="n">PythonOperator</span><span class="p">(</span>
+<span class="linenos" data-linenos="31 "></span>            <span class="n">task_id</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;training_model_</span><span class="si">{</span><span class="n">task</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="32 "></span>            <span class="n">python_callable</span><span class="o">=</span><span class="n">_training_model</span>
+<span class="linenos" data-linenos="33 "></span>        <span class="p">)</span> <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]]</span>
+<span class="linenos" data-linenos="34 "></span>
+<span class="linenos" data-linenos="35 "></span>    <span class="n">choose_model</span> <span class="o">=</span> <span class="n">PythonOperator</span><span class="p">(</span>
+<span class="linenos" data-linenos="36 "></span>        <span class="n">task_id</span><span class="o">=</span><span class="s1">&#39;choose_model&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="37 "></span>        <span class="n">python_callable</span><span class="o">=</span><span class="n">_choose_best_model</span>
+<span class="linenos" data-linenos="38 "></span>    <span class="p">)</span>
+<span class="linenos" data-linenos="39 "></span>
+<span class="linenos" data-linenos="40 "></span>    <span class="n">downloading_data</span> <span class="o">&gt;&gt;</span> <span class="n">training_model_task</span> <span class="o">&gt;&gt;</span> <span class="n">choose_model</span>
+</code></pre></div>
+</li>
 </ol>
 
 
