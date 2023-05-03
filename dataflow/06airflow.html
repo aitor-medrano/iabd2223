@@ -1917,8 +1917,7 @@ Así pues, el valor <code>@yearly</code> es similar a <code>0 0 1 1 *</code>, ya
 <span class="linenos" data-linenos="4 "></span>Francisco Javier Palacio-Carbó,43,Rambla de Dora Ángel 7,Sevilla,Valladolid,09521,-68.691636,-30.530751
 <span class="linenos" data-linenos="5 "></span>...
 </code></pre></div>
-<p>FIXME: crear carpetas en la máquina virtual dags y data</p>
-<p>Antes de crear nuestro primer DAG, vamos a crear la función para leer el archivo CSV y pasarlo a JSON haciendo uso de <em>Pandas</em> (las rutas pueden variar entre la máquina virtual y Dropbox):</p>
+<p>Antes de crear nuestro primer DAG, vamos a crear la función para leer el archivo CSV y pasarlo a JSON haciendo uso de <em>Pandas</em> (las rutas pueden variar entre la máquina virtual y Dropbox). Para ello, crea el siguiente script dentro de la carpeta <code>/opt/airflow-2.5.0/dags</code> y coloca los datos en <code>/opt/airflow-2.5.0/data</code> (si es la primera vez, es probable que tengas que crear dichas carpetas en la máquina virtual):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="linenos" data-linenos="2 "></span>
 <span class="linenos" data-linenos="3 "></span><span class="k">def</span> <span class="nf">csvToJson</span><span class="p">():</span>
