@@ -1799,7 +1799,7 @@ Así pues, el valor <code>@yearly</code> es similar a <code>0 0 1 1 *</code>, ya
 <li>Utilizar el API <em>TaskFlow</em> que automáticamente pasa los datos entre tareas implícitamente mediante <em>XComs</em>.</li>
 </ul>
 <h2 id="puesta-en-marcha">Puesta en marcha<a class="headerlink" href="#puesta-en-marcha" title="Permanent link">&para;</a></h2>
-<p>En nuestra máquina virtual ya tenemos instalada la versión 2.5 de <em>Apache Airflow</em>, la cual hemos instalado mediante <code>pip</code> en <code>/opt/airflow-2.5</code>. Puedes encontrar más información sobre su instalación en la <a href="https://airflow.apache.org/docs/apache-airflow/stable/installation/installing-from-pypi.html">documentación oficial</a>.</p>
+<p>En nuestra máquina virtual ya tenemos instalada la versión 2.5 de <em>Apache Airflow</em>, la cual hemos instalado mediante <code>pip</code> en <code>/opt/airflow-2.5.0</code>. Puedes encontrar más información sobre su instalación en la <a href="https://airflow.apache.org/docs/apache-airflow/stable/installation/installing-from-pypi.html">documentación oficial</a>.</p>
 <p>Para arrancarlo, ejecutaremos en dos terminales diferentes los comandos para arrancar tanto el servidor web como el planificador:</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span>airflow<span class="w"> </span>webserver
 <span class="linenos" data-linenos="2 "></span>airflow<span class="w"> </span>scheduler
@@ -1917,26 +1917,31 @@ Así pues, el valor <code>@yearly</code> es similar a <code>0 0 1 1 *</code>, ya
 <span class="linenos" data-linenos="4 "></span>Francisco Javier Palacio-Carbó,43,Rambla de Dora Ángel 7,Sevilla,Valladolid,09521,-68.691636,-30.530751
 <span class="linenos" data-linenos="5 "></span>...
 </code></pre></div>
+<p>FIXME: crear carpetas en la máquina virtual dags y data</p>
 <p>Antes de crear nuestro primer DAG, vamos a crear la función para leer el archivo CSV y pasarlo a JSON haciendo uso de <em>Pandas</em> (las rutas pueden variar entre la máquina virtual y Dropbox):</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="linenos" data-linenos="2 "></span>
 <span class="linenos" data-linenos="3 "></span><span class="k">def</span> <span class="nf">csvToJson</span><span class="p">():</span>
-<span class="linenos" data-linenos="4 "></span>    <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/opt/airflow-2.5/data/datos-faker.csv&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="4 "></span>    <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;/opt/airflow-2.5.0/data/datos-faker.csv&#39;</span><span class="p">)</span>
 <span class="linenos" data-linenos="5 "></span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">r</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
 <span class="linenos" data-linenos="6 "></span>        <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;nombre&#39;</span><span class="p">])</span>
-<span class="linenos" data-linenos="7 "></span>    <span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;/opt/airflow-2.5/data/datos-airflow.json&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="7 "></span>    <span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;/opt/airflow-2.5.0/data/datos-airflow.json&#39;</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="definicion-del-dag">Definición del DAG<a class="headerlink" href="#definicion-del-dag" title="Permanent link">&para;</a></h3>
 <p>A continuación vamos a definir un diccionario con las propiedades del DAG, como son el propietario, fecha de inicio, cantidad de reintentos y retraso entre cada reintento:</p>
-<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="n">default_args</span> <span class="o">=</span> <span class="p">{</span>
-<span class="linenos" data-linenos="2 "></span>    <span class="s1">&#39;owner&#39;</span><span class="p">:</span> <span class="s1">&#39;aitor-medrano&#39;</span><span class="p">,</span>
-<span class="linenos" data-linenos="3 "></span>    <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
-<span class="linenos" data-linenos="4 "></span>    <span class="s1">&#39;retries&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-<span class="linenos" data-linenos="5 "></span>    <span class="s1">&#39;retry_delay&#39;</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
-<span class="linenos" data-linenos="6 "></span><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
+<span class="linenos" data-linenos="2 "></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<span class="linenos" data-linenos="3 "></span>
+<span class="linenos" data-linenos="4 "></span><span class="n">default_args</span> <span class="o">=</span> <span class="p">{</span>
+<span class="linenos" data-linenos="5 "></span>    <span class="s1">&#39;owner&#39;</span><span class="p">:</span> <span class="s1">&#39;aitor-medrano&#39;</span><span class="p">,</span>
+<span class="linenos" data-linenos="6 "></span>    <span class="s1">&#39;start_date&#39;</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span>
+<span class="linenos" data-linenos="7 "></span>    <span class="s1">&#39;retries&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="linenos" data-linenos="8 "></span>    <span class="s1">&#39;retry_delay&#39;</span><span class="p">:</span> <span class="n">dt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+<span class="linenos" data-linenos="9 "></span><span class="p">}</span>
 </code></pre></div>
 <p>A continuación definimos propiamente el DAG con sus tareas. Para ello, creamos un objeto <a href="https://airflow.apache.org/docs/apache-airflow/stable/_api/airflow/models/dag/index.html#airflow.models.dag.DAG"><code>DAG</code></a> donde vamos a definir su identificador, pasarle el diccionario que acabamos de crear y configurar su planificación.</p>
 <p>Para configurar la planificación completaremos el atributo <code>schedule_interval</code>, ya sea mediante <a href="https://docs.python.org/3/library/datetime.html#datetime.timedelta"><code>timedelta</code></a> para definir su periodicidad o haciendo uso de expresiones <em>crontab</em>:</p>
+<p>FIXME: poner imports</p>
 <div class="highlight"><pre><span></span><code><span class="linenos" data-linenos="1 "></span><span class="k">with</span> <span class="n">DAG</span><span class="p">(</span><span class="s1">&#39;HolaAirflow-CSV&#39;</span><span class="p">,</span>
 <span class="linenos" data-linenos="2 "></span>         <span class="n">default_args</span><span class="o">=</span><span class="n">default_args</span><span class="p">,</span>
 <span class="linenos" data-linenos="3 "></span>         <span class="n">schedule_interval</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>      <span class="c1"># &#39;0 * * * *&#39;,</span>
@@ -1967,7 +1972,7 @@ Es decir, si planificar un DAG con hoy como valor de <code>start_date</code> y e
 <p>Independientemente de la forma que te guste más, siempre debes utilizar la misma y ser consistente. En mi caso, utilizaré siempre el operador de desplazamiento de bits a la derecha (<code>&gt;&gt;</code>)</p>
 </div>
 <h3 id="ejecucion">Ejecución<a class="headerlink" href="#ejecucion" title="Permanent link">&para;</a></h3>
-<p>Una vez tenemos todo el archivo codificado (en mi caso lo he llamado <a href="resources/airflow/01csv2json.py">01csv2json.py</a>) lo colocaremos en la carpeta <code>/opt/airflow-2.5/dags</code> (la cual está configurada mediante la propiedad <code>dags_folder</code>).</p>
+<p>Una vez tenemos todo el archivo codificado (en mi caso lo he llamado <a href="resources/airflow/01csv2json.py">01csv2json.py</a>) lo colocaremos en la carpeta <code>/opt/airflow-2.5.0/dags</code> (la cual está configurada mediante la propiedad <code>dags_folder</code>).</p>
 <p>Si ahora arrancamos <em>airflow</em> podremos ver como aparece el DAG y podemos ejecutarlo y ver su estado:</p>
 <figure style="align: center">
     <img alt="Ejecución de HolaAirflow.CSV" src="images/06airflow-csv2json.gif">
@@ -2078,7 +2083,7 @@ Es decir, si planificar un DAG con hoy como valor de <code>start_date</code> y e
 <span class="linenos" data-linenos="10 "></span>        <span class="n">database</span><span class="o">=</span><span class="s2">&quot;retail_db&quot;</span>
 <span class="linenos" data-linenos="11 "></span>    <span class="p">)</span>    
 <span class="linenos" data-linenos="12 "></span>    <span class="n">df</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select customer_fname, customer_lname, customer_zipcode from customers&quot;</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
-<span class="linenos" data-linenos="13 "></span>    <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;customers.parquet&#39;</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="s1">&#39;/tmp/customers.parquet&#39;</span><span class="p">)</span>
 <span class="linenos" data-linenos="14 "></span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------Datos creados------&quot;</span><span class="p">)</span>
 </code></pre></div>
 <div class="admonition warning">
@@ -2218,9 +2223,9 @@ Es decir, si planificar un DAG con hoy como valor de <code>start_date</code> y e
 <span class="linenos" data-linenos="10 "></span><span class="k">def</span> <span class="nf">consultaMariaDBHookParam</span><span class="p">(</span><span class="o">**</span><span class="n">context</span><span class="p">):</span>
 <span class="linenos" data-linenos="11 "></span>    <span class="n">mysql_hook</span> <span class="o">=</span> <span class="n">MySqlHook</span><span class="p">(</span><span class="n">mysql_conn_id</span><span class="o">=</span><span class="s1">&#39;MySQLid&#39;</span><span class="p">)</span>
 <span class="linenos" data-linenos="12 "></span>    <span class="n">conn</span> <span class="o">=</span> <span class="n">mysql_hook</span><span class="o">.</span><span class="n">get_conn</span><span class="p">()</span>
-<span class="hll"><span class="linenos" data-linenos="13 "></span>    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select customer_fname, customer_lname, customer_zipcode from customers&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
-</span><span class="linenos" data-linenos="14 "></span>    <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">][</span><span class="s2">&quot;customers_parquet_filename_param&quot;</span><span class="p">])</span>
-<span class="linenos" data-linenos="15 "></span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------Datos creados------&quot;</span><span class="p">)</span>
+<span class="linenos" data-linenos="13 "></span>    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select customer_fname, customer_lname, customer_zipcode from customers&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="hll"><span class="linenos" data-linenos="14 "></span>    <span class="n">df</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">context</span><span class="p">[</span><span class="s2">&quot;params&quot;</span><span class="p">][</span><span class="s2">&quot;customers_parquet_filename_param&quot;</span><span class="p">])</span>
+</span><span class="linenos" data-linenos="15 "></span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------Datos creados------&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="uso-de-xcom">Uso de XCOM<a class="headerlink" href="#uso-de-xcom" title="Permanent link">&para;</a></h3>
 <p>Vamos a suponer que la primera tarea define el nombre con el que almacenar el archivo en S3. Para ello, necesitamos que se pasen datos de una tarea a otra. Como ya habíamos comentado, hemos de emplear XCOM.</p>
