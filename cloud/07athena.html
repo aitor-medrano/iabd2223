@@ -1492,29 +1492,12 @@
 
 
 <h1 id="aws-athena">AWS Athena<a class="headerlink" href="#aws-athena" title="Permanent link">&para;</a></h1>
+<div class="admonition danger">
+<p class="admonition-title">Apuntes sin actualizar</p>
+<p>Estos apuntes pertenecen al curso 22/23 y, por lo tanto, ya no se actualizan.</p>
+<p>Puedes acceder a la última versión de esta sesión en <a href="https://aitor-medrano.github.io/iabd/cloud/athena.html">https://aitor-medrano.github.io/iabd/cloud/athena.html</a>.</p>
+</div>
 <p><a href="https://aws.amazon.com/es/athena">Athena</a> es una herramienta <em>serverless</em> que permite realizar consultas sobre datos los cuales están directamente en S3 y que provienen de fuentes dispares como bases de datos, un flujo de datos, contenido web desestructurado, etc.. Athena almacena metadatos sobre las fuentes de datos, así como las consultas para poder reutilizarlas o compartirlas con otros usuarios.</p>
-<!--
-Amazon Athena is an interactive query service that makes it easy for you to
-analyze data directly in Amazon S3 using standard SQL. With a few actions in
-the AWS Management Console, you can use Athena directly against data assets
-stored in the data lake and begin using standard SQL to run ad hoc queries and
-get results in a matter of seconds.
-Athena is serverless, so there is no infrastructure to set up or manage, and you
-only pay for the volume of data assets scanned during the queries you run.
-Athena scales automatically—executing queries in parallel—so results are fast,
-even with large datasets and complex queries. You can use Athena to process
-unstructured, semi-structured, and structured data sets. Supported data asset
-formats include CSV, JSON, or columnar data formats such as Apache Parquet
-and Apache ORC. Athena integrates with Amazon QuickSight for easy
-visualization. It can also be used with third-party reporting and business
-intelligence tools by connecting these tools to Athena with a JDBC driver.
-
-Athena is serverless, so there is no infrastructure to set up or manage, and you pay only for the queries you run. Athena scales automatically—running queries in parallel—so results are fast, even with large datasets and complex queries.
-
-Amazon Athena is a fast, cost-effective, interactive query service that makes it easy to analyze petabytes of data in S3 with no data warehouses or clusters to manage.
-
--->
-
 <p>En el siguiente supuesto, vamos a crear una aplicación <em>Athena</em>, definiremos una base de datos, crearemos una tabla con sus columnas y tipos de datos, y ejecutaremos consultas sencillas y compuestas.</p>
 <p>Los pasos a realizar son:</p>
 <ol>
@@ -1590,26 +1573,6 @@ Amazon Athena is a fast, cost-effective, interactive query service that makes it
     <img src="images/07athenaSelect.png">
     <figcaption>Athena - Realización de una consulta</figcaption>
 </figure>
-
-<!--
-## AWS Glue
-
-Es la herramienta ETL completamente administrado que ofrece Amazon Web Services.
-
-Cuando el esquema de los datos es desconocido, *AWS Glue* permite inferirlo. Para ello, hemos de construir un rastreador (*crawler*) para descubrir su estructura.
-
-. AWS Glue builds a catalog that contains metadata about the various data sources. AWS Glue is similar to Amazon Athena in that the actual data you analyze remains in the data source. The key difference is that you can build a crawler with AWS Glue to discover the schema.
-
-### Creación
-
-### Ejecución
-
-Se puede ejecutar bajo demanda o planificar su ejecución de forma diaria, por horas, etc... Una vez lanzado, al cabo de un minuto, veremos que ha finalizado y en Base de Datos - > Tablas podremos ver la tabla que ha creado (en nuestro caso la tabla `csv`), junto con la estructura que ha inferido respecto a los datos cargados.
-
-El siguiente paso es editar el esquema y ponerle nombres significativos a los campos:
-
-Una vez los datos están cargados, ya podemos realizar consular con AWS Athena.
--->
 
 <h2 id="referencias">Referencias<a class="headerlink" href="#referencias" title="Permanent link">&para;</a></h2>
 <ul>
